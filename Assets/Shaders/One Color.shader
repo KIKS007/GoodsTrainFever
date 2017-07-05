@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "MainShader"
+Shader "One Color"
 {
 	Properties
 	{
@@ -56,13 +56,13 @@ Shader "MainShader"
 Version=10001
 2567;238;2546;1014;1305;897;1;True;False
 Node;AmplifyShaderEditor.SamplerNode;3;-769,-377;Float;True;Property;_AlbedoAO;Albedo AO;1;0;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0.0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;0.0;False;5;FLOAT4;FLOAT;FLOAT;FLOAT;FLOAT
-Node;AmplifyShaderEditor.AppendNode;4;-381,-385;Float;False;FLOAT3;0;0;0;0;4;0;FLOAT;0.0;False;1;FLOAT;0.0;False;2;FLOAT;0.0;False;3;FLOAT;0.0;False;1;FLOAT3
 Node;AmplifyShaderEditor.ColorNode;7;-668,-724;Float;False;Property;_Albedo;Albedo;2;0;0,0,0,0;0;5;COLOR;FLOAT;FLOAT;FLOAT;FLOAT
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;8;-220,-404;Float;False;2;0;COLOR;0,0,0;False;1;FLOAT3;0.0,0,0,0;False;1;COLOR
-Node;AmplifyShaderEditor.RangedFloatNode;6;-712,-8;Float;False;Constant;_Smoothness;Smoothness;2;0;0;0;0;0;1;FLOAT
+Node;AmplifyShaderEditor.AppendNode;4;-381,-385;Float;False;FLOAT3;0;0;0;0;4;0;FLOAT;0.0;False;1;FLOAT;0.0;False;2;FLOAT;0.0;False;3;FLOAT;0.0;False;1;FLOAT3
 Node;AmplifyShaderEditor.RangedFloatNode;5;-718,-122;Float;False;Constant;_Metallic;Metallic;2;0;0;0;0;0;1;FLOAT
 Node;AmplifyShaderEditor.SamplerNode;1;-805,107;Float;True;Property;_Normal;Normal;0;0;None;True;0;True;bump;LockedToTexture2D;True;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0.0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;0.0;False;5;FLOAT3;FLOAT;FLOAT;FLOAT;FLOAT
-Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;24,-293;Float;False;True;2;Float;ASEMaterialInspector;0;Standard;MainShader;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;0;False;0;0;Opaque;0.5;True;True;0;False;Opaque;Geometry;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;False;0;255;255;0;0;0;0;False;0;4;10;25;False;0.5;True;0;Zero;Zero;0;Zero;Zero;Add;Add;0;False;0;0,0,0,0;VertexOffset;False;Cylindrical;Relative;0;;-1;-1;-1;-1;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0.0;False;4;FLOAT;0.0;False;5;FLOAT;0.0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0.0;False;9;FLOAT;0.0;False;10;OBJECT;0.0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;13;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;8;-220,-404;Float;False;2;0;COLOR;0,0,0;False;1;FLOAT3;0.0,0,0,0;False;1;COLOR
+Node;AmplifyShaderEditor.RangedFloatNode;6;-712,-8;Float;False;Constant;_Smoothness;Smoothness;2;0;0;0;0;0;1;FLOAT
+Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;24,-293;Float;False;True;2;Float;ASEMaterialInspector;0;Standard;One Color;False;False;False;False;False;False;False;False;False;False;False;False;Back;0;0;False;0;0;Opaque;0.5;True;True;0;False;Opaque;Geometry;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;False;0;255;255;0;0;0;0;False;0;4;10;25;False;0.5;True;0;Zero;Zero;0;Zero;Zero;Add;Add;0;False;0;0,0,0,0;VertexOffset;False;Cylindrical;Relative;0;;-1;-1;-1;-1;16;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0.0;False;4;FLOAT;0.0;False;5;FLOAT;0.0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0.0;False;9;FLOAT;0.0;False;10;OBJECT;0.0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;13;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
 WireConnection;4;0;3;1
 WireConnection;4;1;3;2
 WireConnection;4;2;3;3
@@ -75,4 +75,4 @@ WireConnection;0;3;5;0
 WireConnection;0;4;6;0
 WireConnection;0;5;3;4
 ASEEND*/
-//CHKSM=6BD58B3B93C77AF09FB04FEACF94898616F37A8A
+//CHKSM=0C729EA481C24CC30A1C6756FA25691007FCC562
