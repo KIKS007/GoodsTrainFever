@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Feno
+{
 public class LookAt : MonoBehaviour
 {
 	public bool mainCamera;
@@ -28,4 +30,5 @@ public class LookAt : MonoBehaviour
 			transform.LookAt (cam.transform);
 		}
 	}
+}
 }

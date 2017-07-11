@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Feno
+{
+	
 [Serializable]
 public class ContainerType
 {
@@ -49,4 +52,5 @@ public class GameManager : MonoBehaviour
 	{
 		
 	}
+}
 }

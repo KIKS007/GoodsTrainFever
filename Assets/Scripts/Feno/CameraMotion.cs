@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+namespace Feno
+{
 public class CameraMotion : MonoBehaviour
 {
 	Vector3 startPos;
@@ -89,4 +91,5 @@ public class CameraMotion : MonoBehaviour
 
 
 	}
+}
 }

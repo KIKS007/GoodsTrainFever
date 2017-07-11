@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+namespace Feno
+{
+	
 public class Container : MonoBehaviour
 {
 	private Spot spot = null;
@@ -112,3 +115,4 @@ public class Container : MonoBehaviour
 	}
 }
 
+}

@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+namespace Feno
+{
 public class ScreenshakeManager : MonoBehaviour
 {
 
@@ -41,4 +43,5 @@ public class ScreenshakeManager : MonoBehaviour
 		transform.DOKill (true);
 		transform.DOPunchPosition (force, duration, vibrato).SetDelay (delay);
 	}
+}
 }

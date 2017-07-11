@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+namespace Feno
+{
 public class Spot : MonoBehaviour
 {
 
@@ -54,12 +56,12 @@ public class Spot : MonoBehaviour
 
 	void Start ()
 	{
-		TouchManager.Singleton.OnTouchBegin += TouchBegin;
+		/*TouchManager.Singleton.OnTouchBegin += TouchBegin;
 		TouchManager.Singleton.OnDrag += Drag;
 		TouchManager.Singleton.OnTouchEnd += TouchEnd;
 		Scan ();
 
-		Camera.main.GetComponent<CameraMotion> ().OnIntroduction += Intro;
+		Camera.main.GetComponent<CameraMotion> ().OnIntroduction += Intro;*/
 	}
 
 	void Intro ()
@@ -193,4 +195,5 @@ public class Spot : MonoBehaviour
 			dot.transform.DOBlendableScaleBy (-Vector3.one * .5f, TimePulsating).SetEase (Ease.InOutCirc).OnComplete (() => Pulse ());
 		});
 	}
+}
 }

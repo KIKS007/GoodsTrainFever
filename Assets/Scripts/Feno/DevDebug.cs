@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Feno
+{
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 public class DevDebug : MonoBehaviour
@@ -141,3 +143,5 @@ public class DevDebug : MonoBehaviour
 
 }
 #endif
+
+}

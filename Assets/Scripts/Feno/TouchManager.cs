@@ -22,6 +22,10 @@ using UnityEngine;
 using System;
 using DG.Tweening;
 
+namespace Feno
+{
+	
+
 public class TouchManager : MonoBehaviour
 {
 	private int j;
@@ -166,3 +170,6 @@ public class TouchManager : MonoBehaviour
 			action (hit);
 	}
 }
+
+}
+	

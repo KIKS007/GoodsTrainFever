@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+namespace Feno
+{
 public class Dot : MonoBehaviour
 {
+}
 }

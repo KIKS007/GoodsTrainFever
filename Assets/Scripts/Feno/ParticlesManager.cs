@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Feno
+{
 public class ParticlesManager : MonoBehaviour
 {
 
@@ -23,4 +25,5 @@ public class ParticlesManager : MonoBehaviour
 		GameObject i = Instantiate (prefab, position, Quaternion.identity) as GameObject;
 		return i;
 	}
+}
 }
