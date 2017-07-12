@@ -2,18 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Sirenix.OdinInspector;
+
+public enum TouchableState { None, Touched, Hold }
 
 public class Touchable : MonoBehaviour
 {
+	[Header ("Touch States")]
+	[InfoBox ("This touchable element doesn't have a collider!", InfoMessageType.Warning, "HasntCollider")]
+	public TouchableState touchableState = TouchableState.None;
 
-	protected float _holdDelay = 1f;
-	protected bool _pointerDown = false;
-
-	// Update is called once per frame
-	protected virtual void Update () 
+	bool HasntCollider ()
 	{
-		
+		if (GetComponent<Collider> () != null)
+			return false;
+		else
+			return true;
 	}
+
+	protected float _holdDelay = 0.3f;
+	protected bool _pointerDown = false;
 
 	protected virtual void OnMouseDown ()
 	{
@@ -53,6 +61,8 @@ public class Touchable : MonoBehaviour
 
 	protected virtual void OnTouchDown ()
 	{
+		touchableState = TouchableState.Touched;
+
 		Debug.Log ("OnTouchDown");
 	}
 
@@ -63,6 +73,8 @@ public class Touchable : MonoBehaviour
 
 	protected virtual void OnHold ()
 	{
+		touchableState = TouchableState.Hold;
+
 		Debug.Log ("OnHold");
 	}
 
@@ -73,6 +85,8 @@ public class Touchable : MonoBehaviour
 
 	protected virtual void OnTouchUp ()
 	{
+		touchableState = TouchableState.None;
+
 		Debug.Log ("OnTouchUp");
 	}
 

@@ -1,3 +1,7 @@
+#pragma warning disable 0618
+#pragma warning disable 0649
+
+
 #if UNITY_CHANGE1 || UNITY_CHANGE2 || UNITY_CHANGE3
 #warning UNITY_CHANGE has been set manually
 #elif UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
@@ -15,10 +19,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-#if UNITY_CHANGE3
 using UnityEngine.SceneManagement;
-#endif
-
 
 [System.Serializable]
 public class Images
@@ -1955,7 +1956,7 @@ public class Reporter : MonoBehaviour
 	}
 
 	//new scene is loaded
-	void OnLevelWasLoaded()
+	void OnLevelLoaded()
 	{
 		if (clearOnNewSceneLoaded)
 			clear();
