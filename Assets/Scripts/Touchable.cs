@@ -3,20 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Touchable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Touchable : MonoBehaviour
 {
-	protected float _holdDelay = 0.1f;
+
+	protected float _holdDelay = 1f;
 	protected bool _pointerDown = false;
-	protected bool _holding = false;
 
 	// Update is called once per frame
 	protected virtual void Update () 
 	{
-		if (_pointerDown)
-			OnTouch ();
+		
+	}
 
-		if (_holding)
-			OnTouchHold ();
+	protected virtual void OnMouseDown ()
+	{
+		OnTouchDown ();
+		StartCoroutine (HoldDelay ());
+		_pointerDown = true;
+	}
+
+	//protected virtual void OnMouseUpAsButton ()
+	protected virtual void OnMouseUp ()
+	{
+		OnTouchUp ();
+		StopCoroutine (HoldDelay ());
+		_pointerDown = false;
+	}
+
+	protected virtual void OnMouseDrag ()
+	{
+		OnTouching ();
+	}
+
+	protected IEnumerator HoldDelay ()
+	{
+		yield return new WaitForSecondsRealtime (_holdDelay);
+
+		if (!_pointerDown)
+			yield break;
+
+		OnHold ();
+
+		while(_pointerDown)
+		{
+			OnHolding ();
+			yield return new WaitForEndOfFrame ();
+		}
 	}
 
 	protected virtual void OnTouchDown ()
@@ -24,12 +56,17 @@ public class Touchable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		Debug.Log ("OnTouchDown");
 	}
 
-	protected virtual void OnTouch ()
+	protected virtual void OnTouching ()
 	{
-		Debug.Log ("OnTouch");
+		Debug.Log ("OnTouching");
 	}
 
-	protected virtual void OnTouchHold ()
+	protected virtual void OnHold ()
+	{
+		Debug.Log ("OnHold");
+	}
+
+	protected virtual void OnHolding ()
 	{
 		Debug.Log ("OnTouchHold");
 	}
@@ -39,27 +76,5 @@ public class Touchable : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		Debug.Log ("OnTouchUp");
 	}
 
-	public void OnPointerDown (PointerEventData eventData)
-	{
-		OnTouchDown ();
-		StartCoroutine (HoldDelay ());
-		_pointerDown = true;
-		_holding = false;
-	}
 
-	public void OnPointerUp (PointerEventData eventData)
-	{
-		OnTouchUp ();
-		StopCoroutine (HoldDelay ());
-		_pointerDown = false;
-		_holding = false;
-	}
-
-	protected IEnumerator HoldDelay ()
-	{
-		yield return new WaitForSecondsRealtime (_holdDelay);
-
-		if (_pointerDown)
-			_holding = true;
-	}
 }
