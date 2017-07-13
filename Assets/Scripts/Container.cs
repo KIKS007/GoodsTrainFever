@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
 public class Container : Touchable 
 {
@@ -25,9 +26,16 @@ public class Container : Touchable
 		_collider = GetComponent<Collider> ();
 	}
 
-	protected override void OnTouchDown ()
+	public void SetInitialSpot (Spot spot)
 	{
-		base.OnTouchDown ();
+		spotOccupied = spot;
+
+		transform.position = spot.transform.position;
+	}
+
+	protected override void OnTouchUpAsButton ()
+	{
+		base.OnTouchUpAsButton ();
 
 		if (!selected)
 			Select ();
@@ -52,7 +60,7 @@ public class Container : Touchable
 
 	public void Deselect ()
 	{
-		if(ContainersMovementManager.Instance.selectedContainer == gameObject)
+		if(ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
 
 		ContainersMovementManager.Instance.StopHover (this);
@@ -61,5 +69,34 @@ public class Container : Touchable
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
+	}
+
+	public void TakeSpot (Spot spot)
+	{
+		if(ContainersMovementManager.Instance.selectedContainer == this)
+			ContainersMovementManager.Instance.selectedContainer = null;
+
+		spotOccupied.isOccupied = false;
+		spot.isOccupied = true;
+
+		spotOccupied = spot;
+
+		selected = false;
+
+		if (OnContainerDeselected != null)
+			OnContainerDeselected (this);
+	}
+
+	[PropertyOrder (-1)]
+	[ButtonAttribute ("Take Spot")]
+	public void EditorTakeSpot ()
+	{
+		if(spotOccupied == null)
+		{
+			Debug.LogWarning ("No Spot!");
+			return;
+		}
+
+		transform.position = spotOccupied.transform.position;
 	}
 }

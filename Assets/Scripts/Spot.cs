@@ -37,10 +37,23 @@ public class Spot : Touchable
 		Vector3 position = transform.position;
 		position.y += 1;
 
-		if (Physics.CheckBox (position, Vector3.one, Quaternion.identity, containersMask, QueryTriggerInteraction.Collide))
+		RaycastHit hit;
+		Physics.Raycast (transform.position, Vector3.up, out hit, 2f, containersMask, QueryTriggerInteraction.Collide);
+
+		if (hit.collider)
+		{
+			hit.collider.GetComponent<Container> ().SetInitialSpot (this);
 			isOccupied = true;
+		}
 		else
 			isOccupied = false;
+	}
+
+	protected override void OnTouchUpAsButton ()
+	{
+		base.OnTouchUpAsButton ();
+
+		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 
 	void OnContainerSelected (Container container)
