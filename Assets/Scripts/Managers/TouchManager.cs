@@ -8,11 +8,7 @@ public enum HoldState { None, Holding, SwipingRight, SwipingLeft }
 public class TouchManager : Singleton<TouchManager>
 {
 	[Header ("States")]
-	public GameObject target;
 	public HoldState holdState = HoldState.None;
-
-	[Header ("Touch Layer")]
-	public LayerMask touchRaycastLayer;
 
 	private Vector3 _mousePosition;
 	private Vector3 _mouseDeltaPosition;
@@ -77,7 +73,9 @@ public class TouchManager : Singleton<TouchManager>
 		}
 
 		if(Input.GetMouseButtonUp (0))
+		{
 			holdState = HoldState.None;
+		}
 
 		if(Input.GetMouseButton (0))
 		{
