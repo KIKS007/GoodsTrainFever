@@ -12,6 +12,10 @@ public class Container : Touchable
 	[Header ("States")]
 	public bool selected = false;
 
+	[Header ("Train")]
+	public Train train = null;
+	public Wagon wagon = null;
+
 	[Header ("Spot")]
 	public Spot spotOccupied = null;
 
@@ -33,9 +37,12 @@ public class Container : Touchable
 		transform.position = spot.transform.position;
 	}
 
-	protected override void OnTouchUpAsButton ()
+	public override void OnTouchUpAsButton ()
 	{
 		base.OnTouchUpAsButton ();
+
+		if (letPassTouchUpAsButton)
+			return;
 
 		if (!selected)
 			Select ();

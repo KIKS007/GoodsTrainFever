@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wagon : MonoBehaviour {
+public class Wagon : Touchable 
+{
+	[Header ("Train")]
+	public Train train;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void Start ()
+	{
+		train = transform.GetComponentInParent<Train> ();
 	}
 }

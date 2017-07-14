@@ -5,20 +5,17 @@ using System;
 
 public enum HoldState { None, Holding, SwipingRight, SwipingLeft }
 
-public class TouchManager : Singleton<TouchManager>
+public class TrainsMovementManager : Singleton<TrainsMovementManager>
 {
+	[Header ("Selected Train")]
+	public Train selectedTrain = null;
+
 	[Header ("States")]
 	public HoldState holdState = HoldState.None;
 
 	private Vector3 _mousePosition;
 	private Vector3 _mouseDeltaPosition;
 
-	// Use this for initialization
-	void Start () 
-	{
-		
-	}
-	
 	// Update is called once per frame
 	void Update () 
 	{

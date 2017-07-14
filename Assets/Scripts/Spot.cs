@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+public enum SpotType { Train, Storage, Boat, Road }
+
 public class Spot : Touchable 
 {
+	[Header ("Spot")]
+	public SpotType spotType;
 	public bool isOccupied = false;
 
 	private Collider _collider;
@@ -25,9 +29,20 @@ public class Spot : Touchable
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
 
+		SetSpotType ();
+
 		IsOccupied ();
 
 		OnContainerDeselected ();
+	}
+
+	void SetSpotType ()
+	{
+		if(transform.GetComponentInParent<Wagon> () != null)
+		{
+			spotType = SpotType.Train;
+			return;
+		}
 	}
 
 	void IsOccupied ()
@@ -49,10 +64,13 @@ public class Spot : Touchable
 			isOccupied = false;
 	}
 
-	protected override void OnTouchUpAsButton ()
+	public override void OnTouchUpAsButton ()
 	{
 		base.OnTouchUpAsButton ();
 
+		if (letPassTouchUp)
+			return;
+		
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 

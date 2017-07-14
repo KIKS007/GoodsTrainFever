@@ -22,14 +22,13 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 	private float _startHeight;
 
-
 	public void StartHover (Container container)
 	{
 		container.transform.DOKill (true);
 		_startHeight = container.transform.localPosition.y;
 
 		ScreenshakeManager.Instance.Shake (FeedbackType.StartHover);
-		//ScreenshakeManager.Singleton.Shake (Vector3.up * .3f, 1, 0, .8f);
+
 		container.transform.DOLocalMoveY (container.transform.localPosition.y + startHoverHeight, startHoverDuration).SetEase (hoverEase).OnComplete (()=> Hover (container));
 	}
 

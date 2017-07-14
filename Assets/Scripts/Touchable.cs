@@ -8,17 +8,20 @@ public enum TouchableState { None, Touched, Hold }
 
 public class Touchable : MonoBehaviour
 {
-	[Header ("Touch State")]
-	[InfoBox ("This touchable element doesn't have a collider!", InfoMessageType.Warning, "HasntCollider")]
+	[Header ("Touch")]
 	public TouchableState touchableState = TouchableState.None;
+	public bool letPassEvents = false;
 
-	bool HasntCollider ()
-	{
-		if (GetComponent<Collider> () != null)
-			return false;
-		else
-			return true;
-	}
+	[ShowIf ("letPassEvents")]
+	public bool letPassTouchDown = false;
+	[ShowIf ("letPassEvents")]
+	public bool letPassHold = false;
+	[ShowIf ("letPassEvents")]
+	public bool letPassHolding = false;
+	[ShowIf ("letPassEvents")]
+	public bool letPassTouchUp = false;
+	[ShowIf ("letPassEvents")]
+	public bool letPassTouchUpAsButton = false;
 
 	protected float _holdDelay = 0.3f;
 	protected bool _pointerDown = false;
@@ -44,11 +47,6 @@ public class Touchable : MonoBehaviour
 		_pointerDown = false;
 	}
 
-	protected void OnMouseDrag ()
-	{
-		OnTouching ();
-	}
-
 	protected IEnumerator HoldDelay ()
 	{
 		yield return new WaitForSecondsRealtime (_holdDelay);
@@ -65,31 +63,66 @@ public class Touchable : MonoBehaviour
 		}
 	}
 
-	protected virtual void OnTouchDown ()
+	public virtual void OnTouchDown ()
 	{
+		if(letPassTouchDown)
+		{
+			if(transform.parent.GetComponentInParent<Touchable> () != null)
+				transform.parent.GetComponentInParent<Touchable> ().OnTouchDown ();
+			
+			return;
+		}
+
 		touchableState = TouchableState.Touched;
 	}
 
-	protected virtual void OnTouching ()
+	public virtual void OnHold ()
 	{
-	}
+		if(letPassHold)
+		{
+			if(transform.parent.GetComponentInParent<Touchable> () != null)
+				transform.parent.GetComponentInParent<Touchable> ().OnHold ();
 
-	protected virtual void OnHold ()
-	{
+			return;
+		}
+
 		touchableState = TouchableState.Hold;
 	}
 
-	protected virtual void OnHolding ()
+	public virtual void OnHolding ()
 	{
+		if(letPassHolding)
+		{
+			if(transform.parent.GetComponentInParent<Touchable> () != null)
+				transform.parent.GetComponentInParent<Touchable> ().OnHolding ();
+
+			return;
+		}
 	}
 
-	protected virtual void OnTouchUp ()
+	public virtual void OnTouchUp ()
 	{
+		if(letPassTouchUp)
+		{
+			if(transform.parent.GetComponentInParent<Touchable> () != null)
+				transform.parent.GetComponentInParent<Touchable> ().OnTouchUp ();
+
+			return;
+		}
+		
 		touchableState = TouchableState.None;
 	}
 
-	protected virtual void OnTouchUpAsButton ()
+	public virtual void OnTouchUpAsButton ()
 	{
+		if(letPassTouchUpAsButton)
+		{
+			if(transform.parent.GetComponentInParent<Touchable> () != null)
+				transform.parent.GetComponentInParent<Touchable> ().OnTouchUpAsButton ();
+
+			return;
+		}
+
 		touchableState = TouchableState.None;
 	}
 }
