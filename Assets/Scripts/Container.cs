@@ -13,6 +13,7 @@ public class Container : Touchable
 	[Header ("States")]
 	public bool canBeSelected = true;
 	public bool selected = false;
+	public bool isPileUp = false;
 
 	[Header ("Train")]
 	public Train train = null;
@@ -26,10 +27,13 @@ public class Container : Touchable
 	[HideInInspector]
 	public Collider _collider;
 
-	void Start ()
+	private Spot[] _pileSpots = new Spot[0];
+
+	void Awake ()
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
+		_pileSpots = transform.GetComponentsInChildren<Spot> ();
 
 		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
@@ -40,16 +44,21 @@ public class Container : Touchable
 		spotOccupied = spot;
 
 		transform.position = spot.transform.position;
+		transform.SetParent (spot._containersParent);
 
-		wagon = spot._wagon;
-		train = wagon.train;
-
-		transform.SetParent (train.containersParent);
+		if(spot.spotType == SpotType.Train)
+		{
+			wagon = spot._wagon;
+			train = wagon.train;
+		}
 	}
 
 	public override void OnTouchUpAsButton ()
 	{
 		base.OnTouchUpAsButton ();
+
+		if (isPileUp)
+			return;
 
 		if (!canBeSelected)
 			return;
@@ -93,20 +102,39 @@ public class Container : Touchable
 		if(ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
 
-		spotOccupied.isOccupied = false;
-		spot.isOccupied = true;
+		spotOccupied.RemoveContainer ();
+		spot.SetContainer (this);
 
 		spotOccupied = spot;
 
 		selected = false;
 
-		wagon = spot._wagon;
-		train = wagon.train;
+		transform.SetParent (spot._containersParent);
 
-		transform.SetParent (train.containersParent);
+		if(spot.spotType == SpotType.Train)
+		{
+			wagon = spot._wagon;
+			train = wagon.train;
+		}
+		else
+		{
+			wagon = null;
+			train = null;
+		}
+
+		SetPileSpot ();
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
+	}
+
+	void SetPileSpot ()
+	{
+		foreach (var s in _pileSpots)
+		{
+			s.spotType = spotOccupied.spotType;
+			s._containersParent = transform.parent;
+		}
 	}
 
 	void TrainHasMoved ()

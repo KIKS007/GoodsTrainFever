@@ -15,7 +15,7 @@ public class Train : Touchable
 	private Vector3 _mouseDeltaPosition;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		wagons.AddRange (transform.GetComponentsInChildren<Wagon> ());
 	}

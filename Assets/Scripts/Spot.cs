@@ -10,20 +10,27 @@ public class Spot : Touchable
 	[Header ("Spot")]
 	public SpotType spotType;
 	public bool isOccupied = false;
+	public bool isPileSpot;
+
+	[Header ("Container")]
+	public Container container;
 
 	[HideInInspector]
 	public Wagon _wagon;
+	[HideInInspector]
+	public Transform _containersParent;
 
 	private Collider _collider;
 	private MeshRenderer _meshRenderer;
 	private MeshFilter _meshFilter;
 	private Material _material;
 	private bool _canBeSelected = true;
+	private int _containersPileCount = 1;
+	private Container _parentContainer;
 
 	private float _fadeDuration = 0.2f;
 
-	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		_collider = GetComponent<Collider> ();
 		_meshRenderer = GetComponent<MeshRenderer> ();
@@ -36,40 +43,132 @@ public class Spot : Touchable
 		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
 
+		if(transform.GetComponentInParent<Container> () != null)
+		{
+			isPileSpot = true;
+			_parentContainer = transform.GetComponentInParent<Container> ();
+		}
+	}
+
+	void Start () 
+	{
 		SetSpotType ();
 
-		IsOccupied ();
+		IsOccupied (true);
 
 		OnContainerDeselected ();
 	}
 
 	void SetSpotType ()
 	{
+		if(transform.GetComponentInParent<Storage> () != null)
+		{
+			_containersParent = transform.GetComponentInParent<Storage> ().containersParent;
+			spotType = SpotType.Storage;
+			return;
+		}
+
 		if(transform.GetComponentInParent<Wagon> () != null)
 		{
-			_wagon = transform.GetComponentInParent<Wagon> ();
+			if(!isPileSpot)
+				_wagon = transform.GetComponentInParent<Wagon> ();
+
+			_containersParent = transform.GetComponentInParent<Wagon> ().train.containersParent;
 			spotType = SpotType.Train;
 			return;
 		}
 	}
 
-	void IsOccupied ()
+	void IsOccupied (bool setup = false)
 	{
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
 		Vector3 position = transform.position;
-		position.y += 1;
+		position.y += 1.7f;
 
 		RaycastHit hit;
-		Physics.Raycast (transform.position, Vector3.up, out hit, 2f, containersMask, QueryTriggerInteraction.Collide);
+		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
 
-		if (hit.collider)
+		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 1.6f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
+
+		isOccupied = false;
+
+		foreach(var c in colliders)
 		{
-			hit.collider.GetComponent<Container> ().SetInitialSpot (this);
 			isOccupied = true;
+
+			if (setup && IsSameSize (hit.collider.GetComponent<Container> ()))
+			{
+				container = hit.collider.GetComponent<Container> ();
+				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
+				return;
+			}
+		}
+
+		/*if (hit.collider)
+		{
+			isOccupied = true;
+
+			if (!IsSameSize (hit.collider.GetComponent<Container> ()))
+				return;
+			
+			if (!setup)
+				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
 		}
 		else
-			isOccupied = false;
+			isOccupied = false;*/
+	}
+
+	bool CanPileContainer ()
+	{
+		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
+
+		int belowContainers = 0;
+
+		RaycastHit[] hits = Physics.RaycastAll (transform.position, Vector3.down, 100f, containersMask, QueryTriggerInteraction.Collide);
+
+		foreach (var h in hits)
+		{
+			if (container && h.collider.gameObject == container.gameObject)
+				continue;
+			
+			belowContainers++;
+		}
+
+		if (spotType == SpotType.Train)
+		{
+			if (belowContainers == 0)
+				return true;
+			else
+				return false;
+		}
+
+		else
+		{
+			if (belowContainers <= _containersPileCount)
+				return true;
+			else
+				return false;
+		}
+	}
+
+	public void SetContainer (Container container)
+	{
+		isOccupied = true;
+		this.container = container;
+
+		if (_parentContainer)
+			_parentContainer.isPileUp = true;
+	}
+
+	public void RemoveContainer ()
+	{
+		isOccupied = false;
+
+		container = null;
+
+		if (_parentContainer)
+			_parentContainer.isPileUp = false;
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -81,7 +180,18 @@ public class Spot : Touchable
 
 	void OnContainerSelected (Container container)
 	{
-		if (isOccupied || !IsSameSize (container))
+		IsOccupied ();
+
+		if (isOccupied)
+			return;
+		
+		if (!IsSameSize (container))
+			return;
+
+		if (!CanPileContainer ())
+			return;
+
+		if (isPileSpot && _parentContainer.selected)
 			return;
 
 		_meshRenderer.enabled = true;

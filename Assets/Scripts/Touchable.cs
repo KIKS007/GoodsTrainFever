@@ -10,16 +10,6 @@ public class Touchable : MonoBehaviour
 {
 	[Header ("Touch")]
 	public TouchableState touchableState = TouchableState.None;
-	public bool letPassEvents = false;
-
-	[ShowIf ("letPassEvents")]
-	public bool letPassTouchDown = false;
-	[ShowIf ("letPassEvents")]
-	public bool letPassHold = false;
-	[ShowIf ("letPassEvents")]
-	public bool letPassTouchUp = false;
-	[ShowIf ("letPassEvents")]
-	public bool letPassTouchUpAsButton = false;
 
 	protected bool _pointerDown = false;
 
@@ -43,11 +33,8 @@ public class Touchable : MonoBehaviour
 
 	public virtual void OnTouchDown ()
 	{
-		if(letPassTouchDown)
-		{
-			if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
-				transform.parent.GetComponentInParent<Touchable> ().OnTouchDown ();
-		}
+		if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
+			transform.parent.GetComponentInParent<Touchable> ().OnTouchDown ();
 
 		StartCoroutine (Holding ());
 	}
@@ -63,33 +50,24 @@ public class Touchable : MonoBehaviour
 
 	public virtual void OnHold ()
 	{
-		if(letPassHold)
-		{
-			if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
-				transform.parent.GetComponentInParent<Touchable> ().OnHold ();
-		}
+		if(transform.parent != null && transform.parent.GetComponentInParent<Train> () != null)
+			transform.parent.GetComponentInParent<Train> ().OnHold ();
 
 		touchableState = TouchableState.Hold;
 	}
 
 	public virtual void OnTouchUp ()
 	{
-		if(letPassTouchUp)
-		{
-			if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
-				transform.parent.GetComponentInParent<Touchable> ().OnTouchUp ();
-		}
+		if(transform.parent != null && transform.parent.GetComponentInParent<Train> () != null)
+			transform.parent.GetComponentInParent<Train> ().OnTouchUp ();
 		
 		touchableState = TouchableState.None;
 	}
 
 	public virtual void OnTouchUpAsButton ()
 	{
-		if(letPassTouchUpAsButton)
-		{
-			if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
-				transform.parent.GetComponentInParent<Touchable> ().OnTouchUpAsButton ();
-		}
+		if(transform.parent != null && transform.parent.GetComponentInParent<Train> () != null)
+			transform.parent.GetComponentInParent<Train> ().OnTouchUpAsButton ();
 
 		touchableState = TouchableState.None;
 	}
