@@ -40,6 +40,11 @@ public class Container : Touchable
 		spotOccupied = spot;
 
 		transform.position = spot.transform.position;
+
+		wagon = spot._wagon;
+		train = wagon.train;
+
+		transform.SetParent (train.containersParent);
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -95,6 +100,11 @@ public class Container : Touchable
 
 		selected = false;
 
+		wagon = spot._wagon;
+		train = wagon.train;
+
+		transform.SetParent (train.containersParent);
+
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
 	}
@@ -111,6 +121,9 @@ public class Container : Touchable
 
 	void OnDestroy ()
 	{
+		if (TrainsMovementManager.applicationIsQuitting)
+			return;
+		
 		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
 	}

@@ -12,18 +12,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	[Header ("States")]
 	public HoldState holdState = HoldState.None;
+	private float holdDelay = 0.2f;
 
 	[Header ("Train")]
 	public Train selectedTrain = null;
 
 	[Header ("Movement")]
+	public float deltaMouvementThreshold;
 	public float deltaMousePositionFactor = 1;
 	public float deltaTouchPositionFactor = 1;
 	public float movementLerp = 0.1f;
 
 	private Vector3 _mousePosition;
 	private Vector3 _deltaPosition;
-	private float _holdDelay = 0.3f;
 
 	// Update is called once per frame
 	void Update () 
@@ -49,6 +50,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				
 				holdState = HoldState.Touched;
 
+				StopCoroutine (HoldDelay ());
 				StartCoroutine (HoldDelay ());
 
 				break;
@@ -73,7 +75,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 					holdState = HoldState.SwipingRight;
 				}
 
-				else if(holdState == HoldState.Touched)
+				else if(holdState != HoldState.Touched)
 					holdState = HoldState.Holding;
 				
 				break;
@@ -97,6 +99,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			holdState = HoldState.Touched;
 			_mousePosition = Input.mousePosition;
 
+			StopCoroutine (HoldDelay ());
 			StartCoroutine (HoldDelay ());
 		}
 
@@ -128,7 +131,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				holdState = HoldState.SwipingRight;
 			}
 
-			else if(holdState == HoldState.Touched)
+			else if(holdState != HoldState.Touched)
 				holdState = HoldState.Holding;
 			
 			_mousePosition = Input.mousePosition;
@@ -137,7 +140,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	IEnumerator HoldDelay ()
 	{
-		yield return new WaitForSecondsRealtime (_holdDelay);
+		yield return new WaitForSecondsRealtime (holdDelay);
 
 		if(holdState == HoldState.Touched)
 			holdState = HoldState.Holding;
@@ -149,6 +152,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			return;
 
 		Vector3 position = train.transform.position;
+
+		if (Mathf.Abs (_deltaPosition.x) < deltaMouvementThreshold)
+			return;
 
 		if (Application.isEditor)
 			position.x += _deltaPosition.x * deltaMousePositionFactor;

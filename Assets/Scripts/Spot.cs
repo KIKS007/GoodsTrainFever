@@ -11,10 +11,14 @@ public class Spot : Touchable
 	public SpotType spotType;
 	public bool isOccupied = false;
 
+	[HideInInspector]
+	public Wagon _wagon;
+
 	private Collider _collider;
 	private MeshRenderer _meshRenderer;
 	private MeshFilter _meshFilter;
 	private Material _material;
+	private bool _canBeSelected = true;
 
 	private float _fadeDuration = 0.2f;
 
@@ -29,6 +33,9 @@ public class Spot : Touchable
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
 
+		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
+		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
+
 		SetSpotType ();
 
 		IsOccupied ();
@@ -40,6 +47,7 @@ public class Spot : Touchable
 	{
 		if(transform.GetComponentInParent<Wagon> () != null)
 		{
+			_wagon = transform.GetComponentInParent<Wagon> ();
 			spotType = SpotType.Train;
 			return;
 		}
@@ -106,5 +114,24 @@ public class Spot : Touchable
 			return true;
 		else
 			return false;
+	}
+
+	void TrainHasMoved ()
+	{
+		_canBeSelected = false;
+	}
+
+	void TrainStoppedMoving ()
+	{
+		DOVirtual.DelayedCall (0.2f, ()=> _canBeSelected = true);
+	}
+
+	void OnDestroy ()
+	{
+		if (TrainsMovementManager.applicationIsQuitting)
+			return;
+
+		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
+		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
 	}
 }

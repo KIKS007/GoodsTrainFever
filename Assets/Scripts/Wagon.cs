@@ -7,7 +7,7 @@ public class Wagon : Touchable
 	[Header ("Train")]
 	public Train train;
 
-	void Start ()
+	void Awake ()
 	{
 		train = transform.GetComponentInParent<Train> ();
 	}
