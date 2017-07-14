@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public class Container : Touchable 
 {
@@ -10,6 +11,7 @@ public class Container : Touchable
 	public static Action <Container> OnContainerDeselected;
 
 	[Header ("States")]
+	public bool canBeSelected = true;
 	public bool selected = false;
 
 	[Header ("Train")]
@@ -28,6 +30,9 @@ public class Container : Touchable
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
+
+		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
+		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
 	}
 
 	public void SetInitialSpot (Spot spot)
@@ -41,7 +46,7 @@ public class Container : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
-		if (letPassTouchUpAsButton)
+		if (!canBeSelected)
 			return;
 
 		if (!selected)
@@ -92,6 +97,22 @@ public class Container : Touchable
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
+	}
+
+	void TrainHasMoved ()
+	{
+		canBeSelected = false;
+	}
+
+	void TrainStoppedMoving ()
+	{
+		DOVirtual.DelayedCall (0.2f, ()=> canBeSelected = true);
+	}
+
+	void OnDestroy ()
+	{
+		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
+		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
 	}
 
 	[PropertyOrder (-1)]

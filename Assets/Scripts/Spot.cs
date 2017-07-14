@@ -68,9 +68,6 @@ public class Spot : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
-		if (letPassTouchUp)
-			return;
-		
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 

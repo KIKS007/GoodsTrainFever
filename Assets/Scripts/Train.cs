@@ -30,18 +30,12 @@ public class Train : Touchable
 	{
 		base.OnTouchDown ();
 
-		if (letPassTouchDown)
-			return;
-
 		TrainsMovementManager.Instance.selectedTrain = this;
 	}
 
 	public override void OnTouchUp ()
 	{
 		base.OnTouchUp ();
-
-		if (letPassTouchUp)
-			return;
 
 		if(TrainsMovementManager.Instance.selectedTrain == this)
 			TrainsMovementManager.Instance.selectedTrain = null;
