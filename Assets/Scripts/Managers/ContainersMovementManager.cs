@@ -22,21 +22,13 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 	private float _startHeight;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void StartHover (Container container)
 	{
 		container.transform.DOKill (true);
 		_startHeight = container.transform.localPosition.y;
 
+		ScreenshakeManager.Instance.Shake (FeedbackType.StartHover);
 		//ScreenshakeManager.Singleton.Shake (Vector3.up * .3f, 1, 0, .8f);
 		container.transform.DOLocalMoveY (container.transform.localPosition.y + startHoverHeight, startHoverDuration).SetEase (hoverEase).OnComplete (()=> Hover (container));
 	}
@@ -54,7 +46,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		container.transform.DOKill ();
 		container.transform.DOLocalMoveY (_startHeight, stopHoverDuration).SetEase (Ease.OutBounce, 40, 1);
 
-		//ScreenshakeManager.Singleton.Shake (Vector3.left * Mathf.Max (0, (transform.position.y / startHeight) - 1.1f), 5, .1f, .4f);
+		ScreenshakeManager.Instance.Shake (FeedbackType.StopHover);
 	}
 
 	public void TakeSpot (Spot spot)
@@ -73,7 +65,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		rotationDir = Vector3.forward;
 		Vector3 diff = Vector3.Scale (container.transform.position, InverseVector (rotationDir)) - Vector3.Scale (spot.transform.position, InverseVector (rotationDir));
 
-		//ScreenshakeManager.Singleton.Shake (Vector3.up * .5f, 1, 0);
+		ScreenshakeManager.Instance.Shake (FeedbackType.StartTakeSpot);
 
 		//360 Rotation
 		container.transform.DORotate (rotationDir * Mathf.Sign (diff.x + diff.y + diff.z) * 360f, .4f, RotateMode.FastBeyond360);
@@ -88,7 +80,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 						
 						//DOVirtual.DelayedCall (.2f, () => ParticlesManager.Singleton.Create (ParticlesManager.Singleton.FXDropFog, spot.transform.position - (Vector3.up * colliderCp.bounds.extents.y * .5f)));
 						
-						//ScreenshakeManager.Singleton.Shake (Vector3.up * 2, 5, .1f);
+						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 					});
 			});
 	}
