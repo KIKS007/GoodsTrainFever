@@ -32,12 +32,4 @@ public class Train : Touchable
 
 		TrainsMovementManager.Instance.selectedTrain = this;
 	}
-
-	public override void OnTouchUp ()
-	{
-		base.OnTouchUp ();
-
-		if(TrainsMovementManager.Instance.selectedTrain == this)
-			TrainsMovementManager.Instance.selectedTrain = null;
-	}
 }

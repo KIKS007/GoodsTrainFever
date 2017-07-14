@@ -40,6 +40,8 @@ public class Spot : Touchable
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
 
+		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.2f, ()=> IsOccupied ());
+
 		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
 
@@ -79,17 +81,17 @@ public class Spot : Touchable
 		}
 	}
 
-	void IsOccupied (bool setup = false)
+	public void IsOccupied (bool setup = false)
 	{
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
 		Vector3 position = transform.position;
-		position.y += 1.7f;
+		position.y += 0.5f;
 
 		RaycastHit hit;
 		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
 
-		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 1.6f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
+		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
 
 		isOccupied = false;
 
@@ -156,9 +158,6 @@ public class Spot : Touchable
 	{
 		isOccupied = true;
 		this.container = container;
-
-		if (_parentContainer)
-			_parentContainer.isPileUp = true;
 	}
 
 	public void RemoveContainer ()
@@ -166,9 +165,6 @@ public class Spot : Touchable
 		isOccupied = false;
 
 		container = null;
-
-		if (_parentContainer)
-			_parentContainer.isPileUp = false;
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -243,5 +239,7 @@ public class Spot : Touchable
 
 		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
+
+		Container.OnContainerMoved -= ()=> IsOccupied ();
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using System;
 
 public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
@@ -14,7 +15,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public HoldState holdState = HoldState.None;
 	private float holdDelay = 0.2f;
 
-	[Header ("Train")]
+	[Header ("Trains")]
+	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
 
 	[Header ("Movement")]
@@ -22,120 +24,109 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float deltaMousePositionFactor = 1;
 	public float deltaTouchPositionFactor = 1;
 	public float movementLerp = 0.1f;
+	public float movementDeceleration = 0.9f;
 
 	private Vector3 _mousePosition;
 	private Vector3 _deltaPosition;
+	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
+
+	void Start ()
+	{
+		allTrains = FindObjectsOfType<Train> ().ToList ();
+		_trainsVelocity.Clear ();
+
+		foreach (var t in allTrains)
+			_trainsVelocity.Add (t, 0);
+
+		TouchManager.Instance.OnTouchDown += TouchDown;
+		TouchManager.Instance.OnTouchHold += TouchHold;
+		TouchManager.Instance.OnTouchUp += TouchUp;
+	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Application.isEditor)
-			MouseHold ();
+		if (holdState != HoldState.None)
+		{
+			if(selectedTrain)
+				MoveTrain (selectedTrain);
+			else
+			{
+				foreach (var t in allTrains)
+					MoveTrain (t);
+			}
+		}
 		else
-			TouchHold ();
-
-		if (holdState != HoldState.None && selectedTrain)
-			MoveTrain (selectedTrain);
+			SetTrainsVelocity ();
 	}
 
-	void TouchHold ()
+	void SetTrainsVelocity ()
 	{
-		if (Input.touchCount > 0)
+		foreach(var t in allTrains)
 		{
-			Touch touch = Input.GetTouch(0);
+			_trainsVelocity [t] *= movementDeceleration;
+			Vector3 position = t.transform.position;
+			position.x += _trainsVelocity [t];
 
-			switch (touch.phase)
-			{
-			case TouchPhase.Began:
-				
-				holdState = HoldState.Touched;
-
-				StopCoroutine (HoldDelay ());
-				StartCoroutine (HoldDelay ());
-
-				break;
-
-			case TouchPhase.Moved:
-
-				_deltaPosition = touch.deltaPosition;
-
-				if (_deltaPosition.x < 0)
-				{
-					if (holdState == HoldState.Holding && OnTrainMovementStart != null)
-						OnTrainMovementStart ();
-					
-					holdState = HoldState.SwipingLeft;
-				}
-				
-				else if(_deltaPosition.x > 0)
-				{
-					if (holdState == HoldState.Holding && OnTrainMovementStart != null)
-						OnTrainMovementStart ();
-
-					holdState = HoldState.SwipingRight;
-				}
-
-				else if(holdState != HoldState.Touched)
-					holdState = HoldState.Holding;
-				
-				break;
-
-			case TouchPhase.Ended:
-
-				holdState = HoldState.None;
-
-				if (OnTrainMovementEnd != null)
-					OnTrainMovementEnd ();
-
-				break;
-			}
+			t.transform.position = Vector3.Lerp (t.transform.position, position, movementLerp);
 		}
 	}
 
-	void MouseHold ()
+	void ResetTrainsVelocity ()
 	{
-		if(Input.GetMouseButtonDown (0))
+		if (selectedTrain)
+			_trainsVelocity [selectedTrain] = 0;
+		else
 		{
-			holdState = HoldState.Touched;
-			_mousePosition = Input.mousePosition;
+			foreach (var t in allTrains)
+				_trainsVelocity [t] = 0;
+		}
+	}
 
-			StopCoroutine (HoldDelay ());
-			StartCoroutine (HoldDelay ());
+	void TouchDown ()
+	{
+		StopCoroutine (HoldDelay ());
+		StartCoroutine (HoldDelay ());
+
+		holdState = HoldState.Touched;
+	}
+
+	void TouchHold (Vector3 deltaPosition)
+	{
+		_deltaPosition = deltaPosition;
+
+		if (_deltaPosition.x < 0)
+		{
+			if (holdState == HoldState.Touched && OnTrainMovementStart != null)
+				OnTrainMovementStart ();
+
+			holdState = HoldState.SwipingLeft;
 		}
 
-		if(Input.GetMouseButtonUp (0))
+		else if(_deltaPosition.x > 0)
 		{
-			holdState = HoldState.None;
+			if (holdState == HoldState.Touched && OnTrainMovementStart != null)
+				OnTrainMovementStart ();
 
-			if (OnTrainMovementEnd != null)
-				OnTrainMovementEnd ();
+			holdState = HoldState.SwipingRight;
 		}
 
-		if(Input.GetMouseButton (0))
+		else if(holdState != HoldState.Touched)
 		{
-			_deltaPosition = Input.mousePosition - _mousePosition; 
-
-			if (_deltaPosition.x < 0)
-			{
-				if (holdState == HoldState.Holding && OnTrainMovementStart != null)
-					OnTrainMovementStart ();
-				
-				holdState = HoldState.SwipingLeft;
-			}
-			
-			else if (_deltaPosition.x > 0)
-			{
-				if (holdState == HoldState.Holding && OnTrainMovementStart != null)
-					OnTrainMovementStart ();
-				
-				holdState = HoldState.SwipingRight;
-			}
-
-			else if(holdState != HoldState.Touched)
-				holdState = HoldState.Holding;
-			
-			_mousePosition = Input.mousePosition;
+			holdState = HoldState.Holding;
+			ResetTrainsVelocity ();
 		}
+	}
+
+	void TouchUp ()
+	{
+		holdState = HoldState.None;
+
+		if (OnTrainMovementEnd != null)
+			OnTrainMovementEnd ();
+
+		if (selectedTrain)
+			selectedTrain = null;
 	}
 
 	IEnumerator HoldDelay ()
@@ -157,9 +148,16 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			return;
 
 		if (Application.isEditor)
+		{
 			position.x += _deltaPosition.x * deltaMousePositionFactor;
+			_trainsVelocity [train] = _deltaPosition.x * deltaMousePositionFactor;
+			
+		}
 		else
+		{
 			position.x += _deltaPosition.x * deltaTouchPositionFactor;
+			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
+		}
 
 		train.transform.position = Vector3.Lerp (train.transform.position, position, movementLerp);
 	}

@@ -9,6 +9,7 @@ public class Container : Touchable
 {
 	public static Action <Container> OnContainerSelected;
 	public static Action <Container> OnContainerDeselected;
+	public static Action OnContainerMoved;
 
 	[Header ("States")]
 	public bool canBeSelected = true;
@@ -56,6 +57,8 @@ public class Container : Touchable
 	public override void OnTouchUpAsButton ()
 	{
 		base.OnTouchUpAsButton ();
+
+		IsPileUp ();
 
 		if (isPileUp)
 			return;
@@ -124,6 +127,9 @@ public class Container : Touchable
 
 		SetPileSpot ();
 
+		if (OnContainerMoved != null)
+			OnContainerMoved ();
+		
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
 	}
@@ -137,6 +143,24 @@ public class Container : Touchable
 		}
 	}
 
+	void IsPileUp ()
+	{
+		bool isPiledUpTemp = false;
+
+		foreach(var s in _pileSpots)
+		{
+			s.IsOccupied ();
+
+			if(s.isOccupied)
+			{
+				isPiledUpTemp = true;
+				break;
+			}
+		}
+
+		isPileUp = isPiledUpTemp;
+	}
+
 	void TrainHasMoved ()
 	{
 		canBeSelected = false;
@@ -144,7 +168,20 @@ public class Container : Touchable
 
 	void TrainStoppedMoving ()
 	{
-		DOVirtual.DelayedCall (0.2f, ()=> canBeSelected = true);
+		StopCoroutine (TrainStoppedMovingDelay ());
+		StartCoroutine (TrainStoppedMovingDelay ());
+	}
+
+	IEnumerator TrainStoppedMovingDelay ()
+	{
+		yield return new WaitForSecondsRealtime (0.2f);
+		canBeSelected = true;
+	}
+
+	public void OnContainerMovedEvent ()
+	{
+		if (OnContainerMoved != null)
+			OnContainerMoved ();
 	}
 
 	void OnDestroy ()

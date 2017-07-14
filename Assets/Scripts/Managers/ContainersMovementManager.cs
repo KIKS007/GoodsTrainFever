@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class ContainersMovementManager : Singleton<ContainersMovementManager> 
 {
@@ -24,6 +25,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 	public float takeSpotDuration = 0.4f;
 
 	private float _startHeight;
+
 
 	public void StartHover (Container container)
 	{
@@ -77,14 +79,15 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		container.transform.DOMoveX (spot.transform.position.x, .4f).SetEase (Ease.OutCubic);
 		container.transform.DOMoveZ (spot.transform.position.z, .4f).SetEase (Ease.OutCubic);
-		container.transform.DOMoveY (spot.transform.position.y + 10f + Random.Range (-2, 3), .3f).SetEase (Ease.OutCubic).OnComplete (() => 
+		container.transform.DOMoveY (spot.transform.position.y + 10f + UnityEngine.Random.Range (-2, 3), .3f).SetEase (Ease.OutCubic).OnComplete (() => 
 			{
 				container.transform.DOMoveY (spot.transform.position.y, .5f).SetEase (Ease.OutBounce, 40, 1);
 				container.transform.DOPunchRotation (direction * 10f, .5f, 10).SetDelay (.1f).OnStart (() => 
 					{
 						//DOVirtual.DelayedCall (.2f, () => ParticlesManager.Singleton.Create (ParticlesManager.Singleton.FXDropFog, spot.transform.position - (Vector3.up * colliderCp.bounds.extents.y * .5f)));
-						
+						//container.OnContainerMovedEvent ();
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
+
 					});
 			});
 	}
