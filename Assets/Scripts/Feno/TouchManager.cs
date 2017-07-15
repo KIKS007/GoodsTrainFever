@@ -143,7 +143,8 @@ public class TouchManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (0)) 
+			{
 			ButtonDown ();
 		} else if (Input.GetMouseButton (0) && holdContainer != null) {
 			Button ();

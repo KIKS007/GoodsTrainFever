@@ -11,9 +11,17 @@ public class TouchManager : Singleton<TouchManager>
 	public Action OnTouchUp;
 	public Action OnTouchUpNoTarget;
 
+	public bool useRaycast = false;
+
 	private bool _touchDown = false;
 	private Vector3 _deltaPosition;
 	private Vector3 _mousePosition;
+	private Camera _camera;
+
+	void Start ()
+	{
+		_camera = FindObjectOfType<Camera> ();
+	}
 
 	// Update is called once per frame
 	void Update () 
@@ -35,7 +43,14 @@ public class TouchManager : Singleton<TouchManager>
 			case TouchPhase.Began:
 
 				_touchDown = true;
-				
+
+				if(useRaycast)
+				{
+					Touchable touchable = RaycastTouchable ();
+					if (touchable != null)
+						touchable.OnTouchDown ();
+				}
+
 				if (OnTouchDown != null)
 					OnTouchDown ();
 
@@ -56,6 +71,13 @@ public class TouchManager : Singleton<TouchManager>
 
 				_touchDown = false;
 
+				if(useRaycast)
+				{
+					Touchable touchable = RaycastTouchable ();
+					if (touchable != null)
+						touchable.OnTouchUpAsButton ();
+				}
+
 				if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
 					OnTouchUpNoTarget ();
 
@@ -69,6 +91,7 @@ public class TouchManager : Singleton<TouchManager>
 		}
 	}
 
+	#if UNITY_EDITOR
 	void MouseHold ()
 	{
 		if(Input.GetMouseButtonDown (0))
@@ -77,13 +100,27 @@ public class TouchManager : Singleton<TouchManager>
 
 			_mousePosition = Input.mousePosition;
 
+			if(useRaycast)
+			{
+				Touchable touchable = RaycastTouchable ();
+				if (touchable != null)
+					touchable.OnTouchDown ();
+			}
+
 			if (OnTouchDown != null)
 				OnTouchDown ();
 		}
 		
-		if(Input.GetMouseButtonUp (0))
+		else if(Input.GetMouseButtonUp (0))
 		{
 			_touchDown = false;
+
+			if(useRaycast)
+			{
+				Touchable touchable = RaycastTouchable ();
+				if (touchable != null)
+					touchable.OnTouchUpAsButton ();
+			}
 
 			if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
 				OnTouchUpNoTarget ();
@@ -94,7 +131,7 @@ public class TouchManager : Singleton<TouchManager>
 			Touchable.TouchingTouchable = false;
 		}
 
-		if(Input.GetMouseButton (0))
+		else if(Input.GetMouseButton (0))
 		{
 			_deltaPosition = Input.mousePosition - _mousePosition; 
 			
@@ -104,6 +141,43 @@ public class TouchManager : Singleton<TouchManager>
 			_mousePosition = Input.mousePosition;
 		}
 
+	}
+	#endif
+
+	Touchable RaycastTouchable (LayerMask mask)
+	{
+		RaycastHit hit;
+		Ray ray = _camera.ScreenPointToRay (Input.mousePosition);
+
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity, mask)) 
+		{
+			Touchable touchable = hit.collider.GetComponent<Touchable>();
+
+			if (touchable != null)
+				return touchable;
+			else
+				return null;
+		}
+		else
+			return null;
+	}
+
+	Touchable RaycastTouchable ()
+	{
+		RaycastHit hit;
+		Ray ray = _camera.ScreenPointToRay (Input.mousePosition);
+
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) 
+		{
+			Touchable touchable = hit.collider.GetComponent<Touchable>();
+
+			if (touchable != null)
+				return touchable;
+			else
+				return null;
+		}
+		else
+			return null;
 	}
 
 	IEnumerator TouchHoldCoroutine ()

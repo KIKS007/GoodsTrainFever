@@ -14,16 +14,18 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	[Header ("States")]
 	public HoldState holdState = HoldState.None;
-	private float holdDelay = 0.2f;
+	public float holdDelay = 0.5f;
 
 	[Header ("Trains")]
 	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
 
-	[Header ("Movement")]
+	[Header ("Touch Settings")]
 	public float deltaMouvementThreshold;
 	public float deltaMousePositionFactor = 1;
 	public float deltaTouchPositionFactor = 1;
+
+	[Header ("Movement")]
 	public float movementLerp = 0.1f;
 	public float movementDeceleration = 0.9f;
 
@@ -45,14 +47,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			_trainsVelocity.Add (t, 0);
 
 		TouchManager.Instance.OnTouchDown += TouchDown;
-		TouchManager.Instance.OnTouchHold += TouchHold;
 		TouchManager.Instance.OnTouchUp += TouchUp;
+
+		if (Application.isEditor)
+			TouchManager.Instance.OnTouchHold += TouchHold;
+		else
+			TouchManager.Instance.OnTouchMoved += TouchHold;
+
 
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
 	}
 
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		if (ContainersMovementManager.Instance.containerInMotion)
 			return;

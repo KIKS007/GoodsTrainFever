@@ -107,6 +107,9 @@ public class Spot : Touchable
 			}
 		}
 
+		if(container != null && container.spotOccupied != null && container.spotOccupied == this)
+			isOccupied = true;
+
 		/*if (hit.collider)
 		{
 			isOccupied = true;
@@ -171,6 +174,9 @@ public class Spot : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
+		if (!_canBeSelected)
+			return;
+		
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 

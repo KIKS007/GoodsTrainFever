@@ -15,28 +15,29 @@ public class Touchable : MonoBehaviour
 
 	protected bool _pointerDown = false;
 
-	protected void OnMouseDown ()
+	#if UNITY_EDITOR
+	public void OnMouseDown ()
 	{
-		TouchingTouchable = true;
+		if (TouchManager.Instance.useRaycast)
+			return;
 
 		OnTouchDown ();
-		_pointerDown = true;
 	}
 
-	protected void OnMouseUp ()
+	public void OnMouseUpAsButton ()
 	{
-		OnTouchUp ();
-		_pointerDown = false;
-	}
-
-	protected void OnMouseUpAsButton ()
-	{
+		if (TouchManager.Instance.useRaycast)
+			return;
+		
 		OnTouchUpAsButton ();
-		_pointerDown = false;
 	}
+	#endif
 
 	public virtual void OnTouchDown ()
 	{
+		TouchingTouchable = true;
+		_pointerDown = true;
+
 		if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)
 			transform.parent.GetComponentInParent<Touchable> ().OnTouchDown ();
 
@@ -60,19 +61,12 @@ public class Touchable : MonoBehaviour
 		touchableState = TouchableState.Hold;
 	}
 
-	public virtual void OnTouchUp ()
-	{
-		if(transform.parent != null && transform.parent.GetComponentInParent<Train> () != null)
-			transform.parent.GetComponentInParent<Train> ().OnTouchUp ();
-		
-		touchableState = TouchableState.None;
-	}
-
 	public virtual void OnTouchUpAsButton ()
 	{
 		if(transform.parent != null && transform.parent.GetComponentInParent<Train> () != null)
 			transform.parent.GetComponentInParent<Train> ().OnTouchUpAsButton ();
 
 		touchableState = TouchableState.None;
+		_pointerDown = false;
 	}
 }
