@@ -26,7 +26,7 @@ public class TouchManager : Singleton<TouchManager>
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Application.isEditor)
+		if(Application.isEditor)
 			MouseHold ();
 		else
 			TouchHold ();
@@ -91,7 +91,6 @@ public class TouchManager : Singleton<TouchManager>
 		}
 	}
 
-	#if UNITY_EDITOR
 	void MouseHold ()
 	{
 		if(Input.GetMouseButtonDown (0))
@@ -142,7 +141,6 @@ public class TouchManager : Singleton<TouchManager>
 		}
 
 	}
-	#endif
 
 	Touchable RaycastTouchable (LayerMask mask)
 	{
