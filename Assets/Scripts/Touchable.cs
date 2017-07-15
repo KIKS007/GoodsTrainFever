@@ -8,6 +8,8 @@ public enum TouchableState { None, Hold }
 
 public class Touchable : MonoBehaviour
 {
+	public static bool TouchingTouchable = false;
+
 	[Header ("Touch")]
 	public TouchableState touchableState = TouchableState.None;
 
@@ -15,6 +17,8 @@ public class Touchable : MonoBehaviour
 
 	protected void OnMouseDown ()
 	{
+		TouchingTouchable = true;
+
 		OnTouchDown ();
 		_pointerDown = true;
 	}

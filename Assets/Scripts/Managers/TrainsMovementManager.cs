@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using DG.Tweening;
 
 public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
 
@@ -26,6 +27,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float movementLerp = 0.1f;
 	public float movementDeceleration = 0.9f;
 
+	[Header ("Reset Movement")]
+	public bool resetingTrains = false;
+	public float resetDuration = 0.5f;
+	public Ease resetEase = Ease.OutQuad;
+
 	private Vector3 _mousePosition;
 	private Vector3 _deltaPosition;
 	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
@@ -41,11 +47,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		TouchManager.Instance.OnTouchDown += TouchDown;
 		TouchManager.Instance.OnTouchHold += TouchHold;
 		TouchManager.Instance.OnTouchUp += TouchUp;
+
+		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
+		if (ContainersMovementManager.Instance.containerInMotion)
+			return;
+
+		if (resetingTrains)
+			return;
+
 		if (holdState != HoldState.None)
 		{
 			if(selectedTrain)
@@ -81,6 +95,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			foreach (var t in allTrains)
 				_trainsVelocity [t] = 0;
 		}
+	}
+
+	public void ResetTrainsPosition ()
+	{
+		foreach (var t in allTrains)
+			t.transform.DOMoveX (t._xInitialPosition, resetDuration).SetEase (resetEase);
 	}
 
 	void TouchDown ()

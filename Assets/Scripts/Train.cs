@@ -11,12 +11,17 @@ public class Train : Touchable
 	[Header ("Containers")]
 	public Transform containersParent;
 
-	private Vector3 _mousePosition;
+	[HideInInspector]
+	public float _xInitialPosition;
+
 	private Vector3 _mouseDeltaPosition;
+	private Vector3 _mousePosition;
 
 	// Use this for initialization
 	void Awake ()
 	{
+		_xInitialPosition = transform.position.x;
+
 		wagons.AddRange (transform.GetComponentsInChildren<Wagon> ());
 	}
 	

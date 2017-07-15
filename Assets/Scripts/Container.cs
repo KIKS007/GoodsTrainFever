@@ -38,6 +38,13 @@ public class Container : Touchable
 
 		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
 		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
+		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
+	}
+
+	void OnTouchUpNoTarget ()
+	{
+		if (selected)
+			Deselect ();
 	}
 
 	public void SetInitialSpot (Spot spot)

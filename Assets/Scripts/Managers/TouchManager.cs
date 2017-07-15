@@ -9,6 +9,7 @@ public class TouchManager : Singleton<TouchManager>
 	public Action<Vector3> OnTouchMoved;
 	public Action<Vector3> OnTouchHold;
 	public Action OnTouchUp;
+	public Action OnTouchUpNoTarget;
 
 	private bool _touchDown = false;
 	private Vector3 _deltaPosition;
@@ -54,9 +55,14 @@ public class TouchManager : Singleton<TouchManager>
 			case TouchPhase.Ended:
 
 				_touchDown = false;
-				
+
+				if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+					OnTouchUpNoTarget ();
+
 				if (OnTouchUp != null)
 					OnTouchUp ();
+				
+				Touchable.TouchingTouchable = false;
 
 				break;
 			}
@@ -79,8 +85,13 @@ public class TouchManager : Singleton<TouchManager>
 		{
 			_touchDown = false;
 
+			if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+				OnTouchUpNoTarget ();
+
 			if (OnTouchUp != null)
 				OnTouchUp ();
+			
+			Touchable.TouchingTouchable = false;
 		}
 
 		if(Input.GetMouseButton (0))
@@ -92,7 +103,6 @@ public class TouchManager : Singleton<TouchManager>
 			
 			_mousePosition = Input.mousePosition;
 		}
-
 
 	}
 

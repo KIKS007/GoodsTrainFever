@@ -6,6 +6,10 @@ using System;
 
 public class ContainersMovementManager : Singleton<ContainersMovementManager> 
 {
+	public Action OnContainerMovement;
+
+	public bool containerInMotion = false;
+
 	[Header ("Selected Container")]
 	public Container selectedContainer = null;
 
@@ -25,7 +29,6 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 	public float takeSpotDuration = 0.4f;
 
 	private float _startHeight;
-
 
 	public void StartHover (Container container)
 	{
@@ -58,6 +61,11 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		if (selectedContainer == null)
 			return;
 
+		if (OnContainerMovement != null)
+			OnContainerMovement ();
+
+		containerInMotion = true;
+
 		Container container = selectedContainer;
 
 		container.TakeSpot (spot);
@@ -88,7 +96,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 						//container.OnContainerMovedEvent ();
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
-					});
+					}).OnComplete (()=> containerInMotion = false);
 			});
 	}
 
