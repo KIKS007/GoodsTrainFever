@@ -7,6 +7,7 @@ using System;
 public class ContainersMovementManager : Singleton<ContainersMovementManager> 
 {
 	public Action OnContainerMovement;
+	public Action OnContainerMovementEnd;
 
 	public bool containerInMotion = false;
 
@@ -61,10 +62,10 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		if (selectedContainer == null)
 			return;
 
+		containerInMotion = true;
+
 		if (OnContainerMovement != null)
 			OnContainerMovement ();
-
-		containerInMotion = true;
 
 		Container container = selectedContainer;
 
@@ -95,7 +96,13 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, spot.transform.position - (Vector3.up * container._collider.bounds.extents.y * .5f));
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
-					}).OnComplete (()=> containerInMotion = false);
+					}).OnComplete (()=> 
+						{
+							containerInMotion = false;
+
+							if(OnContainerMovementEnd != null)
+								OnContainerMovementEnd ();
+						});
 			});
 	}
 

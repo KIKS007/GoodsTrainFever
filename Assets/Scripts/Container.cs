@@ -12,7 +12,6 @@ public class Container : Touchable
 	public static Action OnContainerMoved;
 
 	[Header ("States")]
-	public bool canBeSelected = true;
 	public bool selected = false;
 	public bool isPileUp = false;
 
@@ -36,8 +35,6 @@ public class Container : Touchable
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
 
-		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
-		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 	}
 
@@ -65,12 +62,12 @@ public class Container : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
+		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
+			return;
+		
 		IsPileUp ();
 
 		if (isPileUp)
-			return;
-
-		if (!canBeSelected)
 			return;
 
 		if (!selected)
@@ -125,6 +122,7 @@ public class Container : Touchable
 		{
 			wagon = spot._wagon;
 			train = wagon.train;
+			TrainsMovementManager.Instance.trainerContainerInMotion = train;
 		}
 		else
 		{
@@ -167,24 +165,7 @@ public class Container : Touchable
 
 		isPileUp = isPiledUpTemp;
 	}
-
-	void TrainHasMoved ()
-	{
-		canBeSelected = false;
-	}
-
-	void TrainStoppedMoving ()
-	{
-		StopCoroutine (TrainStoppedMovingDelay ());
-		StartCoroutine (TrainStoppedMovingDelay ());
-	}
-
-	IEnumerator TrainStoppedMovingDelay ()
-	{
-		yield return new WaitForSecondsRealtime (0.01f);
-		canBeSelected = true;
-	}
-
+		
 	public void OnContainerMovedEvent ()
 	{
 		if (OnContainerMoved != null)
@@ -196,8 +177,6 @@ public class Container : Touchable
 		if (TrainsMovementManager.applicationIsQuitting)
 			return;
 		
-		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
-		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
 	}
 
 	[PropertyOrder (-1)]

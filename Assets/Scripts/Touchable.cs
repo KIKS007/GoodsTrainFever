@@ -8,8 +8,6 @@ public enum TouchableState { None, Hold }
 
 public class Touchable : MonoBehaviour
 {
-	public static bool TouchingTouchable = false;
-
 	[Header ("Touch")]
 	public TouchableState touchableState = TouchableState.None;
 
@@ -35,7 +33,7 @@ public class Touchable : MonoBehaviour
 
 	public virtual void OnTouchDown ()
 	{
-		TouchingTouchable = true;
+		TouchManager.Instance.isTouchingTouchable = true;
 		_pointerDown = true;
 
 		if(transform.parent != null && transform.parent.GetComponentInParent<Touchable> () != null)

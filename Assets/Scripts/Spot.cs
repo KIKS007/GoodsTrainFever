@@ -24,7 +24,6 @@ public class Spot : Touchable
 	private MeshRenderer _meshRenderer;
 	private MeshFilter _meshFilter;
 	private Material _material;
-	private bool _canBeSelected = true;
 	private int _containersPileCount = 1;
 	private Container _parentContainer;
 
@@ -41,9 +40,6 @@ public class Spot : Touchable
 		Container.OnContainerDeselected += OnContainerDeselected;
 
 		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.2f, ()=> IsOccupied ());
-
-		TrainsMovementManager.Instance.OnTrainMovementStart += TrainHasMoved;
-		TrainsMovementManager.Instance.OnTrainMovementEnd += TrainStoppedMoving;
 
 		if(transform.GetComponentInParent<Container> () != null)
 		{
@@ -176,9 +172,9 @@ public class Spot : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
-		if (!_canBeSelected)
+		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;
-		
+
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 
@@ -238,30 +234,10 @@ public class Spot : Touchable
 			return false;
 	}
 
-	void TrainHasMoved ()
-	{
-		_canBeSelected = false;
-	}
-
-	void TrainStoppedMoving ()
-	{
-		StopCoroutine (TrainStoppedMovingDelay ());
-		StartCoroutine (TrainStoppedMovingDelay ());
-	}
-
-	IEnumerator TrainStoppedMovingDelay ()
-	{
-		yield return new WaitForSecondsRealtime (0.2f);
-		_canBeSelected = true;
-	}
-
 	void OnDestroy ()
 	{
 		if (TrainsMovementManager.applicationIsQuitting)
 			return;
-
-		TrainsMovementManager.Instance.OnTrainMovementStart -= TrainHasMoved;
-		TrainsMovementManager.Instance.OnTrainMovementEnd -= TrainStoppedMoving;
 
 		Container.OnContainerMoved -= ()=> IsOccupied ();
 	}

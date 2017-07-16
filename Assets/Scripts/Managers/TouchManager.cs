@@ -12,6 +12,7 @@ public class TouchManager : Singleton<TouchManager>
 	public Action OnTouchUpNoTarget;
 
 	public bool useRaycast = false;
+	public bool isTouchingTouchable = false;
 
 	private bool _touchDown = false;
 	private Vector3 _deltaPosition;
@@ -28,10 +29,14 @@ public class TouchManager : Singleton<TouchManager>
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Application.isEditor)
+		#if UNITY_EDITOR
+		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 			MouseHold ();
 		else
 			TouchHold ();
+		#else
+		TouchHold ();
+		#endif
 	}
 
 	void TouchHold ()
@@ -51,6 +56,7 @@ public class TouchManager : Singleton<TouchManager>
 					Touchable touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
 						touchable.OnTouchDown ();
+
 				}
 				
 				if (OnTouchDown != null)
@@ -80,13 +86,13 @@ public class TouchManager : Singleton<TouchManager>
 						touchable.OnTouchUpAsButton ();
 				}
 				
-				if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+				if (OnTouchUpNoTarget != null && !isTouchingTouchable)
 					OnTouchUpNoTarget ();
 				
 				if (OnTouchUp != null)
 					OnTouchUp ();
 				
-				Touchable.TouchingTouchable = false;
+				isTouchingTouchable = false;
 				
 				break;
 			}
@@ -123,13 +129,13 @@ public class TouchManager : Singleton<TouchManager>
 					touchable.OnTouchUpAsButton ();
 			}
 
-			if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+			if (OnTouchUpNoTarget != null && !isTouchingTouchable)
 				OnTouchUpNoTarget ();
 
 			if (OnTouchUp != null)
 				OnTouchUp ();
 			
-			Touchable.TouchingTouchable = false;
+			isTouchingTouchable = false;
 		}
 
 		else if(Input.GetMouseButton (0))
@@ -153,6 +159,9 @@ public class TouchManager : Singleton<TouchManager>
 		{
 			Touchable touchable = hit.collider.GetComponent<Touchable>();
 
+			if (touchable == null && hit.rigidbody)
+				touchable = hit.rigidbody.gameObject.GetComponent<Touchable>();
+			
 			if (touchable != null)
 				return touchable;
 			else
@@ -170,6 +179,9 @@ public class TouchManager : Singleton<TouchManager>
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) 
 		{
 			Touchable touchable = hit.collider.GetComponent<Touchable>();
+
+			if (touchable == null && hit.rigidbody)
+				touchable = hit.rigidbody.gameObject.GetComponent<Touchable>();
 
 			if (touchable != null)
 				return touchable;

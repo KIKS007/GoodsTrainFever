@@ -9,9 +9,6 @@ public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
 
 public class TrainsMovementManager : Singleton<TrainsMovementManager>
 {
-	public Action OnTrainMovementStart;
-	public Action OnTrainMovementEnd;
-
 	[Header ("States")]
 	public HoldState holdState = HoldState.None;
 	public float holdDelay = 0.5f;
@@ -19,15 +16,21 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	[Header ("Trains")]
 	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
+	public bool selectedTrainHasMoved = false;
+	public Train trainerContainerInMotion;
 
 	[Header ("Touch Settings")]
-	public float deltaMouvementThreshold;
+	public float touchMovementThreshold = 2f;
+	public float trainMovementThreshold = 4f;
 	public float deltaMousePositionFactor = 1;
 	public float deltaTouchPositionFactor = 1;
 
 	[Header ("Movement")]
 	public float movementLerp = 0.1f;
+	public float movementMaxVelocity = 5f;
 	public float movementDeceleration = 0.9f;
+
+	public float trainZeroVelocity;
 
 	[Header ("Reset Movement")]
 	public bool resetingTrains = false;
@@ -54,60 +57,76 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		else
 			TouchManager.Instance.OnTouchMoved += TouchHold;
 
-
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
+		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainerContainerInMotion = null;
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		if (ContainersMovementManager.Instance.containerInMotion)
-			return;
-
 		if (resetingTrains)
 			return;
+		
+		trainZeroVelocity = _trainsVelocity [allTrains [0]];
+
+		SetTrainsVelocity ();
 
 		if (holdState != HoldState.None)
 		{
-			if(selectedTrain)
+			if(selectedTrain && trainerContainerInMotion != selectedTrain)
 				MoveTrain (selectedTrain);
-			else
+			
+			else if(!TouchManager.Instance.isTouchingTouchable)
 			{
 				foreach (var t in allTrains)
-					MoveTrain (t);
+					if(trainerContainerInMotion != t)
+						MoveTrain (t);
 			}
 		}
-		else
-			SetTrainsVelocity ();
 	}
 
 	void SetTrainsVelocity ()
 	{
 		foreach(var t in allTrains)
 		{
+			if (Mathf.Abs (_trainsVelocity [t]) > movementMaxVelocity)
+				_trainsVelocity [t] = movementMaxVelocity * Mathf.Sign (_trainsVelocity [t]);
+
 			_trainsVelocity [t] *= movementDeceleration;
+
 			Vector3 position = t.transform.position;
 			position.x += _trainsVelocity [t];
 
 			t.transform.position = Vector3.Lerp (t.transform.position, position, movementLerp);
+
+			if (holdState == HoldState.None || holdState == HoldState.Touched)
+				continue;
+			
+			if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold)
+			{
+				if (selectedTrain && t == selectedTrain)
+					selectedTrainHasMoved = true;
+			}
 		}
 	}
 
 	void ResetTrainsVelocity ()
 	{
-		if (selectedTrain)
-			_trainsVelocity [selectedTrain] = 0;
-		else
-		{
-			foreach (var t in allTrains)
-				_trainsVelocity [t] = 0;
-		}
+		foreach (var t in allTrains)
+			_trainsVelocity [t] = 0;
 	}
 
 	public void ResetTrainsPosition ()
 	{
+		if (ContainersMovementManager.Instance.containerInMotion)
+			return;
+
+		resetingTrains = true;
+
+		ResetTrainsVelocity ();
+
 		foreach (var t in allTrains)
-			t.transform.DOMoveX (t._xInitialPosition, resetDuration).SetEase (resetEase);
+			t.transform.DOMoveX (t._xInitialPosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
 	}
 
 	void TouchDown ()
@@ -124,24 +143,17 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		if (_deltaPosition.x < 0)
 		{
-			if (holdState == HoldState.Touched && OnTrainMovementStart != null)
-				OnTrainMovementStart ();
-
 			holdState = HoldState.SwipingLeft;
 		}
 
 		else if(_deltaPosition.x > 0)
 		{
-			if (holdState == HoldState.Touched && OnTrainMovementStart != null)
-				OnTrainMovementStart ();
-
 			holdState = HoldState.SwipingRight;
 		}
 
 		else if(holdState != HoldState.Touched)
 		{
 			holdState = HoldState.Holding;
-			ResetTrainsVelocity ();
 		}
 	}
 
@@ -149,11 +161,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		holdState = HoldState.None;
 
-		if (OnTrainMovementEnd != null)
-			OnTrainMovementEnd ();
-
 		if (selectedTrain)
 			selectedTrain = null;
+
+		selectedTrainHasMoved = false;
 	}
 
 	IEnumerator HoldDelay ()
@@ -171,21 +182,27 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		Vector3 position = train.transform.position;
 
-		if (Mathf.Abs (_deltaPosition.x) < deltaMouvementThreshold)
-			return;
+		/*if (Mathf.Abs (_deltaPosition.x) < deltaMouvementThreshold)
+			return;*/
 
-		if (Application.isEditor)
+		#if UNITY_EDITOR
+		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 		{
 			position.x += _deltaPosition.x * deltaMousePositionFactor;
-			_trainsVelocity [train] = _deltaPosition.x * deltaMousePositionFactor;
+
+			_trainsVelocity [train] += _deltaPosition.x * deltaMousePositionFactor;
 			
 		}
 		else
 		{
 			position.x += _deltaPosition.x * deltaTouchPositionFactor;
-			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
-		}
 
-		train.transform.position = Vector3.Lerp (train.transform.position, position, movementLerp);
+			_trainsVelocity [train] += _deltaPosition.x * deltaTouchPositionFactor;
+		}
+		#else
+		position.x += _deltaPosition.x * deltaTouchPositionFactor;
+
+		_trainsVelocity [train] += _deltaPosition.x * deltaTouchPositionFactor;
+		#endif
 	}
 }
