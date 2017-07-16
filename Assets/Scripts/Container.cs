@@ -181,7 +181,7 @@ public class Container : Touchable
 
 	IEnumerator TrainStoppedMovingDelay ()
 	{
-		yield return new WaitForSecondsRealtime (0.2f);
+		yield return new WaitForSecondsRealtime (0.01f);
 		canBeSelected = true;
 	}
 

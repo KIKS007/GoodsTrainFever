@@ -38,60 +38,57 @@ public class TouchManager : Singleton<TouchManager>
 	{
 		if (Input.touchCount > 0)
 		{
-			foreach(var t in Input.touches)
+			Touch touch = Input.GetTouch (0);
+			
+			switch (touch.phase)
 			{
-				Touch touch = t;
+			case TouchPhase.Began:
 				
-				switch (touch.phase)
+				_touchDown = true;
+				
+				if(useRaycast)
 				{
-				case TouchPhase.Began:
-					
-					_touchDown = true;
-					
-					if(useRaycast)
-					{
-						Touchable touchable = RaycastTouchable ();
-						if (touchable != null)
-							touchable.OnTouchDown ();
-					}
-					
-					if (OnTouchDown != null)
-						OnTouchDown ();
-					
-					StartCoroutine (TouchHoldCoroutine ());
-					
-					break;
-					
-				case TouchPhase.Moved:
-					
-					_deltaPosition = touch.deltaPosition;
-					
-					if (OnTouchMoved != null)
-						OnTouchMoved (_deltaPosition);
-					
-					break;
-					
-				case TouchPhase.Ended:
-					
-					_touchDown = false;
-					
-					if(useRaycast)
-					{
-						Touchable touchable = RaycastTouchable ();
-						if (touchable != null)
-							touchable.OnTouchUpAsButton ();
-					}
-					
-					if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
-						OnTouchUpNoTarget ();
-					
-					if (OnTouchUp != null)
-						OnTouchUp ();
-					
-					Touchable.TouchingTouchable = false;
-					
-					break;
+					Touchable touchable = RaycastTouchable (touch.position);
+					if (touchable != null)
+						touchable.OnTouchDown ();
 				}
+				
+				if (OnTouchDown != null)
+					OnTouchDown ();
+				
+				StartCoroutine (TouchHoldCoroutine ());
+				
+				break;
+				
+			case TouchPhase.Moved:
+				
+				_deltaPosition = touch.deltaPosition;
+				
+				if (OnTouchMoved != null)
+					OnTouchMoved (_deltaPosition);
+				
+				break;
+				
+			case TouchPhase.Ended:
+				
+				_touchDown = false;
+				
+				if(useRaycast)
+				{
+					Touchable touchable = RaycastTouchable (touch.position);
+					if (touchable != null)
+						touchable.OnTouchUpAsButton ();
+				}
+				
+				if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+					OnTouchUpNoTarget ();
+				
+				if (OnTouchUp != null)
+					OnTouchUp ();
+				
+				Touchable.TouchingTouchable = false;
+				
+				break;
 			}
 		}
 	}
@@ -106,7 +103,7 @@ public class TouchManager : Singleton<TouchManager>
 
 			if(useRaycast)
 			{
-				Touchable touchable = RaycastTouchable ();
+				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)
 					touchable.OnTouchDown ();
 			}
@@ -121,7 +118,7 @@ public class TouchManager : Singleton<TouchManager>
 
 			if(useRaycast)
 			{
-				Touchable touchable = RaycastTouchable ();
+				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)
 					touchable.OnTouchUpAsButton ();
 			}
@@ -147,10 +144,10 @@ public class TouchManager : Singleton<TouchManager>
 
 	}
 
-	Touchable RaycastTouchable (LayerMask mask)
+	Touchable RaycastTouchable (Vector3 position, LayerMask mask)
 	{
 		RaycastHit hit;
-		Ray ray = _camera.ScreenPointToRay (Input.mousePosition);
+		Ray ray = _camera.ScreenPointToRay (position);
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, mask)) 
 		{
@@ -165,10 +162,10 @@ public class TouchManager : Singleton<TouchManager>
 			return null;
 	}
 
-	Touchable RaycastTouchable ()
+	Touchable RaycastTouchable (Vector3 position)
 	{
 		RaycastHit hit;
-		Ray ray = _camera.ScreenPointToRay (Input.mousePosition);
+		Ray ray = _camera.ScreenPointToRay (position);
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) 
 		{
