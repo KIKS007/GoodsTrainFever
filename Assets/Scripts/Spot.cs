@@ -96,14 +96,16 @@ public class Spot : Touchable
 		isOccupied = false;
 
 		foreach(var c in colliders)
-		{
 			isOccupied = true;
 
+		if (hit.collider != null)
+		{
+			isOccupied = true;
+			
 			if (setup && IsSameSize (hit.collider.GetComponent<Container> ()))
 			{
 				container = hit.collider.GetComponent<Container> ();
 				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
-				return;
 			}
 		}
 
@@ -213,8 +215,16 @@ public class Spot : Touchable
 	{
 		_collider.enabled = false;
 
-		_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
+		if(container != this.container)
+		{
+			_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
+			_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
+		}
+		else
+		{
+			_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
+			_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
+		}
 	}
 
 	bool IsSameSize (Container container)
@@ -235,7 +245,14 @@ public class Spot : Touchable
 
 	void TrainStoppedMoving ()
 	{
-		DOVirtual.DelayedCall (0.2f, ()=> _canBeSelected = true);
+		StopCoroutine (TrainStoppedMovingDelay ());
+		StartCoroutine (TrainStoppedMovingDelay ());
+	}
+
+	IEnumerator TrainStoppedMovingDelay ()
+	{
+		yield return new WaitForSecondsRealtime (0.2f);
+		_canBeSelected = true;
 	}
 
 	void OnDestroy ()

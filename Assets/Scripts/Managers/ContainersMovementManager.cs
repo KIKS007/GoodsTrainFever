@@ -92,8 +92,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 				container.transform.DOMoveY (spot.transform.position.y, .5f).SetEase (Ease.OutBounce, 40, 1);
 				container.transform.DOPunchRotation (direction * 10f, .5f, 10).SetDelay (.1f).OnStart (() => 
 					{
-						//DOVirtual.DelayedCall (.2f, () => ParticlesManager.Singleton.Create (ParticlesManager.Singleton.FXDropFog, spot.transform.position - (Vector3.up * colliderCp.bounds.extents.y * .5f)));
-						//container.OnContainerMovedEvent ();
+						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, spot.transform.position - (Vector3.up * container._collider.bounds.extents.y * .5f));
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
 					}).OnComplete (()=> containerInMotion = false);

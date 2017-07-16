@@ -20,6 +20,8 @@ public class TouchManager : Singleton<TouchManager>
 
 	void Start ()
 	{
+		Application.targetFrameRate = 30;
+
 		_camera = FindObjectOfType<Camera> ();
 	}
 
@@ -36,57 +38,60 @@ public class TouchManager : Singleton<TouchManager>
 	{
 		if (Input.touchCount > 0)
 		{
-			Touch touch = Input.GetTouch(0);
-
-			switch (touch.phase)
+			foreach(var t in Input.touches)
 			{
-			case TouchPhase.Began:
-
-				_touchDown = true;
-
-				if(useRaycast)
-				{
-					Touchable touchable = RaycastTouchable ();
-					if (touchable != null)
-						touchable.OnTouchDown ();
-				}
-
-				if (OnTouchDown != null)
-					OnTouchDown ();
-
-				StartCoroutine (TouchHoldCoroutine ());
-
-				break;
-
-			case TouchPhase.Moved:
-
-				_deltaPosition = touch.deltaPosition;
-
-				if (OnTouchMoved != null)
-					OnTouchMoved (_deltaPosition);
-
-				break;
-
-			case TouchPhase.Ended:
-
-				_touchDown = false;
-
-				if(useRaycast)
-				{
-					Touchable touchable = RaycastTouchable ();
-					if (touchable != null)
-						touchable.OnTouchUpAsButton ();
-				}
-
-				if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
-					OnTouchUpNoTarget ();
-
-				if (OnTouchUp != null)
-					OnTouchUp ();
+				Touch touch = t;
 				
-				Touchable.TouchingTouchable = false;
-
-				break;
+				switch (touch.phase)
+				{
+				case TouchPhase.Began:
+					
+					_touchDown = true;
+					
+					if(useRaycast)
+					{
+						Touchable touchable = RaycastTouchable ();
+						if (touchable != null)
+							touchable.OnTouchDown ();
+					}
+					
+					if (OnTouchDown != null)
+						OnTouchDown ();
+					
+					StartCoroutine (TouchHoldCoroutine ());
+					
+					break;
+					
+				case TouchPhase.Moved:
+					
+					_deltaPosition = touch.deltaPosition;
+					
+					if (OnTouchMoved != null)
+						OnTouchMoved (_deltaPosition);
+					
+					break;
+					
+				case TouchPhase.Ended:
+					
+					_touchDown = false;
+					
+					if(useRaycast)
+					{
+						Touchable touchable = RaycastTouchable ();
+						if (touchable != null)
+							touchable.OnTouchUpAsButton ();
+					}
+					
+					if (OnTouchUpNoTarget != null && !Touchable.TouchingTouchable)
+						OnTouchUpNoTarget ();
+					
+					if (OnTouchUp != null)
+						OnTouchUp ();
+					
+					Touchable.TouchingTouchable = false;
+					
+					break;
+				}
 			}
 		}
 	}
