@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
 
@@ -17,7 +18,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
 	public bool selectedTrainHasMoved = false;
-	public Train trainerContainerInMotion;
+	public Train trainContainerInMotion;
 
 	[Header ("Touch Settings")]
 	public float touchMovementThreshold = 2f;
@@ -37,8 +38,13 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float resetDuration = 0.5f;
 	public Ease resetEase = Ease.OutQuad;
 
-	private Vector3 _mousePosition;
-	private Vector3 _deltaPosition;
+	[Header ("Train Values")]
+	public InputField touchMovementThresholdInput;
+	public InputField deltaTouchPositionFactorInput;
+	public InputField movementMaxVelocityInput;
+	public InputField movementDecelerationInput;
+
+	public Vector3 _deltaPosition;
 	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
 
 	void Start ()
@@ -52,34 +58,49 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		TouchManager.Instance.OnTouchDown += TouchDown;
 		TouchManager.Instance.OnTouchUp += TouchUp;
 
-		if (Application.isEditor)
-			TouchManager.Instance.OnTouchHold += TouchHold;
+		TouchManager.Instance.OnTouchHold += TouchHold;
+		/*if (Application.isEditor)
 		else
-			TouchManager.Instance.OnTouchMoved += TouchHold;
+			TouchManager.Instance.OnTouchMoved += TouchHold;*/
 
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
-		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainerContainerInMotion = null;
+		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainContainerInMotion = null;
+
+		touchMovementThresholdInput.text = touchMovementThreshold.ToString ();
+		deltaTouchPositionFactorInput.text = deltaTouchPositionFactor.ToString ();
+		movementMaxVelocityInput.text = movementMaxVelocity.ToString ();
+		movementDecelerationInput.text = movementDeceleration.ToString ();
+
+		touchMovementThresholdInput.onValueChanged.AddListener ((string arg0) => touchMovementThreshold = float.Parse (arg0));
+		deltaTouchPositionFactorInput.onValueChanged.AddListener ((string arg0) => deltaTouchPositionFactor = float.Parse (arg0));
+		movementMaxVelocityInput.onValueChanged.AddListener ((string arg0) => movementMaxVelocity = float.Parse (arg0));
+		movementDecelerationInput.onValueChanged.AddListener ((string arg0) => movementDeceleration = float.Parse (arg0));
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
+		Debug.Log (_deltaPosition.x);
+
 		if (resetingTrains)
 			return;
 		
 		trainZeroVelocity = _trainsVelocity [allTrains [0]];
 
 		SetTrainsVelocity ();
-
-		if (holdState != HoldState.None)
+		if (holdState == HoldState.None)
 		{
-			if(selectedTrain && trainerContainerInMotion != selectedTrain)
+		}
+
+		else
+		{
+			if(selectedTrain && trainContainerInMotion != selectedTrain)
 				MoveTrain (selectedTrain);
 			
 			else if(!TouchManager.Instance.isTouchingTouchable)
 			{
 				foreach (var t in allTrains)
-					if(trainerContainerInMotion != t)
+					if(trainContainerInMotion != t)
 						MoveTrain (t);
 			}
 		}
@@ -95,9 +116,13 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			_trainsVelocity [t] *= movementDeceleration;
 
 			Vector3 position = t.transform.position;
+			position = new Vector3 ();
 			position.x += _trainsVelocity [t];
 
-			t.transform.position = Vector3.Lerp (t.transform.position, position, movementLerp);
+			//t.transform.position = Vector3.Lerp (t.transform.position, position, movementLerp);
+
+			if (holdState == HoldState.None || holdState == HoldState.Touched || holdState == HoldState.Holding)
+				t.transform.Translate (position * Time.fixedDeltaTime);
 
 			if (holdState == HoldState.None || holdState == HoldState.Touched)
 				continue;
@@ -154,6 +179,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		else if(holdState != HoldState.Touched)
 		{
 			holdState = HoldState.Holding;
+
+			//ResetTrainsVelocity ();
 		}
 	}
 
@@ -165,6 +192,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			selectedTrain = null;
 
 		selectedTrainHasMoved = false;
+		_deltaPosition = Vector3.zero;
 	}
 
 	IEnumerator HoldDelay ()
@@ -180,29 +208,40 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (train == null || holdState == HoldState.Touched)
 			return;
 
+		if (Mathf.Abs (_deltaPosition.x) < touchMovementThreshold)
+			return;
+
 		Vector3 position = train.transform.position;
 
-		/*if (Mathf.Abs (_deltaPosition.x) < deltaMouvementThreshold)
-			return;*/
+		position = new Vector3 ();
 
 		#if UNITY_EDITOR
 		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 		{
 			position.x += _deltaPosition.x * deltaMousePositionFactor;
 
-			_trainsVelocity [train] += _deltaPosition.x * deltaMousePositionFactor;
-			
+			_trainsVelocity [train] = _deltaPosition.x * deltaMousePositionFactor;
 		}
 		else
 		{
 			position.x += _deltaPosition.x * deltaTouchPositionFactor;
 
-			_trainsVelocity [train] += _deltaPosition.x * deltaTouchPositionFactor;
+			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
 		}
 		#else
-		position.x += _deltaPosition.x * deltaTouchPositionFactor;
+			position.x += _deltaPosition.x * deltaTouchPositionFactor;
 
-		_trainsVelocity [train] += _deltaPosition.x * deltaTouchPositionFactor;
+			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
 		#endif
+
+		if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold)
+		{
+			if (selectedTrain && train == selectedTrain)
+				selectedTrainHasMoved = true;
+		}
+
+		train.transform.Translate (position * Time.fixedDeltaTime);
+
+		//train.transform.position = Vector3.Lerp (train.transform.position, position, movementLerp);
 	}
 }

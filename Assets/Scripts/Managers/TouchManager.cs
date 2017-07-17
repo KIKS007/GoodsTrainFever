@@ -44,7 +44,9 @@ public class TouchManager : Singleton<TouchManager>
 		if (Input.touchCount > 0)
 		{
 			Touch touch = Input.GetTouch (0);
-			
+
+			_deltaPosition = touch.deltaPosition;
+
 			switch (touch.phase)
 			{
 			case TouchPhase.Began:
@@ -67,8 +69,6 @@ public class TouchManager : Singleton<TouchManager>
 				break;
 				
 			case TouchPhase.Moved:
-				
-				_deltaPosition = touch.deltaPosition;
 				
 				if (OnTouchMoved != null)
 					OnTouchMoved (_deltaPosition);

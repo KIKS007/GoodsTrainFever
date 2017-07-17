@@ -122,7 +122,7 @@ public class Container : Touchable
 		{
 			wagon = spot._wagon;
 			train = wagon.train;
-			TrainsMovementManager.Instance.trainerContainerInMotion = train;
+			TrainsMovementManager.Instance.trainContainerInMotion = train;
 		}
 		else
 		{
