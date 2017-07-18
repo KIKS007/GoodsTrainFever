@@ -77,6 +77,18 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		movementDecelerationInput.onValueChanged.AddListener ((string arg0) => movementDeceleration = float.Parse (arg0));
 	}
 
+	public void AddTrain (Train train)
+	{
+		allTrains.Add (train);
+		_trainsVelocity.Add (train, 0);
+	}
+
+	public void RemoveTrain (Train train)
+	{
+		allTrains.Remove (train);
+		_trainsVelocity.Remove (train);
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
