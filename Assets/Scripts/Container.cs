@@ -5,6 +5,8 @@ using System;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
+public enum ContainerType { Basic, Food };
+
 public class Container : Touchable 
 {
 	public static Action <Container> OnContainerSelected;
@@ -14,6 +16,9 @@ public class Container : Touchable
 	[Header ("States")]
 	public bool selected = false;
 	public bool isPileUp = false;
+
+	[Header ("Type")]
+	public ContainerType containerType = ContainerType.Basic;
 
 	[Header ("Train")]
 	public Train train = null;
@@ -64,7 +69,10 @@ public class Container : Touchable
 
 		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;
-		
+
+		if (train && train.departed)
+			return;
+
 		IsPileUp ();
 
 		if (isPileUp)

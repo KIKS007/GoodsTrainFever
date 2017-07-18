@@ -210,6 +210,9 @@ public class Spot : Touchable
 		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;
 
+		if (_wagon && _wagon.train.departed)
+			return;
+
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 
@@ -218,6 +221,9 @@ public class Spot : Touchable
 		OverlappingSpotsOccupied ();
 
 		if (isOccupied)
+			return;
+
+		if (_wagon && _wagon.train.departed)
 			return;
 		
 		if (!IsSameSize (container))

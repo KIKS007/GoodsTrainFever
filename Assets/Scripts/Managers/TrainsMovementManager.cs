@@ -88,11 +88,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		trainZeroVelocity = _trainsVelocity [allTrains [0]];
 
 		SetTrainsVelocity ();
-		if (holdState == HoldState.None)
-		{
-		}
 
-		else
+		if (holdState != HoldState.None)
 		{
 			if(selectedTrain && trainContainerInMotion != selectedTrain)
 				MoveTrain (selectedTrain);
@@ -110,6 +107,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		foreach(var t in allTrains)
 		{
+			if (t.departed)
+				continue;
+
 			if (Mathf.Abs (_trainsVelocity [t]) > movementMaxVelocity)
 				_trainsVelocity [t] = movementMaxVelocity * Mathf.Sign (_trainsVelocity [t]);
 
@@ -205,6 +205,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void MoveTrain (Train train)
 	{
+		if (train.departed)
+			return;
+
 		if (train == null || holdState == HoldState.Touched)
 			return;
 

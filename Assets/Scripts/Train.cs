@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Train : Touchable 
 {
+	[Header ("Order")]
+	public bool departed = false;
+
 	[Header ("Wagons")]
 	public List<Wagon> wagons = new List<Wagon> ();
 	public Transform wagonsParent;
@@ -34,6 +37,9 @@ public class Train : Touchable
 	public override void OnTouchDown ()
 	{
 		base.OnTouchDown ();
+
+		if (departed)
+			return;
 
 		TrainsMovementManager.Instance.selectedTrain = this;
 	}
