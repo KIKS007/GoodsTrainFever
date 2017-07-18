@@ -12,6 +12,9 @@ public class Spot : Touchable
 	public bool isOccupied = false;
 	public bool isPileSpot;
 
+	[Header ("Size")]
+	public bool isDoubleSize = false;
+
 	[Header ("Container")]
 	public Container container;
 
@@ -26,6 +29,7 @@ public class Spot : Touchable
 	private Material _material;
 	private int _containersPileCount = 1;
 	private Container _parentContainer;
+	public List<Spot> _overlappingSpots = new List<Spot> ();
 
 	private float _fadeDuration = 0.2f;
 
@@ -39,22 +43,65 @@ public class Spot : Touchable
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
 
-		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.2f, ()=> IsOccupied ());
+		//Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.2f, ()=> IsOccupied ());
 
 		if(transform.GetComponentInParent<Container> () != null)
 		{
 			isPileSpot = true;
 			_parentContainer = transform.GetComponentInParent<Container> ();
 		}
+
+		GetOverlappingSpots ();
 	}
 
 	void Start () 
 	{
 		SetSpotType ();
 
-		IsOccupied (true);
+		IsOccupied ();
 
 		OnContainerDeselected ();
+
+		OverlappingSpotsOccupied ();
+	}
+
+	void GetOverlappingSpots ()
+	{
+		int containersMask = 1 << LayerMask.NameToLayer ("Spots");
+
+		Vector3 position = transform.position;
+		position.y += 0.5f;
+
+		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
+
+		foreach (var c in colliders)
+		{
+			Spot spot = c.GetComponent<Spot> ();
+
+			if (c.gameObject != gameObject && spot != null)
+			{
+				if(!isDoubleSize && spot.isDoubleSize || isDoubleSize)
+					_overlappingSpots.Add (spot);
+			}
+		}
+	}
+
+	public void OverlappingSpotsOccupied ()
+	{
+		if(container == null)
+			isOccupied = false;
+
+		foreach(var s in _overlappingSpots)
+		{
+			if (s.isOccupied)
+			{
+				if(!isDoubleSize && s.isDoubleSize && s.container != null)
+					isOccupied = true;
+
+				if(isDoubleSize)
+					isOccupied = true;
+			}
+		}
 	}
 
 	void SetSpotType ()
@@ -77,7 +124,7 @@ public class Spot : Touchable
 		}
 	}
 
-	public void IsOccupied (bool setup = false)
+	public void IsOccupied ()
 	{
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
@@ -87,18 +134,13 @@ public class Spot : Touchable
 		RaycastHit hit;
 		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
 
-		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
-
 		isOccupied = false;
-
-		foreach(var c in colliders)
-			isOccupied = true;
 
 		if (hit.collider != null)
 		{
 			isOccupied = true;
-			
-			if (setup && IsSameSize (hit.collider.GetComponent<Container> ()))
+
+			if (IsSameSize (hit.collider.GetComponent<Container> ()))
 			{
 				container = hit.collider.GetComponent<Container> ();
 				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
@@ -107,19 +149,6 @@ public class Spot : Touchable
 
 		if(container != null && container.spotOccupied != null && container.spotOccupied == this)
 			isOccupied = true;
-
-		/*if (hit.collider)
-		{
-			isOccupied = true;
-
-			if (!IsSameSize (hit.collider.GetComponent<Container> ()))
-				return;
-			
-			if (!setup)
-				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
-		}
-		else
-			isOccupied = false;*/
 	}
 
 	bool CanPileContainer ()
@@ -159,6 +188,9 @@ public class Spot : Touchable
 	{
 		isOccupied = true;
 		this.container = container;
+
+		foreach (var s in _overlappingSpots)
+			s.OverlappingSpotsOccupied ();
 	}
 
 	public void RemoveContainer ()
@@ -166,6 +198,9 @@ public class Spot : Touchable
 		isOccupied = false;
 
 		container = null;
+
+		foreach (var s in _overlappingSpots)
+			s.OverlappingSpotsOccupied ();
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -180,7 +215,7 @@ public class Spot : Touchable
 
 	void OnContainerSelected (Container container)
 	{
-		IsOccupied ();
+		OverlappingSpotsOccupied ();
 
 		if (isOccupied)
 			return;

@@ -80,7 +80,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		Debug.Log (_deltaPosition.x);
+		//Debug.Log (_deltaPosition.x);
 
 		if (resetingTrains)
 			return;
