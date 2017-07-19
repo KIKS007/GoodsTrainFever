@@ -5,7 +5,7 @@ using UnityEngine;
 public class Train : Touchable 
 {
 	[Header ("Order")]
-	public bool departed = false;
+	public bool inTransition = false;
 
 	[Header ("Wagons")]
 	public List<Wagon> wagons = new List<Wagon> ();
@@ -38,7 +38,7 @@ public class Train : Touchable
 	{
 		base.OnTouchDown ();
 
-		if (departed)
+		if (inTransition)
 			return;
 
 		TrainsMovementManager.Instance.selectedTrain = this;

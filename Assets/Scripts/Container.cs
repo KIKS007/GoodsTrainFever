@@ -70,7 +70,7 @@ public class Container : Touchable
 		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;
 
-		if (train && train.departed)
+		if (train && train.inTransition)
 			return;
 
 		IsPileUp ();

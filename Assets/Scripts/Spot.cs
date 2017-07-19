@@ -210,7 +210,7 @@ public class Spot : Touchable
 		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;
 
-		if (_wagon && _wagon.train.departed)
+		if (_wagon && _wagon.train.inTransition)
 			return;
 
 		ContainersMovementManager.Instance.TakeSpot (this);
@@ -223,7 +223,7 @@ public class Spot : Touchable
 		if (isOccupied)
 			return;
 
-		if (_wagon && _wagon.train.departed)
+		if (_wagon && _wagon.train.inTransition)
 			return;
 		
 		if (!IsSameSize (container))

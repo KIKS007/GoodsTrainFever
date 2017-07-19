@@ -5,20 +5,21 @@ using System.Linq;
 using System;
 using DG.Tweening;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 
 public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
 
 public class TrainsMovementManager : Singleton<TrainsMovementManager>
 {
-	[Header ("States")]
-	public HoldState holdState = HoldState.None;
-	public float holdDelay = 0.5f;
-
 	[Header ("Trains")]
 	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
 	public bool selectedTrainHasMoved = false;
 	public Train trainContainerInMotion;
+
+	[Header ("Hold")]
+	public HoldState holdState = HoldState.None;
+	public float holdDelay = 0.5f;
 
 	[Header ("Touch Settings")]
 	public float touchMovementThreshold = 2f;
@@ -26,8 +27,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float deltaMousePositionFactor = 1;
 	public float deltaTouchPositionFactor = 1;
 
-	[Header ("Movement")]
-	public float movementLerp = 0.1f;
+	[Header ("Hold Movement")]
 	public float movementMaxVelocity = 5f;
 	public float movementDeceleration = 0.9f;
 
@@ -38,13 +38,39 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float resetDuration = 0.5f;
 	public Ease resetEase = Ease.OutQuad;
 
+	[Header ("Train Spawn")]
+	public float xArrivingPosition;
+	public float xDeparturePosition;
+	public float arrivingDuration = 0.5f;
+	public float arrivingDelay = 0;
+
+	[Header ("Train Composition")]
+	public int wagonsCount = 2;
+	[Range (0, 101)]
+	public int doubleSizeWagonChance = 50;
+
+
+	[Header ("Train Length")]
+	public float wagonLength = 10f;
+	public float locomotiveLength = 10f;
+	public float offsetLength = 10f;
+
+	[Header ("Prefabs")]
+	public GameObject trainPrefab;
+	public GameObject wagonPrefab;
+	public GameObject wagonDoublePrefab;
+
+	[Header ("Fast Forward")]
+	public float fastForwardDuration;
+	public Ease fastForwardEase = Ease.OutQuad;
+
 	[Header ("Train Values")]
 	public InputField touchMovementThresholdInput;
 	public InputField deltaTouchPositionFactorInput;
 	public InputField movementMaxVelocityInput;
 	public InputField movementDecelerationInput;
 
-	public Vector3 _deltaPosition;
+	private Vector3 _deltaPosition;
 	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
 
 	void Start ()
@@ -119,7 +145,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		foreach(var t in allTrains)
 		{
-			if (t.departed)
+			if (t.inTransition)
 				continue;
 
 			if (Mathf.Abs (_trainsVelocity [t]) > movementMaxVelocity)
@@ -130,8 +156,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			Vector3 position = t.transform.position;
 			position = new Vector3 ();
 			position.x += _trainsVelocity [t];
-
-			//t.transform.position = Vector3.Lerp (t.transform.position, position, movementLerp);
 
 			if (holdState == HoldState.None || holdState == HoldState.Touched || holdState == HoldState.Holding)
 				t.transform.Translate (position * Time.fixedDeltaTime);
@@ -217,7 +241,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void MoveTrain (Train train)
 	{
-		if (train.departed)
+		if (train.inTransition)
 			return;
 
 		if (train == null || holdState == HoldState.Touched)
@@ -256,7 +280,65 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		}
 
 		train.transform.Translate (position * Time.fixedDeltaTime);
+	}
 
-		//train.transform.position = Vector3.Lerp (train.transform.position, position, movementLerp);
+	public void SpawnTrain (Rail rail)
+	{
+		Vector3 position = rail.transform.position;
+		position.y = trainPrefab.transform.position.y;
+		position.x = xArrivingPosition;
+
+		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation);
+
+		Train trainScript = train.GetComponent<Train> ();
+		trainScript.inTransition = true;
+
+		for(int i = 0; i < wagonsCount; i++)
+		{
+			GameObject prefab = wagonPrefab;
+
+			if (UnityEngine.Random.Range (0, 100) < doubleSizeWagonChance)
+				prefab = wagonDoublePrefab;
+
+			Vector3 wagonPosition = position;
+			wagonPosition.x -= locomotiveLength;
+			wagonPosition.x -= wagonLength * i;
+
+			GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+
+			trainScript.wagons.Add (wagon.GetComponent<Wagon> ());
+		}
+
+		rail.train = trainScript;
+		TrainsMovementManager.Instance.AddTrain (trainScript);
+
+		train.transform.DOMoveX (xDeparturePosition, arrivingDuration).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false);
+	}
+
+	public void FastForwardTrain (Train train)
+	{
+		train.inTransition = true;
+
+		float xPosition = xDeparturePosition + train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
+
+		train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
+			{
+				TrainsMovementManager.Instance.RemoveTrain (train);
+				Destroy (train.gameObject);
+			});
+	}
+
+	public Train trainTest;
+	[ButtonAttribute ("Fast Forward Train")]
+	public void FastForwardTrainTest ()
+	{
+		FastForwardTrain (trainTest);
+	}
+
+	public Rail railTest;
+	[ButtonAttribute ("Spawn Train")]
+	public void SpawnTrainTest ()
+	{
+		SpawnTrain (railTest);
 	}
 }
