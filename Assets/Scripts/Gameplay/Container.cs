@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public enum ContainerType { Basic, Food, Metal, Dangerous };
 
+public enum ContainerColor { Red, Blue, Yellow, Violet }
+
 public class Container : Touchable 
 {
 	public static Action <Container> OnContainerSelected;
@@ -15,6 +17,7 @@ public class Container : Touchable
 
 	[Header ("Container Type")]
 	public ContainerType containerType = ContainerType.Basic;
+	public ContainerColor containerColor;
 
 	[Header ("States")]
 	public bool selected = false;
@@ -37,6 +40,7 @@ public class Container : Touchable
 	public Collider _collider;
 
 	private Spot[] _pileSpots = new Spot[0];
+	private Material _material;
 
 	void Awake ()
 	{
@@ -188,7 +192,84 @@ public class Container : Touchable
 	{
 		if (TrainsMovementManager.applicationIsQuitting)
 			return;
-		
+
+		TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
+	}
+
+	public void SetupColor ()
+	{
+		GameManager gameManager = FindObjectOfType<GameManager> ();
+		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
+
+		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
+		_material = meshRenderer.sharedMaterial;
+
+		containerColor = (ContainerColor) UnityEngine.Random.Range (0, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+
+		Color color = new Color ();
+
+		switch (containerColor)
+		{
+		case ContainerColor.Red:
+			color = gameManager.redColor;
+			break;
+		case ContainerColor.Blue:
+			color = gameManager.blueColor;
+			break;
+		case ContainerColor.Yellow:
+			color = gameManager.yellowColor;
+			break;
+		case ContainerColor.Violet:
+			color = gameManager.violetColor;
+			break;
+		}
+
+		if(_material.HasProperty ("_Albedo"))
+			_material.SetColor ("_Albedo", color);
+		else
+			_material.SetColor ("_Albedo1", color);
+	}
+
+	public void SetupColor (ContainerColor c)
+	{
+		GameManager gameManager = FindObjectOfType<GameManager> ();
+		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
+
+		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
+		_material = meshRenderer.sharedMaterial;
+
+		containerColor = c;
+
+		Color color = new Color ();
+
+		switch (c)
+		{
+		case ContainerColor.Red:
+			color = gameManager.redColor;
+			break;
+		case ContainerColor.Blue:
+			color = gameManager.blueColor;
+			break;
+		case ContainerColor.Yellow:
+			color = gameManager.yellowColor;
+			break;
+		case ContainerColor.Violet:
+			color = gameManager.violetColor;
+			break;
+		}
+
+		if(_material.HasProperty ("_Albedo"))
+			_material.SetColor ("_Albedo", color);
+		else
+			_material.SetColor ("_Albedo1", color);
+	}
+
+	[PropertyOrder (-1)]
+	[ButtonAttribute ("Update Color")]
+	void UpdateAllColor ()
+	{
+		foreach (var c in FindObjectsOfType<Container> ())
+			c.SetupColor ();
 	}
 
 	[PropertyOrder (-1)]

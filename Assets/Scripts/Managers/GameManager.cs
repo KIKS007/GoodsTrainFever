@@ -11,6 +11,12 @@ public class GameManager : Singleton<GameManager>
 	[Header ("Gameplay Parent")]
 	public Transform gameplayParent;
 
+	[Header ("Container Color")]
+	public Color redColor;
+	public Color blueColor;
+	public Color yellowColor;
+	public Color violetColor;
+
 	// Use this for initialization
 	void Start () {
 		
