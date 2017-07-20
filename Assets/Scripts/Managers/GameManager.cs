@@ -8,6 +8,9 @@ public class GameManager : Singleton<GameManager>
 	[Header ("FPS")]
 	public Text fpsText;
 
+	[Header ("Gameplay Parent")]
+	public Transform gameplayParent;
+
 	// Use this for initialization
 	void Start () {
 		

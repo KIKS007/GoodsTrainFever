@@ -288,7 +288,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
-		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation);
+		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GameManager.Instance.gameplayParent);
 
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
@@ -315,26 +315,22 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.DOMoveX (xDeparturePosition, arrivingDuration).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false);
 	}
 
-	public void FastForwardTrain (Train train)
+	public void FastForwardTrain (Rail rail)
 	{
-		train.inTransition = true;
+		if (rail.train == null)
+			return;
 
-		float xPosition = xDeparturePosition + train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
+		rail.train.inTransition = true;
 
-		train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
+		float xPosition = xDeparturePosition + rail.train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
+
+		rail.train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
 			{
-				TrainsMovementManager.Instance.RemoveTrain (train);
-				Destroy (train.gameObject);
+				TrainsMovementManager.Instance.RemoveTrain (rail.train);
+				Destroy (rail.train.gameObject);
 			});
 	}
-
-	public Train trainTest;
-	[ButtonAttribute ("Fast Forward Train")]
-	public void FastForwardTrainTest ()
-	{
-		FastForwardTrain (trainTest);
-	}
-
+		
 	public Rail railTest;
 	[ButtonAttribute ("Spawn Train")]
 	public void SpawnTrainTest ()

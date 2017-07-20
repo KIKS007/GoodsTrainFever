@@ -36,9 +36,9 @@ public class ParticlesManager : Singleton<ParticlesManager>
 			}
 
 		if(delay == 0)
-			Instantiate (particles, position, Quaternion.identity, transform);
+			Instantiate (particles, position, particles.transform.rotation, transform);
 		else
-			DOVirtual.DelayedCall (delay, ()=> Instantiate (particles, position, Quaternion.identity, transform));
+			DOVirtual.DelayedCall (delay, ()=> Instantiate (particles, position, particles.transform.rotation, transform));
 	}
 }
 
