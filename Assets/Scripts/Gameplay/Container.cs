@@ -48,6 +48,9 @@ public class Container : Touchable
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
 
+		foreach (var p in _pileSpots)
+			p.gameObject.SetActive (true);
+
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 	}
 
@@ -198,7 +201,7 @@ public class Container : Touchable
 
 	public void SetupColor ()
 	{
-		GameManager gameManager = FindObjectOfType<GameManager> ();
+		GlobalVariables gameManager = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
 
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
@@ -232,7 +235,7 @@ public class Container : Touchable
 
 	public void SetupColor (ContainerColor c)
 	{
-		GameManager gameManager = FindObjectOfType<GameManager> ();
+		GlobalVariables gameManager = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
 
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);

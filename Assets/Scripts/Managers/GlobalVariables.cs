@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : Singleton<GameManager>
+public class GlobalVariables : Singleton<GlobalVariables>
 {
 	[Header ("FPS")]
 	public Text fpsText;
@@ -18,7 +18,8 @@ public class GameManager : Singleton<GameManager>
 	public Color violetColor;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		
 	}
 	

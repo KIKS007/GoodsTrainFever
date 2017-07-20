@@ -65,12 +65,12 @@ public class Spot : Touchable
 
 	void GetOverlappingSpots ()
 	{
-		int containersMask = 1 << LayerMask.NameToLayer ("Spots");
+		int spotsMask = 1 << LayerMask.NameToLayer ("Spots");
 
 		Vector3 position = transform.position;
 		position.y += 0.5f;
 
-		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, containersMask, QueryTriggerInteraction.Collide);
+		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, spotsMask, QueryTriggerInteraction.Collide);
 
 		foreach (var c in colliders)
 		{

@@ -288,7 +288,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
-		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GameManager.Instance.gameplayParent);
+		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
 
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
