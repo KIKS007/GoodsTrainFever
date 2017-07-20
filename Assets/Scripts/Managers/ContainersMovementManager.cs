@@ -11,6 +11,12 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 	public bool containerInMotion = false;
 
+	[Header ("Container Pile Count")]
+	public int containersPileCount = 1;
+
+	[Header ("Spot Height")]
+	public float containerHeight = 2.6f;
+
 	[Header ("Selected Container")]
 	public Container selectedContainer = null;
 
@@ -62,18 +68,28 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		if (selectedContainer == null)
 			return;
 
+		Container container = selectedContainer;
+		Vector3 targetPosition = spot.transform.position;
+
+		if (spot.isPileSpot && spot._parentContainer.isMoving)
+		{
+			targetPosition = spot._parentContainer.spotOccupied.transform.position;
+			targetPosition.y += containerHeight;
+		}
+
+		container.TakeSpot (spot);
+
+		container.isMoving = true;
+
 		containerInMotion = true;
 
 		if (OnContainerMovement != null)
 			OnContainerMovement ();
 
-		Container container = selectedContainer;
-
-		container.TakeSpot (spot);
 
 		container.transform.DOKill (false);
 
-		Vector3 direction = (spot.transform.position - container.transform.position).normalized;
+		Vector3 direction = (targetPosition - container.transform.position).normalized;
 
 		if(VectorApproximatelyEqual (Vector3.right, direction) || VectorApproximatelyEqual (-Vector3.right, direction))
 			direction = Vector3.forward * -Mathf.Sign (direction.x);
@@ -86,19 +102,21 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		//container.transform.DORotate (rotationDir * Mathf.Sign (diff.x + diff.y + diff.z) * 360f, .4f, RotateMode.FastBeyond360);
 		container.transform.DORotate (direction * 360f, .4f, RotateMode.FastBeyond360);
 
-		container.transform.DOMoveX (spot.transform.position.x, .4f).SetEase (Ease.OutCubic);
-		container.transform.DOMoveZ (spot.transform.position.z, .4f).SetEase (Ease.OutCubic);
-		container.transform.DOMoveY (spot.transform.position.y + 10f + UnityEngine.Random.Range (-2, 3), .3f).SetEase (Ease.OutCubic).OnComplete (() => 
+		container.transform.DOMoveX (targetPosition.x, .4f).SetEase (Ease.OutCubic);
+		container.transform.DOMoveZ (targetPosition.z, .4f).SetEase (Ease.OutCubic);
+		container.transform.DOMoveY (targetPosition.y + 10f + UnityEngine.Random.Range (-2, 3), .3f).SetEase (Ease.OutCubic).OnComplete (() => 
 			{
-				container.transform.DOMoveY (spot.transform.position.y, .5f).SetEase (Ease.OutBounce, 40, 1);
+				container.transform.DOMoveY (targetPosition.y, .5f).SetEase (Ease.OutBounce, 40, 1);
 				container.transform.DOPunchRotation (direction * 10f, .5f, 10).SetDelay (.1f).OnStart (() => 
 					{
-						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, spot.transform.position - (Vector3.up * container._collider.bounds.extents.y * .5f));
+						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, targetPosition - (Vector3.up * container._collider.bounds.extents.y * .5f));
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
 					}).OnComplete (()=> 
 						{
 							containerInMotion = false;
+
+							container.isMoving = false;
 
 							if(OnContainerMovementEnd != null)
 								OnContainerMovementEnd ();

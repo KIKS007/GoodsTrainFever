@@ -27,8 +27,8 @@ public class Spot : Touchable
 	private MeshRenderer _meshRenderer;
 	private MeshFilter _meshFilter;
 	private Material _material;
-	private int _containersPileCount = 1;
-	private Container _parentContainer;
+	[HideInInspector]
+	public Container _parentContainer;
 	public List<Spot> _overlappingSpots = new List<Spot> ();
 
 	private float _fadeDuration = 0.2f;
@@ -42,8 +42,6 @@ public class Spot : Touchable
 
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
-
-		//Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.2f, ()=> IsOccupied ());
 
 		if(transform.GetComponentInParent<Container> () != null)
 		{
@@ -157,19 +155,35 @@ public class Spot : Touchable
 
 		int belowContainers = 0;
 
-		RaycastHit[] hits = Physics.RaycastAll (transform.position, Vector3.down, 100f, containersMask, QueryTriggerInteraction.Collide);
+		Vector3 rayPosition = transform.position;
+
+		if (isPileSpot && _parentContainer.isMoving)
+		{
+			rayPosition = _parentContainer.spotOccupied.transform.position;
+			rayPosition.y += ContainersMovementManager.Instance.containerHeight;
+
+			belowContainers = 1;
+		}
+
+		RaycastHit[] hits = Physics.RaycastAll (rayPosition, Vector3.down, 100f, containersMask, QueryTriggerInteraction.Collide);
 
 		foreach (var h in hits)
 		{
 			if (container && h.collider.gameObject == container.gameObject)
 				continue;
+
+			if (isPileSpot && _parentContainer.isMoving && h.collider.gameObject == _parentContainer.gameObject)
+			{
+				Debug.Log ("--- moins moins");
+				belowContainers--;
+			}
 			
 			belowContainers++;
 		}
 
 		if (spotType == SpotType.Train)
 		{
-			if (belowContainers == 0)
+			if (belowContainers == 0 && !isPileSpot)
 				return true;
 			else
 				return false;
@@ -177,7 +191,7 @@ public class Spot : Touchable
 
 		else
 		{
-			if (belowContainers <= _containersPileCount)
+			if (belowContainers <= ContainersMovementManager.Instance.containersPileCount)
 				return true;
 			else
 				return false;
@@ -266,10 +280,7 @@ public class Spot : Touchable
 
 	bool IsSameSize (Container container)
 	{
-		BoxCollider containerCollider = container._collider as BoxCollider;
-		BoxCollider boxCollider = _collider as BoxCollider;
-
-		if (Mathf.Abs (boxCollider.size.x - containerCollider.size.x) < 1f)
+		if(isDoubleSize && container.isDoubleSize || !isDoubleSize && !container.isDoubleSize)
 			return true;
 		else
 			return false;
@@ -280,6 +291,7 @@ public class Spot : Touchable
 		if (TrainsMovementManager.applicationIsQuitting)
 			return;
 
-		Container.OnContainerMoved -= ()=> IsOccupied ();
+		Container.OnContainerSelected -= OnContainerSelected;
+		Container.OnContainerDeselected -= OnContainerDeselected;
 	}
 }

@@ -16,6 +16,10 @@ public class Container : Touchable
 	[Header ("States")]
 	public bool selected = false;
 	public bool isPileUp = false;
+	public bool isMoving = false;
+
+	[Header ("Size")]
+	public bool isDoubleSize = false;
 
 	[Header ("Type")]
 	public ContainerType containerType = ContainerType.Basic;
