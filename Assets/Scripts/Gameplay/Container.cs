@@ -18,6 +18,7 @@ public class Container : Touchable
 	[Header ("Container Type")]
 	public ContainerType containerType = ContainerType.Basic;
 	public ContainerColor containerColor;
+	public int weight = 0;
 	public bool isDoubleSize = false;
 
 	[Header ("States")]
@@ -49,6 +50,8 @@ public class Container : Touchable
 		foreach (var p in _pileSpots)
 			p.gameObject.SetActive (true);
 
+		SetWeight ();
+
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 	}
 
@@ -70,6 +73,16 @@ public class Container : Touchable
 			wagon = spot._wagon;
 			train = wagon.train;
 		}
+	}
+
+	void SetWeight ()
+	{
+		foreach(var w in GlobalVariables.Instance.containersWeight)
+			if(w.containerType == containerType)
+			{
+				weight = (int) UnityEngine.Random.Range ((int)w.weightBounds.x, (int)w.weightBounds.y);
+				break;
+			}
 	}
 
 	public override void OnTouchUpAsButton ()

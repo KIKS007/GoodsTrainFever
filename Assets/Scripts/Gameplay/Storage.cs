@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Storage : MonoBehaviour 
 {
-
 	[Header ("Containers")]
 	public Transform containersParent;
 

@@ -55,6 +55,8 @@ public class Spot : Touchable
 		}
 
 		GetOverlappingSpots ();
+
+		SetSpotType (true);
 	}
 
 	void Start () 
@@ -109,22 +111,27 @@ public class Spot : Touchable
 		}
 	}
 
-	void SetSpotType ()
+	void SetSpotType (bool onlyType = false)
 	{
 		if(transform.GetComponentInParent<Storage> () != null)
 		{
-			_containersParent = transform.GetComponentInParent<Storage> ().containersParent;
 			spotType = SpotType.Storage;
+
+			if(!onlyType)
+				_containersParent = transform.GetComponentInParent<Storage> ().containersParent;
+
 			return;
 		}
 
 		if(transform.GetComponentInParent<Wagon> () != null)
 		{
+			spotType = SpotType.Train;
+
 			if(!isPileSpot)
 				_wagon = transform.GetComponentInParent<Wagon> ();
 
-			_containersParent = transform.GetComponentInParent<Wagon> ().train.containersParent;
-			spotType = SpotType.Train;
+			if(!onlyType)
+				_containersParent = transform.GetComponentInParent<Wagon> ().train.containersParent;
 			return;
 		}
 	}

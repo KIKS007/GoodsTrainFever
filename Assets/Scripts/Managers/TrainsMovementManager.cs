@@ -31,8 +31,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float movementMaxVelocity = 5f;
 	public float movementDeceleration = 0.9f;
 
-	public float trainZeroVelocity;
-
 	[Header ("Reset Movement")]
 	public bool resetingTrains = false;
 	public float resetDuration = 0.5f;
@@ -118,12 +116,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		//Debug.Log (_deltaPosition.x);
-
 		if (resetingTrains)
 			return;
-		
-		trainZeroVelocity = _trainsVelocity [allTrains [0]];
 
 		SetTrainsVelocity ();
 

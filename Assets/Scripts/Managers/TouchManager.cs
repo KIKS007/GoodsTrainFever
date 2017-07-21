@@ -21,8 +21,6 @@ public class TouchManager : Singleton<TouchManager>
 
 	void Start ()
 	{
-		//Application.targetFrameRate = 30;
-
 		_camera = FindObjectOfType<Camera> ();
 	}
 
