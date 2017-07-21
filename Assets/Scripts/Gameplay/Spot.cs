@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 public enum SpotType { Train, Storage, Boat, Road }
 
@@ -15,10 +16,12 @@ public class Spot : Touchable
 	[Header ("Spot")]
 	public SpotType spotType;
 	public bool isOccupied = false;
-	public bool isPileSpot;
 
-	[Header ("Size")]
+	[Header ("Read Only")]
+	[ReadOnlyAttribute]
 	public bool isDoubleSize = false;
+	[ReadOnlyAttribute]
+	public bool isPileSpot;
 
 	[Header ("Container")]
 	public Container container;
@@ -54,6 +57,10 @@ public class Spot : Touchable
 			_parentContainer = transform.GetComponentInParent<Container> ();
 		}
 
+		SetIsDoubleSize ();
+
+		SetIsPileSpot ();
+
 		GetOverlappingSpots ();
 
 		SetSpotType (true);
@@ -68,6 +75,25 @@ public class Spot : Touchable
 		OnContainerDeselected ();
 
 		OverlappingSpotsOccupied ();
+	}
+
+	public void SetIsDoubleSize ()
+	{
+		_collider = GetComponent<Collider> ();
+		BoxCollider boxCollider = _collider as BoxCollider;
+
+		if (boxCollider.size.x > 12f)
+			isDoubleSize = true;
+		else
+			isDoubleSize = false;
+	}
+
+	public void SetIsPileSpot ()
+	{
+		if (transform.parent.GetComponent<Container> () != null)
+			isPileSpot = true;
+		else
+			isPileSpot = false;
 	}
 
 	void GetOverlappingSpots ()

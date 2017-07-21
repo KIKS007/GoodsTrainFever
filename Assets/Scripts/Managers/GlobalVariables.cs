@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
+using System;
 
 public class GlobalVariables : Singleton<GlobalVariables>
 {
@@ -22,6 +24,17 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	public List<WagonTypeWeight> wagonsMaxWeight = new List<WagonTypeWeight> ();
 	public Color wagonNormalWeightColor;
 	public Color wagonOverweightColor;
+
+	[PropertyOrder (-1)]
+	[ButtonAttribute ("Update Is Double Size")]
+	public void SetIsDoubleSize ()
+	{
+		foreach (var c in FindObjectsOfType<Container> ())
+			c.SetIsDoubleSize ();
+
+		foreach (var s in FindObjectsOfType<Spot> ())
+			s.SetIsDoubleSize ();
+	}
 
 	// Use this for initialization
 	void Start () 

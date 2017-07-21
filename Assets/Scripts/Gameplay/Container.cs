@@ -20,12 +20,15 @@ public class Container : Touchable
 	public ContainerType containerType = ContainerType.Basic;
 	public ContainerColor containerColor;
 	public int weight = 0;
-	public bool isDoubleSize;
 
 	[Header ("States")]
 	public bool selected = false;
 	public bool isPileUp = false;
 	public bool isMoving = false;
+
+	[Header ("Size")]
+	[ReadOnlyAttribute]
+	public bool isDoubleSize;
 
 	[Header ("Train")]
 	public Train train = null;
@@ -55,11 +58,24 @@ public class Container : Touchable
 		foreach (var p in _pileSpots)
 			p.gameObject.SetActive (true);
 
+		SetIsDoubleSize ();
+
 		SetupColor ();
 
 		SetWeight ();
 
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
+	}
+
+	public void SetIsDoubleSize ()
+	{
+		_collider = GetComponent<Collider> ();
+		BoxCollider boxCollider = _collider as BoxCollider;
+
+		if (boxCollider.size.x > 12f)
+			isDoubleSize = true;
+		else
+			isDoubleSize = false;
 	}
 
 	void OnTouchUpNoTarget ()
