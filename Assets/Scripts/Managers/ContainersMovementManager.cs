@@ -12,7 +12,8 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 	public bool containerInMotion = false;
 
 	[Header ("Container Pile Count")]
-	public int containersPileCount = 1;
+	public int storagePileCount = 2;
+	public int boatPileCount = 1;
 
 	[Header ("Spot Height")]
 	public float containerHeight = 2.6f;
@@ -34,6 +35,9 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 	[Header ("Take Spot")]
 	public float takeSpotDuration = 0.4f;
+
+	[Header ("Spot Distance Factor")]
+	public float spotDistanceFactor = 0.02f;
 
 	private float _startHeight;
 

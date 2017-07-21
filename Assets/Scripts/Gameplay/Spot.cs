@@ -45,6 +45,8 @@ public class Spot : Touchable
 
 	private float _fadeDuration = 0.2f;
 	private Spot _doubleSizeSpotSpawned;
+	private float _hologramOpacity;
+	private float _opacity;
 
 	void Awake () 
 	{
@@ -52,6 +54,12 @@ public class Spot : Touchable
 		_meshRenderer = GetComponent<MeshRenderer> ();
 		_material = _meshRenderer.material;
 		_meshFilter = GetComponent<MeshFilter> ();
+
+		_hologramOpacity = _material.GetFloat ("_HologramOpacity");
+		_opacity = _material.GetFloat ("_Opacity");
+
+		_material.SetFloat ("_HologramOpacity", 0f);
+		_material.SetFloat ("_Opacity", 0f);
 
 		Container.OnContainerSelected += OnContainerSelected;
 		Container.OnContainerDeselected += OnContainerDeselected;
@@ -166,6 +174,15 @@ public class Spot : Touchable
 				_containersParent = transform.GetComponentInParent<Wagon> ().train.containersParent;
 			return;
 		}
+
+		if(transform.GetComponentInParent<Boat> () != null)
+		{
+			spotType = SpotType.Boat;
+
+			if(!onlyType)
+				_containersParent = transform.GetComponentInParent<Boat> ().containersParent;
+			return;
+		}
 	}
 
 	public void IsOccupied ()
@@ -238,7 +255,9 @@ public class Spot : Touchable
 
 		else
 		{
-			if (belowContainers <= ContainersMovementManager.Instance.containersPileCount)
+			int pileCount = spotType == SpotType.Storage ? ContainersMovementManager.Instance.storagePileCount : ContainersMovementManager.Instance.boatPileCount;
+
+			if (belowContainers <= pileCount)
 				return true;
 			else
 				return false;
@@ -311,10 +330,10 @@ public class Spot : Touchable
 
 		DOTween.Kill (_material);
 
-		float delay = Vector3.Distance (container.transform.position, transform.position) * 0.02f;
+		float delay = Vector3.Distance (container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
-		_material.DOFloat (1f, "_HologramOpacity", _fadeDuration).SetDelay (delay);
-		_material.DOFloat (1f, "_Opacity", _fadeDuration).SetDelay (delay);
+		_material.DOFloat (_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay (delay);
+		_material.DOFloat (_opacity, "_Opacity", _fadeDuration).SetDelay (delay);
 	}
 
 	void OnContainerDeselected (Container container = null)
@@ -323,16 +342,8 @@ public class Spot : Touchable
 
 		DOTween.Kill (_material);
 
-		if(container != this.container)
-		{
-			_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-			_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
-		}
-		else
-		{
-			_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-			_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
-		}
+		_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
+		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
 	}
 
 	bool IsSameSize (Container container)

@@ -360,5 +360,7 @@ public class Container : Touchable
 		}
 
 		transform.position = spotOccupied.transform.position;
+
+		spotOccupied = null;
 	}
 }
