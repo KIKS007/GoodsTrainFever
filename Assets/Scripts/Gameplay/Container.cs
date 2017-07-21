@@ -41,15 +41,21 @@ public class Container : Touchable
 
 	private Spot[] _pileSpots = new Spot[0];
 	private Material _material;
+	private Text _weightText;
+	private Image _weightImage;
 
 	void Awake ()
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
+		_weightText = transform.GetComponentInChildren<Text> ();
+		_weightImage = transform.GetComponentInChildren<Image> ();
 
 		foreach (var p in _pileSpots)
 			p.gameObject.SetActive (true);
+
+		SetupColor ();
 
 		SetWeight ();
 
@@ -85,7 +91,34 @@ public class Container : Touchable
 				break;
 			}
 
-		transform.GetComponentInChildren<Text> ().text = weight.ToString ();
+		UpdateWeightText ();
+	}
+
+	void UpdateWeightText ()
+	{
+		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
+
+		_weightText.text = weight.ToString ();
+
+		Color color = new Color ();
+
+		switch (containerColor)
+		{
+		case ContainerColor.Red:
+			color = globalVariables.redColor;
+			break;
+		case ContainerColor.Blue:
+			color = globalVariables.blueColor;
+			break;
+		case ContainerColor.Yellow:
+			color = globalVariables.yellowColor;
+			break;
+		case ContainerColor.Violet:
+			color = globalVariables.violetColor;
+			break;
+		}
+
+		_weightImage.color = color;
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -215,7 +248,7 @@ public class Container : Touchable
 
 	public void SetupColor ()
 	{
-		GlobalVariables gameManager = FindObjectOfType<GlobalVariables> ();
+		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
 
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
@@ -228,16 +261,16 @@ public class Container : Touchable
 		switch (containerColor)
 		{
 		case ContainerColor.Red:
-			color = gameManager.redColor;
+			color = globalVariables.redColor;
 			break;
 		case ContainerColor.Blue:
-			color = gameManager.blueColor;
+			color = globalVariables.blueColor;
 			break;
 		case ContainerColor.Yellow:
-			color = gameManager.yellowColor;
+			color = globalVariables.yellowColor;
 			break;
 		case ContainerColor.Violet:
-			color = gameManager.violetColor;
+			color = globalVariables.violetColor;
 			break;
 		}
 
@@ -245,6 +278,8 @@ public class Container : Touchable
 			_material.SetColor ("_Albedo", color);
 		else
 			_material.SetColor ("_Albedo1", color);
+
+		UpdateWeightText ();
 	}
 
 	public void SetupColor (ContainerColor c)
@@ -279,6 +314,8 @@ public class Container : Touchable
 			_material.SetColor ("_Albedo", color);
 		else
 			_material.SetColor ("_Albedo1", color);
+
+		UpdateWeightText ();
 	}
 
 	[PropertyOrder (-1)]

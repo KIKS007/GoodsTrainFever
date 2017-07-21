@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum WagonType { Fourty, Sixty }
 
@@ -15,13 +16,16 @@ public class Wagon : Touchable
 	[Header ("Weight")]
 	public int maxWeight;
 	public int currentWeight;
-	
+
 	[Header ("Containers")]
 	public List<Container> containers = new List<Container> ();
+
+	private Text _weightText;
 
 	void Awake ()
 	{
 		train = transform.GetComponentInParent<Train> ();
+		_weightText = transform.GetComponentInChildren <Text> ();
 
 		SetWeight ();
 	}
@@ -43,5 +47,7 @@ public class Wagon : Touchable
 		foreach (var c in containers)
 			if(c != null)
 				currentWeight += c.weight;
+
+		_weightText.text = currentWeight.ToString ("00") + "/" + maxWeight.ToString ("00");
 	}
 }
