@@ -16,16 +16,19 @@ public class Wagon : Touchable
 	[Header ("Weight")]
 	public int maxWeight;
 	public int currentWeight;
+	public bool overweight = false;
 
 	[Header ("Containers")]
 	public List<Container> containers = new List<Container> ();
 
 	private Text _weightText;
+	private Image _weightImage;
 
 	void Awake ()
 	{
 		train = transform.GetComponentInParent<Train> ();
 		_weightText = transform.GetComponentInChildren <Text> ();
+		_weightImage = transform.GetComponentInChildren <Image> ();
 
 		SetWeight ();
 	}
@@ -48,6 +51,9 @@ public class Wagon : Touchable
 			if(c != null)
 				currentWeight += c.weight;
 
+		overweight = currentWeight > maxWeight;
+
 		_weightText.text = currentWeight.ToString ("00") + "/" + maxWeight.ToString ("00");
+		_weightImage.color = overweight ? GlobalVariables.Instance.wagonOverweightColor : GlobalVariables.Instance.wagonNormalWeightColor;
 	}
 }

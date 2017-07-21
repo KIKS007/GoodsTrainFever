@@ -20,6 +20,8 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("Weight")]
 	public List<ContainerTypeWeight> containersWeight = new List<ContainerTypeWeight> ();
 	public List<WagonTypeWeight> wagonsMaxWeight = new List<WagonTypeWeight> ();
+	public Color wagonNormalWeightColor;
+	public Color wagonOverweightColor;
 
 	// Use this for initialization
 	void Start () 
