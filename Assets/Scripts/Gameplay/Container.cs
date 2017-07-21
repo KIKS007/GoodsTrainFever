@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public enum ContainerType { Basic, Food, Metal, Dangerous };
+public enum ContainerType { Basic, Refrigerated, Tank, Dangerous };
 
 public enum ContainerColor { Red, Blue, Yellow, Violet }
 

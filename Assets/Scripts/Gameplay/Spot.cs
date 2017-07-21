@@ -359,6 +359,9 @@ public class Spot : Touchable
 		if (_doubleSizeSpotSpawned)
 			Destroy (_doubleSizeSpotSpawned.gameObject);
 
+		if (!c.isDoubleSize)
+			return;
+		
 		if (spotType == SpotType.Train)
 			return;
 
