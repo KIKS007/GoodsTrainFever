@@ -25,6 +25,11 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	public Color wagonNormalWeightColor;
 	public Color wagonOverweightColor;
 
+	[Header ("Spots Prefabs")]
+	public GameObject spot20Prefab;
+	public GameObject spot40Prefab;
+
+
 	[PropertyOrder (-1)]
 	[ButtonAttribute ("Update Is Double Size")]
 	public void SetIsDoubleSize ()

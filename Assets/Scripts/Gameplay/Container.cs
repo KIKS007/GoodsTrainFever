@@ -55,6 +55,8 @@ public class Container : Touchable
 		_weightText = transform.GetComponentInChildren<Text> ();
 		_weightImage = transform.GetComponentInChildren<Image> ();
 
+		OnContainerMoved += IsPileUp;
+
 		foreach (var p in _pileSpots)
 			p.gameObject.SetActive (true);
 
@@ -239,8 +241,6 @@ public class Container : Touchable
 
 		foreach(var s in _pileSpots)
 		{
-			s.IsOccupied ();
-
 			if(s.isOccupied)
 			{
 				isPiledUpTemp = true;
@@ -249,6 +249,9 @@ public class Container : Touchable
 		}
 
 		isPileUp = isPiledUpTemp;
+
+		if (spotOccupied)
+			spotOccupied.SetIsPileUp (isPiledUpTemp);
 	}
 		
 	public void OnContainerMovedEvent ()
@@ -262,6 +265,7 @@ public class Container : Touchable
 		if (TrainsMovementManager.applicationIsQuitting)
 			return;
 
+		OnContainerMoved -= IsPileUp;
 		TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
 	}
 

@@ -22,6 +22,8 @@ public class Spot : Touchable
 	public bool isDoubleSize = false;
 	[ReadOnlyAttribute]
 	public bool isPileSpot;
+	[ReadOnlyAttribute]
+	public bool isPileUp = false;
 
 	[Header ("Container")]
 	public Container container;
@@ -38,8 +40,11 @@ public class Spot : Touchable
 	[HideInInspector]
 	public Container _parentContainer;
 	public List<Spot> _overlappingSpots = new List<Spot> ();
+	[HideInInspector]
+	public bool _isSpawned = false;
 
 	private float _fadeDuration = 0.2f;
+	private Spot _doubleSizeSpotSpawned;
 
 	void Awake () 
 	{
@@ -72,7 +77,8 @@ public class Spot : Touchable
 
 		IsOccupied ();
 
-		OnContainerDeselected ();
+		if(!_isSpawned)
+			OnContainerDeselected ();
 
 		OverlappingSpotsOccupied ();
 	}
@@ -196,6 +202,7 @@ public class Spot : Touchable
 		int belowContainers = 0;
 
 		Vector3 rayPosition = transform.position;
+		rayPosition.x -= 0.01f;
 
 		if (isPileSpot && _parentContainer.isMoving)
 		{
@@ -278,6 +285,8 @@ public class Spot : Touchable
 
 	void OnContainerSelected (Container container)
 	{
+		SpawnDoubleSizeSpot (container);
+
 		OverlappingSpotsOccupied ();
 
 		if (isOccupied)
@@ -312,6 +321,8 @@ public class Spot : Touchable
 	{
 		_collider.enabled = false;
 
+		DOTween.Kill (_material);
+
 		if(container != this.container)
 		{
 			_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
@@ -330,6 +341,46 @@ public class Spot : Touchable
 			return true;
 		else
 			return false;
+	}
+
+	public void SetIsPileUp (bool piled)
+	{
+		isPileUp = piled;
+
+		foreach (var s in _overlappingSpots)
+			s.isPileUp = piled;
+	}
+
+	void SpawnDoubleSizeSpot (Container c)
+	{
+		if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.isOccupied)
+			return;
+
+		if (_doubleSizeSpotSpawned)
+			Destroy (_doubleSizeSpotSpawned.gameObject);
+
+		if (spotType == SpotType.Train)
+			return;
+
+		if (!isDoubleSize)
+			return;
+		
+		if (container)
+			return;
+
+		if (isPileUp)
+			return;
+
+		foreach (var s in _overlappingSpots)
+			if (s.isOccupied == false)
+				return;
+
+		Vector3 spotPosition = transform.position;
+		spotPosition.y += ContainersMovementManager.Instance.containerHeight;
+
+		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40Prefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
+		_doubleSizeSpotSpawned._isSpawned = true;
+		_doubleSizeSpotSpawned.OnContainerSelected (c);
 	}
 
 	void OnDestroy ()
