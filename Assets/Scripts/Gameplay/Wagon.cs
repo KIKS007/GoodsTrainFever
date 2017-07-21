@@ -47,9 +47,16 @@ public class Wagon : Touchable
 	{
 		currentWeight = 0;
 
-		foreach (var c in containers)
-			if(c != null)
-				currentWeight += c.weight;
+		for(int i = 0 ; i < containers.Count; i++)
+		{
+			if(containers [i] != null)
+			{
+				if (i > 0 && containers [i] == containers [i - 1])
+					continue;
+
+				currentWeight += containers [i].weight;
+			}
+		}
 
 		overweight = currentWeight > maxWeight;
 

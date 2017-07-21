@@ -91,6 +91,9 @@ public class Container : Touchable
 				break;
 			}
 
+		if (isDoubleSize)
+			weight *= 2;
+
 		UpdateWeightText ();
 	}
 
