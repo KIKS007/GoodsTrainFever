@@ -61,8 +61,6 @@ public class Train : Touchable
 		}
 
 		//Setup Spots Events
-		int containerIndex = 0;
-
 		for(int i = 0; i < spots.Count; i++)
 		{
 			//New Slot

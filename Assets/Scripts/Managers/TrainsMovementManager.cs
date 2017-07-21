@@ -39,6 +39,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	[Header ("Train Spawn")]
 	public float xArrivingPosition;
 	public float xDeparturePosition;
+	public float xDeparturePosition2;
 	public float arrivingDuration = 0.5f;
 	public float arrivingDelay = 0;
 
@@ -46,7 +47,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public int wagonsCount = 2;
 	[Range (0, 101)]
 	public int doubleSizeWagonChance = 50;
-
 
 	[Header ("Train Length")]
 	public float wagonLength = 10f;
@@ -154,12 +154,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			if (holdState == HoldState.None || holdState == HoldState.Touched || holdState == HoldState.Holding)
 				t.transform.Translate (position * Time.fixedDeltaTime);
 
-			if (holdState == HoldState.None || holdState == HoldState.Touched)
-				continue;
-			
 			if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold)
 			{
-				if (selectedTrain && t == selectedTrain)
+				if (selectedTrain && t == selectedTrain || selectedTrain == null)
 					selectedTrainHasMoved = true;
 			}
 		}
@@ -181,7 +178,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		ResetTrainsVelocity ();
 
 		foreach (var t in allTrains)
-			t.transform.DOMoveX (xArrivingPosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+			if(t.transform.position.z > -5)
+				t.transform.DOMoveX (xDeparturePosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+			else
+				t.transform.DOMoveX (xDeparturePosition2, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
 	}
 
 	void TouchDown ()
