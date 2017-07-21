@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public enum ContainerType { Basic, Food, Metal, Dangerous };
 
@@ -19,7 +20,7 @@ public class Container : Touchable
 	public ContainerType containerType = ContainerType.Basic;
 	public ContainerColor containerColor;
 	public int weight = 0;
-	public bool isDoubleSize = false;
+	public bool isDoubleSize;
 
 	[Header ("States")]
 	public bool selected = false;
@@ -83,6 +84,8 @@ public class Container : Touchable
 				weight = (int) UnityEngine.Random.Range ((int)w.weightBounds.x, (int)w.weightBounds.y);
 				break;
 			}
+
+		transform.GetComponentInChildren<Text> ().text = weight.ToString ();
 	}
 
 	public override void OnTouchUpAsButton ()
