@@ -12,6 +12,6 @@ public class WindTurbine : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		transform.DOLocalRotate (rotationDirection, Random.Range (rotationSpeed.x, rotationSpeed.y), RotateMode.LocalAxisAdd).SetLoops (-1, LoopType.Incremental);
+		transform.DOLocalRotate (rotationDirection, Random.Range (rotationSpeed.x, rotationSpeed.y), RotateMode.LocalAxisAdd).SetLoops (-1, LoopType.Incremental).SetSpeedBased ();
 	}
 }

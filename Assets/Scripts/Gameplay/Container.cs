@@ -18,14 +18,12 @@ public class Container : Touchable
 	[Header ("Container Type")]
 	public ContainerType containerType = ContainerType.Basic;
 	public ContainerColor containerColor;
+	public bool isDoubleSize = false;
 
 	[Header ("States")]
 	public bool selected = false;
 	public bool isPileUp = false;
 	public bool isMoving = false;
-
-	[Header ("Size")]
-	public bool isDoubleSize = false;
 
 	[Header ("Train")]
 	public Train train = null;

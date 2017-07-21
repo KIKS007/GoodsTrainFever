@@ -187,7 +187,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		ResetTrainsVelocity ();
 
 		foreach (var t in allTrains)
-			t.transform.DOMoveX (t._xInitialPosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+			t.transform.DOMoveX (xArrivingPosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
 	}
 
 	void TouchDown ()
@@ -284,6 +284,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void SpawnTrain (Rail rail)
 	{
+		if (rail.train != null)
+		{
+			Debug.LogWarning ("Rail has train!", this);
+			return;
+		}
+
 		Vector3 position = rail.transform.position;
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;

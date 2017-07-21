@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
+using System.Linq;
 
 public enum SpotType { Train, Storage, Boat, Road }
 
 public class Spot : Touchable 
 {
+	public Action<Container> OnSpotTaken;
+	public Action OnSpotFreed;
+
 	[Header ("Spot")]
 	public SpotType spotType;
 	public bool isOccupied = false;
@@ -82,6 +87,8 @@ public class Spot : Touchable
 					_overlappingSpots.Add (spot);
 			}
 		}
+
+		_overlappingSpots = _overlappingSpots.OrderByDescending (x => x.transform.position.x).ToList ();
 	}
 
 	public void OverlappingSpotsOccupied ()
@@ -205,6 +212,9 @@ public class Spot : Touchable
 
 		foreach (var s in _overlappingSpots)
 			s.OverlappingSpotsOccupied ();
+
+		if (OnSpotTaken != null)
+			OnSpotTaken (this.container);
 	}
 
 	public void RemoveContainer ()
@@ -215,6 +225,9 @@ public class Spot : Touchable
 
 		foreach (var s in _overlappingSpots)
 			s.OverlappingSpotsOccupied ();
+
+		if (OnSpotFreed != null)
+			OnSpotFreed ();
 	}
 
 	public override void OnTouchUpAsButton ()
