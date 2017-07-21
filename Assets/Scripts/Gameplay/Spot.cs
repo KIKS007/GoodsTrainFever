@@ -109,7 +109,7 @@ public class Spot : Touchable
 		{
 			Spot spot = c.GetComponent<Spot> ();
 
-			if (c.gameObject != gameObject && spot != null)
+			if (c != _collider && spot != null)
 			{
 				if(!isDoubleSize && spot.isDoubleSize || isDoubleSize)
 					_overlappingSpots.Add (spot);
@@ -302,7 +302,7 @@ public class Spot : Touchable
 
 		DOTween.Kill (_material);
 
-		float delay = Vector3.Distance (container.transform.position, transform.position) * 0.01f;
+		float delay = Vector3.Distance (container.transform.position, transform.position) * 0.02f;
 
 		_material.DOFloat (1f, "_HologramOpacity", _fadeDuration).SetDelay (delay);
 		_material.DOFloat (1f, "_Opacity", _fadeDuration).SetDelay (delay);
