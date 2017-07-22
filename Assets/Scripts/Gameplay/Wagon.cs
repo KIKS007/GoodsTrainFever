@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum WagonType { Fourty, Sixty }
+public enum WagonType { Fourty, Sixty, Eighty }
 
 public class Wagon : Touchable 
 {

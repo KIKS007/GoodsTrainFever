@@ -109,7 +109,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
 	}
 
-	void AddOrder ()
+	void AddOrder (Level_Order levelOrder)
 	{
 		
 	}
