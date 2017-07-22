@@ -78,7 +78,8 @@ public class TouchManager : Singleton<TouchManager>
 				
 				_touchDown = false;
 				
-				if (useRaycast) {
+				if (useRaycast && !isTouchingUI) 
+				{
 					Touchable touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
 						touchable.OnTouchUpAsButton ();

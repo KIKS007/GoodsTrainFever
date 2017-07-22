@@ -129,7 +129,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			if(selectedTrain && trainContainerInMotion != selectedTrain)
 				MoveTrain (selectedTrain);
 			
-			else if(!TouchManager.Instance.isTouchingTouchable)
+			else
 			{
 				foreach (var t in allTrains)
 					if(trainContainerInMotion != t)

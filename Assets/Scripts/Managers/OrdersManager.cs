@@ -41,6 +41,8 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		Container.OnContainerSelected += (c)=> FadeOutGroup ();
 		Container.OnContainerDeselected += (c)=> FadeInGroup ();
+
+		UpdateOrdersLayout ();
 	}
 	
 	// Update is called once per frame

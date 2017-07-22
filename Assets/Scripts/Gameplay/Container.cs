@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum ContainerType { Basic, Refrigerated, Tank, Dangerous };
 
-public enum ContainerColor { Red, Blue, Yellow, Violet, Random = 0 }
+public enum ContainerColor { Red = 1, Blue = 2, Yellow = 3, Violet = 4, Random = 0 }
 
 public class Container : Touchable 
 {
@@ -277,7 +277,7 @@ public class Container : Touchable
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
-		containerColor = (ContainerColor) UnityEngine.Random.Range (0, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+		containerColor = (ContainerColor) UnityEngine.Random.Range (1, (int) Enum.GetNames (typeof(ContainerColor)).Length);
 
 		Color color = new Color ();
 
