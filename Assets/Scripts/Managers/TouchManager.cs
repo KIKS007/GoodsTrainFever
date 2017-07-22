@@ -13,6 +13,7 @@ public class TouchManager : Singleton<TouchManager>
 
 	public bool useRaycast = false;
 	public bool isTouchingTouchable = false;
+	public bool isTouchingUI = false;
 
 	private bool _touchDown = false;
 	private Vector3 _deltaPosition;
@@ -77,8 +78,7 @@ public class TouchManager : Singleton<TouchManager>
 				
 				_touchDown = false;
 				
-				if(useRaycast)
-				{
+				if (useRaycast) {
 					Touchable touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
 						touchable.OnTouchUpAsButton ();
@@ -91,7 +91,8 @@ public class TouchManager : Singleton<TouchManager>
 					OnTouchUp ();
 				
 				isTouchingTouchable = false;
-				
+				isTouchingUI = false;
+
 				break;
 			}
 		}
@@ -120,7 +121,7 @@ public class TouchManager : Singleton<TouchManager>
 		{
 			_touchDown = false;
 
-			if(useRaycast)
+			if(useRaycast && !isTouchingUI)
 			{
 				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)
@@ -134,6 +135,7 @@ public class TouchManager : Singleton<TouchManager>
 				OnTouchUp ();
 			
 			isTouchingTouchable = false;
+			isTouchingUI = false;
 		}
 
 		else if(Input.GetMouseButton (0))
@@ -199,5 +201,10 @@ public class TouchManager : Singleton<TouchManager>
 			
 			yield return new WaitForEndOfFrame ();
 		}
+	}
+
+	public void IsTouchingUI ()
+	{
+		isTouchingUI = true;
 	}
 }

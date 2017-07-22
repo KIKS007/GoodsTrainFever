@@ -119,6 +119,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (resetingTrains)
 			return;
 
+		if (TouchManager.Instance.isTouchingUI)
+			return;
+		
 		SetTrainsVelocity ();
 
 		if (holdState != HoldState.None)

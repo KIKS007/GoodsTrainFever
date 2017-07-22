@@ -18,12 +18,6 @@ public class Level : MonoBehaviour
 	[Header ("Boats")]
 	public float boatsDuration;
 	public List<Level_Boat> boats = new List<Level_Boat> ();
-
-	// Use this for initialization
-	void Start () 
-	{
-		
-	}
 }
 
 [System.Serializable]
@@ -37,6 +31,7 @@ public class Level_Order
 [System.Serializable]
 public class Level_Train
 {
+	public int trainDuration;
 	public List<Level_Wagon> wagons;
 }
 

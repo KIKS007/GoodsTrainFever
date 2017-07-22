@@ -12,6 +12,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public Ease ordersLayoutEase = Ease.OutQuad;
 	public Canvas UICanvas;
 	public CanvasGroup ordersCanvasGroup;
+	public RectTransform ordersScrollView;
 
 	[Header ("Orders Layout")]
 	public float ordersSpacing;
@@ -60,10 +61,10 @@ public class OrdersManager : Singleton<OrdersManager>
 		Vector2 previousPosition = new Vector2 ();
 		float previousWidth = 0f;
 
-		for(int i = 0; i <  ordersCanvasGroup.transform.childCount; i++)
+		for(int i = 0; i <  ordersScrollView.transform.childCount; i++)
 		{
 			Vector2 position = new Vector2 ();
-			RectTransform rect = ordersCanvasGroup.transform.GetChild (i).GetComponent<RectTransform> ();
+			RectTransform rect = ordersScrollView.transform.GetChild (i).GetComponent<RectTransform> ();
 
 			if (rect == orderToIgnore)
 				continue;
@@ -91,6 +92,8 @@ public class OrdersManager : Singleton<OrdersManager>
 			previousWidth = rect.sizeDelta.x;
 			previousPosition = position;
 		}
+
+		ordersScrollView.sizeDelta = new Vector2 (previousPosition.x + previousWidth * 0.5f + ordersSpacing, ordersScrollView.sizeDelta.y);
 	}
 
 	[PropertyOrder (-1)]

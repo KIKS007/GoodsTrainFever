@@ -30,18 +30,26 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	public void LoadLevel (Transform l)
 	{
-		
+		if(l == null)
+		{
+			Debug.LogError ("Invalid Level!");
+			return;
+		}
+
+		Level level = l.GetComponent<Level> ();
+
+		orders = level.orders;
+		storageContainers = level.storageContainers;
+		rail1Trains = level.rail1Trains;
+		rail2Trains = level.rail2Trains;
+		boatsDuration = level.boatsDuration;
+		boats = level.boats;
 	}
 
-	public void LoadLevel (Transform level)
-	{
-		
-	}
-
+	#region Level Start
 	public void StartLevel (int index)
 	{
 		levelIndex = index;
@@ -58,15 +66,16 @@ public class LevelsManager : Singleton<LevelsManager>
 		LoadLevel (levelToStart);
 	}
 
-	[PropertyOrder (-1)]
-	[ButtonGroup ("1")]
+	[ButtonGroup ("1", -1)]
 	public void StartLevelTest ()
 	{
+		if (levelToStart == null)
+			return;
+
 		LoadLevel (levelToStart);
 	}
 
-	[PropertyOrder (-1)]
-	[ButtonGroup ("1")]
+	[ButtonGroup ("1", -1)]
 	public void NextLevel ()
 	{
 		if (levelIndex + 1 >= transform.childCount - 1)
@@ -74,7 +83,9 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		StartLevel (levelIndex + 1);
 	}
+	#endregion
 
+	#region Other
 	[PropertyOrder (-1)]
 	[ButtonAttribute]
 	void RenameLevels ()
@@ -92,4 +103,5 @@ public class LevelsManager : Singleton<LevelsManager>
 				return;
 			}
 	}
+	#endregion
 }
