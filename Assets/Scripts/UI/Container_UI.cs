@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Container_UI : MonoBehaviour 
 {
+	public bool isPrepared = false;
+	public Container_Level container;
+
 	[Header ("UI")]
 	public Image containerImage;
 	public Text containerTypeText;
@@ -21,15 +24,42 @@ public class Container_UI : MonoBehaviour
 		preparedCountText.enabled = false;
 	}
 
-	public void Setup (int n, ContainerType type)
+	public void Setup (Container_Level c)
 	{
-		neededCount = n;
+		container = c;
+
+		SetColor (c);
+
+		neededCount = c.containerCount > 0 ? c.containerCount : 1;
 		neededCountText.text = neededCount.ToString ();
 
-		containerTypeText.text = type.ToString ();
+		containerTypeText.text = c.containerType.ToString ();
 	}
 
-	public void ContainerPrepared ()
+	void SetColor (Container_Level c)
+	{
+		Color color = new Color ();
+
+		switch (c.containerColor)
+		{
+		case ContainerColor.Red:
+			color = GlobalVariables.Instance.redColor;
+			break;
+		case ContainerColor.Blue:
+			color = GlobalVariables.Instance.blueColor;
+			break;
+		case ContainerColor.Yellow:
+			color = GlobalVariables.Instance.yellowColor;
+			break;
+		case ContainerColor.Violet:
+			color = GlobalVariables.Instance.violetColor;
+			break;
+		}
+
+		containerImage.color = color;
+	}
+
+	public void ContainerAdded ()
 	{
 		neededCount--;
 		preparedCount++;
@@ -49,11 +79,15 @@ public class Container_UI : MonoBehaviour
 	{
 		if(neededCount > 0)
 		{
+			isPrepared = false;
 			neededCountText.enabled = true;
 			neededCountText.text = neededCount.ToString ();
 		}
 		else
+		{
 			neededCountText.enabled = false;
+			isPrepared = true;
+		}
 
 		if(preparedCount > 0)
 		{

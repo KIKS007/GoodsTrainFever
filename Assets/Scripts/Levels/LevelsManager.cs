@@ -12,18 +12,18 @@ public class LevelsManager : Singleton<LevelsManager>
 	public Transform level;
 
 	[Header ("Orders")]
-	public List<Level_Order> orders = new List<Level_Order> ();
+	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
-	public List<Level_Container> storageContainers = new List<Level_Container> ();
+	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
-	public List<Level_Train> rail1Trains = new List<Level_Train> ();
-	public List<Level_Train> rail2Trains = new List<Level_Train> ();
+	public List<Train_Level> rail1Trains = new List<Train_Level> ();
+	public List<Train_Level> rail2Trains = new List<Train_Level> ();
 
 	[Header ("Boats")]
 	public float boatsDuration;
-	public List<Level_Boat> boats = new List<Level_Boat> ();
+	public List<Boat_Level> boats = new List<Boat_Level> ();
 
 	// Use this for initialization
 	void Start () 
@@ -49,7 +49,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		boats = level.boats;
 	}
 
-	IEnumerator AddOrder (Level_Order order)
+	IEnumerator AddOrder (Order_Level order)
 	{
 		yield return new WaitForSecondsRealtime (order.delay);
 	}

@@ -308,7 +308,7 @@ public class Container : Touchable
 
 	public void SetupColor (ContainerColor c)
 	{
-		GlobalVariables gameManager = FindObjectOfType<GlobalVariables> ();
+		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
 
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
@@ -321,16 +321,16 @@ public class Container : Touchable
 		switch (c)
 		{
 		case ContainerColor.Red:
-			color = gameManager.redColor;
+			color = globalVariables.redColor;
 			break;
 		case ContainerColor.Blue:
-			color = gameManager.blueColor;
+			color = globalVariables.blueColor;
 			break;
 		case ContainerColor.Yellow:
-			color = gameManager.yellowColor;
+			color = globalVariables.yellowColor;
 			break;
 		case ContainerColor.Violet:
-			color = gameManager.violetColor;
+			color = globalVariables.violetColor;
 			break;
 		}
 

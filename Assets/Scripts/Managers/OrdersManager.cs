@@ -7,7 +7,11 @@ using Sirenix.OdinInspector;
 public class OrdersManager : Singleton<OrdersManager> 
 {
 	public RectTransform removeOrderTest;
-	public Level_Order levelOrderTest;
+	public Order_Level levelOrderTest;
+
+	[Header ("Orders")]
+	public List<Order_UI> orders = new List<Order_UI> ();
+	public List<Container> containersFromNoOrder;
 
 	[Header ("UI")]
 	public Ease ordersLayoutEase = Ease.OutQuad;
@@ -56,13 +60,43 @@ public class OrdersManager : Singleton<OrdersManager>
 		Container.OnContainerSelected += (c)=> FadeOutGroup ();
 		Container.OnContainerDeselected += (c)=> FadeInGroup ();
 
+		Train.OnContainerAdded += ContainerAdded;
+		Train.OnContainerRemoved += ContainerRemoved;
+
 		UpdateOrdersLayout ();
 	}
 	
-	// Update is called once per frame
-	void Update () 
+	void ContainerAdded (Container container)
 	{
+		foreach(var o in orders)
+		{
+			if (o.ContainerAdded (container))
+			{
+				//Debug.Log ("Container Valid");
+				return;
+			}
+		}
+
+		containersFromNoOrder.Add (container);
+
+		//Debug.Log ("No Container");
+	}
+
+	void ContainerRemoved (Container container)
+	{
+		if (containersFromNoOrder.Contains (container))
+			containersFromNoOrder.Remove (container);
 		
+		foreach(var o in orders)
+		{
+			if (o.ContainerRemoved (container))
+			{
+				//Debug.Log ("Container Valid");
+				return;
+			}
+		}
+
+		//Debug.Log ("No Container");
 	}
 
 	[PropertyOrder (-1)]
@@ -124,6 +158,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		if (order == null)
 			return;
 
+		orders.Remove (order.GetComponent<Order_UI> ());
+
 		order.DOAnchorPos (order.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
 		DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
 	}
@@ -135,7 +171,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		AddOrder (levelOrderTest);
 	}
 
-	void AddOrder (Level_Order levelOrder)
+	void AddOrder (Order_Level levelOrder)
 	{
 		if(levelOrder == null)
 		{
@@ -146,6 +182,9 @@ public class OrdersManager : Singleton<OrdersManager>
 		//Create Order Elements
 		Vector2 panelPosition = new Vector2 (1500f, topPadding);
 		RectTransform panel = (Instantiate (orderPanel, orderPanel.transform.localPosition, orderPanel.transform.localRotation, ordersScrollView)).GetComponent<RectTransform> ();
+		Order_UI orderUI = panel.GetComponent<Order_UI> ();
+
+		orders.Add (orderUI);
 
 		ResetRectTransform (panel);
 		panel.anchoredPosition = panelPosition;
@@ -165,8 +204,10 @@ public class OrdersManager : Singleton<OrdersManager>
 			RectTransform container = (Instantiate (containerPrefab, Vector3.zero, Quaternion.identity, panel)).GetComponent<RectTransform> ();
 
 			Container_UI containerUI = container.GetComponent<Container_UI> ();
-			containerUI.Setup (c.containerCount != 0 ? c.containerCount : 1, c.containerType);
+			containerUI.Setup (c);
 			container.position = Vector3.zero;
+
+			orderUI.containers.Add (containerUI);
 
 			Vector2 position = new Vector2 ();
 
@@ -180,6 +221,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 
 		//Debug.Log ("Row: " + rowsCount + " Lines: " + linesCount);
+
+		orderUI.Setup ();
 
 		SetPanelSize (panel, rowsCount);
 

@@ -6,47 +6,47 @@ using Sirenix.OdinInspector;
 public class Level : MonoBehaviour 
 {
 	[Header ("Orders")]
-	public List<Level_Order> orders = new List<Level_Order> ();
+	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
-	public List<Level_Container> storageContainers = new List<Level_Container> ();
+	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
-	public List<Level_Train> rail1Trains = new List<Level_Train> ();
-	public List<Level_Train> rail2Trains = new List<Level_Train> ();
+	public List<Train_Level> rail1Trains = new List<Train_Level> ();
+	public List<Train_Level> rail2Trains = new List<Train_Level> ();
 
 	[Header ("Boats")]
 	public float boatsDuration;
-	public List<Level_Boat> boats = new List<Level_Boat> ();
+	public List<Boat_Level> boats = new List<Boat_Level> ();
 }
 
 [System.Serializable]
-public class Level_Order
+public class Order_Level
 {
 	public float delay;
 
-	public List<Level_Container> levelContainers = new List<Level_Container> ();
+	public List<Container_Level> levelContainers = new List<Container_Level> ();
 }
 
 [System.Serializable]
-public class Level_Train
+public class Train_Level
 {
 	public int trainDuration;
-	public List<Level_Wagon> wagons;
+	public List<Wagon_Level> wagons;
 }
 
 [System.Serializable]
-public class Level_Boat
+public class Boat_Level
 {
 	public bool overrideDuration = false;
 	[ShowIfAttribute ("overrideDuration")]
 	public float duration;
 
-	public List<Level_Container> boatContainers = new List<Level_Container> ();
+	public List<Container_Level> boatContainers = new List<Container_Level> ();
 }
 
 [System.Serializable]
-public class Level_Container
+public class Container_Level
 {
 	public ContainerType containerType;
 	public ContainerColor containerColor = ContainerColor.Random;
@@ -56,7 +56,7 @@ public class Level_Container
 }
 
 [System.Serializable]
-public class Level_Wagon
+public class Wagon_Level
 {
 	public WagonType wagonType = WagonType.Fourty;
 	public int wagonMaxWeight;

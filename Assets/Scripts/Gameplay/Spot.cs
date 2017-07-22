@@ -11,7 +11,7 @@ public enum SpotType { Train, Storage, Boat, Road }
 public class Spot : Touchable 
 {
 	public Action<Container> OnSpotTaken;
-	public Action OnSpotFreed;
+	public Action<Container> OnSpotFreed;
 
 	[Header ("Spot")]
 	public SpotType spotType;
@@ -194,7 +194,7 @@ public class Spot : Touchable
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
 		Vector3 position = transform.position;
-		position.y += 0.5f;
+		//position.y += 0.25f;
 
 		RaycastHit hit;
 		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
@@ -214,6 +214,10 @@ public class Spot : Touchable
 
 		if(container != null && container.spotOccupied != null && container.spotOccupied == this)
 			isOccupied = true;
+
+		if(!isOccupied && !isDoubleSize && spotType == SpotType.Storage)
+			Debug.Log (hit.collider, this);
+
 	}
 
 	bool CanPileContainer ()
@@ -284,13 +288,13 @@ public class Spot : Touchable
 	{
 		isOccupied = false;
 
+		if (OnSpotFreed != null)
+			OnSpotFreed (container);
+		
 		container = null;
 
 		foreach (var s in _overlappingSpots)
 			s.OverlappingSpotsOccupied ();
-
-		if (OnSpotFreed != null)
-			OnSpotFreed ();
 	}
 
 	public override void OnTouchUpAsButton ()

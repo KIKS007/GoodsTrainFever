@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Train : Touchable 
 {
+	public static Action<Container> OnContainerAdded;
+	public static Action<Container> OnContainerRemoved;
+
 	[Header ("States")]
 	public bool inTransition = false;
 
@@ -136,21 +140,25 @@ public class Train : Touchable
 
 		//Update Train Containers
 		spot.OnSpotTaken += (arg) => containers [trainContainersIndex] = arg;
-		spot.OnSpotFreed += () => containers [trainContainersIndex] = null;
+		spot.OnSpotFreed += (arg) => containers [trainContainersIndex] = null;
 
 		//Update Wagon Containers
 		spot.OnSpotTaken += (arg) => spot._wagon.containers [wagonContainersIndex] = arg;
-		spot.OnSpotFreed += () => spot._wagon.containers [wagonContainersIndex] = null;
+		spot.OnSpotFreed += (arg) => spot._wagon.containers [wagonContainersIndex] = null;
 
 		//Update Weight
 		spot.OnSpotTaken += (arg) => spot._wagon.UpdateWeight ();
-		spot.OnSpotFreed += () => spot._wagon.UpdateWeight ();
+		spot.OnSpotFreed += (arg) => spot._wagon.UpdateWeight ();
 
 		if(spot.container)
 		{
 			containers [trainContainersIndex] = spot.container;
 			spot._wagon.containers [wagonContainersIndex] = spot.container;
 		}
+
+		//Update Train Events
+		spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
+		spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
 	}
 
 	public void UpdateWeight ()
