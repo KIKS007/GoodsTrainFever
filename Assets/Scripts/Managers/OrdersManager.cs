@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 public class OrdersManager : Singleton<OrdersManager> 
 {
 	public RectTransform removeOrderTest;
+	public Level_Order levelOrderTest;
 
 	[Header ("UI")]
 	public Ease ordersLayoutEase = Ease.OutQuad;
@@ -14,7 +15,20 @@ public class OrdersManager : Singleton<OrdersManager>
 	public CanvasGroup ordersCanvasGroup;
 	public RectTransform ordersScrollView;
 
+	[Header ("Orders Prefabs")]
+	public GameObject orderPanel;
+	public GameObject container20;
+	public GameObject container40;
+
 	[Header ("Orders Layout")]
+	public float ordersPanelWidth = 165f;
+	public float ordersPanelHeightOffset = 40f;
+	public float containersTopPadding;
+	public float containersLineSpacing;
+	public float containersRowSpacing;
+	public int maxLinesCount = 4;
+
+	[Header ("Overall Layout")]
 	public float ordersSpacing;
 	public float ordersLayoutDuration = 0.2f;
 	public float ordersLayoutDelay;
@@ -114,9 +128,104 @@ public class OrdersManager : Singleton<OrdersManager>
 		DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
 	}
 
+	[PropertyOrder (-1)]
+	[Button ("Add Order")]
+	void AddOrderTest ()
+	{
+		AddOrder (levelOrderTest);
+	}
+
 	void AddOrder (Level_Order levelOrder)
 	{
-		
+		if(levelOrder == null)
+		{
+			Debug.LogError ("Invalid LevelOrder!", this);
+			return;
+		}
+
+		//Create Order Elements
+		Vector2 panelPosition = new Vector2 (1500f, topPadding);
+		RectTransform panel = (Instantiate (orderPanel, orderPanel.transform.localPosition, orderPanel.transform.localRotation, ordersScrollView)).GetComponent<RectTransform> ();
+
+		ResetRectTransform (panel);
+		panel.anchoredPosition = panelPosition;
+
+		int linesCount = 0;
+		int rowsCount = 1;
+
+		foreach(var c in levelOrder.levelContainers)
+		{
+			if (linesCount == maxLinesCount)
+			{
+				linesCount = 0;
+				rowsCount++;
+			}
+
+			GameObject containerPrefab = c.isDoubleSize ? container40 : container20;
+			RectTransform container = (Instantiate (containerPrefab, Vector3.zero, Quaternion.identity, panel)).GetComponent<RectTransform> ();
+
+			Container_UI containerUI = container.GetComponent<Container_UI> ();
+			containerUI.Setup (c.containerCount != 0 ? c.containerCount : 1, c.containerType);
+			container.position = Vector3.zero;
+
+			Vector2 position = new Vector2 ();
+
+			position.y = containersTopPadding;
+			position.y -= containersLineSpacing * linesCount;
+
+			linesCount++;
+
+			ResetRectTransform (container);
+			container.anchoredPosition = position;
+		}
+
+		//Debug.Log ("Row: " + rowsCount + " Lines: " + linesCount);
+
+		SetPanelSize (panel, rowsCount);
+
+		SetContainersPositions (panel);
+
+		UpdateOrdersLayout ();
+	}
+
+	void SetPanelSize (RectTransform panel, int rowsCount)
+	{
+		float width = ordersPanelWidth * rowsCount;
+		width += containersRowSpacing * (rowsCount + 1);
+
+		float height = containersLineSpacing * maxLinesCount + ordersPanelHeightOffset;
+
+		panel.sizeDelta = new Vector2 (width, height);
+	}
+
+	void SetContainersPositions (RectTransform panel)
+	{
+		int linesCount = 0;
+		int rowsCount = 1;
+
+		for(int i = 1; i < panel.childCount; i++)
+		{
+			if (linesCount == maxLinesCount)
+			{
+				linesCount = 0;
+				rowsCount++;
+			}
+
+			RectTransform rect = panel.GetChild (i).GetComponent<RectTransform> ();
+			Vector2 position = rect.anchoredPosition;
+
+			position.x = (ordersPanelWidth * 0.5f) + containersRowSpacing + ( (rowsCount - 1) * (ordersPanelWidth + containersRowSpacing) );
+
+			rect.anchoredPosition = position;
+
+			linesCount++;
+		}
+	}
+
+	void ResetRectTransform (RectTransform rect)
+	{
+		rect.localRotation = Quaternion.Euler (Vector3.zero);
+		rect.localPosition = Vector3.zero;
 	}
 
 	void FadeOutGroup ()

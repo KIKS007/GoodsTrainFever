@@ -49,6 +49,11 @@ public class LevelsManager : Singleton<LevelsManager>
 		boats = level.boats;
 	}
 
+	IEnumerator AddOrder (Level_Order order)
+	{
+		yield return new WaitForSecondsRealtime (order.delay);
+	}
+
 	#region Level Start
 	public void StartLevel (int index)
 	{
