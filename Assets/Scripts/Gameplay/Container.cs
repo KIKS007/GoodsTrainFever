@@ -42,7 +42,8 @@ public class Container : Touchable
 	[HideInInspector]
 	public Collider _collider;
 
-	private Spot[] _pileSpots = new Spot[0];
+	[HideInInspector]
+	public Spot[] _pileSpots = new Spot[0];
 	private Material _material;
 	private Text _weightText;
 	private Image _weightImage;

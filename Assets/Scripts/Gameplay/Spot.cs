@@ -110,7 +110,7 @@ public class Spot : Touchable
 			isPileSpot = false;
 	}
 
-	void GetOverlappingSpots ()
+	public void GetOverlappingSpots ()
 	{
 		int spotsMask = 1 << LayerMask.NameToLayer ("Spots");
 
@@ -131,6 +131,10 @@ public class Spot : Touchable
 		}
 
 		_overlappingSpots = _overlappingSpots.OrderByDescending (x => x.transform.position.x).ToList ();
+
+		if (_isSpawned)
+			foreach (var o in _overlappingSpots)
+				o._overlappingSpots.Add (this);
 	}
 
 	public void OverlappingSpotsOccupied ()
@@ -394,6 +398,15 @@ public class Spot : Touchable
 
 		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40Prefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
 		_doubleSizeSpotSpawned._isSpawned = true;
+
+		_doubleSizeSpotSpawned._overlappingSpots.Clear ();
+
+		foreach(var o in _overlappingSpots)
+			foreach (var p in o.container._pileSpots)
+				_doubleSizeSpotSpawned._overlappingSpots.Add (p);
+
+		_doubleSizeSpotSpawned.GetOverlappingSpots ();
+
 		_doubleSizeSpotSpawned.OnContainerSelected (c);
 	}
 
@@ -404,5 +417,9 @@ public class Spot : Touchable
 
 		Container.OnContainerSelected -= OnContainerSelected;
 		Container.OnContainerDeselected -= OnContainerDeselected;
+
+		if (_isSpawned)
+			foreach (var o in _overlappingSpots)
+				o._overlappingSpots.Remove (this);
 	}
 }
