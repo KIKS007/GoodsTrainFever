@@ -402,8 +402,16 @@ public class Spot : Touchable
 			return null;
 
 		foreach (var s in _overlappingSpots)
+		{
 			if (s.isOccupied == false)
 				return null;
+			else
+			{
+				foreach(var pileSpot in s.container._pileSpots)
+					if(pileSpot.isOccupied)	
+						return null;
+			}
+		}
 
 		Vector3 spotPosition = transform.position;
 		spotPosition.y += ContainersMovementManager.Instance.containerHeight;

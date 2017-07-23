@@ -16,7 +16,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
-	public int firstLevelContainersCount = 6;
+	public bool spawnDoubleSizeFirst = false;
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
@@ -94,6 +94,22 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		yield return new WaitForEndOfFrame ();
 
+		List<Container_Level> containers_Levels = new List<Container_Level> ();
+
+		//Sort Containers_Levels
+		if(spawnDoubleSizeFirst)
+		{
+			foreach (var c in storageContainers)
+				if (c.isDoubleSize)
+					containers_Levels.Add (c);
+
+			foreach (var c in storageContainers)
+				if (!c.isDoubleSize)
+					containers_Levels.Add (c);
+		}
+		else
+			containers_Levels.AddRange (storageContainers);
+		
 		//spots.Clear ();
 
 		List<Spot> spots = new List<Spot> ();
@@ -101,17 +117,20 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		var spotsArray = _storage.transform.GetComponentsInChildren<Spot> ().ToList ();
 
+		//Get & Sort Spots
 		foreach (var s in spotsArray)
 			if (!s.isPileSpot && !s._isSpawned)
 				spots.Add (s);
 
-		foreach(var containterLevel in storageContainers)
+		//Spawn Containers & Assign Spot
+		foreach(var containterLevel in containers_Levels)
 		{
 			Container container = CreateContainer (containterLevel, _storage.containersParent);
 
 			spotsTemp.Clear ();
 			spotsTemp.AddRange (spots);
 
+			//Add Spawned Spots
 			if(containterLevel.isDoubleSize)
 			{
 				foreach(var s in spots)
@@ -126,6 +145,7 @@ public class LevelsManager : Singleton<LevelsManager>
 				}
 			}
 
+			//Remove Invalid Spots
 			foreach(var s in spots)
 			{
 				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
@@ -138,9 +158,8 @@ public class LevelsManager : Singleton<LevelsManager>
 				break;
 			}
 
+			//Take Spot
 			Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
-
-			Debug.Log (spotTaken +  " : " + spotTaken.transform.parent , container);
 
 			spots.Remove (spotTaken);
 			spots.AddRange (container._pileSpots);
@@ -169,6 +188,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			break;
 		}
 
+		if(container_Level.containerColor == ContainerColor.Random)
+			container_Level.containerColor = (ContainerColor) UnityEngine.Random.Range (1, 5);
+			
 		Container container = (Instantiate (prefab, parent.position, Quaternion.identity, parent)).GetComponent<Container> ();
 
 		container.Setup (container_Level);
