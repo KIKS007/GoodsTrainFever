@@ -194,7 +194,6 @@ public class Spot : Touchable
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
 		Vector3 position = transform.position;
-		//position.y += 0.25f;
 
 		RaycastHit hit;
 		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
@@ -214,10 +213,6 @@ public class Spot : Touchable
 
 		if(container != null && container.spotOccupied != null && container.spotOccupied == this)
 			isOccupied = true;
-
-		if(!isOccupied && !isDoubleSize && spotType == SpotType.Storage)
-			Debug.Log (hit.collider, this);
-
 	}
 
 	bool CanPileContainer ()

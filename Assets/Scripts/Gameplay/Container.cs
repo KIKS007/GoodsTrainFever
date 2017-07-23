@@ -350,7 +350,7 @@ public class Container : Touchable
 			c.SetupColor ();
 	}
 
-	[PropertyOrder (-1)]
+	[PropertyOrder (0)]
 	[ButtonAttribute ("Take Spot")]
 	public void EditorTakeSpot ()
 	{
@@ -360,7 +360,9 @@ public class Container : Touchable
 			return;
 		}
 
-		transform.position = spotOccupied.transform.position;
+		Vector3 position = spotOccupied.transform.position;
+		position.y += 0.01f;
+		transform.position = position;
 
 		spotOccupied = null;
 	}
