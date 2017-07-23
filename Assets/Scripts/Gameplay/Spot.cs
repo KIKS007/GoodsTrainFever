@@ -104,7 +104,7 @@ public class Spot : Touchable
 
 	public void SetIsPileSpot ()
 	{
-		if (transform.parent.GetComponent<Container> () != null)
+		if (transform.parent.GetComponent<Container> () != null || transform.parent.parent.GetComponent<Container> () != null)
 			isPileSpot = true;
 		else
 			isPileSpot = false;
@@ -215,7 +215,20 @@ public class Spot : Touchable
 			isOccupied = true;
 	}
 
-	bool CanPileContainer ()
+	public void SetInitialContainer (Container c)
+	{
+		if(!IsSameSize (c))
+		{
+			Debug.LogWarning ("Not Same Size with " + c.name + " !", this);
+			return;
+		}
+
+		isOccupied = true;
+
+		c.SetInitialSpot (this);
+	}
+
+	public bool CanPileContainer ()
 	{
 		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
 
@@ -349,7 +362,7 @@ public class Spot : Touchable
 		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
 	}
 
-	bool IsSameSize (Container container)
+	public bool IsSameSize (Container container)
 	{
 		if(isDoubleSize && container.isDoubleSize || !isDoubleSize && !container.isDoubleSize)
 			return true;
@@ -365,37 +378,37 @@ public class Spot : Touchable
 			s.isPileUp = piled;
 	}
 
-	void SpawnDoubleSizeSpot (Container c)
+	public Spot SpawnDoubleSizeSpot (Container c, bool selectOnStart = true)
 	{
 		if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.isOccupied)
-			return;
+			return null;
 
 		if (_doubleSizeSpotSpawned)
 			Destroy (_doubleSizeSpotSpawned.gameObject);
 
 		if (!c.isDoubleSize)
-			return;
+			return null;
 		
 		if (spotType == SpotType.Train)
-			return;
+			return null;
 
 		if (!isDoubleSize)
-			return;
+			return null;
 		
 		if (container)
-			return;
+			return null;
 
 		if (isPileUp)
-			return;
+			return null;
 
 		foreach (var s in _overlappingSpots)
 			if (s.isOccupied == false)
-				return;
+				return null;
 
 		Vector3 spotPosition = transform.position;
 		spotPosition.y += ContainersMovementManager.Instance.containerHeight;
 
-		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40Prefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
+		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
 		_doubleSizeSpotSpawned._isSpawned = true;
 
 		_doubleSizeSpotSpawned._overlappingSpots.Clear ();
@@ -406,7 +419,10 @@ public class Spot : Touchable
 
 		_doubleSizeSpotSpawned.GetOverlappingSpots ();
 
-		_doubleSizeSpotSpawned.OnContainerSelected (c);
+		if(selectOnStart)
+			_doubleSizeSpotSpawned.OnContainerSelected (c);
+
+		return _doubleSizeSpotSpawned;
 	}
 
 	void OnDestroy ()

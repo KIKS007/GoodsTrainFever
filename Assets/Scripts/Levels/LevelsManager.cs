@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System.Linq;
 
 public class LevelsManager : Singleton<LevelsManager> 
 {
@@ -15,6 +16,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
+	public int firstLevelContainersCount = 6;
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
@@ -25,10 +27,23 @@ public class LevelsManager : Singleton<LevelsManager>
 	public float boatsDuration;
 	public List<Boat_Level> boats = new List<Boat_Level> ();
 
+	[Header ("Containers Prefabs")]
+	public GameObject[] basicContainersPrefabs = new GameObject[2];
+	public GameObject[] cooledContainersPrefabs = new GameObject[2];
+	public GameObject[] tankContainersPrefabs = new GameObject[2];
+	public GameObject[] dangerousContainersPrefabs = new GameObject[2];
+
+	private Storage _storage;
+	private Boat _boat;
+
+	//public	List<Spot> spots = new List<Spot> ();
+	//public List<Spot> spotsTemp = new List<Spot> ();
+
 	// Use this for initialization
 	void Start () 
 	{
-		
+		_storage = FindObjectOfType<Storage> ();
+		_boat = FindObjectOfType<Boat> ();
 	}
 
 	public void LoadLevel (Transform l)
@@ -52,6 +67,113 @@ public class LevelsManager : Singleton<LevelsManager>
 	IEnumerator AddOrder (Order_Level order)
 	{
 		yield return new WaitForSecondsRealtime (order.delay);
+	}
+
+	void EmptyZone (Transform parent)
+	{
+		foreach (Transform c in parent)
+		{
+			var container = c.GetComponent<Container> ();
+
+			if (container != null)
+				container.RemoveContainer ();
+			
+			Destroy (c.gameObject);
+		}
+	}
+
+	[Button]
+	void FillStorageZonetest ()
+	{
+		StartCoroutine (FillStorageZone ());
+	}
+
+	IEnumerator FillStorageZone ()
+	{
+		EmptyZone (_storage.containersParent);
+
+		yield return new WaitForEndOfFrame ();
+
+		//spots.Clear ();
+
+		List<Spot> spots = new List<Spot> ();
+		List<Spot> spotsTemp = new List<Spot> ();
+
+		var spotsArray = _storage.transform.GetComponentsInChildren<Spot> ().ToList ();
+
+		foreach (var s in spotsArray)
+			if (!s.isPileSpot && !s._isSpawned)
+				spots.Add (s);
+
+		foreach(var containterLevel in storageContainers)
+		{
+			Container container = CreateContainer (containterLevel, _storage.containersParent);
+
+			spotsTemp.Clear ();
+			spotsTemp.AddRange (spots);
+
+			if(containterLevel.isDoubleSize)
+			{
+				foreach(var s in spots)
+				{
+					if(s.isDoubleSize)
+					{
+						Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
+
+						if (spotSpawned != null)
+							spotsTemp.Add (spotSpawned);
+					}
+				}
+			}
+
+			foreach(var s in spots)
+			{
+				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
+					spotsTemp.Remove (s);
+			}
+
+			if(spotsTemp.Count == 0)
+			{
+				Debug.LogError ("No more free spots!", this);
+				break;
+			}
+
+			Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
+
+			Debug.Log (spotTaken +  " : " + spotTaken.transform.parent , container);
+
+			spots.Remove (spotTaken);
+			spots.AddRange (container._pileSpots);
+
+			spotTaken.SetInitialContainer (container);
+		}
+	}
+
+	Container CreateContainer (Container_Level container_Level, Transform parent)
+	{
+		GameObject prefab = basicContainersPrefabs [0];
+
+		switch (container_Level.containerType)
+		{
+		case ContainerType.Basic:
+			prefab = container_Level.isDoubleSize ? basicContainersPrefabs [1] : basicContainersPrefabs [0];
+			break;
+		case ContainerType.Cooled:
+			prefab = container_Level.isDoubleSize ? cooledContainersPrefabs [1] : cooledContainersPrefabs [0];
+			break;
+		case ContainerType.Tank:
+			prefab = container_Level.isDoubleSize ? tankContainersPrefabs [1] : tankContainersPrefabs [0];
+			break;
+		case ContainerType.Dangerous:
+			prefab = container_Level.isDoubleSize ? dangerousContainersPrefabs [1] : dangerousContainersPrefabs [0];
+			break;
+		}
+
+		Container container = (Instantiate (prefab, parent.position, Quaternion.identity, parent)).GetComponent<Container> ();
+
+		container.Setup (container_Level);
+
+		return container;
 	}
 
 	#region Level Start

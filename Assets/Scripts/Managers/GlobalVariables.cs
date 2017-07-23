@@ -28,7 +28,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("Spots Prefabs")]
 	public GameObject spot20Prefab;
 	public GameObject spot40Prefab;
-
+	public GameObject spot40SpawnedPrefab;
 
 	[PropertyOrder (-1)]
 	[ButtonAttribute ("Update Is Double Size")]

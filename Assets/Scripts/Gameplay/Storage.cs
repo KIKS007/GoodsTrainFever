@@ -7,13 +7,6 @@ public class Storage : MonoBehaviour
 	[Header ("Containers")]
 	public Transform containersParent;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	[Header ("Spots")]
+	public Transform spotsParent;
 }

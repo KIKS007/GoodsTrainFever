@@ -63,11 +63,22 @@ public class Container : Touchable
 
 		SetIsDoubleSize ();
 
-		SetupColor ();
+		//SetupColor ();
 
-		SetWeight ();
+		//SetWeight ();
 
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
+	}
+
+	public void Setup (Container_Level container_Level)
+	{
+		containerType = container_Level.containerType;
+
+		SetupColor (container_Level.containerColor);
+
+		weight = container_Level.containerWeight;
+
+		SetIsDoubleSize ();
 	}
 
 	public void SetIsDoubleSize ()
@@ -99,6 +110,10 @@ public class Container : Touchable
 			wagon = spot._wagon;
 			train = wagon.train;
 		}
+
+		spot.SetContainer (this);
+
+		//Debug.Log (spotOccupied, this);
 	}
 
 	void SetWeight ()
@@ -197,7 +212,8 @@ public class Container : Touchable
 		if(ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
 
-		spotOccupied.RemoveContainer ();
+		RemoveContainer ();
+
 		spot.SetContainer (this);
 
 		spotOccupied = spot;
@@ -225,6 +241,14 @@ public class Container : Touchable
 		
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
+	}
+
+	public void RemoveContainer ()
+	{
+		if(spotOccupied != null)
+			spotOccupied.RemoveContainer ();
+
+		spotOccupied = null;
 	}
 
 	void SetPileSpot ()
@@ -363,7 +387,5 @@ public class Container : Touchable
 		Vector3 position = spotOccupied.transform.position;
 		position.y += 0.01f;
 		transform.position = position;
-
-		spotOccupied = null;
 	}
 }
