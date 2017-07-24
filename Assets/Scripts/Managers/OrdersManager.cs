@@ -153,15 +153,44 @@ public class OrdersManager : Singleton<OrdersManager>
 		RemoveOrder (removeOrderTest);
 	}
 
-	public void RemoveOrder (RectTransform order)
+	public void RemoveOrder (RectTransform order, bool animated = true)
 	{
 		if (order == null)
 			return;
 
 		orders.Remove (order.GetComponent<Order_UI> ());
 
-		order.DOAnchorPos (order.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
-		DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
+		if(animated)
+		{
+			order.DOAnchorPos (order.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
+			DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
+		}
+		else
+		{
+			Destroy (order.gameObject);
+			UpdateOrdersLayout (true, order);
+		}
+	}
+
+	public void RemoveOrder (Order_UI order, bool animated = true)
+	{
+		if (order == null)
+			return;
+
+		RectTransform orderRect = order.GetComponent<RectTransform> ();
+
+		orders.Remove (order);
+
+		if(animated)
+		{
+			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
+			DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, orderRect));
+		}
+		else
+		{
+			Destroy (order.gameObject);
+			UpdateOrdersLayout (true, orderRect);
+		}
 	}
 
 	[PropertyOrder (-1)]
@@ -283,5 +312,13 @@ public class OrdersManager : Singleton<OrdersManager>
 		DOTween.Kill (ordersCanvasGroup);
 
 		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase);
+	}
+
+	public void ClearOrders (bool animated)
+	{
+		List<Order_UI> ordersTemp = new List<Order_UI> (orders);
+
+		foreach (var o in ordersTemp)
+			RemoveOrder (o, animated);
 	}
 }

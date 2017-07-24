@@ -17,6 +17,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public bool selectedTrainHasMoved = false;
 	public Train trainContainerInMotion;
 
+	[Header ("Rails")]
+	public Rail rail1;
+	public Rail rail2;
+
 	[Header ("Hold")]
 	public HoldState holdState = HoldState.None;
 	public float holdDelay = 0.5f;
@@ -50,13 +54,17 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	[Header ("Train Length")]
 	public float wagonLength = 10f;
+	public float wagonFourtyLength;
+	public float wagonSixtyLength;
+	public float wagonEightyLength;
 	public float locomotiveLength = 10f;
 	public float offsetLength = 10f;
 
 	[Header ("Prefabs")]
 	public GameObject trainPrefab;
-	public GameObject wagonPrefab;
-	public GameObject wagonDoublePrefab;
+	public GameObject wagonFourtyPrefab;
+	public GameObject wagonSixtyPrefab;
+	public GameObject wagonEightyPrefab;
 
 	[Header ("Fast Forward")]
 	public float fastForwardDuration;
@@ -279,7 +287,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.Translate (position * Time.fixedDeltaTime);
 	}
 
-	public void SpawnTrain (Rail rail)
+	public void SpawnTrain (Rail rail, Train_Level train_Level)
 	{
 		if (rail.train != null)
 		{
@@ -296,20 +304,37 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
 
-		for(int i = 0; i < wagonsCount; i++)
+		Vector3 wagonPosition = position;
+		wagonPosition.x -= locomotiveLength;
+
+		foreach(var w in train_Level.wagons)
 		{
-			GameObject prefab = wagonPrefab;
+			GameObject prefab = wagonFourtyPrefab;
+			float wagonLength = 0;
 
-			if (UnityEngine.Random.Range (0, 100) < doubleSizeWagonChance)
-				prefab = wagonDoublePrefab;
+			switch (w.wagonType)
+			{
+			case WagonType.Fourty:
+				prefab = wagonFourtyPrefab;
+				wagonLength = wagonFourtyLength;
+				break;
+			case WagonType.Sixty:
+				prefab = wagonSixtyPrefab;
+				wagonLength = wagonSixtyLength;
+				break;
+			case WagonType.Eighty:
+				prefab = wagonSixtyPrefab;
+				wagonLength = wagonEightyLength;
+				break;
+			}
 
-			Vector3 wagonPosition = position;
-			wagonPosition.x -= locomotiveLength;
-			wagonPosition.x -= wagonLength * i;
+			wagonPosition.x -= wagonLength;
 
 			GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+			Wagon wagonScript = wagon.GetComponent<Wagon> ();
+			trainScript.wagons.Add (wagonScript);
 
-			trainScript.wagons.Add (wagon.GetComponent<Wagon> ());
+			wagonScript.maxWeight = w.wagonMaxWeight;
 		}
 
 		rail.train = trainScript;
@@ -329,15 +354,25 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		rail.train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
 			{
-				TrainsMovementManager.Instance.RemoveTrain (rail.train);
+				RemoveTrain (rail.train);
 				Destroy (rail.train.gameObject);
 			});
 	}
-		
-	public Rail railTest;
-	[ButtonAttribute ("Spawn Train")]
-	public void SpawnTrainTest ()
+
+	public void ClearTrains ()
 	{
-		SpawnTrain (railTest);
+		if(rail1.train)
+		{
+			GameObject t = rail1.train.gameObject;
+			RemoveTrain (rail1.train);
+			Destroy (t);
+		}
+
+		if(rail2.train)
+		{
+			GameObject t = rail2.train.gameObject;
+			RemoveTrain (rail2.train);
+			Destroy (t);
+		}
 	}
 }
