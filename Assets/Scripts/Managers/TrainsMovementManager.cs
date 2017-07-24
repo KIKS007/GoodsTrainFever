@@ -398,11 +398,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void FastForwardTrain (Rail rail)
 	{
+		StartCoroutine (FastForwardTrainCoroutine (rail));
+	}
+
+	IEnumerator FastForwardTrainCoroutine (Rail rail)
+	{
 		if (rail.train == null)
-			return;
+			yield break;
 
 		rail.train.inTransition = true;
 		rail.train.waitingDeparture = false;
+
+		if (trainContainerInMotion == rail.train)
+			yield return new WaitUntil (()=> trainContainerInMotion != rail.train);
 
 		float xPosition = xDeparturePosition1 + rail.train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
 
@@ -411,6 +419,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				RemoveTrain (rail.train);
 				Destroy (rail.train.gameObject);
 			});
+
+		yield return 0;
 	}
 
 	public void ClearTrains ()

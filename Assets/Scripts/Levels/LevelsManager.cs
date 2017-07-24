@@ -151,7 +151,6 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator SpawnTrain (List<Train_Level> train_Level, Rail rail)
 	{
-
 		foreach(var t in train_Level)
 		{
 			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, t);
@@ -182,96 +181,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	[Button]
 	void FillStorageZonetest ()
 	{
-		StartCoroutine (FillStorageZone ());
-	}
-
-	IEnumerator FillStorageZone ()
-	{
-		EmptyZone (_storage.containersParent);
-
-		List<Container_Level> containers_Base = new List<Container_Level> ();
-
-		//Get Containers To Spawn
-		if (spawnAllOrderContainers)
-			foreach (var o in orders)
-				containers_Base.AddRange (o.levelContainers);
-		else
-			containers_Base = storageContainers;
-
-		yield return new WaitForEndOfFrame ();
-
-
-		//Sort Containers_Levels
-		List<Container_Level> containers_Levels = new List<Container_Level> ();
-
-		if(spawnDoubleSizeFirst)
-		{
-			foreach (var c in containers_Base)
-				if (c.isDoubleSize)
-					containers_Levels.Add (c);
-
-			foreach (var c in containers_Base)
-				if (!c.isDoubleSize)
-					containers_Levels.Add (c);
-		}
-		else
-			containers_Levels.AddRange (containers_Base);
-
-
-		List<Spot> spots = new List<Spot> ();
-		List<Spot> spotsTemp = new List<Spot> ();
-
-		var spotsArray = _storage.transform.GetComponentsInChildren<Spot> ().ToList ();
-
-		//Get & Sort Spots
-		foreach (var s in spotsArray)
-			if (!s.isPileSpot && !s._isSpawned)
-				spots.Add (s);
-
-		//Spawn Containers & Assign Spot
-		foreach(var containterLevel in containers_Levels)
-		{
-			Container container = CreateContainer (containterLevel, _storage.containersParent);
-
-			spotsTemp.Clear ();
-			spotsTemp.AddRange (spots);
-
-			//Add Spawned Spots
-			if(containterLevel.isDoubleSize)
-			{
-				foreach(var s in spots)
-				{
-					if(s.isDoubleSize)
-					{
-						Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
-
-						if (spotSpawned != null)
-							spotsTemp.Add (spotSpawned);
-					}
-				}
-			}
-
-			//Remove Invalid Spots
-			foreach(var s in spots)
-			{
-				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
-					spotsTemp.Remove (s);
-			}
-
-			if(spotsTemp.Count == 0)
-			{
-				Debug.LogError ("No more free spots!", this);
-				break;
-			}
-
-			//Take Spot
-			Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
-
-			spots.Remove (spotTaken);
-			spots.AddRange (container._pileSpots);
-
-			spotTaken.SetInitialContainer (container);
-		}
+		StartCoroutine (FillContainerZone (storageContainers, _storage.transform, _storage.containersParent));
 	}
 
 	IEnumerator FillContainerZone (List<Container_Level> containers_Base, Transform zoneParent, Transform containersParent)
@@ -310,46 +220,52 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Spawn Containers & Assign Spot
 		foreach(var containterLevel in containers_Levels)
 		{
-			Container container = CreateContainer (containterLevel, containersParent);
+			if (containterLevel.containerCount == 0)
+				containterLevel.containerCount = 1;
 
-			spotsTemp.Clear ();
-			spotsTemp.AddRange (spots);
-
-			//Add Spawned Spots
-			if(containterLevel.isDoubleSize)
+			for(int i = 0; i < containterLevel.containerCount; i++)
 			{
-				foreach(var s in spots)
+				Container container = CreateContainer (containterLevel, containersParent);
+				
+				spotsTemp.Clear ();
+				spotsTemp.AddRange (spots);
+				
+				//Add Spawned Spots
+				if(containterLevel.isDoubleSize)
 				{
-					if(s.isDoubleSize)
+					foreach(var s in spots)
 					{
-						Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
-
-						if (spotSpawned != null)
-							spotsTemp.Add (spotSpawned);
+						if(s.isDoubleSize)
+						{
+							Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
+							
+							if (spotSpawned != null)
+								spotsTemp.Add (spotSpawned);
+						}
 					}
 				}
+				
+				//Remove Invalid Spots
+				foreach(var s in spots)
+				{
+					if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
+						spotsTemp.Remove (s);
+				}
+				
+				if(spotsTemp.Count == 0)
+				{
+					Debug.LogError ("No more free spots!", this);
+					break;
+				}
+				
+				//Take Spot
+				Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
+				
+				spots.Remove (spotTaken);
+				spots.AddRange (container._pileSpots);
+				
+				spotTaken.SetInitialContainer (container);
 			}
-
-			//Remove Invalid Spots
-			foreach(var s in spots)
-			{
-				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
-					spotsTemp.Remove (s);
-			}
-
-			if(spotsTemp.Count == 0)
-			{
-				Debug.LogError ("No more free spots!", this);
-				break;
-			}
-
-			//Take Spot
-			Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
-
-			spots.Remove (spotTaken);
-			spots.AddRange (container._pileSpots);
-
-			spotTaken.SetInitialContainer (container);
 		}
 	}
 
