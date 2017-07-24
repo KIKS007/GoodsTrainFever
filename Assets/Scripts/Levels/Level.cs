@@ -9,6 +9,7 @@ public class Level : MonoBehaviour
 	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
+	public bool spawnAllOrderContainers = true;
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]

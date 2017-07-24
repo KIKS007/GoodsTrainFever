@@ -17,6 +17,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	[Header ("Storage")]
 	public bool spawnDoubleSizeFirst = false;
+	public bool spawnAllOrderContainers = true;
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
@@ -57,6 +58,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		Level level = l.GetComponent<Level> ();
 
 		orders = level.orders;
+		spawnAllOrderContainers = level.spawnAllOrderContainers;
 		storageContainers = level.storageContainers;
 		rail1Trains = level.rail1Trains;
 		rail2Trains = level.rail2Trains;
@@ -92,25 +94,34 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		EmptyZone (_storage.containersParent);
 
+		List<Container_Level> containers_Base = new List<Container_Level> ();
+
+		//Get Conainters To Spawn
+		if (spawnAllOrderContainers)
+			foreach (var o in orders)
+				containers_Base.AddRange (o.levelContainers);
+		else
+			containers_Base = storageContainers;
+
 		yield return new WaitForEndOfFrame ();
 
-		List<Container_Level> containers_Levels = new List<Container_Level> ();
 
 		//Sort Containers_Levels
+		List<Container_Level> containers_Levels = new List<Container_Level> ();
+
 		if(spawnDoubleSizeFirst)
 		{
-			foreach (var c in storageContainers)
+			foreach (var c in containers_Base)
 				if (c.isDoubleSize)
 					containers_Levels.Add (c);
 
-			foreach (var c in storageContainers)
+			foreach (var c in containers_Base)
 				if (!c.isDoubleSize)
 					containers_Levels.Add (c);
 		}
 		else
-			containers_Levels.AddRange (storageContainers);
-		
-		//spots.Clear ();
+			containers_Levels.AddRange (containers_Base);
+
 
 		List<Spot> spots = new List<Spot> ();
 		List<Spot> spotsTemp = new List<Spot> ();
