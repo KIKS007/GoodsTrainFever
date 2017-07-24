@@ -14,10 +14,17 @@ public class OrdersManager : Singleton<OrdersManager>
 	public List<Container> containersFromNoOrder;
 
 	[Header ("UI")]
+	public bool ordersHidden = false;
 	public Ease ordersLayoutEase = Ease.OutQuad;
 	public Canvas UICanvas;
 	public CanvasGroup ordersCanvasGroup;
 	public RectTransform ordersScrollView;
+
+	[Header ("Orders Feedback")]
+	public float containerFeedbackPunchScale = 0.3f;
+	public float containerAddedDuration = 0.2f;
+	public float containerRemovedHeight = 0.5f;
+	public float containerRemovedDuration = 0.2f;
 
 	[Header ("Orders Prefabs")]
 	public GameObject orderPanel;
@@ -304,6 +311,8 @@ public class OrdersManager : Singleton<OrdersManager>
 	{
 		DOTween.Kill (ordersCanvasGroup);
 
+		ordersHidden = true;
+
 		ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase);
 	}
 
@@ -311,7 +320,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	{
 		DOTween.Kill (ordersCanvasGroup);
 
-		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase);
+		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).OnComplete (()=> ordersHidden = false);
 	}
 
 	public void ClearOrders (bool animated)

@@ -50,16 +50,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float xArrivingPosition;
 	public float xDeparturePosition1;
 	public float xDeparturePosition2;
-	public float arrivingDuration = 0.5f;
+	public float arrivingSpeed = 0.5f;
 	public float arrivingDelay = 0;
 
-	[Header ("Train Composition")]
-	public int wagonsCount = 2;
-	[Range (0, 101)]
-	public int doubleSizeWagonChance = 50;
+	[Header ("Fast Forward")]
+	public float fastForwardSpeed;
+	public Ease fastForwardEase = Ease.OutQuad;
 
 	[Header ("Train Length")]
-	public float wagonLength = 10f;
 	public float wagonFourtyLength;
 	public float wagonSixtyLength;
 	public float wagonEightyLength;
@@ -71,10 +69,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public GameObject wagonFourtyPrefab;
 	public GameObject wagonSixtyPrefab;
 	public GameObject wagonEightyPrefab;
-
-	[Header ("Fast Forward")]
-	public float fastForwardDuration;
-	public Ease fastForwardEase = Ease.OutQuad;
 
 	[Header ("Train Values")]
 	public InputField touchMovementThresholdInput;
@@ -315,6 +309,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
 
+		float trainLength = locomotiveLength;
+
 		Vector3 wagonPosition = position;
 		wagonPosition.x -= locomotiveLength;
 
@@ -339,6 +335,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				break;
 			}
 
+			trainLength += wagonLength;
 			wagonPosition.x -= wagonLength;
 
 			GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
@@ -348,12 +345,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			wagonScript.maxWeight = w.wagonMaxWeight;
 		}
 
+		trainScript.trainLength = trainLength;
+
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
-		train.transform.DOMoveX (departurePosition, arrivingDuration).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false);
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
 
 		StartCoroutine (TrainDuration (rail, train_Level.trainDuration));
 
@@ -362,6 +361,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	IEnumerator TrainDuration (Rail rail, int duration)
 	{
+		yield return new WaitWhile (() => rail.train.inTransition);
+
 		Text trainText = null;
 		Button trainButton = null;
 
@@ -412,9 +413,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (trainContainerInMotion == rail.train)
 			yield return new WaitUntil (()=> trainContainerInMotion != rail.train);
 
-		float xPosition = xDeparturePosition1 + rail.train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
+		float xPosition = xDeparturePosition1 + rail.train.trainLength + offsetLength;
 
-		rail.train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
+		rail.train.transform.DOMoveX (xPosition, fastForwardSpeed).SetEase (fastForwardEase).SetSpeedBased ().OnComplete (()=> 
 			{
 				RemoveTrain (rail.train);
 				Destroy (rail.train.gameObject);

@@ -13,6 +13,9 @@ public class Train : Touchable
 	public bool inTransition = false;
 	public bool waitingDeparture = true;
 
+	[Header ("Length")]
+	public float trainLength;
+
 	[Header ("Containers")]
 	public Transform containersParent;
 	public List<Container> containers;

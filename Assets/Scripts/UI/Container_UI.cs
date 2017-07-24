@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Container_UI : MonoBehaviour 
 {
@@ -18,8 +19,12 @@ public class Container_UI : MonoBehaviour
 	public int neededCount;
 	public int preparedCount = 0;
 
+	private RectTransform _rectTransform;
+
 	public void Awake ()
 	{
+		_rectTransform = GetComponent<RectTransform> ();
+
 		preparedCount = 0;
 		preparedCountText.enabled = false;
 	}
@@ -65,6 +70,17 @@ public class Container_UI : MonoBehaviour
 		preparedCount++;
 
 		UpdateTexts ();
+
+		StartCoroutine (ContainerAddedFeedback ());
+	}
+
+	IEnumerator ContainerAddedFeedback ()
+	{
+		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+
+		DOTween.Kill (transform);
+
+		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale, OrdersManager.Instance.containerAddedDuration);
 	}
 
 	public void ContainerRemoved ()
@@ -73,6 +89,19 @@ public class Container_UI : MonoBehaviour
 		preparedCount--;
 
 		UpdateTexts ();
+
+		StartCoroutine (ContainerRemovedFeedback ());
+	}
+
+	IEnumerator ContainerRemovedFeedback ()
+	{
+		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+
+		DOTween.Kill (_rectTransform);
+
+		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);
+
+		//transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale, OrdersManager.Instance.containerRemovedDuration);
 	}
 
 	void UpdateTexts ()
