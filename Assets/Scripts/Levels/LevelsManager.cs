@@ -22,6 +22,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
+	public float waitDurationBetweenTrains = 2f;
 	public List<Train_Level> rail1Trains = new List<Train_Level> ();
 	public List<Train_Level> rail2Trains = new List<Train_Level> ();
 
@@ -112,6 +113,13 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Orders
 		foreach (var o in orders)
 			StartCoroutine (AddOrder (o));
+
+		//Trains
+		if (rail1Trains.Count > 0)
+			StartCoroutine (SpawnTrain (rail1Trains, TrainsMovementManager.Instance.rail1));
+
+		if (rail2Trains.Count > 0)
+			StartCoroutine (SpawnTrain (rail2Trains, TrainsMovementManager.Instance.rail2));
 	}
 
 	void RandomColors (List<Container_Level> containers)
@@ -139,6 +147,23 @@ public class LevelsManager : Singleton<LevelsManager>
 		yield return new WaitForSecondsRealtime (order.delay);
 
 		OrdersManager.Instance.AddOrder (order);
+	}
+
+	IEnumerator SpawnTrain (List<Train_Level> train_Level, Rail rail)
+	{
+
+		foreach(var t in train_Level)
+		{
+			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, t);
+
+			yield return new WaitWhile (()=> train.inTransition);
+
+			yield return new WaitWhile (()=> train.waitingDeparture);
+
+			yield return new WaitUntil (()=> train == null);
+
+			yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
+		}
 	}
 
 	void EmptyZone (Transform parent)

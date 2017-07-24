@@ -11,6 +11,7 @@ public class Train : Touchable
 
 	[Header ("States")]
 	public bool inTransition = false;
+	public bool waitingDeparture = true;
 
 	[Header ("Containers")]
 	public Transform containersParent;

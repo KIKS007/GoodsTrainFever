@@ -21,6 +21,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public Rail rail1;
 	public Rail rail2;
 
+	[Header ("Train Buttons")]
+	public Button rail1Button;
+	public Button rail2Button;
+	public Text rail1Text;
+	public Text rail2Text;
+
 	[Header ("Hold")]
 	public HoldState holdState = HoldState.None;
 	public float holdDelay = 0.5f;
@@ -42,7 +48,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	[Header ("Train Spawn")]
 	public float xArrivingPosition;
-	public float xDeparturePosition;
+	public float xDeparturePosition1;
 	public float xDeparturePosition2;
 	public float arrivingDuration = 0.5f;
 	public float arrivingDelay = 0;
@@ -189,10 +195,15 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		ResetTrainsVelocity ();
 
 		foreach (var t in allTrains)
+		{
+			if (t.inTransition)
+				continue;
+			
 			if(t.transform.position.z > -5)
-				t.transform.DOMoveX (xDeparturePosition, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+				t.transform.DOMoveX (xDeparturePosition1, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
 			else
 				t.transform.DOMoveX (xDeparturePosition2, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+		}
 	}
 
 	void TouchDown ()
@@ -287,12 +298,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.Translate (position * Time.fixedDeltaTime);
 	}
 
-	public void SpawnTrain (Rail rail, Train_Level train_Level)
+	public Train SpawnTrain (Rail rail, Train_Level train_Level)
 	{
 		if (rail.train != null)
 		{
 			Debug.LogWarning ("Rail has train!", this);
-			return;
+			return null;
 		}
 
 		Vector3 position = rail.transform.position;
@@ -340,7 +351,49 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
-		train.transform.DOMoveX (xDeparturePosition, arrivingDuration).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false);
+		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
+
+		train.transform.DOMoveX (departurePosition, arrivingDuration).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false);
+
+		StartCoroutine (TrainDuration (rail, train_Level.trainDuration));
+
+		return trainScript;
+	}
+
+	IEnumerator TrainDuration (Rail rail, int duration)
+	{
+		Text trainText = null;
+		Button trainButton = null;
+
+		if (rail == rail1)
+		{
+			trainButton = rail1Button;
+			trainText = rail1Text;
+		}
+		else
+		{
+			trainButton = rail2Button;
+			trainText = rail2Text;
+		}
+
+		if (!trainButton.interactable)
+			trainButton.interactable = true;
+
+		trainText.text = duration.ToString ();
+
+		do
+		{
+			yield return new WaitForSecondsRealtime (1f);
+			duration--;
+			trainText.text = duration.ToString ();
+		}
+		while (duration > 0);
+
+		if(rail.train != null && !rail.train.inTransition)
+		{
+			trainButton.interactable = false;
+			FastForwardTrain (rail);
+		}
 	}
 
 	public void FastForwardTrain (Rail rail)
@@ -349,8 +402,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			return;
 
 		rail.train.inTransition = true;
+		rail.train.waitingDeparture = false;
 
-		float xPosition = xDeparturePosition + rail.train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
+		float xPosition = xDeparturePosition1 + rail.train.wagons.Count * wagonLength + locomotiveLength + offsetLength;
 
 		rail.train.transform.DOMoveX (xPosition, fastForwardDuration).SetEase (fastForwardEase).OnComplete (()=> 
 			{
@@ -365,6 +419,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		{
 			GameObject t = rail1.train.gameObject;
 			RemoveTrain (rail1.train);
+			rail1.train = null;
 			Destroy (t);
 		}
 
@@ -372,6 +427,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		{
 			GameObject t = rail2.train.gameObject;
 			RemoveTrain (rail2.train);
+			rail2.train = null;
 			Destroy (t);
 		}
 	}
