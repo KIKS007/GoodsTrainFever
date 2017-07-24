@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum ContainerType { Basic, Cooled, Tank, Dangerous };
 
-public enum ContainerColor { Red = 1, Blue = 2, Yellow = 3, Violet = 4, Random = 0 }
+public enum ContainerColor { Red, Blue, Yellow, Violet }
 
 public class Container : Touchable 
 {

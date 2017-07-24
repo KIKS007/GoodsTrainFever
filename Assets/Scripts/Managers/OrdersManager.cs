@@ -106,7 +106,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		UpdateOrdersLayout (Application.isPlaying);
 	}
 
-	void UpdateOrdersLayout (bool animated = true, RectTransform orderToIgnore = null)
+	public void UpdateOrdersLayout (bool animated = true, RectTransform orderToIgnore = null)
 	{
 		Vector2 previousPosition = new Vector2 ();
 		float previousWidth = 0f;
@@ -153,7 +153,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		RemoveOrder (removeOrderTest);
 	}
 
-	void RemoveOrder (RectTransform order)
+	public void RemoveOrder (RectTransform order)
 	{
 		if (order == null)
 			return;
@@ -171,7 +171,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		AddOrder (levelOrderTest);
 	}
 
-	void AddOrder (Order_Level levelOrder)
+	public void AddOrder (Order_Level levelOrder)
 	{
 		if(levelOrder == null)
 		{

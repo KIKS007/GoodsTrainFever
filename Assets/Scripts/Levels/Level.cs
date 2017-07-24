@@ -50,7 +50,7 @@ public class Boat_Level
 public class Container_Level
 {
 	public ContainerType containerType;
-	public ContainerColor containerColor = ContainerColor.Random;
+	public ContainerColor containerColor;
 	public bool isDoubleSize = false;
 	public int containerWeight;
 	public int containerCount = 1;

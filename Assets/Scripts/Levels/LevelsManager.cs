@@ -13,6 +13,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public Transform level;
 
 	[Header ("Orders")]
+	public bool randomColors = false;
 	public List<Order_Level> orders = new List<Order_Level> ();
 
 	[Header ("Storage")]
@@ -36,6 +37,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	private Storage _storage;
 	private Boat _boat;
+	private int _randomColorOffset;
 
 	//public	List<Spot> spots = new List<Spot> ();
 	//public List<Spot> spotsTemp = new List<Spot> ();
@@ -47,7 +49,17 @@ public class LevelsManager : Singleton<LevelsManager>
 		_boat = FindObjectOfType<Boat> ();
 	}
 
-	public void LoadLevel (Transform l)
+	void ClearLevelSettings ()
+	{
+		orders.Clear ();
+		storageContainers.Clear ();
+		rail1Trains = null;
+		rail2Trains = null;
+		boatsDuration = 0;
+		boats.Clear ();
+	}
+
+	public void LoadLevelSettings (Transform l)
 	{
 		if(l == null)
 		{
@@ -55,20 +67,65 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
+		ClearLevelSettings ();
+
+		if (randomColors)
+			_randomColorOffset = Random.Range (0, 4);
+		else
+			_randomColorOffset = 0;
+		
 		Level level = l.GetComponent<Level> ();
 
-		orders = level.orders;
+		orders.AddRange (level.orders);
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
-		storageContainers = level.storageContainers;
+		storageContainers.AddRange (level.storageContainers);
 		rail1Trains = level.rail1Trains;
 		rail2Trains = level.rail2Trains;
 		boatsDuration = level.boatsDuration;
-		boats = level.boats;
+		boats.AddRange (level.boats);
+
+		foreach(var o in orders)
+			RandomColors (o.levelContainers);
+
+		if (storageContainers.Count != 0)
+			RandomColors (storageContainers);
+
+		foreach (var b in boats)
+			RandomColors (b.boatContainers);
+
+		//Storage
+		StartCoroutine (FillStorageZone ());
+
+		//Orders
+		foreach (var o in orders)
+			StartCoroutine (AddOrder (o));
+	}
+
+	void RandomColors (List<Container_Level> containers)
+	{
+		Debug.Log ("randomOffset : " + _randomColorOffset);
+
+		foreach(var c in containers)
+		{
+			int color = (int)c.containerColor;
+
+			for(int i = 0; i < _randomColorOffset; i++)
+			{
+				color++;
+
+				if(color == 4)
+					color = 0;
+			}
+
+			c.containerColor = (ContainerColor)color;
+		}
 	}
 
 	IEnumerator AddOrder (Order_Level order)
 	{
 		yield return new WaitForSecondsRealtime (order.delay);
+
+		OrdersManager.Instance.AddOrder (order);
 	}
 
 	void EmptyZone (Transform parent)
@@ -198,9 +255,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			prefab = container_Level.isDoubleSize ? dangerousContainersPrefabs [1] : dangerousContainersPrefabs [0];
 			break;
 		}
-
-		if(container_Level.containerColor == ContainerColor.Random)
-			container_Level.containerColor = (ContainerColor) UnityEngine.Random.Range (1, 5);
+			
 			
 		Container container = (Instantiate (prefab, parent.position, Quaternion.identity, parent)).GetComponent<Container> ();
 
@@ -215,7 +270,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		levelIndex = index;
 		levelToStart = transform.GetChild (levelIndex);
 
-		LoadLevel (levelToStart);
+		LoadLevelSettings (levelToStart);
 	}
 
 	public void StartLevel (Transform l)
@@ -223,7 +278,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		level = l;
 		FindLevelIndex ();
 
-		LoadLevel (levelToStart);
+		LoadLevelSettings (levelToStart);
 	}
 
 	[ButtonGroup ("1", -1)]
@@ -232,7 +287,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (levelToStart == null)
 			return;
 
-		LoadLevel (levelToStart);
+		LoadLevelSettings (levelToStart);
 	}
 
 	[ButtonGroup ("1", -1)]
