@@ -6,11 +6,11 @@ using System.Linq;
 
 public class LevelsManager : Singleton<LevelsManager> 
 {
-	public Transform levelToStart;
+	public int levelToStart = 0;
+	public bool loadLevelOnStart = false;
 
 	[Header ("Level")]
 	public int levelIndex;
-	public Transform level;
 
 	[Header ("Orders")]
 	public bool randomColors = false;
@@ -48,6 +48,9 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		_storage = FindObjectOfType<Storage> ();
 		_boat = FindObjectOfType<Boat> ();
+
+		if (loadLevelOnStart)
+			LoadLevelSettings (levelToStart);
 	}
 
 	void ClearLevelSettings ()
@@ -64,13 +67,15 @@ public class LevelsManager : Singleton<LevelsManager>
 		OrdersManager.Instance.ClearOrders (false);
 	}
 
-	public void LoadLevelSettings (Transform l)
+	public void LoadLevelSettings (int index)
 	{
-		if(l == null)
+		if(index > transform.childCount - 1)
 		{
 			Debug.LogError ("Invalid Level!");
 			return;
 		}
+
+		levelIndex = index;
 
 		ClearLevelSettings ();
 
@@ -79,7 +84,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		else
 			_randomColorOffset = 0;
 		
-		Level level = l.GetComponent<Level> ();
+		Level level = transform.GetChild (index).GetComponent<Level> ();
 
 		orders.AddRange (level.orders);
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
@@ -124,7 +129,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	void RandomColors (List<Container_Level> containers)
 	{
-		Debug.Log ("randomOffset : " + _randomColorOffset);
+		//Debug.Log ("randomOffset : " + _randomColorOffset);
 
 		foreach(var c in containers)
 		{
@@ -158,6 +163,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitWhile (()=> train.inTransition);
 
 			yield return new WaitWhile (()=> train.waitingDeparture);
+
+			OrdersManager.Instance.TrainDeparture (train.containers);
 
 			yield return new WaitUntil (()=> train == null);
 
@@ -297,23 +304,19 @@ public class LevelsManager : Singleton<LevelsManager>
 		return container;
 	}
 
-	#region Level Start
-	public void StartLevel (int index)
+	public void OrderSent (Order_Level orderLevel)
 	{
-		levelIndex = index;
-		levelToStart = transform.GetChild (levelIndex);
-
-		LoadLevelSettings (levelToStart);
+		foreach(var o in orders)
+		{
+			if(o == orderLevel)
+			{
+				o.isPrepared = true;
+				return;
+			}
+		}
 	}
 
-	public void StartLevel (Transform l)
-	{
-		level = l;
-		FindLevelIndex ();
-
-		LoadLevelSettings (levelToStart);
-	}
-
+	#region Level Start		
 	[ButtonGroup ("1", -1)]
 	public void StartLevelTest ()
 	{
@@ -329,7 +332,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (levelIndex + 1 >= transform.childCount - 1)
 			return;
 
-		StartLevel (levelIndex + 1);
+		LoadLevelSettings (levelIndex + 1);
 	}
 	#endregion
 
@@ -340,16 +343,6 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		for (int i = 0; i < transform.childCount; i++)
 			transform.GetChild (i).name = "Level #" + i;
-	}
-
-	void FindLevelIndex ()
-	{
-		for(int i = 0; i < transform.childCount; i++)
-			if(transform.GetChild (i) == level)
-			{
-				levelIndex = i;
-				return;
-			}
 	}
 	#endregion
 }

@@ -7,7 +7,9 @@ using DG.Tweening;
 public class Container_UI : MonoBehaviour 
 {
 	public bool isPrepared = false;
-	public Container_Level container;
+	public bool isSent = false;
+	public Container_Level containerLevel;
+	public Container container;
 
 	[Header ("UI")]
 	public Image containerImage;
@@ -20,10 +22,12 @@ public class Container_UI : MonoBehaviour
 	public int preparedCount = 0;
 
 	private RectTransform _rectTransform;
+	private CanvasGroup _canvasGroup;
 
 	public void Awake ()
 	{
 		_rectTransform = GetComponent<RectTransform> ();
+		_canvasGroup = GetComponent<CanvasGroup> ();
 
 		preparedCount = 0;
 		preparedCountText.enabled = false;
@@ -31,7 +35,7 @@ public class Container_UI : MonoBehaviour
 
 	public void Setup (Container_Level c)
 	{
-		container = c;
+		containerLevel = c;
 
 		SetColor (c);
 
@@ -64,8 +68,27 @@ public class Container_UI : MonoBehaviour
 		containerImage.color = color;
 	}
 
-	public void ContainerAdded ()
+	public void ContainerSent ()
 	{
+		isSent = true;
+
+		StartCoroutine (ContainerSentFeedback ());
+	}
+
+	IEnumerator ContainerSentFeedback ()
+	{
+		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+
+		preparedCountText.enabled = false;
+		neededCountText.enabled = false;
+
+		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
+	}
+
+	public void ContainerAdded (Container c)
+	{
+		container = c;
+
 		neededCount--;
 		preparedCount++;
 
@@ -85,6 +108,8 @@ public class Container_UI : MonoBehaviour
 
 	public void ContainerRemoved ()
 	{
+		container = null;
+
 		neededCount++;
 		preparedCount--;
 

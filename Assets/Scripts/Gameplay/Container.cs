@@ -103,7 +103,9 @@ public class Container : Touchable
 		spotOccupied = spot;
 
 		transform.position = spot.transform.position;
-		transform.SetParent (spot._containersParent);
+
+		if(spot._containersParent != null)
+			transform.SetParent (spot._containersParent);
 
 		if(spot.spotType == SpotType.Train)
 		{

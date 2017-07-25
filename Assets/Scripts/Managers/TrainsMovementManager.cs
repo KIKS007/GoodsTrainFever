@@ -150,6 +150,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		foreach(var t in allTrains)
 		{
+			if(t == null)
+				continue;
+
 			if (t.inTransition)
 				continue;
 
@@ -190,6 +193,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		foreach (var t in allTrains)
 		{
+			if (t == null)
+				continue;
+
 			if (t.inTransition)
 				continue;
 			
@@ -350,6 +356,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
+		if(rail == rail1)
+			rail1Text.text = "";
+		else
+			rail2Text.text = "";
+
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
 		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
@@ -385,6 +396,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		do
 		{
 			yield return new WaitForSecondsRealtime (1f);
+
+			if(rail.train == null || !rail.train.waitingDeparture)
+				yield break;
+
 			duration--;
 			trainText.text = duration.ToString ();
 		}
@@ -406,6 +421,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		if (rail.train == null)
 			yield break;
+
+		if(rail == rail1)
+			rail1Text.text = "Sent";
+		else
+			rail2Text.text = "Sent";
 
 		rail.train.inTransition = true;
 		rail.train.waitingDeparture = false;

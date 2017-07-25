@@ -6,8 +6,12 @@ public class Order_UI : MonoBehaviour
 {
 	public bool isPrepared = false;
 
+	[Header ("Order")]
+	public Order_Level orderLevel = new Order_Level ();
+
 	[Header ("Containers")]
 	public List<Container_UI> containers = new List<Container_UI> ();
+
 
 	public void Setup () 
 	{
@@ -33,26 +37,46 @@ public class Order_UI : MonoBehaviour
 			}
 		}
 		while (!hasCheck);
+	}
 
+	public bool ContainerSent (Container container)
+	{
+		foreach(var c in containers)
+		{
+			if (c.isSent)
+				continue;
+
+			if (c.container != container)
+				continue;
+
+			c.ContainerSent ();
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public bool ContainerAdded (Container container)
 	{
 		foreach(var c in containers)
 		{
+			if (c.isSent)
+				continue;
+
 			if (c.neededCount == 0)
 				continue;
 
-			if (c.container.containerColor != container.containerColor)
+			if (c.containerLevel.containerColor != container.containerColor)
 				continue;
 
-			if (c.container.containerType != container.containerType)
+			if (c.containerLevel.containerType != container.containerType)
 				continue;
 
-			if (c.container.isDoubleSize != container.isDoubleSize)
+			if (c.containerLevel.isDoubleSize != container.isDoubleSize)
 				continue;
 
-			c.ContainerAdded ();
+			c.ContainerAdded (container);
 
 			CheckIsPrepared ();
 
@@ -69,22 +93,16 @@ public class Order_UI : MonoBehaviour
 
 		foreach(var c in containersTemp)
 		{
-			if (c.preparedCount == 0)
+			if (c.isSent)
 				continue;
 
-			if (c.container.containerColor != container.containerColor)
+			if (c.container != container)
 				continue;
-
-			if (c.container.containerType != container.containerType)
-				continue;
-
-			if (c.container.isDoubleSize != container.isDoubleSize)
-				continue;
-
+			
 			c.ContainerRemoved ();
-
+			
 			CheckIsPrepared ();
-
+			
 			return true;
 		}
 

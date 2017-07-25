@@ -25,6 +25,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public float containerAddedDuration = 0.2f;
 	public float containerRemovedHeight = 0.5f;
 	public float containerRemovedDuration = 0.2f;
+	public float containerSentAlpha = 0.3f;
 
 	[Header ("Orders Prefabs")]
 	public GameObject orderPanel;
@@ -47,9 +48,9 @@ public class OrdersManager : Singleton<OrdersManager>
 	public float leftPadding = 20f;
 
 	[Header ("Remove Order")]
-	public Vector2 removeLocalPosition;
-	public float removeDuration = 0.2f;
-	public float removeLayoutDelay;
+	public Vector2 removeOrderLocalPosition;
+	public float removeOrderDuration = 0.2f;
+	public float removeOrderLayoutDelay = 0.5f;
 
 	[Header ("Fade")]
 	public float fadeOutValue = 0.5f;
@@ -72,7 +73,33 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		UpdateOrdersLayout ();
 	}
-	
+
+	public void TrainDeparture (List<Container> trainContainers)
+	{
+		var containers = new List<Container> (trainContainers);
+
+		foreach(var c in containers)
+		{
+			if (c == null)
+				continue;
+
+			foreach(var o in orders)
+			{
+				if (o.isPrepared)
+				{
+					LevelsManager.Instance.OrderSent (o.orderLevel);
+					RemoveOrder (o, removeOrderLayoutDelay);
+				}
+
+				if (o.ContainerSent (c))
+				{
+					//Debug.Log ("Container Valid");
+					break;
+				}
+			}
+		}
+	}
+
 	void ContainerAdded (Container container)
 	{
 		foreach(var o in orders)
@@ -152,37 +179,19 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		ordersScrollView.sizeDelta = new Vector2 (previousPosition.x + previousWidth * 0.5f + ordersSpacing, ordersScrollView.sizeDelta.y);
 	}
-
-	[PropertyOrder (-1)]
-	[Button ("Remove Order")]
-	void RemoveOrderTest ()
+		
+	public void RemoveOrder (Order_UI order, float delay = 0, bool animated = true)
 	{
-		RemoveOrder (removeOrderTest);
+		StartCoroutine (RemoveOrderCoroutine (order, delay, animated));
 	}
 
-	public void RemoveOrder (RectTransform order, bool animated = true)
+	IEnumerator RemoveOrderCoroutine (Order_UI order, float delay = 0, bool animated = true)
 	{
 		if (order == null)
-			return;
-
-		orders.Remove (order.GetComponent<Order_UI> ());
-
-		if(animated)
-		{
-			order.DOAnchorPos (order.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
-			DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, order));
-		}
-		else
-		{
-			Destroy (order.gameObject);
-			UpdateOrdersLayout (true, order);
-		}
-	}
-
-	public void RemoveOrder (Order_UI order, bool animated = true)
-	{
-		if (order == null)
-			return;
+			yield break;
+		
+		if (delay > 0)
+			yield return new WaitForSecondsRealtime (delay);
 
 		RectTransform orderRect = order.GetComponent<RectTransform> ();
 
@@ -190,8 +199,9 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		if(animated)
 		{
-			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeLocalPosition, removeDuration).OnComplete (()=> Destroy (order.gameObject));
-			DOVirtual.DelayedCall (removeLayoutDelay, ()=> UpdateOrdersLayout (true, orderRect));
+			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).OnComplete (()=> Destroy (order.gameObject));
+			yield return new WaitForSecondsRealtime (removeOrderDuration);
+			UpdateOrdersLayout (true, orderRect);
 		}
 		else
 		{
@@ -219,6 +229,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		Vector2 panelPosition = new Vector2 (1500f, topPadding);
 		RectTransform panel = (Instantiate (orderPanel, orderPanel.transform.localPosition, orderPanel.transform.localRotation, ordersScrollView)).GetComponent<RectTransform> ();
 		Order_UI orderUI = panel.GetComponent<Order_UI> ();
+
+		orderUI.orderLevel = levelOrder;
 
 		orders.Add (orderUI);
 
@@ -328,6 +340,6 @@ public class OrdersManager : Singleton<OrdersManager>
 		List<Order_UI> ordersTemp = new List<Order_UI> (orders);
 
 		foreach (var o in ordersTemp)
-			RemoveOrder (o, animated);
+			RemoveOrder (o, 0, animated);
 	}
 }

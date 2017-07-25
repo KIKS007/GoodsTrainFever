@@ -77,13 +77,13 @@ public class Spot : Touchable
 		GetOverlappingSpots ();
 
 		SetSpotType (true);
+
+		IsOccupied ();
 	}
 
 	void Start () 
 	{
 		SetSpotType ();
-
-		IsOccupied ();
 
 		if(!_isSpawned)
 			OnContainerDeselected ();
@@ -359,7 +359,11 @@ public class Spot : Touchable
 		DOTween.Kill (_material);
 
 		_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> _meshRenderer.enabled = false);
+		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> 
+			{
+				if(_meshRenderer)
+					_meshRenderer.enabled = false;
+			});
 	}
 
 	public bool IsSameSize (Container container)

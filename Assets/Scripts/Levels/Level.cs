@@ -24,8 +24,10 @@ public class Level : MonoBehaviour
 [System.Serializable]
 public class Order_Level
 {
-	public float delay;
+	[ReadOnly]
+	public bool isPrepared = false;
 
+	public float delay;
 	public List<Container_Level> levelContainers = new List<Container_Level> ();
 }
 
