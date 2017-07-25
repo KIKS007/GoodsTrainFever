@@ -28,6 +28,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	[Header ("Boats")]
 	public float boatsDuration;
+	public bool lastBoatStay = true;
+	public float waitDurationBetweenBoats = 2f;
 	public List<Boat_Level> boats = new List<Boat_Level> ();
 
 	[Header ("Containers Prefabs")]
@@ -55,6 +57,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	void ClearLevelSettings ()
 	{
+		StopAllCoroutines ();
+
 		orders.Clear ();
 		storageContainers.Clear ();
 		rail1Trains = null;
@@ -63,6 +67,10 @@ public class LevelsManager : Singleton<LevelsManager>
 		boats.Clear ();
 
 		TrainsMovementManager.Instance.ClearTrains ();
+
+		BoatsMovementManager.Instance.ClearBoat ();
+
+		EmptyZone (_boat.containersParent);
 
 		OrdersManager.Instance.ClearOrders (false);
 	}
@@ -93,6 +101,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		rail2Trains = level.rail2Trains;
 		boatsDuration = level.boatsDuration;
 		boats.AddRange (level.boats);
+		lastBoatStay = level.lastBoatStay;
 
 		foreach(var o in orders)
 			RandomColors (o.levelContainers);
@@ -121,10 +130,14 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		//Trains
 		if (rail1Trains.Count > 0)
-			StartCoroutine (SpawnTrain (rail1Trains, TrainsMovementManager.Instance.rail1));
+			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
 
 		if (rail2Trains.Count > 0)
-			StartCoroutine (SpawnTrain (rail2Trains, TrainsMovementManager.Instance.rail2));
+			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
+
+		//Boats
+		if (boats.Count > 0)
+			StartCoroutine (SpawnBoats ());
 	}
 
 	void RandomColors (List<Container_Level> containers)
@@ -154,7 +167,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		OrdersManager.Instance.AddOrder (order);
 	}
 
-	IEnumerator SpawnTrain (List<Train_Level> train_Level, Rail rail)
+	IEnumerator SpawnTrains (List<Train_Level> train_Level, Rail rail)
 	{
 		foreach(var t in train_Level)
 		{
@@ -169,6 +182,31 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitUntil (()=> train == null);
 
 			yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
+		}
+	}
+
+	IEnumerator SpawnBoats ()
+	{
+		foreach(var b in boats)
+		{
+			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
+
+			if (b.delay > 0)
+				yield return new WaitForSecondsRealtime (b.delay);
+
+			BoatsMovementManager.Instance.BoatSpawn ();
+
+			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
+
+			float boatDuration = b.overrideDuration & b.duration > 0 ? b.duration : boatsDuration;
+
+			yield return new WaitForSecondsRealtime (boatDuration);
+
+			BoatsMovementManager.Instance.BoatDeparture ();
+
+			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
+
+			yield return new WaitForSecondsRealtime (waitDurationBetweenBoats);
 		}
 	}
 
@@ -316,13 +354,10 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
-	#region Level Start		
+	#region Level Start	
 	[ButtonGroup ("1", -1)]
-	public void StartLevelTest ()
+	public void LoadLevel ()
 	{
-		if (levelToStart == null)
-			return;
-
 		LoadLevelSettings (levelToStart);
 	}
 

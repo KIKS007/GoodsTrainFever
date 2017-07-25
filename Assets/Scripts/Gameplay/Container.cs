@@ -170,6 +170,9 @@ public class Container : Touchable
 		if (train && train.inTransition)
 			return;
 
+		if (spotOccupied.spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
+			return;
+
 		IsPileUp ();
 
 		if (isPileUp)

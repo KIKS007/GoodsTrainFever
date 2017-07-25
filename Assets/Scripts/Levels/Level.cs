@@ -18,6 +18,7 @@ public class Level : MonoBehaviour
 
 	[Header ("Boats")]
 	public float boatsDuration;
+	public bool lastBoatStay = true;
 	public List<Boat_Level> boats = new List<Boat_Level> ();
 }
 
@@ -41,6 +42,8 @@ public class Train_Level
 [System.Serializable]
 public class Boat_Level
 {
+	public float delay = 0;
+
 	public bool overrideDuration = false;
 	[ShowIfAttribute ("overrideDuration")]
 	public float duration;

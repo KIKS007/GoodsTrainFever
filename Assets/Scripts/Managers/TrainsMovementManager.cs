@@ -11,6 +11,8 @@ public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
 
 public class TrainsMovementManager : Singleton<TrainsMovementManager>
 {
+	public Action<Train> OnTrainDeparture;
+
 	[Header ("Trains")]
 	public List<Train> allTrains = new List<Train> ();
 	public Train selectedTrain = null;
@@ -55,7 +57,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	[Header ("Fast Forward")]
 	public float fastForwardSpeed;
-	public Ease fastForwardEase = Ease.OutQuad;
+	public Ease trainMovementEase = Ease.OutQuad;
 
 	[Header ("Train Length")]
 	public float wagonFourtyLength;
@@ -78,6 +80,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	private Vector3 _deltaPosition;
 	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
+	private List<System.Collections.IEnumerator> _trainsDurationCoroutines = new List<System.Collections.IEnumerator> ();
 
 	void Start ()
 	{
@@ -363,9 +366,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
-		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
 
-		StartCoroutine (TrainDuration (rail, train_Level.trainDuration));
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration) );
+
+		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
 		return trainScript;
 	}
@@ -422,20 +427,23 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (rail.train == null)
 			yield break;
 
+		rail.train.inTransition = true;
+		rail.train.waitingDeparture = false;
+
+		if (OnTrainDeparture != null)
+			OnTrainDeparture (rail.train);
+
 		if(rail == rail1)
 			rail1Text.text = "Sent";
 		else
 			rail2Text.text = "Sent";
-
-		rail.train.inTransition = true;
-		rail.train.waitingDeparture = false;
 
 		if (trainContainerInMotion == rail.train)
 			yield return new WaitUntil (()=> trainContainerInMotion != rail.train);
 
 		float xPosition = xDeparturePosition1 + rail.train.trainLength + offsetLength;
 
-		rail.train.transform.DOMoveX (xPosition, fastForwardSpeed).SetEase (fastForwardEase).SetSpeedBased ().OnComplete (()=> 
+		rail.train.transform.DOMoveX (xPosition, fastForwardSpeed).SetEase (trainMovementEase).SetSpeedBased ().OnComplete (()=> 
 			{
 				RemoveTrain (rail.train);
 				Destroy (rail.train.gameObject);
@@ -446,6 +454,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void ClearTrains ()
 	{
+		foreach (var c in _trainsDurationCoroutines)
+			StopCoroutine (c);
+
+		_trainsDurationCoroutines.Clear ();
+
 		if(rail1.train)
 		{
 			GameObject t = rail1.train.gameObject;

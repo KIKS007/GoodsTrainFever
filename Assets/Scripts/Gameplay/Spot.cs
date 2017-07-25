@@ -315,6 +315,9 @@ public class Spot : Touchable
 		if (_wagon && _wagon.train.inTransition)
 			return;
 
+		if (spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
+			return;
+
 		ContainersMovementManager.Instance.TakeSpot (this);
 	}
 

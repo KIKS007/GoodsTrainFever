@@ -41,6 +41,24 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 	private float _startHeight;
 
+	void Start ()
+	{
+		TrainsMovementManager.Instance.OnTrainDeparture += TrainDeparture;
+		BoatsMovementManager.Instance.OnBoatDeparture += BoatDeparture;
+	}
+
+	void TrainDeparture (Train train)
+	{
+		if (selectedContainer && selectedContainer.train == train)
+			selectedContainer.Deselect ();
+	}
+
+	void BoatDeparture ()
+	{
+		if (selectedContainer && selectedContainer.spotOccupied.spotType == SpotType.Boat)
+			selectedContainer.Deselect ();
+	}
+
 	public void StartHover (Container container)
 	{
 		container.transform.DOKill (true);
