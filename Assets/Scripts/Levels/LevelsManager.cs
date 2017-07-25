@@ -22,6 +22,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public List<Container_Level> storageContainers = new List<Container_Level> ();
 
 	[Header ("Trains")]
+	public int trainsUsed = 0;
 	public float waitDurationBetweenTrains = 2f;
 	public List<Train_Level> rail1Trains = new List<Train_Level> ();
 	public List<Train_Level> rail2Trains = new List<Train_Level> ();
@@ -58,6 +59,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	void ClearLevelSettings ()
 	{
 		StopAllCoroutines ();
+
+		trainsUsed = 0;
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -177,12 +180,21 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			yield return new WaitWhile (()=> train.waitingDeparture);
 
+			trainsUsed++;
 			OrdersManager.Instance.TrainDeparture (train.containers);
+
+			if (OrdersManager.Instance.allOrdersSent)
+			{
+				GameManager.Instance.LevelEndOrders ();
+				yield break;
+			}
 
 			yield return new WaitUntil (()=> train == null);
 
 			yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
 		}
+
+		GameManager.Instance.LevelEndTrains ();
 	}
 
 	IEnumerator SpawnBoats ()

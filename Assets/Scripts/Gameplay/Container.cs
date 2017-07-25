@@ -78,6 +78,8 @@ public class Container : Touchable
 
 		weight = container_Level.containerWeight;
 
+		UpdateWeightText ();
+
 		SetIsDoubleSize ();
 	}
 
@@ -116,21 +118,6 @@ public class Container : Touchable
 		spot.SetContainer (this);
 
 		//Debug.Log (spotOccupied, this);
-	}
-
-	void SetWeight ()
-	{
-		foreach(var w in GlobalVariables.Instance.containersWeight)
-			if(w.containerType == containerType)
-			{
-				weight = (int) UnityEngine.Random.Range ((int)w.weightBounds.x, (int)w.weightBounds.y);
-				break;
-			}
-
-		if (isDoubleSize)
-			weight *= 2;
-
-		UpdateWeightText ();
 	}
 
 	void UpdateWeightText ()

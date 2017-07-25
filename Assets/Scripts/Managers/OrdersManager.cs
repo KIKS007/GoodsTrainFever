@@ -10,6 +10,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public Order_Level levelOrderTest;
 
 	[Header ("Orders")]
+	public bool allOrdersSent = false;
 	public List<Order_UI> orders = new List<Order_UI> ();
 	public List<Container> containersFromNoOrder;
 
@@ -77,13 +78,14 @@ public class OrdersManager : Singleton<OrdersManager>
 	public void TrainDeparture (List<Container> trainContainers)
 	{
 		var containers = new List<Container> (trainContainers);
+		var currentOrders = new List<Order_UI> (orders);
 
 		foreach(var c in containers)
 		{
 			if (c == null)
 				continue;
 
-			foreach(var o in orders)
+			foreach(var o in currentOrders)
 			{
 				if (o.isPrepared)
 				{
@@ -98,6 +100,9 @@ public class OrdersManager : Singleton<OrdersManager>
 				}
 			}
 		}
+
+		if(currentOrders.Count == 0)
+			allOrdersSent = true;
 	}
 
 	void ContainerAdded (Container container)
@@ -190,12 +195,12 @@ public class OrdersManager : Singleton<OrdersManager>
 		if (order == null)
 			yield break;
 		
+		orders.Remove (order);
+
 		if (delay > 0)
 			yield return new WaitForSecondsRealtime (delay);
 
 		RectTransform orderRect = order.GetComponent<RectTransform> ();
-
-		orders.Remove (order);
 
 		if(animated)
 		{
@@ -224,6 +229,8 @@ public class OrdersManager : Singleton<OrdersManager>
 			Debug.LogError ("Invalid LevelOrder!", this);
 			return;
 		}
+
+		allOrdersSent = false;
 
 		//Create Order Elements
 		Vector2 panelPosition = new Vector2 (1500f, topPadding);

@@ -454,10 +454,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void ClearTrains ()
 	{
-		foreach (var c in _trainsDurationCoroutines)
-			StopCoroutine (c);
-
-		_trainsDurationCoroutines.Clear ();
+		ClearTrainsDuration ();
 
 		if(rail1.train)
 		{
@@ -474,5 +471,13 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			rail2.train = null;
 			Destroy (t);
 		}
+	}
+
+	public void ClearTrainsDuration ()
+	{
+		foreach (var c in _trainsDurationCoroutines)
+			StopCoroutine (c);
+
+		_trainsDurationCoroutines.Clear ();
 	}
 }

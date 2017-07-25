@@ -29,18 +29,6 @@ public class Wagon : Touchable
 		train = transform.GetComponentInParent<Train> ();
 		_weightText = transform.GetComponentInChildren <Text> ();
 		_weightImage = transform.GetComponentInChildren <Image> ();
-
-		SetWeight ();
-	}
-
-	void SetWeight ()
-	{
-		foreach(var w in GlobalVariables.Instance.wagonsMaxWeight)
-			if(w.wagonType == wagonType)
-			{
-				maxWeight = (int) UnityEngine.Random.Range ((int)w.weightBounds.x, (int)w.weightBounds.y);
-				break;
-			}
 	}
 
 	public void UpdateWeight ()
