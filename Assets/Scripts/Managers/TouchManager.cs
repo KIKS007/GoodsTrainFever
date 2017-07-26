@@ -28,6 +28,9 @@ public class TouchManager : Singleton<TouchManager>
 	// Update is called once per frame
 	void Update () 
 	{
+		if (GameManager.Instance.gameState != GameState.Playing)
+			return;
+
 		#if UNITY_EDITOR
 		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 			MouseHold ();

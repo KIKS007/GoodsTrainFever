@@ -9,10 +9,14 @@ public class GameManager : Singleton<GameManager>
 	[Header ("Game State")]
 	public GameState gameState = GameState.Playing;
 
-
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () 
+	{
+		if (gameState == GameState.Playing)
+		{
+			MenuManager.Instance.gameObject.SetActive (false);
+			MenuManager.Instance.menuParent.gameObject.SetActive (false);
+		}
 	}
 	
 	// Update is called once per frame

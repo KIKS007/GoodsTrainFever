@@ -301,7 +301,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.Translate (position * Time.fixedDeltaTime);
 	}
 
-	public Train SpawnTrain (Rail rail, Train_Level train_Level)
+	public Train SpawnTrain (Rail rail, Train_Level train_Level, bool waitOtherTrain = false)
 	{
 		if (rail.train != null)
 		{
@@ -368,15 +368,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
 
-		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration) );
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration, waitOtherTrain) );
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
 		return trainScript;
 	}
 
-	IEnumerator TrainDuration (Rail rail, int duration)
+	IEnumerator TrainDuration (Rail rail, int duration, bool waitOtherTrain = false)
 	{
+		float time = Mathf.Round (Time.time) + 1.5f;
+
+		yield return new WaitUntil (() => Time.time >= time);
+
 		yield return new WaitWhile (() => rail.train.inTransition);
 
 		Text trainText = null;

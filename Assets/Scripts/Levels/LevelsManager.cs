@@ -435,7 +435,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	void RenameLevels ()
 	{
 		for (int i = 0; i < transform.childCount; i++)
-			transform.GetChild (i).name = "Level #" + i;
+			transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
 	}
 	#endregion
 }

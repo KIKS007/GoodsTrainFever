@@ -14,7 +14,7 @@ public class ScoreManager : Singleton<ScoreManager>
 	public bool saveOnStop = true;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		if (loadOnStart)
 			LoadLevelStars ();
