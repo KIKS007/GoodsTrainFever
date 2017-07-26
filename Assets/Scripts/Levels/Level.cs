@@ -25,50 +25,6 @@ public class Level : MonoBehaviour
 	public float boatsDuration;
 	public bool lastBoatStay = true;
 	public List<Boat_Level> boats = new List<Boat_Level> ();
-
-	public void UpdateStars (int ordersPrepared, int trainsCount)
-	{
-		MostOrdersStar (ordersPrepared);
-		AllOrdersStar (ordersPrepared, trainsCount);
-	}
-
-	void MostOrdersStar (int ordersPrepared)
-	{
-		if (PlayerPrefs.HasKey ("MostOrdersStar" + transform.GetSiblingIndex ()))
-			return;
-
-		if(ordersPrepared > mostOrdersCount)
-		{
-			starsEarned++;
-			PlayerPrefs.SetInt ("MostOrdersStar" + transform.GetSiblingIndex (), 1);
-		}
-	}
-
-	void AllOrdersStar (int ordersPrepared, int trainsCount)
-	{
-		if(ordersPrepared == orders.Count)
-		{
-			LeastTrainsStar (trainsCount);
-
-			if (!PlayerPrefs.HasKey ("AllOrdersStar" + transform.GetSiblingIndex ()))
-			{
-				starsEarned++;
-				PlayerPrefs.SetInt ("AllOrdersStar" + transform.GetSiblingIndex (), 1);
-			}
-		}
-	}
-
-	void LeastTrainsStar (int trainsCount)
-	{
-		if (PlayerPrefs.HasKey ("LeastTrainsStar" + transform.GetSiblingIndex ()))
-			return;
-
-		if(trainsCount <= leastTrainsCount)
-		{
-			starsEarned++;
-			PlayerPrefs.SetInt ("LeastTrainsStar" + transform.GetSiblingIndex (), 1);
-		}
-	}
 }
 
 [System.Serializable]

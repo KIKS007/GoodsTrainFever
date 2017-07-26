@@ -18,6 +18,15 @@ public class Order_UI : MonoBehaviour
 		CheckContainers ();
 	}
 
+	public void OrderSent ()
+	{
+		foreach(var c in containers)
+		{
+			if(!c.isSent)
+				c.ContainerSent ();
+		}
+	}
+
 	void CheckContainers ()
 	{
 		bool hasCheck = true;

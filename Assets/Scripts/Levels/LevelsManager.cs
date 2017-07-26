@@ -42,6 +42,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	private Storage _storage;
 	private Boat _boat;
 	private int _randomColorOffset;
+	private bool _rail1Occupied = false;
+	private bool _rail2Occupied = false;
 
 	//public	List<Spot> spots = new List<Spot> ();
 	//public List<Spot> spotsTemp = new List<Spot> ();
@@ -68,6 +70,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		rail2Trains = null;
 		boatsDuration = 0;
 		boats.Clear ();
+
+		_rail1Occupied = false;
+		_rail2Occupied = false;
 
 		TrainsMovementManager.Instance.ClearTrains ();
 
@@ -133,10 +138,16 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		//Trains
 		if (rail1Trains.Count > 0)
+		{
+			_rail1Occupied = true;
 			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
+		}
 
 		if (rail2Trains.Count > 0)
+		{
+			_rail2Occupied = true;
 			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
+		}
 
 		//Boats
 		if (boats.Count > 0)
@@ -172,9 +183,9 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator SpawnTrains (List<Train_Level> train_Level, Rail rail)
 	{
-		foreach(var t in train_Level)
+		for(int i = 0; i < train_Level.Count; i++)
 		{
-			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, t);
+			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, train_Level [i]);
 
 			yield return new WaitWhile (()=> train.inTransition);
 
@@ -185,16 +196,38 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			if (OrdersManager.Instance.allOrdersSent)
 			{
-				GameManager.Instance.LevelEndOrders ();
+				LevelEnd (true);
 				yield break;
 			}
 
 			yield return new WaitUntil (()=> train == null);
 
-			yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
+			if(i != train_Level.Count - 1)
+				yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
+			else
+			{
+				if (rail == TrainsMovementManager.Instance.rail1)
+				{
+					_rail1Occupied = false;
+
+					if (_rail2Occupied == false)
+						LevelEnd (false);
+				}
+				else
+				{
+					_rail2Occupied = false;
+
+					if (_rail1Occupied == false)
+						LevelEnd (false);
+				}
+			}
 		}
 
-		GameManager.Instance.LevelEndTrains ();
+		if (OrdersManager.Instance.allOrdersSent)
+		{
+			LevelEnd (true);
+			yield break;
+		}
 	}
 
 	IEnumerator SpawnBoats ()
@@ -364,6 +397,19 @@ public class LevelsManager : Singleton<LevelsManager>
 				return;
 			}
 		}
+	}
+
+	public void LevelEnd (bool levelEndOrder)
+	{
+		if (GameManager.Instance.gameState == GameState.End)
+			return;
+		
+		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
+
+		if(levelEndOrder)
+			GameManager.Instance.LevelEndOrders ();
+		else
+			GameManager.Instance.LevelEndTrains ();
 	}
 
 	#region Level Start	

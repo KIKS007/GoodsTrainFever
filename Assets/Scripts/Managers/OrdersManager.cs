@@ -11,6 +11,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	[Header ("Orders")]
 	public bool allOrdersSent = false;
+	public int ordersSentCount = 0;
 	public List<Order_UI> orders = new List<Order_UI> ();
 	public List<Container> containersFromNoOrder;
 
@@ -85,10 +86,14 @@ public class OrdersManager : Singleton<OrdersManager>
 			if (c == null)
 				continue;
 
+			currentOrders = new List<Order_UI> (orders);
+
 			foreach(var o in currentOrders)
 			{
 				if (o.isPrepared)
 				{
+					ordersSentCount++;
+					o.OrderSent ();
 					LevelsManager.Instance.OrderSent (o.orderLevel);
 					RemoveOrder (o, removeOrderLayoutDelay);
 				}
@@ -344,6 +349,8 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void ClearOrders (bool animated)
 	{
+		ordersSentCount = 0;
+
 		List<Order_UI> ordersTemp = new List<Order_UI> (orders);
 
 		foreach (var o in ordersTemp)
