@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Menu, Playing, End }
+public enum GameState { Menu, Playing }
 
 public class GameManager : Singleton<GameManager> 
 {
@@ -24,28 +24,34 @@ public class GameManager : Singleton<GameManager>
 		
 	}
 
+	public void StartLevel ()
+	{
+		gameState = GameState.Playing;
+
+	}
+
 	public void LevelEndOrders ()
 	{
-		if (gameState == GameState.End)
+		if (gameState == GameState.Menu)
 			return;
 
-		Debug.Log ("ORDERS LEVEL" + LevelsManager.Instance.levelIndex + " END!");
+		Debug.Log ("ORDERS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
 
 		LevelEnd ();
 	}
 
 	public void LevelEndTrains ()
 	{
-		if (gameState == GameState.End)
+		if (gameState == GameState.Menu)
 			return;
 
-		Debug.Log ("TRAINS LEVEL" + LevelsManager.Instance.levelIndex + " END!");
+		Debug.Log ("TRAINS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
 
 		LevelEnd ();
 	}
 
 	public void LevelEnd ()
 	{
-		gameState = GameState.End;
+		gameState = GameState.Menu;
 	}
 }

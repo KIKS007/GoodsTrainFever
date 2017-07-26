@@ -5,6 +5,7 @@ using UnityEngine;
 public class Order_UI : MonoBehaviour 
 {
 	public bool isPrepared = false;
+	public bool isSent = false;
 
 	[Header ("Order")]
 	public Order_Level orderLevel = new Order_Level ();
@@ -60,8 +61,12 @@ public class Order_UI : MonoBehaviour
 
 			c.ContainerSent ();
 
+			UpdateStates ();
+
 			return true;
 		}
+
+		UpdateStates ();
 
 		return false;
 	}
@@ -87,7 +92,7 @@ public class Order_UI : MonoBehaviour
 
 			c.ContainerAdded (container);
 
-			CheckIsPrepared ();
+			UpdateStates ();
 
 			return true;
 		}
@@ -110,7 +115,7 @@ public class Order_UI : MonoBehaviour
 			
 			c.ContainerRemoved ();
 			
-			CheckIsPrepared ();
+			UpdateStates ();
 			
 			return true;
 		}
@@ -118,7 +123,7 @@ public class Order_UI : MonoBehaviour
 		return false;
 	}
 
-	void CheckIsPrepared ()
+	void UpdateStates ()
 	{
 		bool prepared = true;
 
@@ -130,5 +135,16 @@ public class Order_UI : MonoBehaviour
 			}
 
 		isPrepared = prepared;
+
+		bool sent = true;
+
+		foreach (var c in containers)
+			if (!c.isSent)
+			{
+				sent = false;
+				break;
+			}
+
+		isSent = sent;
 	}
 }

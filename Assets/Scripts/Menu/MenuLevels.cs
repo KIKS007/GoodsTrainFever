@@ -52,7 +52,7 @@ public class MenuLevels : MenuComponent
 			levelMenu.Setup (i, level);
 		}
 
-		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (LevelsManager.Instance.transform.childCount - 1);
+		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (LevelsManager.Instance.transform.childCount) + levelPosition.x - levelsSpacing;
 		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
 	}
 }

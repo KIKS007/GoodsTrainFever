@@ -36,5 +36,6 @@ public class Level_Menu : MonoBehaviour
 	public void Play ()
 	{
 		LevelsManager.Instance.LoadLevelSettings (levelIndex);
+		MenuManager.Instance.StartGame ();
 	}
 }

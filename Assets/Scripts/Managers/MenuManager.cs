@@ -12,11 +12,23 @@ public class MenuManager : Singleton<MenuManager>
 
 	public bool inTransition = false;
 
+	[Header ("UI")]
+	public CanvasGroup UICanvasGroup;
+
 	[Header ("Menu")]
-	public MenuComponent currentMenu;
-	public MenuComponent mainMenu;
-	public MenuComponent menuOnStart;
 	public Transform menuParent;
+	public MenuComponent menuOnStart;
+	public MenuComponent currentMenu;
+
+	[Header ("Main Menu")]
+	public MenuComponent mainMenu;
+	public RectTransform title;
+	public float titleHiddenYPos = 260f;
+
+	[Header ("End Level Menu")]
+	public float endLevelDelay = 2f;
+	public MenuComponent endLevelMenu;
+	public GameObject nextlevelButton;
 
 	[Header ("Menu Panel")]
 	public Image menuPanel;
@@ -44,6 +56,7 @@ public class MenuManager : Singleton<MenuManager>
 	public float switchDuration = 0.5f;
 
 	private float _menuPanelShowAlpha;
+	private float _titleShowPos;
 
 	private Camera _camera;
 	private Matrix4x4 _ortho, _perspective;
@@ -59,8 +72,15 @@ public class MenuManager : Singleton<MenuManager>
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
 		_menuPanelShowAlpha = menuPanel.color.a;
 
-		foreach (var m in menuParent.GetComponentsInChildren<MenuComponent> ())
+		_titleShowPos = title.anchoredPosition.y;
+
+		menuParent.gameObject.SetActive (true);
+		menuPanel.gameObject.SetActive (true);
+
+		foreach (var m in FindObjectsOfType<MenuComponent> ())
 			ClearMenu (m);
+
+		UIFadeOut ();
 
 		if (menuOnStart != null)
 			ShowMenu (menuOnStart);
@@ -106,21 +126,22 @@ public class MenuManager : Singleton<MenuManager>
 		_camera.transform.DORotate (gameRotation, movementDuration).SetEase (movementEase);
 	}
 
-	public void ToMenu (MenuComponent menu)
+	public void ToMenu (MenuComponent menu, bool showPanel = true)
 	{
 		DOTween.Kill ("Menu");
 
 		if (currentMenu != null)
 			HideMenu (currentMenu);
 
-		DOVirtual.DelayedCall (menuAnimationDuration, ()=> ShowMenu (menu)).SetId ("Menu");
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=> ShowMenu (menu, showPanel)).SetId ("Menu");
 	}
 
-	public void ShowMenu (MenuComponent menu)
+	public void ShowMenu (MenuComponent menu, bool showPanel = true)
 	{
 		menu.gameObject.SetActive (true);
 
-		ShowPanel ();
+		if(showPanel)
+			ShowPanel ();
 
 		StartTransition ();
 
@@ -132,12 +153,11 @@ public class MenuManager : Singleton<MenuManager>
 		{
 			DOTween.Kill (menu.mainContent);
 
-			if(menu.mainContent.anchoredPosition != menuShowPosition)
-			{
+			menu.mainContent.gameObject.SetActive (true);
+
 				menu.mainContent.anchoredPosition = menuHidePosition;
 				
 				menu.mainContent.DOAnchorPos (menuShowPosition, menuAnimationDuration).SetEase (menuEase);
-			}
 		}
 
 		foreach(var c in menu.contents)
@@ -148,8 +168,10 @@ public class MenuManager : Singleton<MenuManager>
 			if(!c.showOnShow)
 				continue;
 
-			if (c.content.anchoredPosition == c.showPosition)
-				continue;
+			/*if (c.content.anchoredPosition == c.showPosition)
+				continue;*/
+
+			c.content.gameObject.SetActive (true);
 
 			DOTween.Kill (c.content);
 
@@ -176,11 +198,13 @@ public class MenuManager : Singleton<MenuManager>
 
 		float animationDuration = menuAnimationDuration;
 
+		currentMenu = null;
+
 		if(menu.mainContent)
 		{
 			DOTween.Kill (menu.mainContent);
 
-			menu.mainContent.DOAnchorPos (menuHidePosition, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> currentMenu = null);
+			menu.mainContent.DOAnchorPos (menuHidePosition, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> menu.mainContent.gameObject.SetActive (false));
 		}
 
 		foreach(var c in menu.contents)
@@ -197,15 +221,21 @@ public class MenuManager : Singleton<MenuManager>
 			Ease ease = c.overrideEase ? c.ease : menuEase;
 
 			if(c.delay > 0)
-				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease).SetDelay (c.delay);
+				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease).SetDelay (c.delay).OnComplete (()=> c.content.gameObject.SetActive (false));
 			else
-				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease);
+				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease).OnComplete (()=> c.content.gameObject.SetActive (false));
 
 			if (duration + c.delay > animationDuration)
 				animationDuration = duration + c.delay;
 		}
 
 		DOVirtual.DelayedCall (animationDuration, ()=> EndTransition (menu, true)).SetId ("Menu");
+	}
+
+	public void HideCurrentMenu ()
+	{
+		if (currentMenu != null)
+			HideMenu (currentMenu);
 	}
 
 	void ClearMenu (MenuComponent menu)
@@ -231,6 +261,10 @@ public class MenuManager : Singleton<MenuManager>
 
 	void ShowPanel ()
 	{
+		UIFadeOut ();
+	
+		menuPanel.gameObject.SetActive (true);
+
 		if (menuPanel.color.a != _menuPanelShowAlpha)
 		{
 			DOTween.Kill (menuPanel);
@@ -243,7 +277,7 @@ public class MenuManager : Singleton<MenuManager>
 		if (menuPanel.color.a != 0)
 		{
 			DOTween.Kill (menuPanel);
-			menuPanel.DOFade (0, menuAnimationDuration).SetEase (menuEase);
+			menuPanel.DOFade (0, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> menuPanel.gameObject.SetActive (false));
 		}
 	}
 
@@ -264,6 +298,106 @@ public class MenuManager : Singleton<MenuManager>
 
 		if(disableMenu)
 			menu.gameObject.SetActive (false);
+	}
+
+	public void EndLevel ()
+	{
+		if (LevelsManager.Instance.levelIndex - 1 == LevelsManager.Instance.transform.childCount)
+			nextlevelButton.SetActive (false);
+		else
+			nextlevelButton.SetActive (true);
+
+		DOVirtual.DelayedCall (endLevelDelay, ()=>{
+			
+			UIFadeOut ();
+			ToMenu (endLevelMenu, false);
+		});
+	}
+
+	public void MainMenu ()
+	{
+		ShowPanel ();
+
+		ShowTitle ();
+
+		ToMenu (mainMenu);
+	}
+
+	public void RetryLevel ()
+	{
+		ShowPanel ();
+
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
+			{
+				LevelsManager.Instance.LoadLevelSettings (LevelsManager.Instance.levelIndex);
+			});
+
+		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
+			{
+				HidePanel ();
+				UIFadeIn ();
+				HideCurrentMenu ();
+				GameManager.Instance.StartLevel ();
+			});
+	}
+
+	public void NextLevel ()
+	{
+		ShowPanel ();
+
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
+			{
+				LevelsManager.Instance.NextLevel ();
+			});
+
+		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
+			{
+				HidePanel ();
+				UIFadeIn ();
+				HideCurrentMenu ();
+				GameManager.Instance.StartLevel ();
+			});
+	}
+
+	public void StartGame ()
+	{
+		ShowPanel ();
+
+		if(currentMenu)
+			HideMenu (currentMenu);
+
+		HideTitle ();
+
+		HideCurrentMenu ();
+
+		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
+			{
+				HidePanel ();
+				UIFadeIn ();
+				GameManager.Instance.StartLevel ();
+			});
+	}
+
+	public void UIFadeOut ()
+	{
+		UICanvasGroup.DOFade (0, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> UICanvasGroup.gameObject.SetActive (false));
+	}
+
+	public void UIFadeIn ()
+	{
+		UICanvasGroup.gameObject.SetActive (true);
+		UICanvasGroup.DOFade (1, menuAnimationDuration).SetEase (menuEase);
+	}
+
+	void ShowTitle ()
+	{
+		title.gameObject.SetActive (true);
+		title.DOAnchorPosY (_titleShowPos, menuAnimationDuration).SetEase (menuEase);
+	}
+
+	void HideTitle ()
+	{
+		title.DOAnchorPosY (titleHiddenYPos, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> title.gameObject.SetActive (false));
 	}
 
 	// Update is called once per frame

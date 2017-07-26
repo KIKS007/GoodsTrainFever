@@ -176,6 +176,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator AddOrder (Order_Level order)
 	{
+		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
 		yield return new WaitForSecondsRealtime (order.delay);
 
 		OrdersManager.Instance.AddOrder (order);
@@ -183,6 +185,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator SpawnTrains (List<Train_Level> train_Level, Rail rail)
 	{
+		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+	
 		for(int i = 0; i < train_Level.Count; i++)
 		{
 			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, train_Level [i]);
@@ -232,6 +236,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator SpawnBoats ()
 	{
+		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+	
 		foreach(var b in boats)
 		{
 			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
@@ -401,7 +407,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	public void LevelEnd (bool levelEndOrder)
 	{
-		if (GameManager.Instance.gameState == GameState.End)
+		if (GameManager.Instance.gameState == GameState.Menu)
 			return;
 		
 		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
@@ -410,6 +416,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			GameManager.Instance.LevelEndOrders ();
 		else
 			GameManager.Instance.LevelEndTrains ();
+
+		MenuManager.Instance.EndLevel ();
 	}
 
 	#region Level Start	
