@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+public enum StarState { Locked, Unlocked, Saved }
+
 public class Level : MonoBehaviour 
 {
 	[Header ("Stars")]
 	public int starsEarned = 0;
 	public int mostOrdersCount = 0;
 	public int leastTrainsCount = 0;
+
+	[Header ("Stars States")]
+	public StarState[] starsStates = new StarState[3];
 
 	[Header ("Orders")]
 	public List<Order_Level> orders = new List<Order_Level> ();

@@ -28,13 +28,24 @@ public class MenuLevels : MenuComponent
 		SetupLevels ();
 	}
 
+	void OnEnable ()
+	{
+		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
+		{
+			Level_Menu levelMenu = levelsScrollView.GetChild (i).GetComponent<Level_Menu> ();
+			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
+
+			levelMenu.Setup (i, level);
+		}
+	}
+
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
 		foreach (Transform t in levelsScrollView.transform)
 			Destroy (t.gameObject);
 
-		for(int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
+		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
 		{
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 
@@ -52,7 +63,7 @@ public class MenuLevels : MenuComponent
 			levelMenu.Setup (i, level);
 		}
 
-		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (LevelsManager.Instance.transform.childCount) + levelPosition.x - levelsSpacing;
+		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (LevelsManager.Instance.levelsCount) + levelPosition.x - levelsSpacing;
 		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
 	}
 }

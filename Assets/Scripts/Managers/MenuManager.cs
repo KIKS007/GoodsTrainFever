@@ -9,6 +9,7 @@ public class MenuManager : Singleton<MenuManager>
 {
 	public Action OnMenuTransitionStart;
 	public Action OnMenuTransitionEnd;
+	public Action OnLevelStart;
 
 	public bool inTransition = false;
 
@@ -28,7 +29,6 @@ public class MenuManager : Singleton<MenuManager>
 	[Header ("End Level Menu")]
 	public float endLevelDelay = 2f;
 	public MenuComponent endLevelMenu;
-	public GameObject nextlevelButton;
 
 	[Header ("Menu Panel")]
 	public Image menuPanel;
@@ -189,6 +189,8 @@ public class MenuManager : Singleton<MenuManager>
 				animationDuration = duration + c.delay;
 		}
 
+		menu.Show ();
+
 		DOVirtual.DelayedCall (animationDuration, ()=> EndTransition (menu, false)).SetId ("Menu");
 	}
 
@@ -228,6 +230,8 @@ public class MenuManager : Singleton<MenuManager>
 			if (duration + c.delay > animationDuration)
 				animationDuration = duration + c.delay;
 		}
+
+		menu.Hide ();
 
 		DOVirtual.DelayedCall (animationDuration, ()=> EndTransition (menu, true)).SetId ("Menu");
 	}
@@ -302,11 +306,6 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void EndLevel ()
 	{
-		if (LevelsManager.Instance.levelIndex - 1 == LevelsManager.Instance.transform.childCount)
-			nextlevelButton.SetActive (false);
-		else
-			nextlevelButton.SetActive (true);
-
 		DOVirtual.DelayedCall (endLevelDelay, ()=>{
 			
 			UIFadeOut ();
@@ -330,6 +329,9 @@ public class MenuManager : Singleton<MenuManager>
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
 			{
 				LevelsManager.Instance.LoadLevelSettings (LevelsManager.Instance.levelIndex);
+
+				if (OnLevelStart != null)
+					OnLevelStart ();
 			});
 
 		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
@@ -344,10 +346,13 @@ public class MenuManager : Singleton<MenuManager>
 	public void NextLevel ()
 	{
 		ShowPanel ();
-
+		
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
 			{
 				LevelsManager.Instance.NextLevel ();
+
+				if (OnLevelStart != null)
+					OnLevelStart ();
 			});
 
 		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
@@ -359,10 +364,13 @@ public class MenuManager : Singleton<MenuManager>
 			});
 	}
 
-	public void StartGame ()
+	public void StartLevel ()
 	{
 		ShowPanel ();
 
+		if (OnLevelStart != null)
+			OnLevelStart ();
+		
 		if(currentMenu)
 			HideMenu (currentMenu);
 

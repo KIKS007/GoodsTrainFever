@@ -15,6 +15,7 @@ public class Rail : Touchable
 	{
 		base.OnTouchDown ();
 
-		train.OnTouchDown ();
+		if(train)
+			train.OnTouchDown ();
 	}
 }

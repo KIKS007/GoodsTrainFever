@@ -23,14 +23,24 @@ public class MenuComponent : MonoBehaviour
 				c.showPosition = c.content.anchoredPosition;
 	}
 
-	[ButtonGroup ("", -1)]
 	public virtual void Show ()
+	{
+		
+	}
+
+	public virtual void Hide ()
+	{
+		
+	}
+
+	[ButtonGroup ("", -1)]
+	public void ShowEditor ()
 	{
 		MenuManager.Instance.ShowMenu (this);
 	}
 
 	[ButtonGroup ("", -1)]
-	public virtual void Hide ()
+	public void HideEditor ()
 	{
 		MenuManager.Instance.HideMenu (this);
 	}

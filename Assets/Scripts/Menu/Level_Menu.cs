@@ -26,8 +26,13 @@ public class Level_Menu : MonoBehaviour
 
 		levelTitle.text = "Level " + (index + 1).ToString ();
 
-		for (int i = 0; i < level.starsEarned; i++)
-			stars [i].gameObject.SetActive (false);
+		for (int i = 0; i < 3; i++)
+		{
+			if (i < level.starsEarned)
+				stars [i].gameObject.SetActive (false);
+			else
+				stars [i].gameObject.SetActive (true);
+		}
 
 		ordersCount.text = level.orders.Count.ToString ();
 		trainsCount.text = (level.rail1Trains.Count + level.rail2Trains.Count).ToString ();
@@ -36,6 +41,6 @@ public class Level_Menu : MonoBehaviour
 	public void Play ()
 	{
 		LevelsManager.Instance.LoadLevelSettings (levelIndex);
-		MenuManager.Instance.StartGame ();
+		MenuManager.Instance.StartLevel ();
 	}
 }

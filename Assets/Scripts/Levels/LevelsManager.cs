@@ -11,6 +11,11 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	[Header ("Level")]
 	public int levelIndex;
+	public Level currentLevel;
+	public int levelsCount;
+
+	[Header ("Level Duration")]
+	public int levelDuration = 0;
 
 	[Header ("Orders")]
 	public bool randomColors = false;
@@ -49,13 +54,17 @@ public class LevelsManager : Singleton<LevelsManager>
 	//public List<Spot> spotsTemp = new List<Spot> ();
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		_storage = FindObjectOfType<Storage> ();
 		_boat = FindObjectOfType<Boat> ();
 
+		levelsCount = transform.childCount;
+
 		if (loadLevelOnStart)
 			LoadLevelSettings (levelToStart);
+
+		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 	}
 
 	void ClearLevelSettings ()
@@ -63,6 +72,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		StopAllCoroutines ();
 
 		trainsUsed = 0;
+		levelDuration = 0;
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -101,6 +111,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			_randomColorOffset = 0;
 		
 		Level level = transform.GetChild (index).GetComponent<Level> ();
+
+		currentLevel = level;
 
 		orders.AddRange (level.orders);
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
@@ -420,6 +432,21 @@ public class LevelsManager : Singleton<LevelsManager>
 		MenuManager.Instance.EndLevel ();
 	}
 
+	IEnumerator LevelDuration ()
+	{
+		levelDuration = 0;
+
+		yield return new WaitUntil (() => GameManager.Instance.gameState == GameState.Playing);
+
+		do
+		{
+			yield return new WaitForSeconds (1f);
+			
+			levelDuration++;
+		}
+		while (GameManager.Instance.gameState == GameState.Playing);
+	}
+
 	#region Level Start	
 	[ButtonGroup ("1", -1)]
 	public void LoadLevel ()
@@ -430,8 +457,11 @@ public class LevelsManager : Singleton<LevelsManager>
 	[ButtonGroup ("1", -1)]
 	public void NextLevel ()
 	{
-		if (levelIndex + 1 >= transform.childCount - 1)
+		if (levelIndex + 1 >= transform.childCount)
+		{
+			Debug.LogWarning ("Invalid Level Index!");
 			return;
+		}
 
 		LoadLevelSettings (levelIndex + 1);
 	}
