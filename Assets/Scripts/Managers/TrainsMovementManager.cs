@@ -404,10 +404,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		do
 		{
+			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
 			yield return new WaitForSecondsRealtime (1f);
 
 			if(rail.train == null || !rail.train.waitingDeparture)
 				yield break;
+
+			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
 			duration--;
 			trainText.text = duration.ToString ();

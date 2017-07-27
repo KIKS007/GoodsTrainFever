@@ -11,7 +11,6 @@ public class TouchManager : Singleton<TouchManager>
 	public Action OnTouchUp;
 	public Action OnTouchUpNoTarget;
 
-	public bool useRaycast = false;
 	public bool isTouchingTouchable = false;
 	public bool isTouchingUI = false;
 
@@ -47,6 +46,8 @@ public class TouchManager : Singleton<TouchManager>
 		{
 			Touch touch = Input.GetTouch (0);
 
+			Touchable touchable = null;
+
 			_deltaPosition = touch.deltaPosition;
 
 			switch (touch.phase)
@@ -55,13 +56,10 @@ public class TouchManager : Singleton<TouchManager>
 				
 				_touchDown = true;
 				
-				if(useRaycast)
-				{
-					Touchable touchable = RaycastTouchable (touch.position);
-					if (touchable != null)
-						touchable.OnTouchDown ();
-
-				}
+				touchable = RaycastTouchable (touch.position);
+				if (touchable != null)
+					touchable.OnTouchDown ();
+				
 				
 				if (OnTouchDown != null)
 					OnTouchDown ();
@@ -81,9 +79,9 @@ public class TouchManager : Singleton<TouchManager>
 				
 				_touchDown = false;
 				
-				if (useRaycast && !isTouchingUI) 
+				if (!isTouchingUI) 
 				{
-					Touchable touchable = RaycastTouchable (touch.position);
+					touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
 						touchable.OnTouchUpAsButton ();
 				}
@@ -110,12 +108,9 @@ public class TouchManager : Singleton<TouchManager>
 
 			_mousePosition = Input.mousePosition;
 
-			if(useRaycast)
-			{
-				Touchable touchable = RaycastTouchable (_mousePosition);
-				if (touchable != null)
-					touchable.OnTouchDown ();
-			}
+			Touchable touchable = RaycastTouchable (_mousePosition);
+			if (touchable != null)
+				touchable.OnTouchDown ();
 
 			if (OnTouchDown != null)
 				OnTouchDown ();
@@ -125,7 +120,7 @@ public class TouchManager : Singleton<TouchManager>
 		{
 			_touchDown = false;
 
-			if(useRaycast && !isTouchingUI)
+			if(!isTouchingUI)
 			{
 				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)

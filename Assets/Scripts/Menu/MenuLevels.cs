@@ -32,6 +32,9 @@ public class MenuLevels : MenuComponent
 	{
 		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
 		{
+			if (i >= levelsScrollView.childCount)
+				break;
+
 			Level_Menu levelMenu = levelsScrollView.GetChild (i).GetComponent<Level_Menu> ();
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 

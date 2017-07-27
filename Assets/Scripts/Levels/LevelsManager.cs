@@ -65,6 +65,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			LoadLevelSettings (levelToStart);
 
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
+		MenuManager.Instance.OnMainMenu += ClearLevelSettings;
 	}
 
 	void ClearLevelSettings ()
@@ -440,6 +441,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		do
 		{
+			yield return new WaitWhile (() => GameManager.Instance.gameState == GameState.Pause);
+
 			yield return new WaitForSeconds (1f);
 			
 			levelDuration++;

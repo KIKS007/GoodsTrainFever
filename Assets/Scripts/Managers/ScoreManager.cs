@@ -54,12 +54,15 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void LoadLevelStars ()
 	{
-		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
+
+		for(int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
 		{
-			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ().GetComponent<Level> ();
+			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 
 			if (PlayerPrefs.HasKey ("Stars" + i))
 				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
+
+			Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
 
 			for (int j = 0; j < 3; j++)
 			{
@@ -68,6 +71,8 @@ public class ScoreManager : Singleton<ScoreManager>
 				else
 					level.starsStates [j] = StarState.Locked;
 			}
+
+			Debug.Log (level + " : " + level.starsEarned);
 		}
 
 		UpdateStars ();
@@ -156,12 +161,18 @@ public class ScoreManager : Singleton<ScoreManager>
 	void OnApplicationQuit ()
 	{
 		if (saveOnStop)
+		{
 			SaveLevelStars ();
+			PlayerPrefs.Save ();
+		}
 	}
 
 	void OnApplicationFocus (bool hasFocus)
 	{
 		if (saveOnStop && !hasFocus)
+		{
 			SaveLevelStars ();
+			PlayerPrefs.Save ();
+		}
 	}
 }

@@ -10,6 +10,7 @@ public class MenuManager : Singleton<MenuManager>
 	public Action OnMenuTransitionStart;
 	public Action OnMenuTransitionEnd;
 	public Action OnLevelStart;
+	public Action OnMainMenu;
 
 	public bool inTransition = false;
 
@@ -29,6 +30,9 @@ public class MenuManager : Singleton<MenuManager>
 	[Header ("End Level Menu")]
 	public float endLevelDelay = 2f;
 	public MenuComponent endLevelMenu;
+
+	[Header ("Pause Menu")]
+	public MenuComponent pauseMenu;
 
 	[Header ("Menu Panel")]
 	public Image menuPanel;
@@ -320,6 +324,12 @@ public class MenuManager : Singleton<MenuManager>
 		ShowTitle ();
 
 		ToMenu (mainMenu);
+
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=> {
+			
+			if (OnMainMenu != null)
+				OnMainMenu ();
+		});
 	}
 
 	public void RetryLevel ()
@@ -362,6 +372,26 @@ public class MenuManager : Singleton<MenuManager>
 				HideCurrentMenu ();
 				GameManager.Instance.StartLevel ();
 			});
+	}
+
+	public void Pause ()
+	{
+		GameManager.Instance.gameState = GameState.Pause;
+
+		UIFadeOut ();
+
+		ShowMenu (pauseMenu, false);
+	}
+
+	public void Resume ()
+	{
+		HideMenu (pauseMenu);
+
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=> {
+			
+			UIFadeIn ();
+			GameManager.Instance.gameState = GameState.Playing;
+		});
 	}
 
 	public void StartLevel ()
