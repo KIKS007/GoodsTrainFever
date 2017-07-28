@@ -101,6 +101,8 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		container.TakeSpot (spot);
 
+		targetPosition = container.transform.parent.InverseTransformPoint (targetPosition);
+
 		container.isMoving = true;
 
 		containerInMotion = true;
@@ -124,11 +126,11 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		//container.transform.DORotate (rotationDir * Mathf.Sign (diff.x + diff.y + diff.z) * 360f, .4f, RotateMode.FastBeyond360);
 		container.transform.DORotate (direction * 360f, takeSpotDuration, RotateMode.FastBeyond360);
 
-		container.transform.DOMoveX (targetPosition.x, takeSpotDuration).SetEase (Ease.OutCubic);
-		container.transform.DOMoveZ (targetPosition.z, takeSpotDuration).SetEase (Ease.OutCubic);
-		container.transform.DOMoveY (targetPosition.y + 10f + UnityEngine.Random.Range (-2, 3), takeSpotDuration - 0.1f).SetEase (Ease.OutCubic).OnComplete (() => 
+		container.transform.DOLocalMoveX (targetPosition.x, takeSpotDuration).SetEase (Ease.OutCubic);
+		container.transform.DOLocalMoveZ (targetPosition.z, takeSpotDuration).SetEase (Ease.OutCubic);
+		container.transform.DOLocalMoveY (targetPosition.y + 10f + UnityEngine.Random.Range (-2, 3), takeSpotDuration - 0.1f).SetEase (Ease.OutCubic).OnComplete (() => 
 			{
-				container.transform.DOMoveY (targetPosition.y, takeSpotDuration + 0.1f).SetEase (Ease.OutBounce, 40, 1);
+				container.transform.DOLocalMoveY (targetPosition.y, takeSpotDuration + 0.1f).SetEase (Ease.OutBounce, 40, 1);
 				container.transform.DOPunchRotation (direction * 10f, takeSpotDuration + 0.1f, 10).SetDelay (.1f).OnStart (() => 
 					{
 						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, targetPosition - (Vector3.up * container._collider.bounds.extents.y * .5f));

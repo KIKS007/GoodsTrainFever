@@ -309,10 +309,10 @@ public class Spot : Touchable
 	{
 		base.OnTouchUpAsButton ();
 
-		if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
-			return;
+		/*if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
+			return;*/
 
-		if (_wagon && _wagon.train.inTransition)
+		if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
 			return;
 
 		if (spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
@@ -330,7 +330,7 @@ public class Spot : Touchable
 		if (isOccupied)
 			return;
 
-		if (_wagon && _wagon.train.inTransition)
+		if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
 			return;
 		
 		if (!IsSameSize (container))

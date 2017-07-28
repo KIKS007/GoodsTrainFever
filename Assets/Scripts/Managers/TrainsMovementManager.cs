@@ -137,13 +137,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		if (holdState != HoldState.None)
 		{
-			if(selectedTrain && trainContainerInMotion != selectedTrain)
+			//if(selectedTrain && trainContainerInMotion != selectedTrain)
+			if(selectedTrain)
 				MoveTrain (selectedTrain);
 			
 			else
 			{
 				foreach (var t in allTrains)
-					if(trainContainerInMotion != t)
+					//if(trainContainerInMotion != t)
 						MoveTrain (t);
 			}
 		}
