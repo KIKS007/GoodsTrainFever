@@ -41,7 +41,7 @@ public class MenuEndLevel : MenuComponent
 		trainsSent.text = LevelsManager.Instance.trainsUsed.ToString ();
 		duration.text = LevelsManager.Instance.levelDuration.ToString ();
 
-		if (LevelsManager.Instance.levelIndex + 1 == LevelsManager.Instance.levelsCount)
+		if (LevelsManager.Instance.levelIndex + 1 == LevelsManager.Instance.levelsCount || !ScoreManager.Instance.IsLevelUnlocked (LevelsManager.Instance.levelIndex + 1))
 			nextLevel.SetActive (false);
 		else
 			nextLevel.SetActive (true);

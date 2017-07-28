@@ -37,6 +37,9 @@ public class MenuManager : Singleton<MenuManager>
 	[Header ("Menu Panel")]
 	public Image menuPanel;
 
+	[Header ("Menu Levels")]
+	public MenuLevels menulevels;
+
 	[Header ("Menu Animations")]
 	public Ease menuEase = Ease.OutQuad;
 	public float menuAnimationDuration = 0.5f;
@@ -80,6 +83,8 @@ public class MenuManager : Singleton<MenuManager>
 
 		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
+
+		//menulevels.SetupLevels ();
 
 		foreach (var m in FindObjectsOfType<MenuComponent> ())
 			ClearMenu (m);

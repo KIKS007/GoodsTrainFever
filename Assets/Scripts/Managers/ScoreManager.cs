@@ -16,6 +16,11 @@ public class ScoreManager : Singleton<ScoreManager>
 	public bool loadOnStart = true;
 	public bool saveOnStop = true;
 
+	[Header ("Stages")]
+	public MenuLevels menuLevels;
+	public List<Stage> levelStages = new List<Stage> ();
+
+
 	// Use this for initialization
 	void Awake ()
 	{
@@ -33,11 +38,14 @@ public class ScoreManager : Singleton<ScoreManager>
 	void DeletePlayerPrefs ()
 	{
 		PlayerPrefs.DeleteAll ();
+
+		if (Application.isPlaying)
+			saveOnStop = false;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public bool IsLevelUnlocked (int levelIndex)
+	{
+		return menuLevels._levelsMenu [levelIndex].isUnlocked;
 	}
 
 	void OnLevelStart ()
@@ -54,7 +62,6 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void LoadLevelStars ()
 	{
-
 		for(int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
 		{
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
@@ -62,7 +69,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			if (PlayerPrefs.HasKey ("Stars" + i))
 				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
 
-			Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
+			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
 
 			for (int j = 0; j < 3; j++)
 			{
@@ -72,7 +79,7 @@ public class ScoreManager : Singleton<ScoreManager>
 					level.starsStates [j] = StarState.Locked;
 			}
 
-			Debug.Log (level + " : " + level.starsEarned);
+			//Debug.Log (level + " : " + level.starsEarned);
 		}
 
 		UpdateStars ();
@@ -96,6 +103,8 @@ public class ScoreManager : Singleton<ScoreManager>
 
 			starsEarned += level.starsEarned;
 		}
+
+		menuLevels.UpdateLevels ();
 	}
 
 	public void UnlockStars (int ordersPrepared, int trainsCount, int levelIndex)
@@ -112,7 +121,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void MostOrdersStar (int ordersPrepared, Level level, int levelIndex)
 	{
-		if(ordersPrepared > level.mostOrdersCount)
+		if(ordersPrepared >= level.mostOrdersCount)
 		{
 			success = true;
 
@@ -175,4 +184,12 @@ public class ScoreManager : Singleton<ScoreManager>
 			PlayerPrefs.Save ();
 		}
 	}
+}
+
+[System.Serializable]
+public class Stage
+{
+	public int index;
+	public int starsRequired;
+	public Stage_Menu stage;
 }
