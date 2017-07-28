@@ -25,9 +25,7 @@ public class MenuLevels : MenuComponent
 	// Use this for initialization
 	void Start () 
 	{
-		_levelsPanelWidth = levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x;
-
-		SetupLevels ();
+		//SetupLevels ();
 	}
 
 	void OnEnable ()
@@ -54,6 +52,8 @@ public class MenuLevels : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
+		_levelsPanelWidth = levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x;
+
 		foreach (Transform t in levelsScrollView.transform)
 			Destroy (t.gameObject);
 

@@ -91,7 +91,7 @@ public class MenuManager : Singleton<MenuManager>
 		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
 
-		//menulevels.SetupLevels ();
+		menulevels.SetupLevels ();
 
 		foreach (var m in FindObjectsOfType<MenuComponent> ())
 			ClearMenu (m);

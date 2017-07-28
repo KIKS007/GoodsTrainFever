@@ -26,6 +26,10 @@ public class Container : Touchable
 	public bool isPileUp = false;
 	public bool isMoving = false;
 
+	[Header ("Constraints")]
+	public bool allConstraintsRespected = true;
+	public List<ContainerConstraint> constraints = new List<ContainerConstraint> ();
+
 	[Header ("Size")]
 	[ReadOnlyAttribute]
 	public bool isDoubleSize;
@@ -57,6 +61,15 @@ public class Container : Touchable
 		_weightImage = transform.GetComponentInChildren<Image> ();
 
 		OnContainerMoved += IsPileUp;
+		OnContainerMoved += CheckConstraints;
+
+		constraints.Clear ();
+
+		foreach (var c in transform.GetComponents<Constraint> ())
+		{
+			constraints.Add (new ContainerConstraint ());
+			constraints [constraints.Count - 1].constraint = c;
+		}
 
 		foreach (var p in _pileSpots)
 			p.gameObject.SetActive (true);
@@ -219,11 +232,15 @@ public class Container : Touchable
 			wagon = spot._wagon;
 			train = wagon.train;
 			TrainsMovementManager.Instance.trainContainerInMotion = train;
+
+			CheckConstraints ();
 		}
 		else
 		{
 			wagon = null;
 			train = null;
+
+			allConstraintsRespected = true;
 		}
 
 		SetPileSpot ();
@@ -241,6 +258,27 @@ public class Container : Touchable
 			spotOccupied.RemoveContainer ();
 
 		spotOccupied = null;
+	}
+
+	public void CheckConstraints ()
+	{
+		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
+		{
+			allConstraintsRespected = true;
+			return;
+		}
+
+		bool allRespected = true;
+
+		foreach(var c in constraints)
+		{
+			c.isRespected = c.constraint.IsRespected ();
+
+			if (!c.isRespected)
+				allRespected = false;
+		}
+
+		allConstraintsRespected = allRespected;
 	}
 
 	void SetPileSpot ()
@@ -379,5 +417,13 @@ public class Container : Touchable
 		Vector3 position = spotOccupied.transform.position;
 		position.y += 0.01f;
 		transform.position = position;
+	}
+
+	[System.Serializable]
+	public class ContainerConstraint
+	{
+		public bool isRespected = true;
+		[SerializeField]
+		public Constraint constraint;
 	}
 }
