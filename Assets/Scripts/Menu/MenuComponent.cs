@@ -12,6 +12,10 @@ public class MenuComponent : MonoBehaviour
 	[Header ("Contents")]
 	public List<MenuContent> contents = new List<MenuContent> ();
 
+	[Header ("Back")]
+	public bool backToMainMenu = false;
+	public MenuComponent backMenu;
+
 	// Use this for initialization
 	void Awake () 
 	{

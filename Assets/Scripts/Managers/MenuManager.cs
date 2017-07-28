@@ -40,6 +40,10 @@ public class MenuManager : Singleton<MenuManager>
 	[Header ("Menu Levels")]
 	public MenuLevels menulevels;
 
+	[Header ("Back Button")]
+	public RectTransform backButton;
+	public Vector2 backButtonHiddenPos;
+
 	[Header ("Menu Animations")]
 	public Ease menuEase = Ease.OutQuad;
 	public float menuAnimationDuration = 0.5f;
@@ -64,6 +68,7 @@ public class MenuManager : Singleton<MenuManager>
 
 	private float _menuPanelShowAlpha;
 	private float _titleShowPos;
+	private Vector2 _backButtonShowPos;
 
 	private Camera _camera;
 	private Matrix4x4 _ortho, _perspective;
@@ -81,6 +86,8 @@ public class MenuManager : Singleton<MenuManager>
 
 		_titleShowPos = title.anchoredPosition.y;
 
+		_backButtonShowPos = backButton.anchoredPosition;
+
 		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
 
@@ -97,6 +104,43 @@ public class MenuManager : Singleton<MenuManager>
 			ShowMenu (mainMenu);
 
 		SetupMatrix ();
+	}
+
+	void Update ()
+	{
+		/*if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if (_orthoOn)
+				GamePosition ();
+			else
+				MenuPosition ();
+		}*/
+
+		if(Input.GetKeyDown (KeyCode.Escape) && currentMenu)
+			Back ();
+	}
+
+	void BackButton (MenuComponent menu)
+	{
+		if(menu && menu.backToMainMenu || menu && menu.backMenu != null)
+		{
+			DOTween.Kill (backButton);
+			backButton.DOAnchorPos (_backButtonShowPos, menuAnimationDuration).SetEase (menuEase);
+		}
+		else
+		{
+			DOTween.Kill (backButton);
+			backButton.DOAnchorPos (backButtonHiddenPos, menuAnimationDuration).SetEase (menuEase);
+		}
+	}
+
+	public void Back ()
+	{
+		if (currentMenu.backToMainMenu)
+			MainMenu ();
+
+		else if (currentMenu.backMenu != null)
+			ToMenu (currentMenu.backMenu);
 	}
 
 	void SetupMatrix ()
@@ -140,7 +184,7 @@ public class MenuManager : Singleton<MenuManager>
 		DOTween.Kill ("Menu");
 
 		if (currentMenu != null)
-			HideMenu (currentMenu);
+			HideMenu (currentMenu, menu);
 
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=> ShowMenu (menu, showPanel)).SetId ("Menu");
 	}
@@ -153,6 +197,8 @@ public class MenuManager : Singleton<MenuManager>
 			ShowPanel ();
 
 		StartTransition ();
+
+		BackButton (menu);
 
 		currentMenu = menu;
 
@@ -203,13 +249,15 @@ public class MenuManager : Singleton<MenuManager>
 		DOVirtual.DelayedCall (animationDuration, ()=> EndTransition (menu, false)).SetId ("Menu");
 	}
 
-	public void HideMenu (MenuComponent menu)
+	public void HideMenu (MenuComponent menu, MenuComponent toMenu = null)
 	{
 		StartTransition ();
 
 		float animationDuration = menuAnimationDuration;
 
 		currentMenu = null;
+
+		BackButton (toMenu);
 
 		if(menu.mainContent)
 		{
@@ -441,17 +489,5 @@ public class MenuManager : Singleton<MenuManager>
 	void HideTitle ()
 	{
 		title.DOAnchorPosY (titleHiddenYPos, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> title.gameObject.SetActive (false));
-	}
-
-	// Update is called once per frame
-	void Update () 
-	{
-		/*if (Input.GetKeyDown(KeyCode.Space))
-		{
-			if (_orthoOn)
-				GamePosition ();
-			else
-				MenuPosition ();
-		}*/
 	}
 }
