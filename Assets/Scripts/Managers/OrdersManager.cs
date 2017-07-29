@@ -207,14 +207,14 @@ public class OrdersManager : Singleton<OrdersManager>
 		orders.Remove (order);
 
 		if (delay > 0)
-			yield return new WaitForSecondsRealtime (delay);
+			yield return new WaitForSeconds (delay);
 
 		RectTransform orderRect = order.GetComponent<RectTransform> ();
 
 		if(animated)
 		{
 			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).OnComplete (()=> Destroy (order.gameObject));
-			yield return new WaitForSecondsRealtime (removeOrderDuration);
+			yield return new WaitForSeconds (removeOrderDuration);
 			UpdateOrdersLayout (true, orderRect);
 		}
 		else

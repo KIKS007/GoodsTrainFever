@@ -253,7 +253,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	IEnumerator HoldDelay ()
 	{
-		yield return new WaitForSecondsRealtime (holdDelay);
+		yield return new WaitForSeconds (holdDelay);
 
 		if(holdState == HoldState.Touched)
 			holdState = HoldState.Holding;
@@ -407,7 +407,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		{
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-			yield return new WaitForSecondsRealtime (1f);
+			yield return new WaitForSeconds (1f);
 
 			if(rail.train == null || !rail.train.waitingDeparture)
 				yield break;

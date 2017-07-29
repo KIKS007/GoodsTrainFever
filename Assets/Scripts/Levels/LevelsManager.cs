@@ -191,7 +191,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		yield return new WaitForSecondsRealtime (order.delay);
+		yield return new WaitForSeconds (order.delay);
 
 		OrdersManager.Instance.AddOrder (order);
 	}
@@ -220,7 +220,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitUntil (()=> train == null);
 
 			if(i != train_Level.Count - 1)
-				yield return new WaitForSecondsRealtime (waitDurationBetweenTrains);
+				yield return new WaitForSeconds (waitDurationBetweenTrains);
 			else
 			{
 				if (rail == TrainsMovementManager.Instance.rail1)
@@ -256,7 +256,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
 
 			if (b.delay > 0)
-				yield return new WaitForSecondsRealtime (b.delay);
+				yield return new WaitForSeconds (b.delay);
 
 			BoatsMovementManager.Instance.BoatSpawn ();
 
@@ -264,13 +264,13 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			float boatDuration = b.overrideDuration & b.duration > 0 ? b.duration : boatsDuration;
 
-			yield return new WaitForSecondsRealtime (boatDuration);
+			yield return new WaitForSeconds (boatDuration);
 
 			BoatsMovementManager.Instance.BoatDeparture ();
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
-			yield return new WaitForSecondsRealtime (waitDurationBetweenBoats);
+			yield return new WaitForSeconds (waitDurationBetweenBoats);
 		}
 	}
 
