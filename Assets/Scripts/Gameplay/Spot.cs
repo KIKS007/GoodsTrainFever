@@ -28,21 +28,23 @@ public class Spot : Touchable
 	[Header ("Container")]
 	public Container container;
 
+	[Header ("Overlapping Spots")]
+	public List<Spot> overlappingSpots = new List<Spot> ();
+
 	[HideInInspector]
 	public Wagon _wagon;
 	[HideInInspector]
 	public Transform _containersParent;
+	[HideInInspector]
+	public Container _parentContainer;
+	[HideInInspector]
+	public bool _isSpawned = false;
+	public int _spotTrainIndex;
 
 	private Collider _collider;
 	private MeshRenderer _meshRenderer;
 	private MeshFilter _meshFilter;
 	private Material _material;
-	[HideInInspector]
-	public Container _parentContainer;
-	public List<Spot> _overlappingSpots = new List<Spot> ();
-	[HideInInspector]
-	public bool _isSpawned = false;
-
 	private float _fadeDuration = 0.2f;
 	private Spot _doubleSizeSpotSpawned;
 	private float _hologramOpacity;
@@ -126,15 +128,15 @@ public class Spot : Touchable
 			if (c != _collider && spot != null)
 			{
 				if(!isDoubleSize && spot.isDoubleSize || isDoubleSize)
-					_overlappingSpots.Add (spot);
+					overlappingSpots.Add (spot);
 			}
 		}
 
-		_overlappingSpots = _overlappingSpots.OrderByDescending (x => x.transform.position.x).ToList ();
+		overlappingSpots = overlappingSpots.OrderByDescending (x => x.transform.position.x).ToList ();
 
 		if (_isSpawned)
-			foreach (var o in _overlappingSpots)
-				o._overlappingSpots.Add (this);
+			foreach (var o in overlappingSpots)
+				o.overlappingSpots.Add (this);
 	}
 
 	public void OverlappingSpotsOccupied ()
@@ -142,7 +144,7 @@ public class Spot : Touchable
 		if(container == null)
 			isOccupied = false;
 
-		foreach(var s in _overlappingSpots)
+		foreach(var s in overlappingSpots)
 		{
 			if (s.isOccupied)
 			{
@@ -285,7 +287,7 @@ public class Spot : Touchable
 		isOccupied = true;
 		this.container = container;
 
-		foreach (var s in _overlappingSpots)
+		foreach (var s in overlappingSpots)
 			s.OverlappingSpotsOccupied ();
 
 		if (OnSpotTaken != null)
@@ -301,7 +303,7 @@ public class Spot : Touchable
 		
 		container = null;
 
-		foreach (var s in _overlappingSpots)
+		foreach (var s in overlappingSpots)
 			s.OverlappingSpotsOccupied ();
 	}
 
@@ -339,6 +341,9 @@ public class Spot : Touchable
 		if (!CanPileContainer ())
 			return;
 
+		if (!AreConstraintsRespected (container))
+			return;
+		
 		if (isPileSpot && _parentContainer.selected)
 			return;
 
@@ -369,6 +374,24 @@ public class Spot : Touchable
 			});
 	}
 
+	public bool AreConstraintsRespected (Container container)
+	{
+		if (spotType != SpotType.Train)
+			return true;
+
+		if (container.constraints.Count == 0)
+			return true;
+
+		foreach (var c in container.constraints)
+			if (!c.constraint.IsRespected (this))
+			{
+				//Debug.Log (_spotTrainIndex, this);
+				return false;
+			}
+
+		return true;
+	}
+
 	public bool IsSameSize (Container container)
 	{
 		if(isDoubleSize && container.isDoubleSize || !isDoubleSize && !container.isDoubleSize)
@@ -381,7 +404,7 @@ public class Spot : Touchable
 	{
 		isPileUp = piled;
 
-		foreach (var s in _overlappingSpots)
+		foreach (var s in overlappingSpots)
 			s.isPileUp = piled;
 	}
 
@@ -408,7 +431,7 @@ public class Spot : Touchable
 		if (isPileUp)
 			return null;
 
-		foreach (var s in _overlappingSpots)
+		foreach (var s in overlappingSpots)
 		{
 			if (s.isOccupied == false)
 				return null;
@@ -426,11 +449,11 @@ public class Spot : Touchable
 		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
 		_doubleSizeSpotSpawned._isSpawned = true;
 
-		_doubleSizeSpotSpawned._overlappingSpots.Clear ();
+		_doubleSizeSpotSpawned.overlappingSpots.Clear ();
 
-		foreach(var o in _overlappingSpots)
+		foreach(var o in overlappingSpots)
 			foreach (var p in o.container._pileSpots)
-				_doubleSizeSpotSpawned._overlappingSpots.Add (p);
+				_doubleSizeSpotSpawned.overlappingSpots.Add (p);
 
 		_doubleSizeSpotSpawned.GetOverlappingSpots ();
 
@@ -449,7 +472,7 @@ public class Spot : Touchable
 		Container.OnContainerDeselected -= OnContainerDeselected;
 
 		if (_isSpawned)
-			foreach (var o in _overlappingSpots)
-				o._overlappingSpots.Remove (this);
+			foreach (var o in overlappingSpots)
+				o.overlappingSpots.Remove (this);
 	}
 }

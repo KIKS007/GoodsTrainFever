@@ -13,4 +13,14 @@ public class NotOnTrainCenter_Constraint : Constraint
 		else
 			return false;
 	}
+
+	public override bool IsRespected (Spot spot)
+	{
+		int index = spot._wagon.train.wagons.FindIndex(a => a == spot._wagon);
+
+		if (index == 0 || index == spot._wagon.train.wagons.Count - 1)
+			return true;
+		else
+			return false;
+	}
 }

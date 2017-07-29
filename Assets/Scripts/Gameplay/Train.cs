@@ -60,13 +60,15 @@ public class Train : Touchable
 		{
 			if(s.isDoubleSize)
 			{
-				foreach (var o in s._overlappingSpots)
+				foreach (var o in s.overlappingSpots)
 					spots.Remove (o);
 			}
 
 			else if(s.isPileSpot)
 				spots.Remove (s);
 		}
+
+		int spotIndex = 0;
 
 		//Setup Spots Events
 		for(int i = 0; i < spots.Count; i++)
@@ -77,54 +79,31 @@ public class Train : Touchable
 			//First Slot
 			AddSpotEvents (spots [i]);
 
+			spots [i]._spotTrainIndex = spotIndex;
+
 			if(spots [i].isDoubleSize)
 			{
 				//First Overlapping 20
-				AddSpotEvents (spots [i]._overlappingSpots [0]);
+				AddSpotEvents (spots [i].overlappingSpots [0]);
 
 				//New Slot
 				AddContainerSlot (spots [i]);
+
+				spots [i].overlappingSpots [0]._spotTrainIndex = spotIndex;
+
+				spotIndex++;
 
 				//Fill The Second 40 Slot
 				AddSpotEvents (spots [i]);
 
 				//Second Overlapping 20
-				AddSpotEvents (spots [i]._overlappingSpots [1]);
+				AddSpotEvents (spots [i].overlappingSpots [1]);
+
+				spots [i].overlappingSpots [1]._spotTrainIndex = spotIndex;
 			}
+
+			spotIndex++;
 		}
-
-		/*for(int i = 0; i < spots.Count; i++)
-		{
-			containers.Add (null);
-
-			int index = containerIndex;
-			spots [i].OnSpotTaken += (arg) => containers [index] = arg;
-			spots [i].OnSpotFreed += () => containers [index] = null;
-
-			if(spots [i].isDoubleSize)
-			{
-				//The Two 20 Spots Overlapping the 40
-				spots [i]._overlappingSpots [0].OnSpotTaken += (arg) => containers [index] = arg;
-				spots [i]._overlappingSpots [0].OnSpotFreed += () => containers [index] = null;
-
-				containers.Add (null);
-
-				//Fill The Second 40 Slot
-				spots [i].OnSpotTaken += (arg) => containers [index + 1] = arg;
-				spots [i].OnSpotFreed += () => containers [index + 1] = null;
-
-
-				spots [i]._overlappingSpots [1].OnSpotTaken += (arg) => containers [index + 1] = arg;
-				spots [i]._overlappingSpots [1].OnSpotFreed += () => containers [index + 1] = null;
-
-				containerIndex++;
-			}
-
-			if (spots [i].container)
-				containers [containers.Count - 1] = spots [i].container;
-
-			containerIndex++;
-		}*/
 
 		foreach (var w in wagons)
 			w.UpdateWeight ();

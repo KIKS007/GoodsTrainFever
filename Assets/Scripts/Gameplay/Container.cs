@@ -62,6 +62,7 @@ public class Container : Touchable
 
 		OnContainerMoved += IsPileUp;
 		OnContainerMoved += CheckConstraints;
+		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 
 		constraints.Clear ();
 
@@ -79,8 +80,6 @@ public class Container : Touchable
 		//SetupColor ();
 
 		//SetWeight ();
-
-		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 	}
 
 	public void Setup (Container_Level container_Level)
@@ -281,6 +280,28 @@ public class Container : Touchable
 		allConstraintsRespected = allRespected;
 	}
 
+	public bool CheckConstraints (Spot spot)
+	{
+		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
+		{
+			allConstraintsRespected = true;
+			return allConstraintsRespected;
+		}
+
+		bool allRespected = true;
+
+		foreach(var c in constraints)
+		{
+			c.isRespected = c.constraint.IsRespected (spot);
+
+			if (!c.isRespected)
+				allRespected = false;
+		}
+
+		allConstraintsRespected = allRespected;
+		return allRespected;
+	}
+
 	void SetPileSpot ()
 	{
 		foreach (var s in _pileSpots)
@@ -321,6 +342,7 @@ public class Container : Touchable
 			return;
 
 		OnContainerMoved -= IsPileUp;
+		OnContainerMoved -= CheckConstraints;
 		TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
 	}
 
