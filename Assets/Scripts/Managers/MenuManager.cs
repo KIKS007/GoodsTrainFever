@@ -44,9 +44,6 @@ public class MenuManager : Singleton<MenuManager>
 	public RectTransform backButton;
 	public Vector2 backButtonHiddenPos;
 
-	[Header ("Info Button")]
-	public Button infosButton;
-
 	[Header ("Menu Animations")]
 	public Ease menuEase = Ease.OutQuad;
 	public float menuAnimationDuration = 0.5f;
@@ -98,13 +95,9 @@ public class MenuManager : Singleton<MenuManager>
 
 		menulevels.SetupLevels ();
 
-		infosButton.interactable = false;
-			
-		Container.OnContainerSelected += (c) => infosButton.interactable = true;
-		Container.OnContainerDeselected += (c) => infosButton.interactable = false;
-
-		foreach (var m in FindObjectsOfType<MenuComponent> ())
-			ClearMenu (m);
+		foreach(Transform t in menuParent)
+			if(t.gameObject.GetComponent<MenuComponent> () != null)
+				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
 
 		UIFadeOut ();
 
@@ -344,6 +337,8 @@ public class MenuManager : Singleton<MenuManager>
 
 	void ClearMenu (MenuComponent menu)
 	{
+		menu.gameObject.SetActive (true);
+
 		if(menu.mainContent)
 		{
 			DOTween.Kill (menu.mainContent);
@@ -360,7 +355,8 @@ public class MenuManager : Singleton<MenuManager>
 			c.content.anchoredPosition = c.hidePosition;
 		}
 
-		menu.gameObject.SetActive (false);
+		if(menu != mainMenu)
+			DOVirtual.DelayedCall (0.1f, ()=> menu.gameObject.SetActive (false));
 	}
 
 	void ShowPanel ()

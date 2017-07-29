@@ -24,8 +24,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public Rail rail2;
 
 	[Header ("Train Buttons")]
-	public Button rail1Button;
-	public Button rail2Button;
 	public Text rail1Text;
 	public Text rail2Text;
 
@@ -48,6 +46,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float resetDuration = 0.5f;
 	public Ease resetEase = Ease.OutQuad;
 
+	[Header ("Fast Forward")]
+	public Button fastForwardButton;
+	public Ease fastForwardEase;
+	public float fastForwardTransitionDuration;
+	public float fastForwardValue;
+
 	[Header ("Train Spawn")]
 	public float xArrivingPosition;
 	public float xDeparturePosition1;
@@ -55,8 +59,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public float arrivingSpeed = 0.5f;
 	public float arrivingDelay = 0;
 
-	[Header ("Fast Forward")]
-	public float fastForwardSpeed;
+	[Header ("Fast Sending")]
+	public float trainSendingSpeed;
 	public Ease trainMovementEase = Ease.OutQuad;
 
 	[Header ("Train Length")]
@@ -98,6 +102,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		else
 			TouchManager.Instance.OnTouchMoved += TouchHold;*/
 
+		GameManager.Instance.OnMenu += ()=> 
+		{
+			fastForwardButton.interactable = false;
+
+			if(Time.timeScale != 1)
+				FastForward (false);
+		};
+
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
 		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainContainerInMotion = null;
 
@@ -124,7 +136,21 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		_trainsVelocity.Remove (train);
 	}
 
-	// Update is called once per frame
+	void Update ()
+	{
+		if (rail1.train && rail1.train.inTransition || rail2.train && rail2.train.inTransition || GameManager.Instance.gameState != GameState.Playing)
+		{
+			if(fastForwardButton.interactable)
+				fastForwardButton.interactable = false;
+		}
+
+		else
+		{
+			if(!fastForwardButton.interactable)
+				fastForwardButton.interactable = true;
+		}
+	}
+
 	void FixedUpdate () 
 	{
 		if (resetingTrains)
@@ -367,13 +393,18 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
-		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> trainScript.inTransition = false).SetSpeedBased ();
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
 
 		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration, waitOtherTrain) );
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
 		return trainScript;
+	}
+
+	void OnTrainArrived (Rail rail, Train trainScript)
+	{
+		trainScript.inTransition = false;
 	}
 
 	IEnumerator TrainDuration (Rail rail, int duration, bool waitOtherTrain = false)
@@ -385,21 +416,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		yield return new WaitWhile (() => rail.train.inTransition);
 
 		Text trainText = null;
-		Button trainButton = null;
 
 		if (rail == rail1)
-		{
-			trainButton = rail1Button;
 			trainText = rail1Text;
-		}
 		else
-		{
-			trainButton = rail2Button;
 			trainText = rail2Text;
-		}
-
-		if (!trainButton.interactable)
-			trainButton.interactable = true;
 
 		trainText.text = duration.ToString ();
 
@@ -420,21 +441,26 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		while (duration > 0);
 
 		if(rail.train != null && !rail.train.inTransition)
-		{
-			trainButton.interactable = false;
-			FastForwardTrain (rail);
-		}
+			SendTrain (rail);
 	}
 
-	public void FastForwardTrain (Rail rail)
+	public void SendTrain (Rail rail)
 	{
-		StartCoroutine (FastForwardTrainCoroutine (rail));
+		StartCoroutine (SendTrainCoroutine (rail));
 	}
 
-	IEnumerator FastForwardTrainCoroutine (Rail rail)
+	IEnumerator SendTrainCoroutine (Rail rail)
 	{
 		if (rail.train == null)
 			yield break;
+
+		fastForwardButton.interactable = false;
+
+		if (Time.timeScale != 1)
+		{
+			FastForward (false);
+			yield return new WaitWhile (()=> DOTween.IsTweening ("FastForward"));
+		}
 
 		rail.train.inTransition = true;
 		rail.train.waitingDeparture = false;
@@ -452,13 +478,28 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		float xPosition = xDeparturePosition1 + rail.train.trainLength + offsetLength;
 
-		rail.train.transform.DOMoveX (xPosition, fastForwardSpeed).SetEase (trainMovementEase).SetSpeedBased ().OnComplete (()=> 
+		rail.train.transform.DOMoveX (xPosition, trainSendingSpeed).SetEase (trainMovementEase).SetSpeedBased ().OnComplete (()=> 
 			{
 				RemoveTrain (rail.train);
 				Destroy (rail.train.gameObject);
+
 			});
 
 		yield return 0;
+	}
+
+	public void FastForward (bool fastForward)
+	{
+		if(fastForward)
+		{
+			DOTween.Kill ("FastForward");
+			DOTween.To (()=> Time.timeScale, x => Time.timeScale = x, fastForwardValue, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
+		}
+		else
+		{
+			DOTween.Kill ("FastForward");
+			DOTween.To (()=> Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
+		}
 	}
 
 	public void ClearTrains ()

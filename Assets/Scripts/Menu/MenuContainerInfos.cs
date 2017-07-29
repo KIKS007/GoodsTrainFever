@@ -11,7 +11,8 @@ public enum ConstraintType { LimitedPerTrain_Constraint, LimitedPerWagon_Constra
 public class MenuContainerInfos : MenuComponent 
 {
 	[Header ("Infos Button")]
-	public Image infosButton;
+	public Button infosButton;
+	public Image infosButtonImage;
 	public float infosButtonPunchForce = 0.4f;
 
 	[Header ("Elements")]
@@ -35,16 +36,28 @@ public class MenuContainerInfos : MenuComponent
 		Container.OnContainerSelected += (c) => _selectedContainer = c;
 		Container.OnContainerSelected += ChangeButtonColor;
 		Container.OnContainerMoved += () => ChangeButtonColor (_selectedContainer);
+
+		infosButton.interactable = false;
+		Container.OnContainerSelected += (c) => infosButton.interactable = true;
+
+		TrainsMovementManager.Instance.OnTrainDeparture += (arg) =>
+		{
+			if(arg.containers.Contains (_selectedContainer))
+			{
+				_selectedContainer = null;
+				infosButton.interactable = false;
+			}
+		};
 	}
 
 	void ChangeButtonColor (Container container)
 	{
 		if (container.allConstraintsRespected)
-			infosButton.color = GlobalVariables.Instance.infoButtonRespectedColor;
+			infosButtonImage.color = GlobalVariables.Instance.infoButtonRespectedColor;
 		else
 		{
-			infosButton.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
-			infosButton.color = GlobalVariables.Instance.infoButtonNotRespectedColor;
+			infosButtonImage.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
+			infosButtonImage.color = GlobalVariables.Instance.infoButtonNotRespectedColor;
 		}
 	}
 

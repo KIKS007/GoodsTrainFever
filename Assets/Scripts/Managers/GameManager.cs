@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public enum GameState { Menu, Playing, Pause }
+public enum GameState { Menu, Playing, Pause, End }
 
 public class GameManager : Singleton<GameManager> 
 {
+	public Action OnMenu;
+	public Action OnPlaying;
+
 	[Header ("Game State")]
 	public GameState gameState = GameState.Playing;
 
@@ -28,6 +32,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		gameState = GameState.Playing;
 
+		if (OnPlaying != null)
+			OnPlaying ();
 	}
 
 	public void LevelEndOrders ()
@@ -53,5 +59,8 @@ public class GameManager : Singleton<GameManager>
 	public void LevelEnd ()
 	{
 		gameState = GameState.Menu;
+
+		if (OnMenu != null)
+			OnMenu ();
 	}
 }

@@ -67,6 +67,7 @@ public class MenuEndLevel : MenuComponent
 			case StarState.Unlocked:
 				starInner.DOFade (1, 0);
 
+				if(ScoreManager.Instance.success)
 				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
 					{
 						starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
@@ -79,6 +80,7 @@ public class MenuEndLevel : MenuComponent
 
 				RectTransform star = starsOuter [i];
 
+				if(ScoreManager.Instance.success)
 				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
 					{
 						star.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);

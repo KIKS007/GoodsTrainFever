@@ -29,6 +29,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	[Header ("Trains")]
 	public int trainsUsed = 0;
 	public float waitDurationBetweenTrains = 2f;
+	public int trainsToSend;
 	public List<Train_Level> rail1Trains = new List<Train_Level> ();
 	public List<Train_Level> rail2Trains = new List<Train_Level> ();
 
@@ -74,6 +75,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		trainsUsed = 0;
 		levelDuration = 0;
+		trainsToSend = 0;
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -153,12 +155,14 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (rail1Trains.Count > 0)
 		{
 			_rail1Occupied = true;
+			trainsToSend += rail1Trains.Count;
 			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
 		}
 
 		if (rail2Trains.Count > 0)
 		{
 			_rail2Occupied = true;
+			trainsToSend += rail2Trains.Count;
 			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
 		}
 
@@ -209,8 +213,12 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitWhile (()=> train.waitingDeparture);
 
 			trainsUsed++;
+			trainsToSend--;
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
+			if (trainsToSend == 0)
+				GameManager.Instance.gameState = GameState.End;
+			
 			if (OrdersManager.Instance.allOrdersSent)
 			{
 				LevelEnd (true);
