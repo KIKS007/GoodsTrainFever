@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class MenuComponent : MonoBehaviour 
 {
@@ -15,6 +17,8 @@ public class MenuComponent : MonoBehaviour
 	[Header ("Back")]
 	public bool backToMainMenu = false;
 	public MenuComponent backMenu;
+	public Button backButton;
+	public UnityEvent backEvent;
 
 	// Use this for initialization
 	void Awake () 

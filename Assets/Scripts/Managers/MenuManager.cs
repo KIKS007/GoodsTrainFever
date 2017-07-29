@@ -44,6 +44,9 @@ public class MenuManager : Singleton<MenuManager>
 	public RectTransform backButton;
 	public Vector2 backButtonHiddenPos;
 
+	[Header ("Info Button")]
+	public Button infosButton;
+
 	[Header ("Menu Animations")]
 	public Ease menuEase = Ease.OutQuad;
 	public float menuAnimationDuration = 0.5f;
@@ -90,8 +93,15 @@ public class MenuManager : Singleton<MenuManager>
 
 		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
+		title.gameObject.SetActive (true);
+		backButton.gameObject.SetActive (true);
 
 		menulevels.SetupLevels ();
+
+		infosButton.interactable = false;
+			
+		Container.OnContainerSelected += (c) => infosButton.interactable = true;
+		Container.OnContainerDeselected += (c) => infosButton.interactable = false;
 
 		foreach (var m in FindObjectsOfType<MenuComponent> ())
 			ClearMenu (m);
@@ -138,6 +148,12 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		if (currentMenu.backToMainMenu)
 			MainMenu ();
+		
+		else if (currentMenu.backButton != null)
+			currentMenu.backButton.onClick.Invoke ();
+
+		else if (currentMenu.backEvent != null)
+			currentMenu.backEvent.Invoke ();
 
 		else if (currentMenu.backMenu != null)
 			ToMenu (currentMenu.backMenu);
@@ -299,6 +315,33 @@ public class MenuManager : Singleton<MenuManager>
 			HideMenu (currentMenu);
 	}
 
+	public void PauseAndShowMenu (MenuComponent menu)
+	{
+		if(GameManager.Instance.gameState == GameState.Playing)
+		{
+			GameManager.Instance.gameState = GameState.Pause;
+
+			UIFadeOut ();
+		}
+
+		ShowMenu (menu, false);
+	}
+
+	public void ResumeAndHideMenu (MenuComponent menu)
+	{
+		HideMenu (menu);
+
+		DOVirtual.DelayedCall (menuAnimationDuration, ()=> {
+
+			if(GameManager.Instance.gameState == GameState.Pause)
+			{
+				UIFadeIn ();
+				GameManager.Instance.gameState = GameState.Playing;
+			}
+
+		});
+	}
+
 	void ClearMenu (MenuComponent menu)
 	{
 		if(menu.mainContent)
@@ -425,26 +468,6 @@ public class MenuManager : Singleton<MenuManager>
 				HideCurrentMenu ();
 				GameManager.Instance.StartLevel ();
 			});
-	}
-
-	public void Pause ()
-	{
-		GameManager.Instance.gameState = GameState.Pause;
-
-		UIFadeOut ();
-
-		ShowMenu (pauseMenu, false);
-	}
-
-	public void Resume ()
-	{
-		HideMenu (pauseMenu);
-
-		DOVirtual.DelayedCall (menuAnimationDuration, ()=> {
-			
-			UIFadeIn ();
-			GameManager.Instance.gameState = GameState.Playing;
-		});
 	}
 
 	public void StartLevel ()
