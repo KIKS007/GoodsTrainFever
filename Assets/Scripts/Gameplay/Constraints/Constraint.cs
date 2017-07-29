@@ -27,7 +27,7 @@ public class Constraint : MonoBehaviour
 
 		int nextContainer = _container.isDoubleSize ? index + 2 : index + 1;
 
-		if (nextContainer < _container.train.containers.Count - 1 && _container.train.containers [nextContainer] != _container)
+		if (nextContainer < _container.train.containers.Count && _container.train.containers [nextContainer] != _container)
 			return _container.train.containers [nextContainer];
 		else
 			return null;
@@ -49,7 +49,7 @@ public class Constraint : MonoBehaviour
 	{
 		int nextContainer = _container.isDoubleSize ? spot._spotTrainIndex + 2 : spot._spotTrainIndex + 1;
 
-		if (nextContainer < spot._wagon.train.containers.Count - 1 && spot._wagon.train.containers [nextContainer] != _container)
+		if (nextContainer < spot._wagon.train.containers.Count && spot._wagon.train.containers [nextContainer] != _container)
 			return spot._wagon.train.containers [nextContainer];
 		else
 			return null;

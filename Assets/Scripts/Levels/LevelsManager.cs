@@ -21,6 +21,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	public int allowedErrors;
 	public Text errorsText;
 	public Transform errorsTextParent;
+	public int nextToGroups = 0;
+	public List<SpecialConstraint> specialConstraint = new List<SpecialConstraint> ();
 
 	[Header ("Level Duration")]
 	public int levelDuration = 0;
@@ -432,12 +434,26 @@ public class LevelsManager : Singleton<LevelsManager>
 	public void CheckConstraints ()
 	{
 		errors = 0;
+		nextToGroups = 0;
+
+		foreach (var c in specialConstraint)
+		{
+			c.count = 0;
+			c.groupCount = 0;
+		}
 
 		if (TrainsMovementManager.Instance.rail1.train)
 			CheckTrainConstraints (TrainsMovementManager.Instance.rail1.train);
 
 		if (TrainsMovementManager.Instance.rail2.train)
 			CheckTrainConstraints (TrainsMovementManager.Instance.rail2.train);
+
+		foreach (var c in specialConstraint)
+			if (c.count - 1 > 0)
+				errors += c.count - 1;
+
+		if (nextToGroups > 1)
+			errors -= nextToGroups - 1;
 
 		errorsText.text = errors.ToString ();
 
@@ -450,24 +466,73 @@ public class LevelsManager : Singleton<LevelsManager>
 	void CheckTrainConstraints (Train train)
 	{
 		Container previousContainer = null;
+		int nextToPreviousType = 0;
 
 		foreach(var container in train.containers)
 		{
-			if (container == null || container.constraints.Count == 0 || previousContainer == container)
+			bool hasNextToNotRespected = false;
+
+			if(container != null && previousContainer != container)
 			{
-				previousContainer = container;
-				continue;
+				foreach(var constraint in container.constraints)
+				{
+					if (!constraint.isRespected)
+					{
+						bool special = false;
+						
+						if (ConstraintType.NotNextTo_Constraint.ToString () == constraint.constraint.GetType ().ToString ())
+							hasNextToNotRespected = true;
+						
+						foreach(var c in specialConstraint)
+						{
+							if(c.constraintType.ToString () == constraint.constraint.GetType ().ToString ())
+							{
+								c.count++;
+								special = true;
+								
+								break;
+							}
+						}
+						
+						if(!special)
+							errors++;
+						
+					}
+				}
 			}
 
-			foreach(var constraint in container.constraints)
+			//Next To Groups
+			if(container == null || container != null && previousContainer != container)
 			{
-				if (!constraint.isRespected)
-					errors++;
+				if (hasNextToNotRespected)
+				{
+					if (nextToPreviousType == 0)
+						nextToPreviousType = 1;
+					
+					else if (nextToPreviousType == 1)
+						nextToPreviousType = 2;
+
+					if(container.spotOccupied._spotTrainIndex == train.containers.Count - 1)
+					if(nextToPreviousType == 1 || nextToPreviousType == 2)
+						nextToGroups++;
+				}
+				else 
+				{
+					if(nextToPreviousType == 2)
+					{
+						nextToPreviousType = 0;
+						nextToGroups++;
+					}
+
+					else if (nextToPreviousType == 1)
+						nextToPreviousType = 0;
+				}
 			}
 
 			previousContainer = container;
 		}
 
+		//Wagons Overweight
 		foreach(var w in train.wagons)
 		{
 			if(w.overweight)
@@ -548,4 +613,12 @@ public class LevelsManager : Singleton<LevelsManager>
 			transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
 	}
 	#endregion
+
+	[System.Serializable]
+	public class SpecialConstraint
+	{
+		public ConstraintType constraintType;
+		public int groupCount = 0;
+		public int count = 0;
+	}
 }
