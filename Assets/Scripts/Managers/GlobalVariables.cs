@@ -23,6 +23,10 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	public Color wagonNormalWeightColor;
 	public Color wagonOverweightColor;
 
+	[Header ("Info Button Colors")]
+	public Color infoButtonRespectedColor;
+	public Color infoButtonNotRespectedColor;
+
 	[Header ("Spawn Spots Prefabs")]
 	public GameObject spot40SpawnedPrefab;
 

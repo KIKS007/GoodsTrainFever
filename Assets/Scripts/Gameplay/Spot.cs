@@ -341,8 +341,8 @@ public class Spot : Touchable
 		if (!CanPileContainer ())
 			return;
 
-		if (!AreConstraintsRespected (container))
-			return;
+		/*if (!AreConstraintsRespected (container))
+			return;*/
 		
 		if (isPileSpot && _parentContainer.selected)
 			return;

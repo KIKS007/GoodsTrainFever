@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
 		if (gameState == GameState.Playing)
 		{
 			MenuManager.Instance.gameObject.SetActive (false);
-			MenuManager.Instance.menuParent.gameObject.SetActive (false);
+			//MenuManager.Instance.menuParent.gameObject.SetActive (false);
 		}
 	}
 	

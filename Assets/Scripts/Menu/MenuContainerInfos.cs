@@ -4,11 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public enum ConstraintType { LimitedPerTrain_Constraint, LimitedPerWagon_Constraint, NotNextTo_Constraint, NotOnTrainCenter_Constraint, NotOnTrainExtremities_Constraint }
 
 public class MenuContainerInfos : MenuComponent 
 {
+	[Header ("Infos Button")]
+	public Image infosButton;
+	public float infosButtonPunchForce = 0.4f;
+
 	[Header ("Elements")]
 	public Text type;
 	public Text size;
@@ -23,22 +28,45 @@ public class MenuContainerInfos : MenuComponent
 	[Header ("Constraints Descriptions")]
 	public List<ConstraintsDescriptions> descriptions = new List<ConstraintsDescriptions> ();
 
+	private Container _selectedContainer;
+
+	void Start ()
+	{
+		Container.OnContainerSelected += (c) => _selectedContainer = c;
+		Container.OnContainerSelected += ChangeButtonColor;
+		Container.OnContainerMoved += () => ChangeButtonColor (_selectedContainer);
+	}
+
+	void ChangeButtonColor (Container container)
+	{
+		if (container.allConstraintsRespected)
+			infosButton.color = GlobalVariables.Instance.infoButtonRespectedColor;
+		else
+		{
+			infosButton.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
+			infosButton.color = GlobalVariables.Instance.infoButtonNotRespectedColor;
+		}
+	}
+
 	public override void Show ()
 	{
+		if (_selectedContainer == null)
+			return;
+
 		base.Show ();
 
 		foreach (Transform t in constraintsParent.transform)
 			Destroy (t.gameObject);
 
-		type.text = ContainersMovementManager.Instance.selectedContainer.containerType.ToString ();
-		size.text = ContainersMovementManager.Instance.selectedContainer.isDoubleSize ? "40 feet" : "20 feet";
-		weight.text = ContainersMovementManager.Instance.selectedContainer.weight.ToString ();
+		type.text = _selectedContainer.containerType.ToString ();
+		size.text = _selectedContainer.isDoubleSize ? "40 feet" : "20 feet";
+		weight.text = _selectedContainer.weight.ToString ();
 
 		Vector2 position = constraintPosition;
 
-		for(int i = 0; i < ContainersMovementManager.Instance.selectedContainer.constraints.Count; i++)
+		for(int i = 0; i < _selectedContainer.constraints.Count; i++)
 		{
-			Constraint constraintScript = ContainersMovementManager.Instance.selectedContainer.constraints [i].constraint;
+			Constraint constraintScript = _selectedContainer.constraints [i].constraint;
 
 			RectTransform constraint = (Instantiate (constraintPrefab, Vector3.zero, Quaternion.identity, constraintsParent.transform).GetComponent<RectTransform> ());
 			constraint.localPosition = Vector3.zero;
@@ -72,8 +100,19 @@ public class MenuContainerInfos : MenuComponent
 				}
 			}
 
+			if(_selectedContainer.constraints [i].isRespected)
+			{
+				constraint.GetChild (0).GetChild (0).gameObject.SetActive (true);
+				constraint.GetChild (0).GetChild (1).gameObject.SetActive (false);
+			}
+			else
+			{
+				constraint.GetChild (0).GetChild (0).gameObject.SetActive (false);
+				constraint.GetChild (0).GetChild (1).gameObject.SetActive (true);
+			}
 
 			position.y -= constraint.GetComponent<RectTransform> ().sizeDelta.y + constraint.GetChild (0).GetComponent<RectTransform> ().sizeDelta.y;
+			position.y -= constraint.GetChild (0).GetChild (0).GetComponent<RectTransform> ().sizeDelta.y;
 			position.y -= rowSpacing;
 		}
 
