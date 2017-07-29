@@ -19,6 +19,10 @@ public class MenuEndLevel : MenuComponent
 	public float starsDelay = 0.1f;
 	public float starsBetweenDelay = 0.1f;
 
+	[Header ("Errors")]
+	public GameObject errorsParent;
+	public Text errorsCount;
+
 	[Header ("Level Success")]
 	public RectTransform success;
 	public RectTransform defeat;
@@ -37,7 +41,7 @@ public class MenuEndLevel : MenuComponent
 	{
 		levelTitle.text = "Level " + (LevelsManager.Instance.levelIndex + 1).ToString ();
 
-		ordersSent.text = OrdersManager.Instance.ordersSentCount.ToString ();
+		ordersSent.text = OrdersManager.Instance.ordersSentCount.ToString () + "/" + LevelsManager.Instance.orders.Count;
 		trainsSent.text = LevelsManager.Instance.trainsUsed.ToString ();
 		duration.text = LevelsManager.Instance.levelDuration.ToString ();
 
@@ -49,6 +53,13 @@ public class MenuEndLevel : MenuComponent
 		success.gameObject.SetActive (false);
 		defeat.gameObject.SetActive (false);
 
+		errorsCount.text = LevelsManager.Instance.errorsLocked.ToString ();
+
+		if (LevelsManager.Instance.errorsLocked == 0)
+			errorsParent.SetActive (false);
+		else
+			errorsParent.SetActive (true);
+
 		if(ScoreManager.Instance.success)
 			success.gameObject.SetActive (true);
 		else
@@ -58,6 +69,9 @@ public class MenuEndLevel : MenuComponent
 		{
 			RectTransform starOuter = starsOuter [i];
 			Image starInner = starsInner [i];
+
+			//Reset Color
+			starOuter.GetComponent<Image> ().color = GlobalVariables.Instance.normalStarColor;
 
 			switch (LevelsManager.Instance.currentLevel.starsStates [i])
 			{
@@ -85,6 +99,20 @@ public class MenuEndLevel : MenuComponent
 					{
 						star.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});
+
+				break;
+
+			case StarState.ErrorLocked:
+				starInner.DOFade (1, 0);
+
+				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
+					{
+						//starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+						starOuter.GetComponent<Image> ().DOColor (GlobalVariables.Instance.errorLockedStarColor, MenuManager.Instance.menuAnimationDuration);
+
+					});
+				
+
 				break;
 			}
 		}

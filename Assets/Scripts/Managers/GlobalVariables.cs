@@ -27,6 +27,10 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	public Color infoButtonRespectedColor;
 	public Color infoButtonNotRespectedColor;
 
+	[Header ("Stars Colors")]
+	public Color normalStarColor;
+	public Color errorLockedStarColor;
+
 	[Header ("Spawn Spots Prefabs")]
 	public GameObject spot40SpawnedPrefab;
 

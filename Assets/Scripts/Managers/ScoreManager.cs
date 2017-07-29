@@ -55,8 +55,13 @@ public class ScoreManager : Singleton<ScoreManager>
 			Level level = t.GetComponent<Level> ();
 
 			for(int i = 0; i < 3; i++)
+			{
 				if (level.starsStates [i] == StarState.Unlocked)
 					level.starsStates [i] = StarState.Saved;
+				
+				if (level.starsStates [i] == StarState.ErrorLocked)
+					level.starsStates [i] = StarState.Locked;
+			}
 		}
 	}
 
@@ -121,6 +126,13 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void MostOrdersStar (int ordersPrepared, Level level, int levelIndex)
 	{
+		if(!PlayerPrefs.HasKey ("MostOrdersStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed)
+		{
+			level.starsStates [0] = StarState.ErrorLocked;
+			success = false;
+			return;
+		}
+
 		if(ordersPrepared >= level.mostOrdersCount)
 		{
 			success = true;
@@ -139,6 +151,13 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void AllOrdersStar (int ordersPrepared, int trainsCount, Level level, int levelIndex)
 	{
+		if(!PlayerPrefs.HasKey ("AllOrdersStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed)
+		{
+			level.starsStates [1] = StarState.ErrorLocked;
+			level.starsStates [2] = StarState.ErrorLocked;
+			return;
+		}
+
 		if(ordersPrepared == level.orders.Count)
 		{
 			LeastTrainsStar (trainsCount, level, levelIndex);
@@ -157,6 +176,12 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		if (PlayerPrefs.HasKey ("LeastTrainsStar" + levelIndex))
 			return;
+
+		if (LevelsManager.Instance.errorsLocked > 0)
+		{
+			level.starsStates [2] = StarState.ErrorLocked;
+			return;
+		}
 
 		if(trainsCount <= level.leastTrainsCount)
 		{

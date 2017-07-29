@@ -46,6 +46,7 @@ public class MenuContainerInfos : MenuComponent
 			{
 				_selectedContainer = null;
 				infosButton.interactable = false;
+				infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
 			}
 		};
 	}

@@ -17,8 +17,12 @@ public class LevelsManager : Singleton<LevelsManager>
 	public int levelsCount;
 
 	[Header ("Errors")]
-	public int errors;
-	public int allowedErrors;
+	public int errorsLocked = 0;
+	public int errorsAllowed = 0;
+	public int errorsSecondStarAllowed = 0;
+
+	[Header ("Errors Check")]
+	public int currentErrors;
 	public Text errorsText;
 	public Transform errorsTextParent;
 	public int nextToGroups = 0;
@@ -75,7 +79,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (loadLevelOnStart)
 			LoadLevelSettings (levelToStart);
 
-		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.01f, CheckConstraints);
+		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.01f, ()=> CheckConstraints ());
 
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevelSettings;
@@ -91,7 +95,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		trainsUsed = 0;
 		levelDuration = 0;
 		trainsToSend = 0;
-		errors = 0;
+		currentErrors = 0;
+		errorsLocked = 0;
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -142,6 +147,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		boatsDuration = level.boatsDuration;
 		boats.AddRange (level.boats);
 		lastBoatStay = level.lastBoatStay;
+		errorsAllowed = level.errorsAllowed;
+
+		errorsSecondStarAllowed = (int)(errorsAllowed * 0.5f);
 
 		foreach(var o in orders)
 			RandomColors (o.levelContainers);
@@ -228,6 +236,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitWhile (()=> train.inTransition);
 
 			yield return new WaitWhile (()=> train.waitingDeparture);
+
+			CheckConstraints (train);
+			CheckConstraints ();
 
 			trainsUsed++;
 			trainsToSend--;
@@ -431,9 +442,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		return container;
 	}
 
-	public void CheckConstraints ()
+	public void CheckConstraints (Train checkedTrain = null)
 	{
-		errors = 0;
+		currentErrors = 0;
 		nextToGroups = 0;
 
 		foreach (var c in specialConstraint)
@@ -442,25 +453,35 @@ public class LevelsManager : Singleton<LevelsManager>
 			c.groupCount = 0;
 		}
 
-		if (TrainsMovementManager.Instance.rail1.train)
-			CheckTrainConstraints (TrainsMovementManager.Instance.rail1.train);
-
-		if (TrainsMovementManager.Instance.rail2.train)
-			CheckTrainConstraints (TrainsMovementManager.Instance.rail2.train);
+		if(checkedTrain == null)
+		{
+			if (TrainsMovementManager.Instance.rail1.train && TrainsMovementManager.Instance.rail1.train.waitingDeparture)
+				CheckTrainConstraints (TrainsMovementManager.Instance.rail1.train);
+			
+			if (TrainsMovementManager.Instance.rail2.train && TrainsMovementManager.Instance.rail2.train.waitingDeparture)
+				CheckTrainConstraints (TrainsMovementManager.Instance.rail2.train);
+		}
+		else
+			CheckTrainConstraints (checkedTrain);
 
 		foreach (var c in specialConstraint)
 			if (c.count - 1 > 0)
-				errors += c.count - 1;
+				currentErrors += c.count - 1;
 
 		if (nextToGroups > 1)
-			errors -= nextToGroups - 1;
+			currentErrors -= nextToGroups - 1;
 
-		errorsText.text = errors.ToString ();
-
-		if (errors == 0)
-			errorsTextParent.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		if (checkedTrain != null)
+			errorsLocked += currentErrors;
 		else
-			errorsTextParent.DOScale (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		{
+			errorsText.text = currentErrors.ToString ();
+			
+			if (currentErrors == 0)
+				errorsTextParent.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			else
+				errorsTextParent.DOScale (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		}
 	}
 
 	void CheckTrainConstraints (Train train)
@@ -495,7 +516,7 @@ public class LevelsManager : Singleton<LevelsManager>
 						}
 						
 						if(!special)
-							errors++;
+							currentErrors++;
 						
 					}
 				}
@@ -511,10 +532,6 @@ public class LevelsManager : Singleton<LevelsManager>
 					
 					else if (nextToPreviousType == 1)
 						nextToPreviousType = 2;
-
-					if(container.spotOccupied._spotTrainIndex == train.containers.Count - 1)
-					if(nextToPreviousType == 1 || nextToPreviousType == 2)
-						nextToGroups++;
 				}
 				else 
 				{
@@ -527,6 +544,13 @@ public class LevelsManager : Singleton<LevelsManager>
 					else if (nextToPreviousType == 1)
 						nextToPreviousType = 0;
 				}
+
+				if(container != null && container.spotOccupied._spotTrainIndex == train.containers.Count - 1
+					|| container != null && container.isDoubleSize && container.spotOccupied._spotTrainIndex == train.containers.Count - 2)
+				{
+					if(nextToPreviousType == 1 || nextToPreviousType == 2)
+						nextToGroups++;
+				}
 			}
 
 			previousContainer = container;
@@ -536,7 +560,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		foreach(var w in train.wagons)
 		{
 			if(w.overweight)
-				errors++;
+				currentErrors++;
 		}
 	}
 
