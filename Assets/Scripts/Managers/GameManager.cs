@@ -16,11 +16,7 @@ public class GameManager : Singleton<GameManager>
 	// Use this for initialization
 	void Awake () 
 	{
-		if (gameState == GameState.Playing)
-		{
-			MenuManager.Instance.gameObject.SetActive (false);
-			//MenuManager.Instance.menuParent.gameObject.SetActive (false);
-		}
+		
 	}
 	
 	// Update is called once per frame

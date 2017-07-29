@@ -79,8 +79,6 @@ public class MenuManager : Singleton<MenuManager>
 	// Use this for initialization
 	void Start () 
 	{
-		GameManager.Instance.gameState = GameState.Menu;
-
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
 		_menuPanelShowAlpha = menuPanel.color.a;
 
@@ -89,15 +87,19 @@ public class MenuManager : Singleton<MenuManager>
 		_backButtonShowPos = backButton.anchoredPosition;
 
 		menuParent.gameObject.SetActive (true);
-		menuPanel.gameObject.SetActive (true);
-		title.gameObject.SetActive (true);
-		backButton.gameObject.SetActive (true);
 
 		menulevels.SetupLevels ();
 
 		foreach(Transform t in menuParent)
 			if(t.gameObject.GetComponent<MenuComponent> () != null)
 				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
+
+		if (GameManager.Instance.gameState == GameState.Playing)
+			return;
+		
+		menuPanel.gameObject.SetActive (true);
+		title.gameObject.SetActive (true);
+		backButton.gameObject.SetActive (true);
 
 		UIFadeOut ();
 

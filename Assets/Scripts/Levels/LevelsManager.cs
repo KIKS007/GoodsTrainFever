@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class LevelsManager : Singleton<LevelsManager> 
 {
@@ -13,6 +15,12 @@ public class LevelsManager : Singleton<LevelsManager>
 	public int levelIndex;
 	public Level currentLevel;
 	public int levelsCount;
+
+	[Header ("Errors")]
+	public int errors;
+	public int allowedErrors;
+	public Text errorsText;
+	public Transform errorsTextParent;
 
 	[Header ("Level Duration")]
 	public int levelDuration = 0;
@@ -65,8 +73,13 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (loadLevelOnStart)
 			LoadLevelSettings (levelToStart);
 
+		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.01f, CheckConstraints);
+
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevelSettings;
+
+		errorsText.text = "0";
+		errorsTextParent.localScale = Vector3.zero;
 	}
 
 	void ClearLevelSettings ()
@@ -76,6 +89,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		trainsUsed = 0;
 		levelDuration = 0;
 		trainsToSend = 0;
+		errors = 0;
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -86,6 +100,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		_rail1Occupied = false;
 		_rail2Occupied = false;
+
 
 		TrainsMovementManager.Instance.ClearTrains ();
 
@@ -412,6 +427,52 @@ public class LevelsManager : Singleton<LevelsManager>
 		container.Setup (container_Level);
 
 		return container;
+	}
+
+	public void CheckConstraints ()
+	{
+		errors = 0;
+
+		if (TrainsMovementManager.Instance.rail1.train)
+			CheckTrainConstraints (TrainsMovementManager.Instance.rail1.train);
+
+		if (TrainsMovementManager.Instance.rail2.train)
+			CheckTrainConstraints (TrainsMovementManager.Instance.rail2.train);
+
+		errorsText.text = errors.ToString ();
+
+		if (errors == 0)
+			errorsTextParent.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		else
+			errorsTextParent.DOScale (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+	}
+
+	void CheckTrainConstraints (Train train)
+	{
+		Container previousContainer = null;
+
+		foreach(var container in train.containers)
+		{
+			if (container == null || container.constraints.Count == 0 || previousContainer == container)
+			{
+				previousContainer = container;
+				continue;
+			}
+
+			foreach(var constraint in container.constraints)
+			{
+				if (!constraint.isRespected)
+					errors++;
+			}
+
+			previousContainer = container;
+		}
+
+		foreach(var w in train.wagons)
+		{
+			if(w.overweight)
+				errors++;
+		}
 	}
 
 	public void OrderSent (Order_Level orderLevel)

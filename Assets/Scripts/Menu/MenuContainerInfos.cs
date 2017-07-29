@@ -53,11 +53,11 @@ public class MenuContainerInfos : MenuComponent
 	void ChangeButtonColor (Container container)
 	{
 		if (container.allConstraintsRespected)
-			infosButtonImage.color = GlobalVariables.Instance.infoButtonRespectedColor;
+			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
 		else
 		{
 			infosButtonImage.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
-			infosButtonImage.color = GlobalVariables.Instance.infoButtonNotRespectedColor;
+			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonNotRespectedColor, MenuManager.Instance.menuAnimationDuration);
 		}
 	}
 
