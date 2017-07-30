@@ -70,7 +70,7 @@ public class Container_Level
 	public ContainerType containerType;
 	public ContainerColor containerColor;
 	public bool isDoubleSize = false;
-	public int containerWeight;
+	public int containerWeight = 1;
 	public int containerCount = 1;
 }
 
@@ -78,6 +78,6 @@ public class Container_Level
 public class Wagon_Level
 {
 	public WagonType wagonType = WagonType.Fourty;
-	public int wagonMaxWeight;
+	public int wagonMaxWeight = 10;
 }
 

@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public class LevelsManager : Singleton<LevelsManager> 
 {
+
 	public int levelToStart = 0;
 	public bool loadLevelOnStart = false;
 
@@ -244,12 +245,18 @@ public class LevelsManager : Singleton<LevelsManager>
 			trainsToSend--;
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
+			if(errorsLocked > errorsAllowed)
+			{
+				LevelEnd (LevelEndType.Errors);
+				yield break;
+			}
+
 			if (trainsToSend == 0)
 				GameManager.Instance.gameState = GameState.End;
 			
 			if (OrdersManager.Instance.allOrdersSent)
 			{
-				LevelEnd (true);
+				LevelEnd (LevelEndType.Orders);
 				yield break;
 			}
 
@@ -264,21 +271,27 @@ public class LevelsManager : Singleton<LevelsManager>
 					_rail1Occupied = false;
 
 					if (_rail2Occupied == false)
-						LevelEnd (false);
+					{
+						LevelEnd (LevelEndType.Trains);
+						yield break;
+					}
 				}
 				else
 				{
 					_rail2Occupied = false;
 
 					if (_rail1Occupied == false)
-						LevelEnd (false);
+					{
+						LevelEnd (LevelEndType.Trains);
+						yield break;
+					}
 				}
 			}
 		}
 
 		if (OrdersManager.Instance.allOrdersSent)
 		{
-			LevelEnd (true);
+			LevelEnd (LevelEndType.Orders);
 			yield break;
 		}
 	}
@@ -576,17 +589,14 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
-	public void LevelEnd (bool levelEndOrder)
+	public void LevelEnd (LevelEndType levelEndType)
 	{
 		if (GameManager.Instance.gameState == GameState.Menu)
 			return;
 		
 		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
 
-		if(levelEndOrder)
-			GameManager.Instance.LevelEndOrders ();
-		else
-			GameManager.Instance.LevelEndTrains ();
+		GameManager.Instance.LevelEnd (levelEndType);
 
 		MenuManager.Instance.EndLevel ();
 	}
