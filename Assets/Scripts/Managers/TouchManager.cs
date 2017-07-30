@@ -21,7 +21,7 @@ public class TouchManager : Singleton<TouchManager>
 
 	void Start ()
 	{
-		_camera = FindObjectOfType<Camera> ();
+		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
 	}
 
 	// Update is called once per frame

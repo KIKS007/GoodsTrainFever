@@ -20,7 +20,6 @@ public class ScoreManager : Singleton<ScoreManager>
 	public MenuLevels menuLevels;
 	public List<Stage> levelStages = new List<Stage> ();
 
-
 	// Use this for initialization
 	void Awake ()
 	{
@@ -214,7 +213,12 @@ public class ScoreManager : Singleton<ScoreManager>
 [System.Serializable]
 public class Stage
 {
+	[Header ("Stars")]
 	public int index;
 	public int starsRequired;
 	public Stage_Menu stage;
+
+	[Header ("Trophy")]
+	public GameObject trophy;
+
 }

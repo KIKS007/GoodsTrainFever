@@ -12,6 +12,16 @@ public class Stage_Menu : MonoBehaviour
 	public GameObject innerStar;
 	public Text starsCount;
 	public GameObject lockImage;
+	public Button trophyButton;
+
+	void Start ()
+	{
+		trophyButton.onClick.AddListener (()=> 
+			{
+				MenuManager.Instance.menuTrophies.stageMenu = this;
+				MenuManager.Instance.ToMenu (MenuManager.Instance.menuTrophies);
+			});
+	}
 
 	public void Setup (bool unlock, int stars)
 	{
@@ -23,6 +33,8 @@ public class Stage_Menu : MonoBehaviour
 		innerStar.SetActive (!unlock);
 
 		lockImage.SetActive (!unlock);
+
+		trophyButton.gameObject.SetActive (unlock);
 
 		starsCount.transform.parent.gameObject.SetActive (!unlock);
 	}

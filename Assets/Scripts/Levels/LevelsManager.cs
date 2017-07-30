@@ -611,7 +611,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		{
 			yield return new WaitWhile (() => GameManager.Instance.gameState == GameState.Pause);
 
-			yield return new WaitForSeconds (1f);
+			yield return new WaitForSecondsRealtime (1f);
 			
 			levelDuration++;
 		}

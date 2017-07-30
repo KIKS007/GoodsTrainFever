@@ -62,12 +62,12 @@ public class MenuContainerInfos : MenuComponent
 		}
 	}
 
-	public override void Show ()
+	public override void OnShow ()
 	{
 		if (_selectedContainer == null)
 			return;
 
-		base.Show ();
+		base.OnShow ();
 
 		foreach (Transform t in constraintsParent.transform)
 			Destroy (t.gameObject);

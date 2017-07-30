@@ -31,12 +31,12 @@ public class MenuComponent : MonoBehaviour
 				c.showPosition = c.content.anchoredPosition;
 	}
 
-	public virtual void Show ()
+	public virtual void OnShow ()
 	{
 		
 	}
 
-	public virtual void Hide ()
+	public virtual void OnHide ()
 	{
 		
 	}

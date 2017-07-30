@@ -22,6 +22,7 @@ public class MenuEndLevel : MenuComponent
 	[Header ("Errors")]
 	public GameObject errorsParent;
 	public Text errorsCount;
+	public Text errorsAllowedCount;
 
 	[Header ("Level Success")]
 	public RectTransform success;
@@ -30,9 +31,9 @@ public class MenuEndLevel : MenuComponent
 	[Header ("Next")]
 	public GameObject nextLevel;
 
-	public override void Show ()
+	public override void OnShow ()
 	{
-		base.Show ();
+		base.OnShow ();
 
 		StartCoroutine (LevelInfos ());
 	}
@@ -42,7 +43,8 @@ public class MenuEndLevel : MenuComponent
 		levelTitle.text = "Level " + (LevelsManager.Instance.levelIndex + 1).ToString ();
 
 		ordersSent.text = OrdersManager.Instance.ordersSentCount.ToString () + "/" + LevelsManager.Instance.orders.Count;
-		trainsSent.text = LevelsManager.Instance.trainsUsed.ToString ();
+		trainsSent.text = LevelsManager.Instance.trainsUsed.ToString () + "/" + LevelsManager.Instance.currentLevel.leastTrainsCount.ToString ();
+		//trainsSent.text = LevelsManager.Instance.trainsUsed.ToString () + "/" + LevelsManager.Instance.currentLevel.leastTrainsCount.ToString ();
 		duration.text = LevelsManager.Instance.levelDuration.ToString ();
 
 		if (LevelsManager.Instance.levelIndex + 1 == LevelsManager.Instance.levelsCount || !ScoreManager.Instance.IsLevelUnlocked (LevelsManager.Instance.levelIndex + 1))
@@ -54,11 +56,12 @@ public class MenuEndLevel : MenuComponent
 		defeat.gameObject.SetActive (false);
 
 		errorsCount.text = LevelsManager.Instance.errorsLocked.ToString ();
+		errorsAllowedCount.text = "On " + LevelsManager.Instance.errorsAllowed.ToString () + " allowed";
 
-		if (LevelsManager.Instance.errorsLocked == 0)
+		/*	if (LevelsManager.Instance.errorsLocked == 0)
 			errorsParent.SetActive (false);
 		else
-			errorsParent.SetActive (true);
+			errorsParent.SetActive (true);*/
 
 		if(ScoreManager.Instance.success)
 			success.gameObject.SetActive (true);
