@@ -511,6 +511,8 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		ShowPanel ();
 
+		ContainersMovementManager.Instance.DeselectContainer ();
+
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
 			{
 				LevelsManager.Instance.LoadLevelSettings (LevelsManager.Instance.levelIndex);
@@ -531,7 +533,9 @@ public class MenuManager : Singleton<MenuManager>
 	public void NextLevel ()
 	{
 		ShowPanel ();
-		
+
+		ContainersMovementManager.Instance.DeselectContainer ();
+
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
 			{
 				LevelsManager.Instance.NextLevel ();
@@ -552,6 +556,8 @@ public class MenuManager : Singleton<MenuManager>
 	public void StartLevel ()
 	{
 		ShowPanel ();
+
+		ContainersMovementManager.Instance.DeselectContainer ();
 
 		if (OnLevelStart != null)
 			OnLevelStart ();

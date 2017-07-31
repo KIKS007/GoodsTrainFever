@@ -47,6 +47,12 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		BoatsMovementManager.Instance.OnBoatDeparture += BoatDeparture;
 	}
 
+	public void DeselectContainer ()
+	{
+		if (selectedContainer)
+			selectedContainer.Deselect ();
+	}
+
 	void TrainDeparture (Train train)
 	{
 		if (selectedContainer && selectedContainer.train == train)
