@@ -8,7 +8,6 @@ using DG.Tweening;
 
 public class LevelsManager : Singleton<LevelsManager> 
 {
-
 	public int levelToStart = 0;
 	public bool loadLevelOnStart = false;
 
@@ -342,7 +341,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		StartCoroutine (FillContainerZone (storageContainers, _storage.transform, _storage.containersParent));
 	}
 
-	IEnumerator FillContainerZone (List<Container_Level> containers_Base, Transform zoneParent, Transform containersParent)
+	IEnumerator FillContainerZone (List<Container_Level> containers_Base, Transform zoneParent, Transform containersParent, bool forceSpawnDoubleFirst = false)
 	{
 		EmptyZone (containersParent);
 
@@ -351,7 +350,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Sort Containers_Levels
 		List<Container_Level> containers_Levels = new List<Container_Level> ();
 
-		if(spawnDoubleSizeFirst)
+		if(spawnDoubleSizeFirst || forceSpawnDoubleFirst)
 		{
 			foreach (var c in containers_Base)
 				if (c.isDoubleSize)
@@ -413,7 +412,13 @@ public class LevelsManager : Singleton<LevelsManager>
 				if(spotsTemp.Count == 0)
 				{
 					Debug.LogError ("No more free spots!", this);
-					break;
+
+					if(!forceSpawnDoubleFirst)
+						StartCoroutine (FillContainerZone (containers_Base, zoneParent, containersParent, true));
+					else
+						Debug.LogError ("Too many containers to spawn!", this);
+					
+					yield break;
 				}
 				
 				//Take Spot
