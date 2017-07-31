@@ -454,6 +454,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (rail.train == null)
 			yield break;
 
+		Debug.Log ("Train Send");
+
+		rail.train.inTransition = true;
+		rail.train.waitingDeparture = false;
+
 		fastForwardButton.interactable = false;
 
 		if (Time.timeScale != 1)
@@ -461,9 +466,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			FastForward (false);
 			yield return new WaitWhile (()=> DOTween.IsTweening ("FastForward"));
 		}
-
-		rail.train.inTransition = true;
-		rail.train.waitingDeparture = false;
 
 		if (OnTrainDeparture != null)
 			OnTrainDeparture (rail.train);
@@ -490,6 +492,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void FastForward (bool fastForward)
 	{
+		if (fastForward && !fastForwardButton.interactable)
+			return;
+		
 		if(fastForward)
 		{
 			DOTween.Kill ("FastForward");
