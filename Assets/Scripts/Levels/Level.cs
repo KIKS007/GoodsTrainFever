@@ -43,6 +43,22 @@ public class Order_Level
 
 	public float delay;
 	public List<Container_Level> levelContainers = new List<Container_Level> ();
+
+	public Order_Level ()
+	{
+
+	}
+
+	public Order_Level (Order_Level original)
+	{
+		isPrepared = original.isPrepared;
+		delay = original.delay;
+
+		levelContainers.Clear ();
+
+		foreach (var c in original.levelContainers)
+			levelContainers.Add (new Container_Level (c));
+	}
 }
 
 [System.Serializable]
@@ -62,6 +78,23 @@ public class Boat_Level
 	public float duration;
 
 	public List<Container_Level> boatContainers = new List<Container_Level> ();
+
+	public Boat_Level ()
+	{
+
+	}
+
+	public Boat_Level (Boat_Level original)
+	{
+		delay = original.delay;
+		overrideDuration = original.overrideDuration;
+		duration = original.duration;
+
+		boatContainers.Clear ();
+
+		foreach (var c in original.boatContainers)
+			boatContainers.Add (new Container_Level (c));
+	}
 }
 
 [System.Serializable]
@@ -72,6 +105,21 @@ public class Container_Level
 	public bool isDoubleSize = false;
 	public int containerWeight = 1;
 	public int containerCount = 1;
+
+	public Container_Level ()
+	{
+		
+	}
+
+	public Container_Level (Container_Level original)
+	{
+		containerType = original.containerType;
+		containerColor = original.containerColor;
+		isDoubleSize = original.isDoubleSize;
+		containerWeight = original.containerWeight;
+		containerCount = original.containerCount;
+	}
+
 }
 
 [System.Serializable]

@@ -61,9 +61,10 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	private Storage _storage;
 	private Boat _boat;
-	private int _randomColorOffset;
 	private bool _rail1Occupied = false;
 	private bool _rail2Occupied = false;
+	private int _randomColorOffset;
+	private List<int> _previousRandomColorOffset = new List<int> ();
 
 	//public	List<Spot> spots = new List<Spot> ();
 	//public List<Spot> spotsTemp = new List<Spot> ();
@@ -83,6 +84,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevelSettings;
+		MenuManager.Instance.OnMainMenu += ()=> _previousRandomColorOffset.Clear ();
 
 		errorsText.text = "0";
 		errorsTextParent.localScale = Vector3.zero;
@@ -131,7 +133,19 @@ public class LevelsManager : Singleton<LevelsManager>
 		ClearLevelSettings ();
 
 		if (randomColors)
-			_randomColorOffset = Random.Range (0, 4);
+		{
+			do 
+			{
+				_randomColorOffset = Random.Range (0, 4);
+
+			} while (_previousRandomColorOffset.Contains (_randomColorOffset));
+
+			_previousRandomColorOffset.Add (_randomColorOffset);
+
+			if (_previousRandomColorOffset.Count > 3)
+				_previousRandomColorOffset.RemoveAt (0);
+
+		}
 		else
 			_randomColorOffset = 0;
 		
@@ -139,15 +153,26 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		currentLevel = level;
 
-		orders.AddRange (level.orders);
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
-		storageContainers.AddRange (level.storageContainers);
 		rail1Trains = level.rail1Trains;
 		rail2Trains = level.rail2Trains;
 		boatsDuration = level.boatsDuration;
-		boats.AddRange (level.boats);
 		lastBoatStay = level.lastBoatStay;
 		errorsAllowed = level.errorsAllowed;
+
+		orders.Clear ();
+		storageContainers.Clear ();
+		boats.Clear ();
+
+		foreach (var o in level.orders)
+			orders.Add (new Order_Level (o));
+
+		foreach (var c in level.storageContainers)
+			storageContainers.Add (new Container_Level (c));
+
+		foreach (var b in level.boats)
+			boats.Add (new Boat_Level (b));
+		
 
 		errorsSecondStarAllowed = (int)(errorsAllowed * 0.5f);
 
@@ -203,6 +228,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		foreach(var c in containers)
 		{
 			int color = (int)c.containerColor;
+
+			c.containerColor = new ContainerColor ();
+			c.containerColor = (ContainerColor)color;
 
 			for(int i = 0; i < _randomColorOffset; i++)
 			{
