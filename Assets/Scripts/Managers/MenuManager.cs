@@ -600,12 +600,20 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void UIFadeOut ()
 	{
-		UICanvasGroup.DOFade (0, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> UICanvasGroup.gameObject.SetActive (false));
+		UICanvasGroup.DOFade (0, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> 
+			{
+				UICanvasGroup.blocksRaycasts = false;
+				UICanvasGroup.interactable = false;
+		});
 	}
 
 	public void UIFadeIn ()
 	{
 		UICanvasGroup.gameObject.SetActive (true);
+
+		UICanvasGroup.blocksRaycasts = true;
+		UICanvasGroup.interactable = true;
+
 		UICanvasGroup.DOFade (1, menuAnimationDuration).SetEase (menuEase);
 	}
 
