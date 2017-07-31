@@ -14,6 +14,9 @@ public class MenuComponent : MonoBehaviour
 	[Header ("Contents")]
 	public List<MenuContent> contents = new List<MenuContent> ();
 
+	[Header ("Canvas Group")]
+	public CanvasGroup menuCanvasGroup;
+
 	[Header ("Back")]
 	public bool backToMainMenu = false;
 	public MenuComponent backMenu;
@@ -23,6 +26,8 @@ public class MenuComponent : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
 	{
+		menuCanvasGroup = GetComponent<CanvasGroup> ();
+
 		if (mainContent == null && transform.Find ("MainContent"))
 			mainContent = transform.Find ("MainContent").GetComponent<RectTransform> ();
 

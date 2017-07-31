@@ -10,6 +10,7 @@ public class LevelsManager : Singleton<LevelsManager>
 {
 	public int levelToStart = 0;
 	public bool loadLevelOnStart = false;
+	public bool clearLevelOnStart = true;
 
 	[Header ("Level")]
 	public int levelIndex;
@@ -76,6 +77,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		_boat = FindObjectOfType<Boat> ();
 
 		levelsCount = transform.childCount;
+
+		if (clearLevelOnStart)
+			ClearLevelSettings ();
 
 		if (loadLevelOnStart)
 			LoadLevelSettings (levelToStart);

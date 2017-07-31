@@ -78,7 +78,9 @@ public class TouchManager : Singleton<TouchManager>
 			case TouchPhase.Ended:
 				
 				_touchDown = false;
-				
+
+				_deltaPosition = new Vector3 ();
+
 				if (!isTouchingUI) 
 				{
 					touchable = RaycastTouchable (touch.position);
@@ -119,6 +121,8 @@ public class TouchManager : Singleton<TouchManager>
 		else if(Input.GetMouseButtonUp (0))
 		{
 			_touchDown = false;
+
+			_deltaPosition = new Vector3 ();
 
 			if(!isTouchingUI)
 			{

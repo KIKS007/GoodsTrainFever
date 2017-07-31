@@ -208,6 +208,8 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		menu.gameObject.SetActive (true);
 
+		EnableMenuCanvas (menu);
+
 		if(showPanel)
 			ShowPanel ();
 
@@ -296,7 +298,8 @@ public class MenuManager : Singleton<MenuManager>
 			float duration = c.overrideDuration ? c.duration : menuAnimationDuration;
 			Ease ease = c.overrideEase ? c.ease : menuEase;
 
-			HideContent (c.content, c.showPosition, c.hidePosition, duration, ease, c.delay, ()=> c.content.gameObject.SetActive (false));
+			HideContent (c.content, c.showPosition, c.hidePosition, duration, ease, c.delay);
+			//HideContent (c.content, c.showPosition, c.hidePosition, duration, ease, c.delay, ()=> c.content.gameObject.SetActive (false));
 			/*if(c.delay > 0)
 				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease).SetDelay (c.delay).OnComplete (()=> c.content.gameObject.SetActive (false));
 			else
@@ -422,6 +425,8 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		menu.gameObject.SetActive (true);
 
+		DisableMenuCanvas (menu);
+
 		if(menu.mainContent)
 		{
 			DOTween.Kill (menu.mainContent);
@@ -438,8 +443,20 @@ public class MenuManager : Singleton<MenuManager>
 			c.content.anchoredPosition = c.hidePosition;
 		}
 
-		if(menu != mainMenu)
-			DOVirtual.DelayedCall (0.1f, ()=> menu.gameObject.SetActive (false));
+		/*if(menu != mainMenu)
+			DOVirtual.DelayedCall (0.1f, ()=> menu.gameObject.SetActive (false));*/
+	}
+
+	void EnableMenuCanvas (MenuComponent menu)
+	{
+		menu.menuCanvasGroup.blocksRaycasts = true;
+		menu.menuCanvasGroup.interactable = true;
+	}
+
+	void DisableMenuCanvas (MenuComponent menu)
+	{
+		menu.menuCanvasGroup.blocksRaycasts = false;
+		menu.menuCanvasGroup.interactable = false;
 	}
 
 	void ShowPanel ()
@@ -480,7 +497,11 @@ public class MenuManager : Singleton<MenuManager>
 			OnMenuTransitionEnd ();
 
 		if(disableMenu)
-			menu.gameObject.SetActive (false);
+		{
+			DisableMenuCanvas (menu);
+
+			//menu.gameObject.SetActive (false);
+		}
 	}
 
 	public void EndLevel ()
