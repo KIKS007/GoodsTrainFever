@@ -401,6 +401,9 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		var spotsArray = zoneParent.GetComponentsInChildren<Spot> ().ToList ();
 
+		foreach (var s in spotsArray)
+			s.isOccupied = false;
+
 		//Get & Sort Spots
 		foreach (var s in spotsArray)
 			if (!s.isPileSpot && !s._isSpawned)
