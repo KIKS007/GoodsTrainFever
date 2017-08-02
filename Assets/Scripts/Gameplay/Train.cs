@@ -94,7 +94,7 @@ public class Train : Touchable
 				spotIndex++;
 
 				//Fill The Second 40 Slot
-				AddSpotEvents (spots [i]);
+				AddSpotEvents (spots [i], true);
 
 				//Second Overlapping 20
 				AddSpotEvents (spots [i].overlappingSpots [1]);
@@ -116,7 +116,7 @@ public class Train : Touchable
 		spot._wagon.containers.Add (null);
 	}
 
-	void AddSpotEvents (Spot spot)
+	void AddSpotEvents (Spot spot, bool secondDoubleSize = false)
 	{
 		int trainContainersIndex = containers.Count - 1;
 		int wagonContainersIndex = spot._wagon.containers.Count - 1;
@@ -130,8 +130,11 @@ public class Train : Touchable
 		spot.OnSpotFreed += (arg) => spot._wagon.containers [wagonContainersIndex] = null;
 
 		//Update Weight
-		spot.OnSpotTaken += (arg) => spot._wagon.UpdateWeight ();
-		spot.OnSpotFreed += (arg) => spot._wagon.UpdateWeight ();
+		if(!secondDoubleSize)
+		{
+			spot.OnSpotTaken += (arg) => spot._wagon.UpdateWeight ();
+			spot.OnSpotFreed += (arg) => spot._wagon.UpdateWeight ();
+		}
 
 		if(spot.container)
 		{
@@ -140,8 +143,11 @@ public class Train : Touchable
 		}
 
 		//Update Train Events
-		spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
-		spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
+		if(!secondDoubleSize)
+		{	
+			spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
+			spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
+		}
 	}
 
 	public void UpdateWeight ()
