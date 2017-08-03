@@ -139,6 +139,9 @@ public class Container : Touchable
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 
+		_weightText = transform.GetComponentInChildren<Text> ();
+		_weightImage = transform.GetComponentInChildren<Image> ();
+
 		_weightText.text = weight.ToString ();
 
 		Color color = new Color ();
@@ -357,7 +360,7 @@ public class Container : Touchable
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
-		containerColor = (ContainerColor) UnityEngine.Random.Range (1, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+		containerColor = (ContainerColor) UnityEngine.Random.Range (0, (int) Enum.GetNames (typeof(ContainerColor)).Length);
 
 		Color color = new Color ();
 
