@@ -91,6 +91,9 @@ public class Spot : Touchable
 			OnContainerDeselected ();
 
 		OverlappingSpotsOccupied ();
+
+		if (ContainersMovementManager.Instance.selectedContainer != null)
+			OnContainerSelected (ContainersMovementManager.Instance.selectedContainer);
 	}
 
 	public void SetIsDoubleSize ()

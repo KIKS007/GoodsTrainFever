@@ -41,6 +41,9 @@ public class Container : Touchable
 	[Header ("Spot")]
 	public Spot spotOccupied = null;
 
+	[Header ("Color")]
+	public string shaderColorProperty = "_Albedo1";
+
 	[HideInInspector]
 	public Mesh _mesh;
 	[HideInInspector]
@@ -374,10 +377,10 @@ public class Container : Touchable
 			break;
 		}
 
-		if(_material.HasProperty ("_Albedo"))
-			_material.SetColor ("_Albedo", color);
+		if(_material.HasProperty (shaderColorProperty))
+			_material.SetColor (shaderColorProperty, color);
 		else
-			_material.SetColor ("_Albedo1", color);
+			_material.SetColor (shaderColorProperty, color);
 
 		UpdateWeightText ();
 	}
