@@ -345,17 +345,18 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
 
-		float trainLength = locomotiveLength;
+		float trainLength = 0;
+		float previousWagonLength = 0;
+		float wagonLength = 0;
 
 		Vector3 wagonPosition = position;
-		wagonPosition.x -= locomotiveLength;
 
-		foreach(var w in train_Level.wagons)
+		for(int i = 0; i < train_Level.wagons.Count; i++)
 		{
 			GameObject prefab = wagonFourtyPrefab;
-			float wagonLength = 0;
+			float length = 0;
 
-			switch (w.wagonType)
+			switch (train_Level.wagons[i].wagonType)
 			{
 			case WagonType.Fourty:
 				prefab = wagonFourtyPrefab;
@@ -366,19 +367,25 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				wagonLength = wagonSixtyLength;
 				break;
 			case WagonType.Eighty:
-				prefab = wagonSixtyPrefab;
+				prefab = wagonEightyPrefab;
 				wagonLength = wagonEightyLength;
 				break;
 			}
 
-			trainLength += wagonLength;
-			wagonPosition.x -= wagonLength;
+			length = wagonLength * 0.5f + previousWagonLength * 0.5f;
+
+			wagonPosition.x -= length;
 
 			GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+
 			Wagon wagonScript = wagon.GetComponent<Wagon> ();
 			trainScript.wagons.Add (wagonScript);
 
-			wagonScript.maxWeight = w.wagonMaxWeight;
+			wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
+
+
+			trainLength += wagonLength;
+			previousWagonLength = wagonLength;
 		}
 
 		trainScript.trainLength = trainLength;
