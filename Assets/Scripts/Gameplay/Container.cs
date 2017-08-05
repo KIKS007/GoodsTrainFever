@@ -297,7 +297,7 @@ public class Container : Touchable
 
 	public bool CheckConstraints (Spot spot)
 	{
-		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
+		if(spot == null || spot.spotType != SpotType.Train)
 		{
 			allConstraintsRespected = true;
 			return allConstraintsRespected;

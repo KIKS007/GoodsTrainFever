@@ -89,8 +89,6 @@ public class MenuManager : Singleton<MenuManager>
 
 		_backButtonShowPos = backButton.anchoredPosition;
 
-		menuParent.gameObject.SetActive (true);
-
 		menulevels.SetupLevels ();
 
 		foreach(Transform t in menuParent)
@@ -100,6 +98,7 @@ public class MenuManager : Singleton<MenuManager>
 		if (GameManager.Instance.gameState == GameState.Playing)
 			return;
 		
+		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
 		title.gameObject.SetActive (true);
 		backButton.gameObject.SetActive (true);

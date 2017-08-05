@@ -65,6 +65,12 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	IEnumerator GenerateLevelCoroutine (int levelIndex)
 	{
+		foreach (var t in _trainsGenerated)
+			if(t)
+			Destroy (t.gameObject);
+
+		_trainsGenerated.Clear ();
+
 		if (_generatedLevel != null)
 			Destroy (_generatedLevel.gameObject);
 
@@ -79,8 +85,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		levelDuration = _currentLevelSettings.levelDuration;
 		errorsAllowed = _currentLevelSettings.errorsAllowed;
 
-		ordersCount = Random.Range (_currentLevelSettings.ordersCountMin, _currentLevelSettings.ordersCountMax);
-		trainsCount = Random.Range (_currentLevelSettings.trainsCountMin, _currentLevelSettings.trainsCountMax);
+		ordersCount = Random.Range (_currentLevelSettings.ordersCountMin, _currentLevelSettings.ordersCountMax + 1);
+		trainsCount = Random.Range (_currentLevelSettings.trainsCountMin, _currentLevelSettings.trainsCountMax + 1);
 
 		CreateLevelObject (levelIndex);
 
@@ -162,7 +168,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	void RandomColor (Container_Level c)
 	{
-		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length + 1);
+		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
 	}
 
 	IEnumerator FillTrain (Train train)
@@ -170,33 +176,40 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		bool trainFilled = false;
 		int tries = 0;
 
+		//OVERALL TRIES
 		do
 		{
 			//Destroy Previous Try Containers Generated
 			foreach(var c in _containersGenerated)
+				if(c)
 				Destroy (c.gameObject);
 
 			yield return new WaitForEndOfFrame ();
 
+			_containersGenerated.Clear ();
+
 			//Make Sure Spots Are Cleared
 			ClearSpots (train);
 
-			List<Spot> spots = new List<Spot> (train._allSpots);
 			Container container = null;
+			List<Spot> spots = new List<Spot> (train._allSpots);
+			bool failed = false;
 
 			//Spawn Trains Containers
 
+			//FOR EACH SPOT
 			do
 			{
 				List<Container_Level> containersToTest = new List<Container_Level> (_currentLevelSettings.containersAvailable);
-				bool spotFound = false;
 
+				Debug.Log ("Spots: " + spots.Count);
+
+				//TEST EACH CONTAINER AVAILABLE
 				do
 				{
 					//Choose Random Container Among Those Not Tested
 					Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
 					Spot spot = null;
-					spotFound = false;
 
 					SetWeight (containerLevel);
 					RandomColor (containerLevel);
@@ -204,23 +217,27 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 					//Create Container
 					container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
 
+					_containersGenerated.Add (container);
+
 					//Test Container Wich Each Spot
 					foreach(var s in spots)
 					{
 						if(container.CheckConstraints (s))
 						{
 							spot = s;
+							spot.SetInitialContainer (container);
 							break;
 						}
 					}
 
 					if(spot != null)
 					{
-						spotFound = true;
-
 						spots.Remove (spot);
 						foreach(var o in spot.overlappingSpots)
 							spots.Remove (o);
+
+						if(spots.Count == 0)
+							trainFilled = true;
 
 						break;
 					}
@@ -236,16 +253,17 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 					if(containersToTest.Count == 0)
 					{
 						Debug.LogError ("Try: " + tries.ToString () + " failed!", train);
+						failed = true;
 						break;
 					}
 					
 				}
-				while(!spotFound);
+				while(true);
 
-				tries++;
 			}
-			while (spots.Count > 0);
+			while (spots.Count > 0 && !failed);
 
+			tries++;
 		}
 		while (tries < _trainFillingTries && !trainFilled);
 
@@ -268,34 +286,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			s.container = null;
 			s.isOccupied = false;
 		}
-	}
-
-	Container CreateContainer (Container_Level container_Level, Transform parent)
-	{
-		GameObject prefab = LevelsManager.Instance.basicContainersPrefabs [0];
-
-		switch (container_Level.containerType)
-		{
-		case ContainerType.Basic:
-			prefab = container_Level.isDoubleSize ? LevelsManager.Instance.basicContainersPrefabs [1] : LevelsManager.Instance.basicContainersPrefabs [0];
-			break;
-		case ContainerType.Cooled:
-			prefab = container_Level.isDoubleSize ? LevelsManager.Instance.cooledContainersPrefabs [1] : LevelsManager.Instance.cooledContainersPrefabs [0];
-			break;
-		case ContainerType.Tank:
-			prefab = container_Level.isDoubleSize ? LevelsManager.Instance.tankContainersPrefabs [1] : LevelsManager.Instance.tankContainersPrefabs [0];
-			break;
-		case ContainerType.Dangerous:
-			prefab = container_Level.isDoubleSize ? LevelsManager.Instance.dangerousContainersPrefabs [1] : LevelsManager.Instance.dangerousContainersPrefabs [0];
-			break;
-		}
-
-
-		Container container = (Instantiate (prefab, parent.position, Quaternion.identity, parent)).GetComponent<Container> ();
-
-		container.Setup (container_Level);
-
-		return container;
 	}
 
 	#region Other
