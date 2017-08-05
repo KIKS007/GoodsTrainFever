@@ -96,6 +96,15 @@ public class Container : Touchable
 		UpdateWeightText ();
 
 		SetIsDoubleSize ();
+
+		constraints.Clear ();
+
+		foreach (var c in transform.GetComponents<Constraint> ())
+		{
+			constraints.Add (new ContainerConstraint ());
+			constraints [constraints.Count - 1].constraint = c;
+			c._container = this;
+		}
 	}
 
 	public void SetIsDoubleSize ()

@@ -409,6 +409,74 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		return trainScript;
 	}
 
+	public List<Train> GenerateTrains (List<Train_LD> trains)
+	{
+		List<Train> trainsGenerated = new List<Train> ();
+
+		Vector3 position = new Vector3 ();
+
+		foreach(Train_LD train_Level in trains)
+		{
+			position.y = trainPrefab.transform.position.y;
+			
+			GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
+			
+			Train trainScript = train.GetComponent<Train> ();
+			trainsGenerated.Add (trainScript); 
+
+			trainScript.inTransition = true;
+			
+			float trainLength = 0;
+			float previousWagonLength = 0;
+			float wagonLength = 0;
+			
+			Vector3 wagonPosition = position;
+			
+			for(int i = 0; i < train_Level.wagons.Count; i++)
+			{
+				GameObject prefab = wagonFourtyPrefab;
+				float length = 0;
+				
+				switch (train_Level.wagons[i].wagonType)
+				{
+				case WagonType.Fourty:
+					prefab = wagonFourtyPrefab;
+					wagonLength = wagonFourtyLength;
+					break;
+				case WagonType.Sixty:
+					prefab = wagonSixtyPrefab;
+					wagonLength = wagonSixtyLength;
+					break;
+				case WagonType.Eighty:
+					prefab = wagonEightyPrefab;
+					wagonLength = wagonEightyLength;
+					break;
+				}
+				
+				length = wagonLength * 0.5f + previousWagonLength * 0.5f;
+				
+				wagonPosition.x -= length;
+				
+				GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+				
+				Wagon wagonScript = wagon.GetComponent<Wagon> ();
+				trainScript.wagons.Add (wagonScript);
+				
+				wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
+				
+				
+				trainLength += wagonLength;
+				previousWagonLength = wagonLength;
+			}
+			
+			trainScript.trainLength = trainLength;
+
+			position.x -= trainLength * 2;
+		}
+
+		return trainsGenerated;
+	}
+
 	void OnTrainArrived (Rail rail, Train trainScript)
 	{
 		trainScript.inTransition = false;

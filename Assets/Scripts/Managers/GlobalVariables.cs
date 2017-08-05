@@ -57,16 +57,9 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	}
 
 	#if UNITY_EDITOR
-	void CreateScriptableObject ()
-	{
-		//CreateAsset<objectToCreate.GetType ()> ();
-	}
-
 	[Button]
 	public void CreateAsset ()
 	{
-		//var type = objectToCreate.GetType ().Name;
-
 		var asset = ScriptableObject.CreateInstance (objectToCreate.name);
 
 		string path = AssetDatabase.GetAssetPath (Selection.activeObject);
@@ -76,7 +69,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 		} 
 		else if (Path.GetExtension (path) != "") 
 		{
-			path = path.Replace (Path.GetFileName (AssetDatabase.GetAssetPath (Selection.activeObject)), "");
+			path = path.Replace (Path.GetFileName (AssetDatabase.GetAssetPath (objectToCreate)), "");
 		}
 
 		string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath (path + "/New " + objectToCreate.name + ".asset");
