@@ -50,7 +50,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	private Level _generatedLevel;
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Container> _containersGenerated = new List<Container> ();
-	private int _trainFillingTries = 50;
+	private int _trainFillingTries = 20;
+
+	private bool _trainFilled = false;
+	private bool _tryFailed = false;
+	private int _triesCount = 0;
 
 	// Use this for initialization
 	void Start () 
@@ -96,8 +100,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
-		foreach (var t in _trainsGenerated)
-			StartCoroutine (FillTrain (t));
+		for(int i = 0; i < _trainsGenerated.Count; i++)
+			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
 	}
 
 	void CreateLevelObject (int levelIndex)
@@ -171,18 +175,23 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
 	}
 
-	IEnumerator FillTrain (Train train)
+	IEnumerator FillTrain (Train train, Train_LD trainLD)
 	{
-		bool trainFilled = false;
-		int tries = 0;
+		_trainFilled = false;
+		_triesCount = 0;
 
 		//OVERALL TRIES
 		do
 		{
 			//Destroy Previous Try Containers Generated
 			foreach(var c in _containersGenerated)
+			{
 				if(c)
-				Destroy (c.gameObject);
+				{
+					c.RemoveContainer ();
+					Destroy (c.gameObject);
+				}
+			}
 
 			yield return new WaitForEndOfFrame ();
 
@@ -191,84 +200,22 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			//Make Sure Spots Are Cleared
 			ClearSpots (train);
 
-			Container container = null;
 			List<Spot> spots = new List<Spot> (train._allSpots);
-			bool failed = false;
+			_tryFailed = false;
 
-			//Spawn Trains Containers
+			//Fill With Trains Forced Containers
+			if(trainLD.forcedContainers.Count > 0)
+				FillForcedContainers (spots, trainLD);
 
-			//FOR EACH SPOT
-			do
-			{
-				List<Container_Level> containersToTest = new List<Container_Level> (_currentLevelSettings.containersAvailable);
+			//Fill With Available Containers
+			Fill (spots, _currentLevelSettings.containersAvailable, train);
 
-				Debug.Log ("Spots: " + spots.Count);
-
-				//TEST EACH CONTAINER AVAILABLE
-				do
-				{
-					//Choose Random Container Among Those Not Tested
-					Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
-					Spot spot = null;
-
-					SetWeight (containerLevel);
-					RandomColor (containerLevel);
-
-					//Create Container
-					container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
-
-					_containersGenerated.Add (container);
-
-					//Test Container Wich Each Spot
-					foreach(var s in spots)
-					{
-						if(container.CheckConstraints (s))
-						{
-							spot = s;
-							spot.SetInitialContainer (container);
-							break;
-						}
-					}
-
-					if(spot != null)
-					{
-						spots.Remove (spot);
-						foreach(var o in spot.overlappingSpots)
-							spots.Remove (o);
-
-						if(spots.Count == 0)
-							trainFilled = true;
-
-						break;
-					}
-
-					//Remove Tested Container
-					containersToTest.Remove (containerLevel);
-
-					//Destroy Tested Container
-					container.RemoveContainer ();
-					Destroy (container.gameObject);
-
-					//If No More Containers To Test Try Failed
-					if(containersToTest.Count == 0)
-					{
-						Debug.LogError ("Try: " + tries.ToString () + " failed!", train);
-						failed = true;
-						break;
-					}
-					
-				}
-				while(true);
-
-			}
-			while (spots.Count > 0 && !failed);
-
-			tries++;
+			_triesCount++;
 		}
-		while (tries < _trainFillingTries && !trainFilled);
+		while (_triesCount < _trainFillingTries && !_trainFilled);
 
 
-		if(!trainFilled)
+		if(!_trainFilled)
 		{
 			Debug.LogError ("Can't Fill Whole Train!", train);
 			yield break;
@@ -277,6 +224,110 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		{
 			Debug.Log ("Train Filled!", train);
 		}
+	}
+
+	void FillForcedContainers (List<Spot> spots, Train_LD trainLD)
+	{
+		foreach(var c in trainLD.forcedContainers)
+		{
+			Container container = null;
+
+			//Choose Random Container Among Those Not Tested
+			Container_Level containerLevel = c;
+
+			SetWeight (containerLevel);
+			RandomColor (containerLevel);
+
+			//Create Container
+			container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
+
+			_containersGenerated.Add (container);
+
+			Spot spot = spots [Random.Range (0, spots.Count)];
+
+			do
+			{
+				spot = spots [Random.Range (0, spots.Count)];
+			}
+			while(!spot.IsSameSize (container));
+
+			spot.SetInitialContainer (container);
+
+			spots.Remove (spot);
+			foreach(var o in spot.overlappingSpots)
+				spots.Remove (o);
+		}
+	}
+
+	void Fill (List<Spot> spots, List<Container_Level> containers, Train train)
+	{
+		//FOR EACH SPOT
+		do
+		{
+			List<Container_Level> containersToTest = new List<Container_Level> (containers);
+
+			//Debug.Log ("Spots: " + spots.Count);
+
+			//TEST EACH CONTAINER AVAILABLE
+			do
+			{
+				Container container = null;
+
+				//Choose Random Container Among Those Not Tested
+				Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
+				Spot spot = null;
+
+				SetWeight (containerLevel);
+				RandomColor (containerLevel);
+
+				//Create Container
+				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
+
+				_containersGenerated.Add (container);
+
+				//Test Container Wich Each Spot
+				foreach(var s in spots)
+				{
+					if(s.IsSameSize (container) && container.CheckConstraints (s))
+					{
+						spot = s;
+						spot.SetInitialContainer (container);
+						break;
+					}
+				}
+
+				if(spot != null)
+				{
+					spots.Remove (spot);
+					foreach(var o in spot.overlappingSpots)
+						spots.Remove (o);
+
+					if(spots.Count == 0)
+						_trainFilled = true;
+
+					break;
+				}
+
+				//Remove Tested Container
+				containersToTest.Remove (containerLevel);
+
+				//Destroy Tested Container
+				container.RemoveContainer ();
+				Destroy (container.gameObject);
+
+				//If No More Containers To Test Try Failed
+				if(containersToTest.Count == 0)
+				{
+					//Debug.LogError ("Try: " + _triesCount.ToString () + " failed!", train);
+					_tryFailed = true;
+					break;
+				}
+
+			}
+			while(true);
+
+		}
+		while (spots.Count > 0 && !_tryFailed);
 	}
 
 	void ClearSpots (Train train)
