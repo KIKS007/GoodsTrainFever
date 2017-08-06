@@ -12,8 +12,9 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("FPS")]
 	public Text fpsText;
 
-	[Header ("Gameplay Parent")]
+	[Header ("Parents")]
 	public Transform gameplayParent;
+	public Transform extraContainersParent;
 
 	[Header ("Container Color")]
 	public Color redColor;

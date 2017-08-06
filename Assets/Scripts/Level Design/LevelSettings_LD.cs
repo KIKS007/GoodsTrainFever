@@ -28,8 +28,7 @@ public class LevelSettings_LD : MonoBehaviour
 	public List<Container_Level> containersAvailable = new List<Container_Level> ();
 
 	[Header ("Extra Containers")]
-	[Range (0, 100)]
-	public int extraContainersPercentage = 10;
+	public int extraContainersCount = 5;
 
 	[Header ("Orders Filling Percentage")]
 	[Range (0, 100)]

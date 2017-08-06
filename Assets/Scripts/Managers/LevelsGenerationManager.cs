@@ -52,6 +52,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Container> _containersGenerated = new List<Container> ();
+	public List<Container> _extraContainersGenerated = new List<Container> ();
 
 	private LevelSettings_LD _currentLevelSettings;
 	private Level _levelGenerated;
@@ -121,6 +122,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			KeepOrdersContainers (t);
 
 		CreateOrders ();
+
+		ExtraContainers ();
 
 		isGeneratingLevel = false;
 	}
@@ -434,6 +437,60 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			containerLevel.containerWeight = c.weight;
 			containerLevel.isDoubleSize = c.isDoubleSize;
 		}
+	}
+
+	void ExtraContainers ()
+	{
+		foreach (var e in _extraContainersGenerated)
+			Destroy (e.gameObject);
+
+		_extraContainersGenerated.Clear ();
+
+		for(int i = 0; i < _currentLevelSettings.extraContainersCount; i++)
+		{
+			bool validContainer = true;
+			Container_Level generatedContainerLevel = null; 
+
+			do
+			{
+				validContainer = true;
+
+				generatedContainerLevel = RandomContainerLevel (); 
+
+				foreach(var c in _containersGenerated)
+				{
+					if(c.containerColor != generatedContainerLevel.containerColor)
+						continue;
+
+					if(c.containerType != generatedContainerLevel.containerType)
+						continue;
+
+					if(c.isDoubleSize != generatedContainerLevel.isDoubleSize)
+						continue;
+
+					validContainer = false;
+				}
+
+			}
+			while(!validContainer);
+
+			Container container = LevelsManager.Instance.CreateContainer (generatedContainerLevel, GlobalVariables.Instance.extraContainersParent);
+
+			container.transform.position = new Vector3 (10 * i, -50, 0);
+
+			_extraContainersGenerated.Add (container);
+		}
+	}
+
+	Container_Level RandomContainerLevel ()
+	{
+		Container_Level containerLevel = new Container_Level (); 
+
+		RandomColor (containerLevel);
+		containerLevel.containerType = (ContainerType)Random.Range (0, System.Enum.GetValues (typeof(ContainerType)).Length);
+		containerLevel.isDoubleSize = Random.Range (1, 3) == 1 ? false : true;
+
+		return containerLevel;
 	}
 
 	#region Other
