@@ -388,6 +388,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			previousWagonLength = wagonLength;
 		}
 
+		trainLength += locomotiveLength;
 		trainScript.trainLength = trainLength;
 
 		rail.train = trainScript;
@@ -414,6 +415,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		List<Train> trainsGenerated = new List<Train> ();
 
 		Vector3 position = new Vector3 ();
+		position.x = xArrivingPosition;
 
 		foreach(Train_LD train_Level in trains)
 		{
@@ -469,9 +471,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				previousWagonLength = wagonLength;
 			}
 			
+			trainLength += locomotiveLength;
 			trainScript.trainLength = trainLength;
 
-			position.x -= trainLength * 2;
+			position.x -= trainLength;
 		}
 
 		return trainsGenerated;

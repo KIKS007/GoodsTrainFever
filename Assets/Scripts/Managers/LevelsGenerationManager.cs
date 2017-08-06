@@ -6,6 +6,11 @@ using DG.Tweening;
 
 public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 {
+	[Header ("States")]
+	public bool isGeneratingLevel = false;
+	public bool isGeneratingTrains = false;
+	public int currentLevel = 0;
+
 	[Header ("Duration")]
 	public int levelDuration;
 
@@ -14,14 +19,13 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	[Header ("Orders")]
 	public int ordersCount;
+	public int ordersElementsCountMin = 2;
 
 	[Header ("Trains")]
 	public int trainsCount;
 	public List<Train_LD> selectedTrains = new List<Train_LD> ();
 
 	[Header ("Common Settings")]
-	[Range (0, 100)]
-	public int extraContainersPercentage = 10;
 	[Range (0, 100)]
 	public int storageMaxFillingPercentage = 80;
 	[Range (0, 100)]
@@ -30,7 +34,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	[Header ("Wagons Weight")]
 	public Vector2 wagonExtraWeight = new Vector2 ();
 	[Range (0, 100)]
-	public int wagonInfiniteWeight;
+	public int wagonInfiniteWeightChance;
 
 	[Header ("Containers Weight")]
 	public int[] basicContainerWeights = new int[2];
@@ -46,10 +50,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		GenerateLevel (levelToGenerateIndex);
 	}
 
-	private LevelSettings_LD _currentLevelSettings;
-	private Level _generatedLevel;
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Container> _containersGenerated = new List<Container> ();
+
+	private LevelSettings_LD _currentLevelSettings;
+	private Level _levelGenerated;
 	private int _trainFillingTries = 20;
 
 	private bool _trainFilled = false;
@@ -69,14 +74,18 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	IEnumerator GenerateLevelCoroutine (int levelIndex)
 	{
+		currentLevel = levelIndex;
+
+		isGeneratingLevel = true;
+
 		foreach (var t in _trainsGenerated)
 			if(t)
 			Destroy (t.gameObject);
 
 		_trainsGenerated.Clear ();
 
-		if (_generatedLevel != null)
-			Destroy (_generatedLevel.gameObject);
+		if (_levelGenerated != null)
+			Destroy (_levelGenerated.gameObject);
 
 		if(transform.childCount - 1 < levelIndex)
 		{
@@ -100,8 +109,20 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
+		isGeneratingTrains = true;
+
 		for(int i = 0; i < _trainsGenerated.Count; i++)
-			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
+			if(i == _trainsGenerated.Count - 1)
+				StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i], ()=> isGeneratingTrains = false));
+
+		yield return new WaitWhile (() => isGeneratingTrains);
+
+		foreach (var t in _trainsGenerated)
+			KeepOrdersContainers (t);
+
+		CreateOrders ();
+
+		isGeneratingLevel = false;
 	}
 
 	void CreateLevelObject (int levelIndex)
@@ -112,11 +133,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		newLevel.transform.SetParent (LevelsManager.Instance.transform);
 
-		_generatedLevel = newLevel.AddComponent<Level> ();
+		_levelGenerated = newLevel.AddComponent<Level> ();
 
-		_generatedLevel.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
-		_generatedLevel.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
-		_generatedLevel.errorsAllowed = _currentLevelSettings.errorsAllowed;
+		_levelGenerated.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
+		_levelGenerated.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
+		_levelGenerated.errorsAllowed = _currentLevelSettings.errorsAllowed;
 	}
 
 	void SelectTrains ()
@@ -175,7 +196,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
 	}
 
-	IEnumerator FillTrain (Train train, Train_LD trainLD)
+	IEnumerator FillTrain (Train train, Train_LD trainLD, System.Action action = null)
 	{
 		_trainFilled = false;
 		_triesCount = 0;
@@ -216,14 +237,13 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 
 		if(!_trainFilled)
-		{
 			Debug.LogError ("Can't Fill Whole Train!", train);
-			yield break;
-		}
+		
 		else
-		{
-			Debug.Log ("Train Filled!", train);
-		}
+			Debug.Log ("Train filled after " + (_triesCount).ToString () + " tries!", train);
+
+		if (action != null)
+			action ();
 	}
 
 	void FillForcedContainers (List<Spot> spots, Train_LD trainLD)
@@ -283,8 +303,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				//Create Container
 				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
 
-				_containersGenerated.Add (container);
-
 				//Test Container Wich Each Spot
 				foreach(var s in spots)
 				{
@@ -298,6 +316,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 				if(spot != null)
 				{
+					_containersGenerated.Add (container);
 					spots.Remove (spot);
 					foreach(var o in spot.overlappingSpots)
 						spots.Remove (o);
@@ -336,6 +355,84 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		{
 			s.container = null;
 			s.isOccupied = false;
+		}
+	}
+
+	void KeepOrdersContainers (Train train)
+	{
+		int fillingPercentage = 100;
+
+		while (fillingPercentage > _currentLevelSettings.ordersFillingPercentage)
+		{
+			List<Container> containers = new List<Container> ();
+
+			foreach(var c in train.containers)
+				if(!containers.Contains (c) && c != null)
+					containers.Add (c);
+
+			Container removedContainer = containers [Random.Range (0, containers.Count)];
+			train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
+
+			if(removedContainer.isDoubleSize)
+				train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
+
+			_containersGenerated.Remove (removedContainer);
+
+			Destroy (removedContainer.gameObject);
+
+			int containersCount = 0;
+
+			foreach(var c in train.containers)
+				if(c != null)
+					containersCount++;
+
+			fillingPercentage = (int) (((float)containersCount / (float)train.containers.Count) * 100f);
+		}
+
+	}
+
+	void CreateOrders ()
+	{
+		var containersGeneratedTemp = new List<Container> (_containersGenerated);
+
+		_levelGenerated.orders.Clear ();
+
+		for (int i = 0; i < ordersCount; i++)
+			_levelGenerated.orders.Add (new Order_Level ());
+
+		foreach(var o in _levelGenerated.orders)
+		{
+			for(int i = 0; i < ordersElementsCountMin; i++)
+			{
+				if (containersGeneratedTemp.Count == 0)
+					return;
+				
+				o.levelContainers.Add (new Container_Level ());
+				var containerLevel = o.levelContainers [o.levelContainers.Count - 1];
+
+				var c = containersGeneratedTemp [Random.Range (0, containersGeneratedTemp.Count)];
+				containersGeneratedTemp.Remove (c);
+				
+				containerLevel.containerColor = c.containerColor;
+				containerLevel.containerType = c.containerType;
+				containerLevel.containerCount = 1;
+				containerLevel.containerWeight = c.weight;
+				containerLevel.isDoubleSize = c.isDoubleSize;
+			}
+		}
+
+		foreach(var c in containersGeneratedTemp)
+		{
+			int randomOrder = Random.Range (0, _levelGenerated.orders.Count);
+			_levelGenerated.orders [randomOrder].levelContainers.Add (new Container_Level ());
+
+			var containerLevel = _levelGenerated.orders [randomOrder].levelContainers [_levelGenerated.orders [randomOrder].levelContainers.Count - 1];
+
+			containerLevel.containerColor = c.containerColor;
+			containerLevel.containerType = c.containerType;
+			containerLevel.containerCount = 1;
+			containerLevel.containerWeight = c.weight;
+			containerLevel.isDoubleSize = c.isDoubleSize;
 		}
 	}
 

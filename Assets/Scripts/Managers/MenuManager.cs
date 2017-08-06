@@ -91,9 +91,6 @@ public class MenuManager : Singleton<MenuManager>
 
 		menulevels.SetupLevels ();
 
-		foreach(Transform t in menuParent)
-			if(t.gameObject.GetComponent<MenuComponent> () != null)
-				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
 
 		if (GameManager.Instance.gameState == GameState.Playing)
 			return;
@@ -102,6 +99,11 @@ public class MenuManager : Singleton<MenuManager>
 		menuPanel.gameObject.SetActive (true);
 		title.gameObject.SetActive (true);
 		backButton.gameObject.SetActive (true);
+
+		foreach(Transform t in menuParent)
+			if(t.gameObject.GetComponent<MenuComponent> () != null)
+				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
+		
 
 		UIFadeOut ();
 
