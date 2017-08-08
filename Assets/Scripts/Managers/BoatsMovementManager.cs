@@ -34,6 +34,18 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		boat.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
 	}
 
+	public void BoatStart (Boat boat)
+	{
+		inTransition = true;
+
+		Vector3 position = boat.transform.position;
+		position.x = arrivingXPosition;
+
+		boat.transform.position = position;
+
+		boat.transform.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
+	}
+
 	public void BoatDeparture ()
 	{
 		inTransition = true;
@@ -44,6 +56,20 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		boat.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
 	}
 
+	public void BoatDeparture (Boat boat)
+	{
+		inTransition = true;
+
+		if (OnBoatDeparture != null)
+			OnBoatDeparture ();
+
+		boat.transform.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> {
+			
+			inTransition = false;
+			Destroy (boat.gameObject);
+		});
+	}
+
 	public void ClearBoat ()
 	{
 		Vector3 position = boat.transform.position;
@@ -52,7 +78,8 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		boat.transform.position = position;
 
 		foreach (var b in spawnedBoats)
-			Destroy (b.gameObject);
+			if(b != null)
+				Destroy (b.gameObject);
 
 		spawnedBoats.Clear ();
 	}

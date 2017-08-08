@@ -161,6 +161,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			FillContainerZone (boat.containersParent, boat.spotsParent, ContainersMovementManager.Instance.boatPileCount, _boatMaxFilling);
 		}
 
+		for (int i = 0; i < _trainsGenerated.Count; i++)
+			if (selectedTrains [i].parasiteContainers.Count > 0)
+				ParasiteContainers (selectedTrains [i].parasiteContainers, _trainsGenerated [i]);
+
 		SetupTrains ();
 
 		SetupBoats ();
@@ -714,9 +718,22 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		return true;
 	}
 
+	void ParasiteContainers (List<Container_Level> containers, Train train)
+	{
+		foreach (var c in containers)
+		{
+			var container = LevelsManager.Instance.CreateContainer (c, GlobalVariables.Instance.gameplayParent);
+
+			FillContainer (train._allSpots, container);
+		}
+	}
+
 	void SetupTrains ()
 	{
-		currentLevelGenerated.trainsDuration = (int)(_currentLevelSettings.levelDuration / _trainsGenerated.Count);
+		if(_trainsGenerated.Count % 2 == 0)
+			currentLevelGenerated.trainsDuration = (int)(_currentLevelSettings.levelDuration / (_trainsGenerated.Count / 2));
+		else
+			currentLevelGenerated.trainsDuration = (int)(_currentLevelSettings.levelDuration / (_trainsGenerated.Count / 2 + 1));
 
 		bool fillRail1 = true;
 

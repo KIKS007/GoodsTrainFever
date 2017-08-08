@@ -53,27 +53,15 @@ public class ScoreManager : Singleton<ScoreManager>
 		{
 			Level level = t.GetComponent<Level> ();
 
-			LevelSettings_LD levelLD = t.GetComponent<LevelSettings_LD> ();
 
-			if(level != null)
-				for(int i = 0; i < 3; i++)
-				{
-					if (level.starsStates [i] == StarState.Unlocked)
-						level.starsStates [i] = StarState.Saved;
-					
-					if (level.starsStates [i] == StarState.ErrorLocked)
-						level.starsStates [i] = StarState.Locked;
-				}
-
-			else
-				for(int i = 0; i < 3; i++)
-				{
-					if (levelLD.starsStates [i] == StarState.Unlocked)
-						levelLD.starsStates [i] = StarState.Saved;
-
-					if (levelLD.starsStates [i] == StarState.ErrorLocked)
-						levelLD.starsStates [i] = StarState.Locked;
-				}
+			for(int i = 0; i < 3; i++)
+			{
+				if (level.starsStates [i] == StarState.Unlocked)
+					level.starsStates [i] = StarState.Saved;
+				
+				if (level.starsStates [i] == StarState.ErrorLocked)
+					level.starsStates [i] = StarState.Locked;
+			}
 		}
 	}
 
@@ -83,35 +71,17 @@ public class ScoreManager : Singleton<ScoreManager>
 		{
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 
-			LevelSettings_LD levelLD = LevelsManager.Instance.transform.GetChild (i).GetComponent<LevelSettings_LD> ();
-
-			if(level != null)
+			if (PlayerPrefs.HasKey ("Stars" + i))
+				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
+			
+			for (int j = 0; j < 3; j++)
 			{
-				if (PlayerPrefs.HasKey ("Stars" + i))
-					level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
-				
-				for (int j = 0; j < 3; j++)
-				{
-					if (j < level.starsEarned)
-						level.starsStates [j] = StarState.Saved;
-					else
-						level.starsStates [j] = StarState.Locked;
-				}
+				if (j < level.starsEarned)
+					level.starsStates [j] = StarState.Saved;
+				else
+					level.starsStates [j] = StarState.Locked;
 			}
-			else
-			{
-				if (PlayerPrefs.HasKey ("Stars" + i))
-					levelLD.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
-
-				for (int j = 0; j < 3; j++)
-				{
-					if (j < levelLD.starsEarned)
-						levelLD.starsStates [j] = StarState.Saved;
-					else
-						levelLD.starsStates [j] = StarState.Locked;
-				}
-			}
-
+			
 			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
 
 
@@ -125,10 +95,7 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
 		{
-			if(LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> () != null)
-				PlayerPrefs.SetInt ("Stars" + i, LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ().starsEarned);	
-			else
-				PlayerPrefs.SetInt ("Stars" + i, LevelsManager.Instance.transform.GetChild (i).GetComponent<LevelSettings_LD> ().starsEarned);	
+			PlayerPrefs.SetInt ("Stars" + i, LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ().starsEarned);	
 		}
 	}
 
@@ -139,13 +106,8 @@ public class ScoreManager : Singleton<ScoreManager>
 		foreach(Transform t in LevelsManager.Instance.transform)
 		{
 			Level level = t.GetComponent<Level> ();
-
-			LevelSettings_LD levelLD = t.GetComponent<LevelSettings_LD> ();
-
-			if(level != null)
-				starsEarned += level.starsEarned;
-			else
-				starsEarned += levelLD.starsEarned;
+			
+			starsEarned += level.starsEarned;
 		}
 
 		menuLevels.UpdateLevels ();
@@ -154,23 +116,13 @@ public class ScoreManager : Singleton<ScoreManager>
 	public void UnlockStars (int ordersPrepared, int trainsCount, int levelIndex)
 	{
 		Level level = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<Level> ();
+		
+		MostOrdersStar (ordersPrepared, level, levelIndex);
+		AllOrdersStar (ordersPrepared, trainsCount, level, levelIndex);
+		UpdateStars ();
 
-		LevelSettings_LD levelLD = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<LevelSettings_LD> ();
+		Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned);
 
-		if(level != null)
-		{
-			MostOrdersStar (ordersPrepared, level, levelIndex);
-			AllOrdersStar (ordersPrepared, trainsCount, level, levelIndex);
-			UpdateStars ();
-			Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned);
-		}
-		else
-		{
-			MostOrdersStar (ordersPrepared, levelLD, levelIndex);
-			AllOrdersStar (ordersPrepared, trainsCount, levelLD, levelIndex);
-			UpdateStars ();
-			Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + levelLD.starsEarned);
-		}
 	}
 
 	void MostOrdersStar (int ordersPrepared, Level level, int levelIndex)
@@ -207,7 +159,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			return;
 		}
 
-		if(ordersPrepared == level.orders.Count)
+		if(ordersPrepared == level.ordersCount)
 		{
 			LeastTrainsStar (trainsCount, level, levelIndex);
 
@@ -240,75 +192,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			level.starsStates [2] = StarState.Unlocked;
 		}
 	}
-
-	void MostOrdersStar (int ordersPrepared, LevelSettings_LD level, int levelIndex)
-	{
-		if(!PlayerPrefs.HasKey ("MostOrdersStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed)
-		{
-			level.starsStates [0] = StarState.ErrorLocked;
-			success = false;
-			return;
-		}
-
-		if(ordersPrepared >= level.mostOrdersCount)
-		{
-			success = true;
-
-			if (PlayerPrefs.HasKey ("MostOrdersStar" + levelIndex))
-				return;
-
-			level.starsEarned++;
-			PlayerPrefs.SetInt ("MostOrdersStar" + levelIndex, 1);
-
-			level.starsStates [0] = StarState.Unlocked;
-		}
-		else
-			success = false;
-	}
-
-	void AllOrdersStar (int ordersPrepared, int trainsCount, LevelSettings_LD level, int levelIndex)
-	{
-		if(!PlayerPrefs.HasKey ("AllOrdersStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed)
-		{
-			level.starsStates [1] = StarState.ErrorLocked;
-			level.starsStates [2] = StarState.ErrorLocked;
-			return;
-		}
-
-		if(ordersPrepared == level.ordersCount)
-		{
-			LeastTrainsStar (trainsCount, level, levelIndex);
-
-			if (!PlayerPrefs.HasKey ("AllOrdersStar" + levelIndex))
-			{
-				level.starsEarned++;
-				PlayerPrefs.SetInt ("AllOrdersStar" + levelIndex, 1);
-
-				level.starsStates [1] = StarState.Unlocked;
-			}
-		}
-	}
-
-	void LeastTrainsStar (int trainsCount, LevelSettings_LD level, int levelIndex)
-	{
-		if (PlayerPrefs.HasKey ("LeastTrainsStar" + levelIndex))
-			return;
-
-		if (LevelsManager.Instance.errorsLocked > 0)
-		{
-			level.starsStates [2] = StarState.ErrorLocked;
-			return;
-		}
-
-		if(trainsCount <= level.leastTrainsCount)
-		{
-			level.starsEarned++;
-			PlayerPrefs.SetInt ("LeastTrainsStar" + levelIndex, 1);
-
-			level.starsStates [2] = StarState.Unlocked;
-		}
-	}
-
+		
 	void OnApplicationQuit ()
 	{
 		if (saveOnStop)

@@ -340,6 +340,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
+		if(rail == rail2)
+			position.x += xDeparturePosition2 - xDeparturePosition1;
+
 		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
 
 		Train trainScript = train.GetComponent<Train> ();
@@ -421,6 +424,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Vector3 position = rail.transform.position;
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
+
+		if(rail == rail2)
+			position.x += xDeparturePosition2 - xDeparturePosition1;
 
 		train.transform.position = position;
 
@@ -523,7 +529,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	IEnumerator TrainDuration (Rail rail, int duration)
 	{
-		float time = Mathf.Round (Time.time) + 1.5f;
+		float time = Mathf.Round (Time.time) + 1f;
 
 		rail.train.duration = duration;
 
@@ -540,11 +546,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		trainText.text = duration.ToString ();
 
-		do
+		while (duration > 0)
 		{
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-			yield return new WaitForSeconds (1f);
+			yield return new WaitForSeconds (1);
 
 			if(rail.train == null || !rail.train.waitingDeparture)
 				yield break;
@@ -554,7 +560,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			duration--;
 			trainText.text = duration.ToString ();
 		}
-		while (duration > 0);
 
 		if(rail.train != null && !rail.train.inTransition)
 			SendTrain (rail);

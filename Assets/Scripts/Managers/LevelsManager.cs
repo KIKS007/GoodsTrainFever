@@ -12,14 +12,13 @@ public class LevelsManager : Singleton<LevelsManager>
 	public bool loadLevelOnStart = false;
 	public bool clearLevelOnStart = true;
 
-	[Header ("Level")]
+	[Header ("Level Index")]
 	public int levelIndex;
 	public int levelsCount;
 
-	[Header ("Handmade Level")]
+	[Header ("Levels")]
 	public Level currentLevel;
-
-	[Header ("Generated Level")]
+	public Level currentHandmadeLevel;
 	public LevelGenerated currentLevelGenerated;
 
 	[Header ("Errors")]
@@ -139,8 +138,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
+		ClearLevel ();
 
-		if (transform.GetChild (index).GetComponent<Level> () != null)
+		if (transform.GetChild (index).GetComponent<LevelHandmade> () != null)
 			LoadLevelHandmade (index);
 		else
 			LoadGeneratedLevel (index);
@@ -149,8 +149,6 @@ public class LevelsManager : Singleton<LevelsManager>
 	public void LoadLevelHandmade (int index)
 	{
 		levelIndex = index;
-
-		ClearLevel ();
 
 		if (randomColors)
 		{
@@ -169,9 +167,11 @@ public class LevelsManager : Singleton<LevelsManager>
 		else
 			_randomColorOffset = 0;
 		
-		Level level = transform.GetChild (index).GetComponent<Level> ();
+		LevelHandmade level = transform.GetChild (index).GetComponent<LevelHandmade> ();
 
-		currentLevel = level;
+		currentHandmadeLevel = level;
+		currentLevel = currentHandmadeLevel;
+
 		currentLevelGenerated = null;
 
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
@@ -257,9 +257,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		levelIndex = index;
 
-		currentLevel = null;
+		currentHandmadeLevel = null;
 
-		ClearLevel ();
 
 		LevelSettings_LD levelSettings = transform.GetChild (index).GetComponent<LevelSettings_LD> ();
 
@@ -268,6 +267,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		yield return new WaitWhile (() => LevelsGenerationManager.Instance.isGeneratingLevel);
 
 		currentLevelGenerated = LevelsGenerationManager.Instance.currentLevelGenerated;
+		currentLevel = currentLevelGenerated;
 
 		//spawnAllOrderContainers = currentLevelGenerated.spawnAllOrderContainers;
 		//rail1Trains = currentLevelGenerated.rail1Trains;
@@ -290,23 +290,23 @@ public class LevelsManager : Singleton<LevelsManager>
 			StartCoroutine (AddOrder (o));
 
 		//Trains
-		if (rail1Trains.Count > 0)
+		if (currentLevelGenerated.rail1Trains.Count > 0)
 		{
 			_rail1Occupied = true;
-			trainsToSend += rail1Trains.Count;
-			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
+			trainsToSend += currentLevelGenerated.rail1Trains.Count;
+			StartCoroutine (SpawnTrains (currentLevelGenerated.rail1Trains, TrainsMovementManager.Instance.rail1, currentLevelGenerated.trainsDuration));
 		}
 
-		if (rail2Trains.Count > 0)
+		if (currentLevelGenerated.rail2Trains.Count > 0)
 		{
 			_rail2Occupied = true;
-			trainsToSend += rail2Trains.Count;
-			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
+			trainsToSend += currentLevelGenerated.rail2Trains.Count;
+			StartCoroutine (SpawnTrains (currentLevelGenerated.rail2Trains, TrainsMovementManager.Instance.rail2, currentLevelGenerated.trainsDuration));
 		}
 
-		/*//Boats
-		if (boats.Count > 0)
-			StartCoroutine (SpawnBoats ());*/
+		//Boats
+		if (currentLevelGenerated.boats.Count > 0)
+			StartCoroutine (SpawnBoats (currentLevelGenerated.boats, currentLevelGenerated.boatsDelay, currentLevelGenerated.boatsDuration));
 	}
 
 	void RandomColors (List<Container_Level> containers)
@@ -503,6 +503,39 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitForSeconds (boatDuration);
 
 			BoatsMovementManager.Instance.BoatDeparture ();
+
+			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
+
+			yield return new WaitForSeconds (waitDurationBetweenBoats);
+		}
+	}
+
+	IEnumerator SpawnBoats (List<Boat> boats, float delay, float boatDuration)
+	{
+		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
+		foreach(var b in boats)
+		{
+			if(delay > 0)
+				yield return new WaitForSeconds (delay);
+
+			BoatsMovementManager.Instance.BoatStart (b);
+
+			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
+
+			while (boatDuration > 0)
+			{
+
+				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
+				yield return new WaitForSeconds (1);
+
+				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
+				boatDuration--;
+			}
+
+			BoatsMovementManager.Instance.BoatDeparture (b);
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
@@ -806,7 +839,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		do
 		{
-			yield return new WaitWhile (() => GameManager.Instance.gameState == GameState.Pause);
+			if(GameManager.Instance.gameState == GameState.Pause)
+				yield return new WaitWhile (() => GameManager.Instance.gameState == GameState.Pause);
 
 			yield return new WaitForSecondsRealtime (1f);
 			
@@ -820,12 +854,6 @@ public class LevelsManager : Singleton<LevelsManager>
 	public void LoadLevel ()
 	{
 		LoadLevel (levelToStart);
-	}
-
-	[ButtonGroup ("1", -1)]
-	public void LoadLevelGenerated ()
-	{
-		LoadGeneratedLevel (levelIndex);
 	}
 
 	public void NextLevel ()
