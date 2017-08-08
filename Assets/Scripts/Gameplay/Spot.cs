@@ -262,7 +262,7 @@ public class Spot : Touchable
 				//Debug.Log ("--- moins moins");
 				belowContainers--;
 			}
-			
+
 			belowContainers++;
 		}
 

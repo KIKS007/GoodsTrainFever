@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using DG.Tweening;
+using System.Linq;
 
 public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 {
@@ -50,22 +51,33 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		GenerateLevel (levelToGenerateIndex);
 	}
 
+	public Storage _storage;
+	public Boat _boat;
+
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Container> _containersGenerated = new List<Container> ();
 	public List<Container> _extraContainersGenerated = new List<Container> ();
+	public List<Container> _containersToPlace = new List<Container> ();
+
+	private int _containerToPlaceCount;
 
 	private LevelSettings_LD _currentLevelSettings;
-	private Level _levelGenerated;
+	private LevelGenerated _levelGenerated;
 	private int _trainFillingTries = 20;
 
 	private bool _trainFilled = false;
 	private bool _tryFailed = false;
 	private int _triesCount = 0;
 
+	private int _storageMaxFilling = 80;
+	private int _boatMaxFilling = 80;
+	public List<Spot> spots = new List<Spot> ();
+
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
-		
+		_storage = FindObjectOfType<Storage> ();
+		_boat = FindObjectOfType<Boat> ();
 	}
 	
 	public void GenerateLevel (int levelIndex)
@@ -125,6 +137,27 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		ExtraContainers ();
 
+		_containersToPlace.Clear ();
+		_containersToPlace.AddRange (_containersGenerated);
+		_containersToPlace.AddRange (_extraContainersGenerated);
+
+		_containerToPlaceCount = 0;
+
+		//Get Containers Overall Count
+		foreach (var c in _containersToPlace)
+		{
+			_containerToPlaceCount++;
+
+			if(c.isDoubleSize)
+				_containerToPlaceCount++;
+		}
+
+		LevelsManager.Instance.EmptyZone (_storage.containersParent);
+
+		yield return new WaitForEndOfFrame ();
+
+		FillContainerZone (_storage.containersParent, _storage.spotsParent, ContainersMovementManager.Instance.storagePileCount, _storageMaxFilling, _currentLevelSettings.storageFillingPercentage);
+
 		isGeneratingLevel = false;
 	}
 
@@ -134,13 +167,16 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		newLevel.name = "Level Generated #" + (levelIndex + 1).ToString ();
 
-		newLevel.transform.SetParent (LevelsManager.Instance.transform);
+		newLevel.transform.SetParent (transform);
 
-		_levelGenerated = newLevel.AddComponent<Level> ();
+		_levelGenerated = newLevel.AddComponent<LevelGenerated> ();
 
 		_levelGenerated.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
 		_levelGenerated.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
 		_levelGenerated.errorsAllowed = _currentLevelSettings.errorsAllowed;
+
+		_levelGenerated.starsEarned = _currentLevelSettings.starsEarned;
+		_levelGenerated.starsStates = _currentLevelSettings.starsStates;
 	}
 
 	void SelectTrains ()
@@ -442,6 +478,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	void ExtraContainers ()
 	{
 		foreach (var e in _extraContainersGenerated)
+			if(e != null)
 			Destroy (e.gameObject);
 
 		_extraContainersGenerated.Clear ();
@@ -451,11 +488,13 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			bool validContainer = true;
 			Container_Level generatedContainerLevel = null; 
 
+
 			do
 			{
 				validContainer = true;
 
 				generatedContainerLevel = RandomContainerLevel (); 
+				SetWeight (generatedContainerLevel);
 
 				foreach(var c in _containersGenerated)
 				{
@@ -476,10 +515,146 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 			Container container = LevelsManager.Instance.CreateContainer (generatedContainerLevel, GlobalVariables.Instance.extraContainersParent);
 
-			container.transform.position = new Vector3 (10 * i, -50, 0);
+			container.transform.position = new Vector3 (10 * i, -50, 100);
 
 			_extraContainersGenerated.Add (container);
 		}
+	}
+
+	void FillContainerZone (Transform containersParent, Transform spotsParent, int pileCount, int zoneMaxFilling, int percentageToFill = 100, bool forceSpawnDoubleFirst = false)
+	{
+		//Reset Containers
+		foreach (var c in containersParent.GetComponentsInChildren<Container> ())
+			c.RemoveContainer ();
+
+		//Get Spots
+		var spotsArray = spotsParent.GetComponentsInChildren<Spot> ().ToList ();
+		//List<Spot> spots = new List<Spot> ();
+		spots = new List<Spot> ();
+
+		//Get & Sort Spots
+		foreach (var s in spotsArray)
+			if (!s.isPileSpot && !s._isSpawned)
+				spots.Add (s);
+
+		//Free Spots
+		foreach (var s in spots)
+		{
+			s.isOccupied = false;
+			s.container = null;
+		}
+
+		int containersPercentage = 0;
+		int containersPlacedCount = 0;
+		
+		int zoneFillingPercentage = 0;
+		int zoneInitialSpotsCount = 0;
+
+		Debug.Log ("containersToPlace: " + _containerToPlaceCount);
+
+		//Sort Containers_Levels
+		List<Container> containersToPlace = new List<Container> ();
+		
+		if(forceSpawnDoubleFirst)
+		{
+			foreach (var c in _containersToPlace)
+				if (c.isDoubleSize)
+					containersToPlace.Add (c);
+			
+			foreach (var c in _containersToPlace)
+				if (!c.isDoubleSize)
+					containersToPlace.Add (c);
+		}
+		else
+			containersToPlace.AddRange (_containersToPlace);
+
+		//Get Zone Spots Count
+		foreach (var s in spots)
+			if (!s.isDoubleSize && !s.isPileSpot && !s._isSpawned)
+				zoneInitialSpotsCount++;
+
+		zoneInitialSpotsCount *= (pileCount + 1);
+
+		Debug.Log ("zoneInitialSpotsCount: " + zoneInitialSpotsCount);
+
+		do
+		{
+			Container container = containersToPlace [Random.Range (0, containersToPlace.Count)];
+
+			bool containerPlaced = FillContainer (spots, container, forceSpawnDoubleFirst);
+
+			if(!containerPlaced && !forceSpawnDoubleFirst)
+			{
+				FillContainerZone (containersParent, spotsParent, pileCount, zoneMaxFilling, percentageToFill, true);
+				return;
+			}
+
+			containersPlacedCount++;
+
+			if(container.isDoubleSize)
+				containersPlacedCount++;
+
+			containersPercentage = (int) (((float)containersPlacedCount / (float)_containerToPlaceCount) * 100f);
+			zoneFillingPercentage = (int) (((float)containersPlacedCount / (float)zoneInitialSpotsCount) * 100f);
+
+			containersToPlace.Remove (container);
+
+			Debug.Log ("ContainersPercentage: " + containersPercentage + "% && zoneFillingPercentage: " + zoneFillingPercentage + "%");
+		}
+		while (containersPercentage < percentageToFill && zoneFillingPercentage <= zoneMaxFilling);
+
+		//Update Containers To Place
+		_containersToPlace.Clear ();
+		_containersToPlace.AddRange (containersToPlace);
+	}
+
+	bool FillContainer (List<Spot> spots, Container container, bool forceSpawnDoubleFirst = false)
+	{
+		List<Spot> spotsTemp = new List<Spot> (spots);
+
+		//Add Spawned Spots
+		if(container.isDoubleSize)
+		{
+			foreach(var s in spots)
+			{
+				if(s.isDoubleSize)
+				{
+					Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
+					
+					if (spotSpawned != null)
+					{
+						spotsTemp.Add (spotSpawned);
+						Debug.Log ("Spawned !!!");
+					}
+				}
+			}
+		}
+
+		//Remove Invalid Spots
+		foreach(var s in spots)
+		{
+			if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
+				spotsTemp.Remove (s);
+		}
+
+		if(spotsTemp.Count == 0)
+		{
+			Debug.LogError ("No more free spots!", this);
+			return false;
+		}
+		
+		//Take Spot
+		Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
+		
+		spots.Remove (spotTaken);
+		spots.AddRange (container._pileSpots);
+
+		if (container.spotOccupied)
+			container.RemoveContainer ();
+
+		spotTaken.SetInitialContainer (container);
+
+		return true;
 	}
 
 	Container_Level RandomContainerLevel ()

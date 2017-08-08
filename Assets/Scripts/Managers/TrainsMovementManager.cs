@@ -489,6 +489,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		float time = Mathf.Round (Time.time) + 1.5f;
 
+		rail.train.duration = duration;
+
 		yield return new WaitUntil (() => Time.time >= time);
 
 		yield return new WaitWhile (() => rail.train.inTransition);

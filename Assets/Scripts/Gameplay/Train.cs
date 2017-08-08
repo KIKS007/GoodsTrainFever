@@ -13,6 +13,9 @@ public class Train : Touchable
 	public bool inTransition = false;
 	public bool waitingDeparture = true;
 
+	[Header ("Duration")]
+	public float duration;
+
 	[Header ("Length")]
 	public float trainLength;
 

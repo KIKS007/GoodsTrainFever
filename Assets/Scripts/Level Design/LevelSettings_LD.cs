@@ -9,11 +9,15 @@ public class LevelSettings_LD : MonoBehaviour
 	public int levelDuration = 60;
 
 	[Header ("Stars")]
+	public int starsEarned = 0;
 	public int mostOrdersCount = 0;
 	public int leastTrainsCount = 1;
 
 	[Header ("Errors")]
 	public int errorsAllowed = 10;
+
+	[Header ("Stars States")]
+	public StarState[] starsStates = new StarState[3];
 
 	[Header ("Orders")]
 	public int ordersCountMin = 1;

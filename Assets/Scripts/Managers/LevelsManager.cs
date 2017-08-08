@@ -60,8 +60,10 @@ public class LevelsManager : Singleton<LevelsManager>
 	public GameObject[] tankContainersPrefabs = new GameObject[2];
 	public GameObject[] dangerousContainersPrefabs = new GameObject[2];
 
-	private Storage _storage;
-	private Boat _boat;
+	[HideInInspector]
+	public Storage _storage;
+	[HideInInspector]
+	public Boat _boat;
 	private bool _rail1Occupied = false;
 	private bool _rail2Occupied = false;
 	private int _randomColorOffset;
@@ -354,7 +356,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
-	void EmptyZone (Transform parent)
+	public void EmptyZone (Transform parent, bool destroyContainers = true)
 	{
 		foreach (Transform c in parent)
 		{
@@ -362,8 +364,9 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			if (container != null)
 				container.RemoveContainer ();
-			
-			Destroy (c.gameObject);
+
+			if(destroyContainers)
+				Destroy (c.gameObject);
 		}
 	}
 

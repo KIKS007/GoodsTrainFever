@@ -126,7 +126,13 @@ public class Container : Touchable
 
 	public void SetInitialSpot (Spot spot)
 	{
+		RemoveContainer ();
+
+		spot.SetContainer (this);
+
 		spotOccupied = spot;
+
+		selected = false;
 
 		transform.position = spot.transform.position;
 
@@ -137,9 +143,18 @@ public class Container : Touchable
 		{
 			wagon = spot._wagon;
 			train = wagon.train;
+
+			CheckConstraints ();
+		}
+		else
+		{
+			wagon = null;
+			train = null;
+
+			allConstraintsRespected = true;
 		}
 
-		spot.SetContainer (this);
+		SetPileSpot ();
 
 		//Debug.Log (spotOccupied, this);
 	}
