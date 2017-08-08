@@ -20,6 +20,8 @@ public class LevelSettings_LD : MonoBehaviour
 	public StarState[] starsStates = new StarState[3];
 
 	[Header ("Orders")]
+	[ReadOnly]
+	public int ordersCount;
 	public int ordersCountMin = 1;
 	public int ordersCountMax = 2;
 
@@ -27,6 +29,9 @@ public class LevelSettings_LD : MonoBehaviour
 	public int trainsCountMin = 1;
 	public int trainsCountMax = 2;
 	public List<Train_LD> trainsAvailable = new List<Train_LD> ();
+
+	[Header ("Boats")]
+	public int boatsDelay;
 
 	[Header ("Containers")]
 	public List<Container_Level> containersAvailable = new List<Container_Level> ();

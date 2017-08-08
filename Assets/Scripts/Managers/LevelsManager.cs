@@ -14,8 +14,13 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	[Header ("Level")]
 	public int levelIndex;
-	public Level currentLevel;
 	public int levelsCount;
+
+	[Header ("Handmade Level")]
+	public Level currentLevel;
+
+	[Header ("Generated Level")]
+	public LevelGenerated currentLevelGenerated;
 
 	[Header ("Errors")]
 	public int errorsLocked = 0;
@@ -81,22 +86,22 @@ public class LevelsManager : Singleton<LevelsManager>
 		levelsCount = transform.childCount;
 
 		if (clearLevelOnStart)
-			ClearLevelSettings ();
+			ClearLevel ();
 
 		if (loadLevelOnStart)
-			LoadLevelSettings (levelToStart);
+			LoadLevel (levelToStart);
 
 		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.01f, ()=> CheckConstraints ());
 
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
-		MenuManager.Instance.OnMainMenu += ClearLevelSettings;
+		MenuManager.Instance.OnMainMenu += ClearLevel;
 		MenuManager.Instance.OnMainMenu += ()=> _previousRandomColorOffset.Clear ();
 
 		errorsText.text = "0";
 		errorsTextParent.localScale = Vector3.zero;
 	}
 
-	void ClearLevelSettings ()
+	void ClearLevel ()
 	{
 		StopAllCoroutines ();
 
@@ -126,7 +131,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		OrdersManager.Instance.ClearOrders (false);
 	}
 
-	public void LoadLevelSettings (int index)
+	public void LoadLevel (int index)
 	{
 		if(index > transform.childCount - 1)
 		{
@@ -134,9 +139,18 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
+
+		if (transform.GetChild (index).GetComponent<Level> () != null)
+			LoadLevelHandmade (index);
+		else
+			LoadGeneratedLevel (index);
+	}
+
+	public void LoadLevelHandmade (int index)
+	{
 		levelIndex = index;
 
-		ClearLevelSettings ();
+		ClearLevel ();
 
 		if (randomColors)
 		{
@@ -158,6 +172,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		Level level = transform.GetChild (index).GetComponent<Level> ();
 
 		currentLevel = level;
+		currentLevelGenerated = null;
 
 		spawnAllOrderContainers = level.spawnAllOrderContainers;
 		rail1Trains = level.rail1Trains;
@@ -225,6 +240,73 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Boats
 		if (boats.Count > 0)
 			StartCoroutine (SpawnBoats ());
+	}
+
+	public void LoadGeneratedLevel (int index)
+	{
+		StartCoroutine (LoadGeneratedLevelCoroutine (index));
+	}
+
+	IEnumerator LoadGeneratedLevelCoroutine (int index)
+	{
+		if(index > transform.childCount - 1)
+		{
+			Debug.LogError ("Invalid Level!");
+			yield break;
+		}
+
+		levelIndex = index;
+
+		currentLevel = null;
+
+		ClearLevel ();
+
+		LevelSettings_LD levelSettings = transform.GetChild (index).GetComponent<LevelSettings_LD> ();
+
+		LevelsGenerationManager.Instance.GenerateLevel (index, levelSettings);
+
+		yield return new WaitWhile (() => LevelsGenerationManager.Instance.isGeneratingLevel);
+
+		currentLevelGenerated = LevelsGenerationManager.Instance.currentLevelGenerated;
+
+		//spawnAllOrderContainers = currentLevelGenerated.spawnAllOrderContainers;
+		//rail1Trains = currentLevelGenerated.rail1Trains;
+		//rail2Trains = currentLevelGenerated.rail2Trains;
+		boatsDuration = currentLevelGenerated.boatsDuration;
+		//lastBoatStay = currentLevelGenerated.lastBoatStay;
+		errorsAllowed = currentLevelGenerated.errorsAllowed;
+
+		orders.Clear ();
+		storageContainers.Clear ();
+		boats.Clear ();
+
+		foreach (var o in currentLevelGenerated.orders)
+			orders.Add (new Order_Level (o));
+
+		errorsSecondStarAllowed = (int)(errorsAllowed * 0.5f);
+
+		//Orders
+		foreach (var o in orders)
+			StartCoroutine (AddOrder (o));
+
+		//Trains
+		if (rail1Trains.Count > 0)
+		{
+			_rail1Occupied = true;
+			trainsToSend += rail1Trains.Count;
+			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
+		}
+
+		if (rail2Trains.Count > 0)
+		{
+			_rail2Occupied = true;
+			trainsToSend += rail2Trains.Count;
+			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
+		}
+
+		/*//Boats
+		if (boats.Count > 0)
+			StartCoroutine (SpawnBoats ());*/
 	}
 
 	void RandomColors (List<Container_Level> containers)
@@ -296,6 +378,78 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitUntil (()=> train == null);
 
 			if(i != train_Level.Count - 1)
+				yield return new WaitForSeconds (waitDurationBetweenTrains);
+			else
+			{
+				if (rail == TrainsMovementManager.Instance.rail1)
+				{
+					_rail1Occupied = false;
+
+					if (_rail2Occupied == false)
+					{
+						LevelEnd (LevelEndType.Trains);
+						yield break;
+					}
+				}
+				else
+				{
+					_rail2Occupied = false;
+
+					if (_rail1Occupied == false)
+					{
+						LevelEnd (LevelEndType.Trains);
+						yield break;
+					}
+				}
+			}
+		}
+
+		if (OrdersManager.Instance.allOrdersSent)
+		{
+			LevelEnd (LevelEndType.Orders);
+			yield break;
+		}
+	}
+
+	IEnumerator SpawnTrains (List<Train> trains, Rail rail, int trainsDuration)
+	{
+		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
+
+		for(int i = 0; i < trains.Count; i++)
+		{
+			Train train = trains [i];
+
+			TrainsMovementManager.Instance.SpawnTrain (rail, train, trainsDuration);
+
+			yield return new WaitWhile (()=> train.inTransition);
+
+			yield return new WaitWhile (()=> train.waitingDeparture);
+
+			CheckConstraints (train);
+			CheckConstraints ();
+
+			trainsUsed++;
+			trainsToSend--;
+			OrdersManager.Instance.TrainDeparture (train.containers);
+
+			if(errorsLocked > errorsAllowed)
+			{
+				LevelEnd (LevelEndType.Errors);
+				yield break;
+			}
+
+			if (trainsToSend == 0)
+				GameManager.Instance.gameState = GameState.End;
+
+			if (OrdersManager.Instance.allOrdersSent)
+			{
+				LevelEnd (LevelEndType.Orders);
+				yield break;
+			}
+
+			yield return new WaitUntil (()=> train == null);
+
+			if(i != trains.Count - 1)
 				yield return new WaitForSeconds (waitDurationBetweenTrains);
 			else
 			{
@@ -665,10 +819,15 @@ public class LevelsManager : Singleton<LevelsManager>
 	[ButtonGroup ("1", -1)]
 	public void LoadLevel ()
 	{
-		LoadLevelSettings (levelToStart);
+		LoadLevel (levelToStart);
 	}
 
 	[ButtonGroup ("1", -1)]
+	public void LoadLevelGenerated ()
+	{
+		LoadGeneratedLevel (levelIndex);
+	}
+
 	public void NextLevel ()
 	{
 		if (levelIndex + 1 >= transform.childCount)
@@ -677,7 +836,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
-		LoadLevelSettings (levelIndex + 1);
+		LoadLevel (levelIndex + 1);
 	}
 	#endregion
 
@@ -687,7 +846,10 @@ public class LevelsManager : Singleton<LevelsManager>
 	void RenameLevels ()
 	{
 		for (int i = 0; i < transform.childCount; i++)
-			transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
+			if(transform.GetChild (i).GetComponent<Level> () != null)
+				transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
+			else
+				transform.GetChild (i).name = "Level Settings #" + (i + 1).ToString ();
 	}
 	#endregion
 

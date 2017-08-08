@@ -22,10 +22,12 @@ public class LevelGenerated : MonoBehaviour
 	public List<Container> storageContainers = new List<Container> ();
 
 	[Header ("Trains")]
+	public int trainsDuration;
 	public List<Train> rail1Trains = new List<Train> ();
 	public List<Train> rail2Trains = new List<Train> ();
 
 	[Header ("Boats")]
-	public float boatsDuration;
+	public int boatsDelay;
+	public int boatsDuration;
 	public List<Boat> boats = new List<Boat> ();
 }

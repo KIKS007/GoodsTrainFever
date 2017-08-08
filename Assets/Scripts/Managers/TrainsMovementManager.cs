@@ -328,7 +328,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.Translate (position * Time.fixedDeltaTime);
 	}
 
-	public Train SpawnTrain (Rail rail, Train_Level train_Level, bool waitOtherTrain = false)
+	public Train SpawnTrain (Rail rail, Train_Level train_Level )
 	{
 		if (rail.train != null)
 		{
@@ -403,7 +403,43 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
 
-		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration, waitOtherTrain) );
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration ) );
+
+		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
+
+		return trainScript;
+	}
+
+	public Train SpawnTrain (Rail rail, Train train, int duration )
+	{
+		if (rail.train != null)
+		{
+			Debug.LogWarning ("Rail has train!", this);
+			return null;
+		}
+
+		Vector3 position = rail.transform.position;
+		position.y = trainPrefab.transform.position.y;
+		position.x = xArrivingPosition;
+
+		train.transform.position = position;
+
+		Train trainScript = train.GetComponent<Train> ();
+		trainScript.inTransition = true;
+
+		rail.train = trainScript;
+		TrainsMovementManager.Instance.AddTrain (trainScript);
+
+		if(rail == rail1)
+			rail1Text.text = "";
+		else
+			rail2Text.text = "";
+
+		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
+
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
+
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, duration ) );
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
@@ -485,7 +521,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		trainScript.inTransition = false;
 	}
 
-	IEnumerator TrainDuration (Rail rail, int duration, bool waitOtherTrain = false)
+	IEnumerator TrainDuration (Rail rail, int duration)
 	{
 		float time = Mathf.Round (Time.time) + 1.5f;
 

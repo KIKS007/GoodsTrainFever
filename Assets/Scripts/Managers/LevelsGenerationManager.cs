@@ -7,10 +7,14 @@ using System.Linq;
 
 public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 {
+	[Header ("Levels")]
+	public List<LevelSettings_LD> levelsSettings = new List<LevelSettings_LD> ();
+	public LevelGenerated currentLevelGenerated;
+
 	[Header ("States")]
 	public bool isGeneratingLevel = false;
 	public bool isGeneratingTrains = false;
-	public int currentLevel = 0;
+	public int currentLevelIndex = 0;
 
 	[Header ("Duration")]
 	public int levelDuration;
@@ -43,18 +47,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public int[] tankContainerWeights = new int[2];
 	public int[] dangerousContainerWeights = new int[2];
 
-	[Header ("Test")]
-	public int levelToGenerateIndex = 0;
-	[Button]
-	void GenerateTest ()
-	{
-		GenerateLevel (levelToGenerateIndex);
-	}
 
 	private Storage _storage;
-	private Boat _boat;
 
 	public List<Train> _trainsGenerated = new List<Train> ();
+	public List<Boat> _boatsGenerated = new List<Boat> ();
 	public List<Container> _containersGenerated = new List<Container> ();
 	public List<Container> _extraContainersGenerated = new List<Container> ();
 	public List<Container> _containersToPlace = new List<Container> ();
@@ -62,7 +59,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	private int _containerToPlaceCount;
 
 	private LevelSettings_LD _currentLevelSettings;
-	private LevelGenerated _levelGenerated;
 	private int _trainFillingTries = 20;
 
 	private bool _trainFilled = false;
@@ -78,35 +74,33 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	void Awake () 
 	{
 		_storage = FindObjectOfType<Storage> ();
-		_boat = FindObjectOfType<Boat> ();
+
+		levelsSettings.Clear ();
+		levelsSettings = transform.GetComponentsInChildren<LevelSettings_LD> ().ToList ();
 	}
 	
-	public void GenerateLevel (int levelIndex)
+	public void GenerateLevel (int levelIndex, LevelSettings_LD level)
 	{
+		_currentLevelSettings = level;
+
 		StartCoroutine (GenerateLevelCoroutine (levelIndex));
 	}
 
 	IEnumerator GenerateLevelCoroutine (int levelIndex)
 	{
-		currentLevel = levelIndex;
+		currentLevelIndex = levelIndex;
 
 		isGeneratingLevel = true;
 
 		ClearLevelGenerated ();
-
-		if(transform.childCount - 1 < levelIndex)
-		{
-			Debug.LogError ("Invalid LevelIndex!");
-			yield break;
-		}
-
-		_currentLevelSettings = transform.GetChild (levelIndex).GetComponent<LevelSettings_LD> ();
 
 		levelDuration = _currentLevelSettings.levelDuration;
 		errorsAllowed = _currentLevelSettings.errorsAllowed;
 
 		ordersCount = Random.Range (_currentLevelSettings.ordersCountMin, _currentLevelSettings.ordersCountMax + 1);
 		trainsCount = Random.Range (_currentLevelSettings.trainsCountMin, _currentLevelSettings.trainsCountMax + 1);
+
+		_currentLevelSettings.ordersCount = ordersCount;
 
 		CreateLevelObject (levelIndex);
 
@@ -154,14 +148,22 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		FillContainerZone (_storage.containersParent, _storage.spotsParent, ContainersMovementManager.Instance.storagePileCount, _storageMaxFilling, _currentLevelSettings.storageFillingPercentage);
 
+		_boatsGenerated.Clear ();
+
 		while(_containersToPlace.Count > 0)
 		{
 			Boat boat = BoatsMovementManager.Instance.SpawnBoat ();
+
+			_boatsGenerated.Add (boat);
 
 			yield return new WaitForEndOfFrame ();
 
 			FillContainerZone (boat.containersParent, boat.spotsParent, ContainersMovementManager.Instance.boatPileCount, _boatMaxFilling);
 		}
+
+		SetupTrains ();
+
+		SetupBoats ();
 
 		isGeneratingLevel = false;
 	}
@@ -196,8 +198,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		_containersGenerated.Clear ();
 		_trainsGenerated.Clear ();
 
-		if (_levelGenerated != null)
-			Destroy (_levelGenerated.gameObject);
+		if (currentLevelGenerated != null)
+			Destroy (currentLevelGenerated.gameObject);
 		
 	}
 
@@ -209,14 +211,14 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		newLevel.transform.SetParent (transform);
 
-		_levelGenerated = newLevel.AddComponent<LevelGenerated> ();
+		currentLevelGenerated = newLevel.AddComponent<LevelGenerated> ();
 
-		_levelGenerated.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
-		_levelGenerated.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
-		_levelGenerated.errorsAllowed = _currentLevelSettings.errorsAllowed;
+		currentLevelGenerated.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
+		currentLevelGenerated.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
+		currentLevelGenerated.errorsAllowed = _currentLevelSettings.errorsAllowed;
 
-		_levelGenerated.starsEarned = _currentLevelSettings.starsEarned;
-		_levelGenerated.starsStates = _currentLevelSettings.starsStates;
+		currentLevelGenerated.starsEarned = _currentLevelSettings.starsEarned;
+		currentLevelGenerated.starsStates = _currentLevelSettings.starsStates;
 	}
 
 	void SelectTrains ()
@@ -480,12 +482,12 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	{
 		var containersGeneratedTemp = new List<Container> (_containersGenerated);
 
-		_levelGenerated.orders.Clear ();
+		currentLevelGenerated.orders.Clear ();
 
 		for (int i = 0; i < ordersCount; i++)
-			_levelGenerated.orders.Add (new Order_Level ());
+			currentLevelGenerated.orders.Add (new Order_Level ());
 
-		foreach(var o in _levelGenerated.orders)
+		foreach(var o in currentLevelGenerated.orders)
 		{
 			for(int i = 0; i < ordersElementsCountMin; i++)
 			{
@@ -508,10 +510,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		foreach(var c in containersGeneratedTemp)
 		{
-			int randomOrder = Random.Range (0, _levelGenerated.orders.Count);
-			_levelGenerated.orders [randomOrder].levelContainers.Add (new Container_Level ());
+			int randomOrder = Random.Range (0, currentLevelGenerated.orders.Count);
+			currentLevelGenerated.orders [randomOrder].levelContainers.Add (new Container_Level ());
 
-			var containerLevel = _levelGenerated.orders [randomOrder].levelContainers [_levelGenerated.orders [randomOrder].levelContainers.Count - 1];
+			var containerLevel = currentLevelGenerated.orders [randomOrder].levelContainers [currentLevelGenerated.orders [randomOrder].levelContainers.Count - 1];
 
 			containerLevel.containerColor = c.containerColor;
 			containerLevel.containerType = c.containerType;
@@ -710,6 +712,32 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		spotTaken.SetInitialContainer (container);
 
 		return true;
+	}
+
+	void SetupTrains ()
+	{
+		currentLevelGenerated.trainsDuration = (int)(_currentLevelSettings.levelDuration / _trainsGenerated.Count);
+
+		bool fillRail1 = true;
+
+		foreach(var t in _trainsGenerated)
+		{
+			if (fillRail1)
+				currentLevelGenerated.rail1Trains.Add (t);
+			else
+				currentLevelGenerated.rail2Trains.Add (t);
+
+			fillRail1 = !fillRail1;
+		}
+	}
+
+	void SetupBoats ()
+	{
+		currentLevelGenerated.boatsDuration = (int)((_currentLevelSettings.levelDuration - _currentLevelSettings.boatsDelay) / _boatsGenerated.Count);
+
+		currentLevelGenerated.boatsDelay = _currentLevelSettings.boatsDelay;
+
+		currentLevelGenerated.boats = _boatsGenerated;
 	}
 
 	Container_Level RandomContainerLevel ()

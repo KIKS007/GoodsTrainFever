@@ -537,7 +537,7 @@ public class MenuManager : Singleton<MenuManager>
 
 		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
 			{
-				LevelsManager.Instance.LoadLevelSettings (LevelsManager.Instance.levelIndex);
+				LevelsManager.Instance.LoadLevel (LevelsManager.Instance.levelIndex);
 
 				if (OnLevelStart != null)
 					OnLevelStart ();

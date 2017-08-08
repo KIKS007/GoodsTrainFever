@@ -12,8 +12,6 @@ public class Level_Menu : MonoBehaviour
 
 	[Header ("Elements")]
 	public Text levelTitle;
-	public Text ordersCount;
-	public Text trainsCount;
 	public Text errorsCount;
 	public GameObject lockImage;
 	public GameObject playButton;
@@ -54,14 +52,12 @@ public class Level_Menu : MonoBehaviour
 		else
 			isUnlocked = false;
 
-		ordersCount.text = level.orders.Count.ToString ();
-		trainsCount.text = (level.rail1Trains.Count + level.rail2Trains.Count).ToString ();
 		errorsCount.text = level.errorsAllowed.ToString ();
 	}
 
 	public void Play ()
 	{
-		LevelsManager.Instance.LoadLevelSettings (levelIndex);
+		LevelsManager.Instance.LoadLevel (levelIndex);
 		MenuManager.Instance.StartLevel ();
 	}
 }
