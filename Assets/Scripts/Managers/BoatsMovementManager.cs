@@ -10,6 +10,7 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 	[Header ("Boat")]
 	public Transform boat;
+	public List<Boat> spawnedBoats = new List<Boat> ();
 
 	[Header ("State")]
 	public bool inTransition = false;
@@ -21,7 +22,10 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 	public float gameXPosition;
 	public float departureXPosition;
 
-	public void BoatSpawn ()
+	[Header ("Prefab")]
+	public GameObject boatPrefab;
+
+	public void BoatStart ()
 	{
 		ClearBoat ();
 
@@ -46,5 +50,23 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		position.x = arrivingXPosition;
 
 		boat.transform.position = position;
+
+		foreach (var b in spawnedBoats)
+			Destroy (b.gameObject);
+
+		spawnedBoats.Clear ();
+	}
+
+	public Boat SpawnBoat ()
+	{
+		Vector3 position = boatPrefab.transform.position;
+		position.x = arrivingXPosition;
+
+		position.x += 30 * (spawnedBoats.Count + 1);
+
+		Boat boat = (Instantiate (boatPrefab, position, boatPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent)).GetComponent<Boat> ();
+		spawnedBoats.Add (boat);
+
+		return boat;
 	}
 }

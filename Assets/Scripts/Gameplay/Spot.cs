@@ -452,6 +452,8 @@ public class Spot : Touchable
 		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
 		_doubleSizeSpotSpawned._isSpawned = true;
 
+		_doubleSizeSpotSpawned._containersParent = _containersParent;
+
 		_doubleSizeSpotSpawned.overlappingSpots.Clear ();
 
 		foreach(var o in overlappingSpots)

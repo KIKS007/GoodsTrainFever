@@ -340,7 +340,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			if (b.delay > 0)
 				yield return new WaitForSeconds (b.delay);
 
-			BoatsMovementManager.Instance.BoatSpawn ();
+			BoatsMovementManager.Instance.BoatStart ();
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
