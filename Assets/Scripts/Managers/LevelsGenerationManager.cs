@@ -47,15 +47,18 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public int[] tankContainerWeights = new int[2];
 	public int[] dangerousContainerWeights = new int[2];
 
-
-	private Storage _storage;
-
+	[Header ("Elements Generated")]
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Boat> _boatsGenerated = new List<Boat> ();
+
+	[Header ("Containers Generated")]
 	public List<Container> _containersGenerated = new List<Container> ();
 	public List<Container> _extraContainersGenerated = new List<Container> ();
-	public List<Container> _containersToPlace = new List<Container> ();
+	public List<Container> _forcedContainersGenerated = new List<Container> ();
 
+
+	private Storage _storage;
+	private List<Container> _containersToPlace = new List<Container> ();
 	private int _containerToPlaceCount;
 
 	private LevelSettings_LD _currentLevelSettings;
@@ -110,8 +113,19 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
+		yield return new WaitForEndOfFrame ();
+
 		isGeneratingTrains = true;
 
+		_forcedContainersGenerated.Clear ();
+
+		foreach(var c in _currentLevelSettings.forcedContainers)
+		{
+			Train randomTrain = _trainsGenerated [Random.Range (0, _trainsGenerated.Count)];
+
+			FillForceContainer (randomTrain._allSpots, c, randomTrain, _containersGenerated);
+		}
+			
 		for(int i = 0; i < _trainsGenerated.Count; i++)
 			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
 
@@ -161,9 +175,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			FillContainerZone (boat.containersParent, boat.spotsParent, ContainersMovementManager.Instance.boatPileCount, _boatMaxFilling);
 		}
 
-		for (int i = 0; i < _trainsGenerated.Count; i++)
-			if (selectedTrains [i].parasiteContainers.Count > 0)
-				ParasiteContainers (selectedTrains [i].parasiteContainers, _trainsGenerated [i]);
+		GlobalVariables.Instance.ClearLog ();
+
+		Debug.Log ("PARASITES");
+
+		ParasiteContainers ();
 
 		SetupTrains ();
 
@@ -313,10 +329,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			List<Spot> spots = new List<Spot> (train._allSpots);
 			_tryFailed = false;
 
-			//Fill With Trains Forced Containers
-			if(trainLD.forcedContainers.Count > 0)
-				FillForcedContainers (spots, trainLD, containersSpawned);
-
 			//Fill With Available Containers
 			Fill (spots, _currentLevelSettings.containersAvailable, train, containersSpawned);
 
@@ -336,50 +348,17 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		_trainsGenerationCount--;
 	}
 
-	void FillForcedContainers (List<Spot> spots, Train_LD trainLD, List<Container> containersList)
-	{
-		foreach(var c in trainLD.forcedContainers)
-		{
-			Container container = null;
-
-			//Choose Random Container Among Those Not Tested
-			Container_Level containerLevel = c;
-
-			SetWeight (containerLevel);
-			RandomColor (containerLevel);
-
-			//Create Container
-			container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
-
-			containersList.Add (container);
-
-			Spot spot = spots [Random.Range (0, spots.Count)];
-
-			do
-			{
-				spot = spots [Random.Range (0, spots.Count)];
-			}
-			while(!spot.IsSameSize (container));
-
-			spot.SetInitialContainer (container);
-
-			spots.Remove (spot);
-			foreach(var o in spot.overlappingSpots)
-				spots.Remove (o);
-		}
-	}
-
 	void Fill (List<Spot> spots, List<Container_Level> containers, Train train, List<Container> containersList)
 	{
 		//FOR EACH SPOT
-		do
+		while (spots.Count > 0 && !_tryFailed)
 		{
 			List<Container_Level> containersToTest = new List<Container_Level> (containers);
 
 			//Debug.Log ("Spots: " + spots.Count);
 
 			//TEST EACH CONTAINER AVAILABLE
-			do
+			while(true)
 			{
 				Container container = null;
 
@@ -391,7 +370,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				RandomColor (containerLevel);
 
 				//Create Container
-				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
+				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
 
 				//Test Container Wich Each Spot
 				foreach(var s in spots)
@@ -432,12 +411,50 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 					_tryFailed = true;
 					break;
 				}
-
 			}
-			while(true);
-
 		}
-		while (spots.Count > 0 && !_tryFailed);
+	}
+
+	void FillForceContainer (List<Spot> spots, Container_Level containerLevel, Train train, List<Container> containersList)
+	{
+		//FOR EACH SPOT
+		Container container = null;
+		
+		//Choose Random Container Among Those Not Tested
+		Spot spot = null;
+		
+		SetWeight (containerLevel);
+		RandomColor (containerLevel);
+		
+		//Create Container
+		container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
+		
+		//Test Container Wich Each Spot
+		foreach(var s in spots)
+		{
+			if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isOccupied)
+			{
+				spot = s;
+				spot.SetInitialContainer (container);
+				break;
+			}
+		}
+		
+		if(spot != null)
+		{
+			containersList.Add (container);
+
+			_forcedContainersGenerated.Add (container);
+		}
+		else
+		{
+			//Destroy Tested Container
+			container.RemoveContainer ();
+			
+			Debug.LogWarning ("Can't Fill Forced Container: " + container.name);
+			
+			Destroy (container.gameObject);
+		}
 	}
 
 	void ClearSpots (Train train)
@@ -453,20 +470,21 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	{
 		int fillingPercentage = 100;
 
+		List<Container> containers = new List<Container> ();
+		
+		foreach(var c in train.containers)
+			if(!containers.Contains (c) && c != null && !_forcedContainersGenerated.Contains (c))
+				containers.Add (c);
+		
 		while (fillingPercentage > _currentLevelSettings.ordersFillingPercentage)
 		{
-			List<Container> containers = new List<Container> ();
-
-			foreach(var c in train.containers)
-				if(!containers.Contains (c) && c != null)
-					containers.Add (c);
-
 			Container removedContainer = containers [Random.Range (0, containers.Count)];
 			train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
 
 			if(removedContainer.isDoubleSize)
 				train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
 
+			containers.Remove (removedContainer);
 			_containersGenerated.Remove (removedContainer);
 
 			Destroy (removedContainer.gameObject);
@@ -718,13 +736,48 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		return true;
 	}
 
-	void ParasiteContainers (List<Container_Level> containers, Train train)
+	void ParasiteContainers ()
 	{
-		foreach (var c in containers)
+		foreach(var t in _trainsGenerated)
 		{
-			var container = LevelsManager.Instance.CreateContainer (c, GlobalVariables.Instance.gameplayParent);
+			//Debug.Log (t._allSpots.Count, t);
+			foreach(var s in t._allSpots)
+			{
+				s.isOccupied = false;
+				s.container = null;
+			}
+		}
 
-			FillContainer (train._allSpots, container);
+		foreach(var containerLevel in _currentLevelSettings.parasiteContainers)
+		{
+			var container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
+			bool fillSucess = false;
+
+			foreach(var t in _trainsGenerated)
+			{
+				int spotsTaken = 0;
+				foreach (var s in t._allSpots)
+					if (s.isOccupied)
+						spotsTaken++;
+
+				if (spotsTaken == t._allSpots.Count)
+					continue;
+
+				var spots = new List<Spot> (t._allSpots);
+
+				fillSucess = FillContainer (spots, container);
+				
+				if (!fillSucess)
+					continue;
+				else
+					break;
+			}
+
+			if(!fillSucess)
+			{
+				Destroy (container.gameObject);
+				Debug.LogWarning ("Can't Place All Parasite Containers!");
+			}
 		}
 	}
 

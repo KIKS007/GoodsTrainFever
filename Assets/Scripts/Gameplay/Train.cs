@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Sirenix.OdinInspector;
 
 public class Train : Touchable 
 {
@@ -33,19 +34,15 @@ public class Train : Touchable
 
 	private Vector3 _mouseDeltaPosition;
 	private Vector3 _mousePosition;
-	[HideInInspector]
 	public List<Spot> _allSpots = new List<Spot> ();
 
-	// Use this for initialization
-	void Awake ()
+	public void SetupTrain ()
 	{
+		wagons.Clear ();
 		wagons.AddRange (transform.GetComponentsInChildren<Wagon> ());
-	}
-
-	void Start ()
-	{
+		
 		SetupContainersList ();
-
+		
 		foreach (var w in wagons)
 			maxWeight += w.maxWeight;
 	}
@@ -55,8 +52,11 @@ public class Train : Touchable
 		containers.Clear ();
 		_allSpots.Clear ();
 
+
 		_allSpots = transform.GetComponentsInChildren<Spot> ().ToList ();
 		_allSpots = _allSpots.OrderBy (x => Vector3.Distance (transform.position, x.transform.position)).ToList ();
+
+		Debug.Log (_allSpots.Count, this);
 
 		List<Spot> spots = new List<Spot> ();
 		spots.AddRange (_allSpots);

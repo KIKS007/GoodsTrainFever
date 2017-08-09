@@ -22,6 +22,8 @@ public class LevelSettings_LD : Level
 
 	[Header ("Containers")]
 	public List<Container_Level> containersAvailable = new List<Container_Level> ();
+	public List<Container_Level> forcedContainers = new List<Container_Level> ();
+	public List<Container_Level> parasiteContainers = new List<Container_Level> ();
 
 	[Header ("Extra Containers")]
 	public int extraContainersCount = 5;

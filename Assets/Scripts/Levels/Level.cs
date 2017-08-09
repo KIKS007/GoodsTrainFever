@@ -19,6 +19,7 @@ public class Level : MonoBehaviour
 	public StarState[] starsStates = new StarState[3];
 
 	[Header ("Orders")]
+	[ReadOnly]
 	public int ordersCount;
 }
 
