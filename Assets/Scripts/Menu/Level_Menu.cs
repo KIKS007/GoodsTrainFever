@@ -60,4 +60,9 @@ public class Level_Menu : MonoBehaviour
 		LevelsManager.Instance.LoadLevel (levelIndex);
 		MenuManager.Instance.StartLevel ();
 	}
+
+	public void ResetLevel ()
+	{
+		ScoreManager.Instance.ResetLevelStars (levelIndex);
+	}
 }
