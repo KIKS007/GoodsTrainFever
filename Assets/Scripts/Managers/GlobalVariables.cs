@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.IO;
 using UnityEditor;
+using System.Reflection;
 
 public class GlobalVariables : Singleton<GlobalVariables>
 {
@@ -55,6 +56,14 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	void FPS ()
 	{
 		fpsText.text = ((int)1.0f / Time.smoothDeltaTime).ToString ("##.00");
+	}
+
+	public void ClearLog() 
+	{ 
+		var assembly = Assembly.GetAssembly(typeof(UnityEditor.ActiveEditorTracker)); 
+		var type = assembly.GetType("UnityEditorInternal.LogEntries"); 
+		var method = type.GetMethod("Clear"); 
+		method.Invoke(new object(), null); 
 	}
 
 	#if UNITY_EDITOR

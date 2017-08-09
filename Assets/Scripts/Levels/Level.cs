@@ -19,6 +19,7 @@ public class Level : MonoBehaviour
 	public StarState[] starsStates = new StarState[3];
 
 	[Header ("Orders")]
+	[ReadOnly]
 	public int ordersCount;
 }
 
@@ -90,8 +91,6 @@ public class Container_Level
 	public ContainerType containerType;
 	public ContainerColor containerColor;
 	public bool isDoubleSize = false;
-	public int containerWeight = 1;
-	public int containerCount = 1;
 
 	public Container_Level ()
 	{
@@ -103,8 +102,6 @@ public class Container_Level
 		containerType = original.containerType;
 		containerColor = original.containerColor;
 		isDoubleSize = original.isDoubleSize;
-		containerWeight = original.containerWeight;
-		containerCount = original.containerCount;
 	}
 
 }

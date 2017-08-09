@@ -25,6 +25,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	[Header ("Orders")]
 	public int ordersCount;
 	public int ordersElementsCountMin = 2;
+	public int ordersElementsCountMax = 8;
 
 	[Header ("Trains")]
 	public int trainsCount;
@@ -47,18 +48,27 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public int[] tankContainerWeights = new int[2];
 	public int[] dangerousContainerWeights = new int[2];
 
-
-	private Storage _storage;
-
+	[Header ("Elements Generated")]
 	public List<Train> _trainsGenerated = new List<Train> ();
 	public List<Boat> _boatsGenerated = new List<Boat> ();
+
+	[Header ("Containers Generated")]
 	public List<Container> _containersGenerated = new List<Container> ();
 	public List<Container> _extraContainersGenerated = new List<Container> ();
-	public List<Container> _containersToPlace = new List<Container> ();
+	public List<Container> _forcedContainersGenerated = new List<Container> ();
+	public List<Container> _parasitesContainersGenerated = new List<Container> ();
 
+
+	private List<Container_Level> _containersAvailable = new List<Container_Level> ();
+	private List<Container_Level> _forcedContainers = new List<Container_Level> ();
+	private List<Container_Level> _parasiteContainers = new List<Container_Level> ();
+
+	private Storage _storage;
+	private List<Container> _containersToPlace = new List<Container> ();
 	private int _containerToPlaceCount;
 
-	private LevelSettings_LD _currentLevelSettings;
+	[HideInInspector]
+	public LevelSettings_LD _currentLevelSettings;
 	private int _trainFillingTries = 20;
 
 	private bool _trainFilled = false;
@@ -102,6 +112,21 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		_currentLevelSettings.ordersCount = ordersCount;
 
+		//Copy Containers Level
+		_containersAvailable.Clear ();
+		_forcedContainers.Clear ();
+		_parasiteContainers.Clear ();
+
+		foreach (var c in _currentLevelSettings.containersAvailable)
+			_containersAvailable.Add (new Container_Level (c));
+
+		foreach (var c in _currentLevelSettings.forcedContainers)
+			_forcedContainers.Add (new Container_Level (c));
+
+		foreach (var c in _currentLevelSettings.parasiteContainers)
+			_parasiteContainers.Add (new Container_Level (c));
+		
+
 		CreateLevelObject (levelIndex);
 
 		SelectTrains ();
@@ -110,8 +135,19 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
+		yield return new WaitForEndOfFrame ();
+
 		isGeneratingTrains = true;
 
+		_forcedContainersGenerated.Clear ();
+
+		foreach(var c in _forcedContainers)
+		{
+			Train randomTrain = _trainsGenerated [Random.Range (0, _trainsGenerated.Count)];
+
+			FillForceContainer (randomTrain._allSpots, c, randomTrain, _containersGenerated);
+		}
+			
 		for(int i = 0; i < _trainsGenerated.Count; i++)
 			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
 
@@ -161,9 +197,9 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			FillContainerZone (boat.containersParent, boat.spotsParent, ContainersMovementManager.Instance.boatPileCount, _boatMaxFilling);
 		}
 
-		for (int i = 0; i < _trainsGenerated.Count; i++)
-			if (selectedTrains [i].parasiteContainers.Count > 0)
-				ParasiteContainers (selectedTrains [i].parasiteContainers, _trainsGenerated [i]);
+		ParasiteContainers ();
+
+		OrdersManager.Instance.containersFromNoOrder.AddRange (_parasitesContainersGenerated);
 
 		SetupTrains ();
 
@@ -239,46 +275,16 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			selectedTrains.Add (_currentLevelSettings.trainsAvailable [Random.Range (0, _currentLevelSettings.trainsAvailable.Count)]);
 	}
 
-	void SetWeight (Container_Level c)
+	Container_Level RandomColor (Container_Level c)
 	{
-		switch (c.containerType)
-		{
-		case ContainerType.Basic:
-			if (!c.isDoubleSize)
-				c.containerWeight = basicContainerWeights [0];
-			else
-				c.containerWeight = basicContainerWeights [1];
-			break;
+		var container = new Container_Level (c);
 
-		case ContainerType.Cooled:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = cooledContainerWeights [0];
-			else
-				c.containerWeight = cooledContainerWeights [1];
-			break;
+		if (c.containerColor != ContainerColor.Random)
+			return container;
+		
+		container.containerColor = (ContainerColor)Random.Range (1, System.Enum.GetValues (typeof(ContainerColor)).Length);
 
-		case ContainerType.Tank:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = tankContainerWeights [0];
-			else
-				c.containerWeight = tankContainerWeights [1];
-			break;
-
-		case ContainerType.Dangerous:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = dangerousContainerWeights [0];
-			else
-				c.containerWeight = dangerousContainerWeights [1];
-			break;
-		}
-	}
-
-	void RandomColor (Container_Level c)
-	{
-		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
+		return container;
 	}
 
 	IEnumerator FillTrain (Train train, Train_LD trainLD)
@@ -313,12 +319,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			List<Spot> spots = new List<Spot> (train._allSpots);
 			_tryFailed = false;
 
-			//Fill With Trains Forced Containers
-			if(trainLD.forcedContainers.Count > 0)
-				FillForcedContainers (spots, trainLD, containersSpawned);
-
 			//Fill With Available Containers
-			Fill (spots, _currentLevelSettings.containersAvailable, train, containersSpawned);
+			Fill (spots, _containersAvailable, train, containersSpawned);
 
 			_triesCount++;
 		}
@@ -336,50 +338,17 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		_trainsGenerationCount--;
 	}
 
-	void FillForcedContainers (List<Spot> spots, Train_LD trainLD, List<Container> containersList)
-	{
-		foreach(var c in trainLD.forcedContainers)
-		{
-			Container container = null;
-
-			//Choose Random Container Among Those Not Tested
-			Container_Level containerLevel = c;
-
-			SetWeight (containerLevel);
-			RandomColor (containerLevel);
-
-			//Create Container
-			container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
-
-			containersList.Add (container);
-
-			Spot spot = spots [Random.Range (0, spots.Count)];
-
-			do
-			{
-				spot = spots [Random.Range (0, spots.Count)];
-			}
-			while(!spot.IsSameSize (container));
-
-			spot.SetInitialContainer (container);
-
-			spots.Remove (spot);
-			foreach(var o in spot.overlappingSpots)
-				spots.Remove (o);
-		}
-	}
-
 	void Fill (List<Spot> spots, List<Container_Level> containers, Train train, List<Container> containersList)
 	{
 		//FOR EACH SPOT
-		do
+		while (spots.Count > 0 && !_tryFailed)
 		{
 			List<Container_Level> containersToTest = new List<Container_Level> (containers);
 
 			//Debug.Log ("Spots: " + spots.Count);
 
 			//TEST EACH CONTAINER AVAILABLE
-			do
+			while(true)
 			{
 				Container container = null;
 
@@ -387,11 +356,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
 				Spot spot = null;
 
-				SetWeight (containerLevel);
-				RandomColor (containerLevel);
+				containerLevel = RandomColor (containerLevel);
 
 				//Create Container
-				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.gameplayParent);
+				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
 
 				//Test Container Wich Each Spot
 				foreach(var s in spots)
@@ -432,12 +400,49 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 					_tryFailed = true;
 					break;
 				}
-
 			}
-			while(true);
-
 		}
-		while (spots.Count > 0 && !_tryFailed);
+	}
+
+	void FillForceContainer (List<Spot> spots, Container_Level containerLevel, Train train, List<Container> containersList)
+	{
+		//FOR EACH SPOT
+		Container container = null;
+		
+		//Choose Random Container Among Those Not Tested
+		Spot spot = null;
+		
+		containerLevel = RandomColor (containerLevel);
+		
+		//Create Container
+		container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
+		
+		//Test Container Wich Each Spot
+		foreach(var s in spots)
+		{
+			if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isOccupied)
+			{
+				spot = s;
+				spot.SetInitialContainer (container);
+				break;
+			}
+		}
+		
+		if(spot != null)
+		{
+			containersList.Add (container);
+
+			_forcedContainersGenerated.Add (container);
+		}
+		else
+		{
+			//Destroy Tested Container
+			container.RemoveContainer ();
+			
+			Debug.LogWarning ("Can't Fill Forced Container: " + container.name);
+			
+			Destroy (container.gameObject);
+		}
 	}
 
 	void ClearSpots (Train train)
@@ -453,20 +458,21 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	{
 		int fillingPercentage = 100;
 
+		List<Container> containers = new List<Container> ();
+		
+		foreach(var c in train.containers)
+			if(!containers.Contains (c) && c != null && !_forcedContainersGenerated.Contains (c))
+				containers.Add (c);
+		
 		while (fillingPercentage > _currentLevelSettings.ordersFillingPercentage)
 		{
-			List<Container> containers = new List<Container> ();
-
-			foreach(var c in train.containers)
-				if(!containers.Contains (c) && c != null)
-					containers.Add (c);
-
 			Container removedContainer = containers [Random.Range (0, containers.Count)];
 			train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
 
 			if(removedContainer.isDoubleSize)
 				train.containers [train.containers.FindIndex (x => x == removedContainer)] = null;
 
+			containers.Remove (removedContainer);
 			_containersGenerated.Remove (removedContainer);
 
 			Destroy (removedContainer.gameObject);
@@ -491,13 +497,19 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		for (int i = 0; i < ordersCount; i++)
 			currentLevelGenerated.orders.Add (new Order_Level ());
 
+		while(containersGeneratedTemp.Count > currentLevelGenerated.orders.Count * ordersElementsCountMax)
+		{
+			currentLevelGenerated.orders.Add (new Order_Level ());
+		}
+
+
 		foreach(var o in currentLevelGenerated.orders)
 		{
 			for(int i = 0; i < ordersElementsCountMin; i++)
 			{
 				if (containersGeneratedTemp.Count == 0)
 					return;
-				
+
 				o.levelContainers.Add (new Container_Level ());
 				var containerLevel = o.levelContainers [o.levelContainers.Count - 1];
 
@@ -506,8 +518,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				
 				containerLevel.containerColor = c.containerColor;
 				containerLevel.containerType = c.containerType;
-				containerLevel.containerCount = 1;
-				containerLevel.containerWeight = c.weight;
 				containerLevel.isDoubleSize = c.isDoubleSize;
 			}
 		}
@@ -515,14 +525,16 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		foreach(var c in containersGeneratedTemp)
 		{
 			int randomOrder = Random.Range (0, currentLevelGenerated.orders.Count);
+
+			while(currentLevelGenerated.orders [randomOrder].levelContainers.Count >= ordersElementsCountMax)
+				randomOrder = Random.Range (0, currentLevelGenerated.orders.Count);
+
 			currentLevelGenerated.orders [randomOrder].levelContainers.Add (new Container_Level ());
 
 			var containerLevel = currentLevelGenerated.orders [randomOrder].levelContainers [currentLevelGenerated.orders [randomOrder].levelContainers.Count - 1];
 
 			containerLevel.containerColor = c.containerColor;
 			containerLevel.containerType = c.containerType;
-			containerLevel.containerCount = 1;
-			containerLevel.containerWeight = c.weight;
 			containerLevel.isDoubleSize = c.isDoubleSize;
 		}
 	}
@@ -546,7 +558,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				validContainer = true;
 
 				generatedContainerLevel = RandomContainerLevel (); 
-				SetWeight (generatedContainerLevel);
 
 				foreach(var c in _containersGenerated)
 				{
@@ -718,13 +729,56 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		return true;
 	}
 
-	void ParasiteContainers (List<Container_Level> containers, Train train)
+	void ParasiteContainers ()
 	{
-		foreach (var c in containers)
-		{
-			var container = LevelsManager.Instance.CreateContainer (c, GlobalVariables.Instance.gameplayParent);
+		_parasitesContainersGenerated.Clear ();
 
-			FillContainer (train._allSpots, container);
+		foreach(var t in _trainsGenerated)
+		{
+			//Debug.Log (t._allSpots.Count, t);
+			foreach(var s in t._allSpots)
+			{
+				s.isOccupied = false;
+				s.container = null;
+			}
+		}
+
+		foreach(var c in _parasiteContainers)
+		{
+			var containerLevel = RandomColor (c);
+
+			var container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
+			bool fillSucess = false;
+
+			foreach(var t in _trainsGenerated)
+			{
+				int spotsTaken = 0;
+				foreach (var s in t._allSpots)
+					if (s.isOccupied)
+						spotsTaken++;
+
+				if (spotsTaken == t._allSpots.Count)
+					continue;
+
+				var spots = new List<Spot> (t._allSpots);
+
+				fillSucess = FillContainer (spots, container);
+				
+				if (!fillSucess)
+					continue;
+				else
+				{
+					_parasitesContainersGenerated.Add (container);
+
+					break;
+				}
+			}
+
+			if(!fillSucess)
+			{
+				Destroy (container.gameObject);
+				Debug.LogWarning ("Can't Place All Parasite Containers!");
+			}
 		}
 	}
 
@@ -761,7 +815,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	{
 		Container_Level containerLevel = new Container_Level (); 
 
-		RandomColor (containerLevel);
+		containerLevel = RandomColor (containerLevel);
 		containerLevel.containerType = (ContainerType)Random.Range (0, System.Enum.GetValues (typeof(ContainerType)).Length);
 		containerLevel.isDoubleSize = Random.Range (1, 3) == 1 ? false : true;
 

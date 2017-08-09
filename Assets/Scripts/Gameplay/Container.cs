@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum ContainerType { Basic, Cooled, Tank, Dangerous };
 
-public enum ContainerColor { Red, Blue, Yellow, Violet }
+public enum ContainerColor { Random, Red, Blue, Yellow, Violet }
 
 public class Container : Touchable 
 {
@@ -91,11 +91,11 @@ public class Container : Touchable
 
 		SetupColor (container_Level.containerColor);
 
-		weight = container_Level.containerWeight;
+		SetIsDoubleSize ();
+
+		SetWeight ();
 
 		UpdateWeightText ();
-
-		SetIsDoubleSize ();
 
 		constraints.Clear ();
 
@@ -104,6 +104,25 @@ public class Container : Touchable
 			constraints.Add (new ContainerConstraint ());
 			constraints [constraints.Count - 1].constraint = c;
 			c._container = this;
+		}
+	}
+
+	public void SetWeight ()
+	{
+		switch (containerType)
+		{
+		case ContainerType.Basic:
+			weight = isDoubleSize ? LevelsGenerationManager.Instance.basicContainerWeights [1] : LevelsGenerationManager.Instance.basicContainerWeights [0];
+			break;
+		case ContainerType.Cooled:
+			weight = isDoubleSize ? LevelsGenerationManager.Instance.cooledContainerWeights [1] : LevelsGenerationManager.Instance.cooledContainerWeights [0];
+			break;
+		case ContainerType.Tank:
+			weight = isDoubleSize ? LevelsGenerationManager.Instance.tankContainerWeights [1] : LevelsGenerationManager.Instance.tankContainerWeights [0];
+			break;
+		case ContainerType.Dangerous:
+			weight = isDoubleSize ? LevelsGenerationManager.Instance.dangerousContainerWeights [1] : LevelsGenerationManager.Instance.dangerousContainerWeights [0];
+			break;
 		}
 	}
 
@@ -384,7 +403,7 @@ public class Container : Touchable
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
-		containerColor = (ContainerColor) UnityEngine.Random.Range (0, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+		containerColor = (ContainerColor) UnityEngine.Random.Range (1, (int) Enum.GetNames (typeof(ContainerColor)).Length);
 
 		Color color = new Color ();
 

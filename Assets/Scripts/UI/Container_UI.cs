@@ -39,7 +39,7 @@ public class Container_UI : MonoBehaviour
 
 		SetColor (c);
 
-		neededCount = c.containerCount > 0 ? c.containerCount : 1;
+		neededCount = 1;
 		neededCountText.text = neededCount.ToString ();
 
 		containerTypeText.text = c.containerType.ToString ();

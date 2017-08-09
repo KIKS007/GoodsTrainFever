@@ -19,4 +19,9 @@ public class LevelHandmade : Level
 	public float boatsDuration;
 	public bool lastBoatStay = true;
 	public List<Boat_Level> boats = new List<Boat_Level> ();
+
+	void Awake ()
+	{
+		ordersCount = orders.Count;
+	}
 }

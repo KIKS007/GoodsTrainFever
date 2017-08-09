@@ -99,6 +99,20 @@ public class ScoreManager : Singleton<ScoreManager>
 		}
 	}
 
+	public void ResetLevelStars (int levelIndex)
+	{
+		PlayerPrefs.DeleteKey ("Stars" + levelIndex);
+
+		Level level = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<Level> ();
+
+		level.starsEarned = 0;
+
+		for(int i = 0; i < level.starsStates.Length; i++)
+			level.starsStates [i] = StarState.Locked;
+
+		FindObjectOfType<MenuLevels> ().UpdateLevels ();
+	}
+
 	public void UpdateStars ()
 	{
 		starsEarned = 0;

@@ -394,6 +394,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		trainLength += locomotiveLength;
 		trainScript.trainLength = trainLength;
 
+		trainScript.SetupTrain ();
+
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
@@ -512,12 +514,16 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				trainLength += wagonLength;
 				previousWagonLength = wagonLength;
 			}
-			
+
+
 			trainLength += locomotiveLength;
 			trainScript.trainLength = trainLength;
 
 			position.x -= trainLength;
 		}
+
+		foreach(var t in trainsGenerated)
+			t.SetupTrain ();
 
 		return trainsGenerated;
 	}

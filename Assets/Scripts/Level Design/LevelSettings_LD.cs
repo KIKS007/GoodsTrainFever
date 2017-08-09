@@ -17,11 +17,17 @@ public class LevelSettings_LD : Level
 	public int trainsCountMax = 2;
 	public List<Train_LD> trainsAvailable = new List<Train_LD> ();
 
+	[Header ("Trains Delay")]
+	[MinMaxSlider (0, 60)]
+	public Vector2 firstTrainDelay = new Vector2 ();
+
 	[Header ("Boats")]
 	public int boatsDelay;
 
 	[Header ("Containers")]
 	public List<Container_Level> containersAvailable = new List<Container_Level> ();
+	public List<Container_Level> forcedContainers = new List<Container_Level> ();
+	public List<Container_Level> parasiteContainers = new List<Container_Level> ();
 
 	[Header ("Extra Containers")]
 	public int extraContainersCount = 5;
