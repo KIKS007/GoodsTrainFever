@@ -423,6 +423,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			yield return new WaitWhile (()=> train.inTransition);
 
+			CheckConstraints ();
+
 			yield return new WaitWhile (()=> train.waitingDeparture);
 
 			CheckConstraints (train);

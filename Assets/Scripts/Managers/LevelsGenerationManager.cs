@@ -55,6 +55,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public List<Container> _containersGenerated = new List<Container> ();
 	public List<Container> _extraContainersGenerated = new List<Container> ();
 	public List<Container> _forcedContainersGenerated = new List<Container> ();
+	public List<Container> _parasitesContainersGenerated = new List<Container> ();
 
 
 	private Storage _storage;
@@ -176,6 +177,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		}
 
 		ParasiteContainers ();
+
+		OrdersManager.Instance.containersFromNoOrder.AddRange (_parasitesContainersGenerated);
 
 		SetupTrains ();
 
@@ -690,6 +693,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 	void ParasiteContainers ()
 	{
+		_parasitesContainersGenerated.Clear ();
+
 		foreach(var t in _trainsGenerated)
 		{
 			//Debug.Log (t._allSpots.Count, t);
@@ -722,7 +727,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				if (!fillSucess)
 					continue;
 				else
+				{
+					_parasitesContainersGenerated.Add (container);
+
 					break;
+				}
 			}
 
 			if(!fillSucess)

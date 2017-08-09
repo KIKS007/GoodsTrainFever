@@ -56,8 +56,6 @@ public class Train : Touchable
 		_allSpots = transform.GetComponentsInChildren<Spot> ().ToList ();
 		_allSpots = _allSpots.OrderBy (x => Vector3.Distance (transform.position, x.transform.position)).ToList ();
 
-		Debug.Log (_allSpots.Count, this);
-
 		List<Spot> spots = new List<Spot> ();
 		spots.AddRange (_allSpots);
 
