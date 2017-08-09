@@ -269,11 +269,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		currentLevelGenerated = LevelsGenerationManager.Instance.currentLevelGenerated;
 		currentLevel = currentLevelGenerated;
 
-		//spawnAllOrderContainers = currentLevelGenerated.spawnAllOrderContainers;
-		//rail1Trains = currentLevelGenerated.rail1Trains;
-		//rail2Trains = currentLevelGenerated.rail2Trains;
 		boatsDuration = currentLevelGenerated.boatsDuration;
-		//lastBoatStay = currentLevelGenerated.lastBoatStay;
 		errorsAllowed = currentLevelGenerated.errorsAllowed;
 
 		orders.Clear ();
@@ -289,19 +285,31 @@ public class LevelsManager : Singleton<LevelsManager>
 		foreach (var o in orders)
 			StartCoroutine (AddOrder (o));
 
+		int delay = Random.Range (1, 3);
+
 		//Trains
 		if (currentLevelGenerated.rail1Trains.Count > 0)
 		{
 			_rail1Occupied = true;
 			trainsToSend += currentLevelGenerated.rail1Trains.Count;
-			StartCoroutine (SpawnTrains (currentLevelGenerated.rail1Trains, TrainsMovementManager.Instance.rail1, currentLevelGenerated.trainsDuration));
+
+			bool trainDelayed = false;
+			if (currentLevelGenerated.rail2Trains.Count > 0 && delay == 1)
+				trainDelayed = true;
+			
+			StartCoroutine (SpawnTrains (currentLevelGenerated.rail1Trains, TrainsMovementManager.Instance.rail1, currentLevelGenerated.trainsDuration, trainDelayed));
 		}
 
 		if (currentLevelGenerated.rail2Trains.Count > 0)
 		{
 			_rail2Occupied = true;
 			trainsToSend += currentLevelGenerated.rail2Trains.Count;
-			StartCoroutine (SpawnTrains (currentLevelGenerated.rail2Trains, TrainsMovementManager.Instance.rail2, currentLevelGenerated.trainsDuration));
+
+			bool trainDelayed = false;
+			if (currentLevelGenerated.rail2Trains.Count > 0 && delay == 2)
+				trainDelayed = true;
+			
+			StartCoroutine (SpawnTrains (currentLevelGenerated.rail2Trains, TrainsMovementManager.Instance.rail2, currentLevelGenerated.trainsDuration, trainDelayed));
 		}
 
 		//Boats
@@ -414,13 +422,16 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
-	IEnumerator SpawnTrains (List<Train> trains, Rail rail, int trainsDuration)
+	IEnumerator SpawnTrains (List<Train> trains, Rail rail, int trainsDuration, bool firstTrainDelay = false)
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
 		for(int i = 0; i < trains.Count; i++)
 		{
 			Train train = trains [i];
+
+			if(firstTrainDelay)
+				yield return new WaitForSeconds (Random.Range (LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.x, LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.y));
 
 			TrainsMovementManager.Instance.SpawnTrain (rail, train, trainsDuration);
 

@@ -17,6 +17,10 @@ public class LevelSettings_LD : Level
 	public int trainsCountMax = 2;
 	public List<Train_LD> trainsAvailable = new List<Train_LD> ();
 
+	[Header ("Trains Delay")]
+	[MinMaxSlider (0, 60)]
+	public Vector2 firstTrainDelay = new Vector2 ();
+
 	[Header ("Boats")]
 	public int boatsDelay;
 

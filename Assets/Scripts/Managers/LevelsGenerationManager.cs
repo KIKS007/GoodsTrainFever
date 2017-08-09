@@ -67,7 +67,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	private List<Container> _containersToPlace = new List<Container> ();
 	private int _containerToPlaceCount;
 
-	private LevelSettings_LD _currentLevelSettings;
+	[HideInInspector]
+	public LevelSettings_LD _currentLevelSettings;
 	private int _trainFillingTries = 20;
 
 	private bool _trainFilled = false;
