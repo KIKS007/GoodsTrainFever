@@ -110,7 +110,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		ordersCount = Random.Range (_currentLevelSettings.ordersCountMin, _currentLevelSettings.ordersCountMax + 1);
 		trainsCount = Random.Range (_currentLevelSettings.trainsCountMin, _currentLevelSettings.trainsCountMax + 1);
 
-		_currentLevelSettings.ordersCount = ordersCount;
 
 		//Copy Containers Level
 		_containersAvailable.Clear ();
@@ -160,6 +159,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		CreateOrders ();
 
+		ordersCount = currentLevelGenerated.orders.Count;
+
+		_currentLevelSettings.ordersCount = ordersCount;
+		currentLevelGenerated.ordersCount = ordersCount;
+
 		ExtraContainers ();
 
 		_containersToPlace.Clear ();
@@ -203,7 +207,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		SetupTrains ();
 
-		SetupBoats ();
+		if(_boatsGenerated.Count > 0)
+			SetupBoats ();
 
 		isGeneratingLevel = false;
 	}
@@ -331,7 +336,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			Debug.LogError ("Can't Fill Whole Train!", train);
 		
 		else
-			Debug.Log ("Train filled after " + (_triesCount).ToString () + " tries!", train);
+		{
+			
+			//Debug.Log ("Train filled after " + (_triesCount).ToString () + " tries!", train);
+		}
 
 		_containersGenerated.AddRange (containersSpawned);
 
@@ -483,7 +491,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				if(c != null)
 					containersCount++;
 
-			fillingPercentage = (int) (((float)containersCount / (float)train.containers.Count) * 100f);
+			fillingPercentage = Mathf.RoundToInt (((float)containersCount / (float)train.containers.Count) * 100f);
 		}
 
 	}
@@ -662,8 +670,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				if(container.isDoubleSize)
 					containersPlacedCount++;
 				
-				containersPercentage = (int) (((float)containersPlacedCount / (float)_containerToPlaceCount) * 100f);
-				zoneFillingPercentage = (int) (((float)containersPlacedCount / (float)zoneInitialSpotsCount) * 100f);
+				containersPercentage = Mathf.RoundToInt (((float)containersPlacedCount / (float)_containerToPlaceCount) * 100f);
+				zoneFillingPercentage = Mathf.RoundToInt (((float)containersPlacedCount / (float)zoneInitialSpotsCount) * 100f);
 				
 				containersToPlace.Remove (container);
 			}

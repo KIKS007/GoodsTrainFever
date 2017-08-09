@@ -195,7 +195,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			boats.Add (new Boat_Level (b));
 		
 
-		errorsSecondStarAllowed = (int)(errorsAllowed * 0.5f);
+		errorsSecondStarAllowed = Mathf.RoundToInt (errorsAllowed * 0.5f);
 
 		foreach(var o in orders)
 			RandomColors (o.levelContainers);
@@ -279,7 +279,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		foreach (var o in currentLevelGenerated.orders)
 			orders.Add (new Order_Level (o));
 
-		errorsSecondStarAllowed = (int)(errorsAllowed * 0.5f);
+		errorsSecondStarAllowed = Mathf.RoundToInt (errorsAllowed * 0.5f);
 
 		//Orders
 		foreach (var o in orders)
@@ -833,7 +833,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		if (GameManager.Instance.gameState == GameState.Menu)
 			return;
-		
+
 		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
 
 		GameManager.Instance.LevelEnd (levelEndType);
