@@ -25,6 +25,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	[Header ("Orders")]
 	public int ordersCount;
 	public int ordersElementsCountMin = 2;
+	public int ordersElementsCountMax = 8;
 
 	[Header ("Trains")]
 	public int trainsCount;
@@ -495,13 +496,19 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		for (int i = 0; i < ordersCount; i++)
 			currentLevelGenerated.orders.Add (new Order_Level ());
 
+		while(containersGeneratedTemp.Count > currentLevelGenerated.orders.Count * ordersElementsCountMax)
+		{
+			currentLevelGenerated.orders.Add (new Order_Level ());
+		}
+
+
 		foreach(var o in currentLevelGenerated.orders)
 		{
 			for(int i = 0; i < ordersElementsCountMin; i++)
 			{
 				if (containersGeneratedTemp.Count == 0)
 					return;
-				
+
 				o.levelContainers.Add (new Container_Level ());
 				var containerLevel = o.levelContainers [o.levelContainers.Count - 1];
 
@@ -517,6 +524,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		foreach(var c in containersGeneratedTemp)
 		{
 			int randomOrder = Random.Range (0, currentLevelGenerated.orders.Count);
+
+			while(currentLevelGenerated.orders [randomOrder].levelContainers.Count >= ordersElementsCountMax)
+				randomOrder = Random.Range (0, currentLevelGenerated.orders.Count);
+
 			currentLevelGenerated.orders [randomOrder].levelContainers.Add (new Container_Level ());
 
 			var containerLevel = currentLevelGenerated.orders [randomOrder].levelContainers [currentLevelGenerated.orders [randomOrder].levelContainers.Count - 1];
