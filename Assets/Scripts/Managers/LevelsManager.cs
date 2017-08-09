@@ -315,6 +315,9 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		foreach(var c in containers)
 		{
+			if (c.containerColor != ContainerColor.Random)
+				continue;
+
 			int color = (int)c.containerColor;
 
 			c.containerColor = new ContainerColor ();
@@ -324,8 +327,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			{
 				color++;
 
-				if(color == 4)
-					color = 0;
+				if(color == 5)
+					color = 1;
 			}
 
 			c.containerColor = (ContainerColor)color;

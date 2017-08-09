@@ -58,6 +58,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public List<Container> _parasitesContainersGenerated = new List<Container> ();
 
 
+	private List<Container_Level> _containersAvailable = new List<Container_Level> ();
+	private List<Container_Level> _forcedContainers = new List<Container_Level> ();
+	private List<Container_Level> _parasiteContainers = new List<Container_Level> ();
+
 	private Storage _storage;
 	private List<Container> _containersToPlace = new List<Container> ();
 	private int _containerToPlaceCount;
@@ -106,6 +110,21 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		_currentLevelSettings.ordersCount = ordersCount;
 
+		//Copy Containers Level
+		_containersAvailable.Clear ();
+		_forcedContainers.Clear ();
+		_parasiteContainers.Clear ();
+
+		foreach (var c in _currentLevelSettings.containersAvailable)
+			_containersAvailable.Add (new Container_Level (c));
+
+		foreach (var c in _currentLevelSettings.forcedContainers)
+			_forcedContainers.Add (new Container_Level (c));
+
+		foreach (var c in _currentLevelSettings.parasiteContainers)
+			_parasiteContainers.Add (new Container_Level (c));
+		
+
 		CreateLevelObject (levelIndex);
 
 		SelectTrains ();
@@ -120,7 +139,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		_forcedContainersGenerated.Clear ();
 
-		foreach(var c in _currentLevelSettings.forcedContainers)
+		foreach(var c in _forcedContainers)
 		{
 			Train randomTrain = _trainsGenerated [Random.Range (0, _trainsGenerated.Count)];
 
@@ -254,9 +273,16 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			selectedTrains.Add (_currentLevelSettings.trainsAvailable [Random.Range (0, _currentLevelSettings.trainsAvailable.Count)]);
 	}
 
-	void RandomColor (Container_Level c)
+	Container_Level RandomColor (Container_Level c)
 	{
-		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
+		var container = new Container_Level (c);
+
+		if (c.containerColor != ContainerColor.Random)
+			return container;
+		
+		container.containerColor = (ContainerColor)Random.Range (1, System.Enum.GetValues (typeof(ContainerColor)).Length);
+
+		return container;
 	}
 
 	IEnumerator FillTrain (Train train, Train_LD trainLD)
@@ -292,7 +318,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			_tryFailed = false;
 
 			//Fill With Available Containers
-			Fill (spots, _currentLevelSettings.containersAvailable, train, containersSpawned);
+			Fill (spots, _containersAvailable, train, containersSpawned);
 
 			_triesCount++;
 		}
@@ -328,7 +354,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
 				Spot spot = null;
 
-				RandomColor (containerLevel);
+				containerLevel = RandomColor (containerLevel);
 
 				//Create Container
 				container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
@@ -384,7 +410,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		//Choose Random Container Among Those Not Tested
 		Spot spot = null;
 		
-		RandomColor (containerLevel);
+		containerLevel = RandomColor (containerLevel);
 		
 		//Create Container
 		container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
@@ -705,8 +731,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			}
 		}
 
-		foreach(var containerLevel in _currentLevelSettings.parasiteContainers)
+		foreach(var c in _parasiteContainers)
 		{
+			var containerLevel = RandomColor (c);
+
 			var container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
 			bool fillSucess = false;
 
@@ -775,7 +803,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	{
 		Container_Level containerLevel = new Container_Level (); 
 
-		RandomColor (containerLevel);
+		containerLevel = RandomColor (containerLevel);
 		containerLevel.containerType = (ContainerType)Random.Range (0, System.Enum.GetValues (typeof(ContainerType)).Length);
 		containerLevel.isDoubleSize = Random.Range (1, 3) == 1 ? false : true;
 
