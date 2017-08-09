@@ -10,6 +10,7 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 	[Header ("Boat")]
 	public Transform boat;
+	public List<Boat> spawnedBoats = new List<Boat> ();
 
 	[Header ("State")]
 	public bool inTransition = false;
@@ -21,13 +22,28 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 	public float gameXPosition;
 	public float departureXPosition;
 
-	public void BoatSpawn ()
+	[Header ("Prefab")]
+	public GameObject boatPrefab;
+
+	public void BoatStart ()
 	{
 		ClearBoat ();
 
 		inTransition = true;
 
 		boat.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
+	}
+
+	public void BoatStart (Boat boat)
+	{
+		inTransition = true;
+
+		Vector3 position = boat.transform.position;
+		position.x = arrivingXPosition;
+
+		boat.transform.position = position;
+
+		boat.transform.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
 	}
 
 	public void BoatDeparture ()
@@ -40,11 +56,44 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		boat.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
 	}
 
+	public void BoatDeparture (Boat boat)
+	{
+		inTransition = true;
+
+		if (OnBoatDeparture != null)
+			OnBoatDeparture ();
+
+		boat.transform.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> {
+			
+			inTransition = false;
+			Destroy (boat.gameObject);
+		});
+	}
+
 	public void ClearBoat ()
 	{
 		Vector3 position = boat.transform.position;
 		position.x = arrivingXPosition;
 
 		boat.transform.position = position;
+
+		foreach (var b in spawnedBoats)
+			if(b != null)
+				Destroy (b.gameObject);
+
+		spawnedBoats.Clear ();
+	}
+
+	public Boat SpawnBoat ()
+	{
+		Vector3 position = boatPrefab.transform.position;
+		position.x = arrivingXPosition;
+
+		position.x += 30 * (spawnedBoats.Count + 1);
+
+		Boat boat = (Instantiate (boatPrefab, position, boatPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent)).GetComponent<Boat> ();
+		spawnedBoats.Add (boat);
+
+		return boat;
 	}
 }

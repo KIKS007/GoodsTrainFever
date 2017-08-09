@@ -262,7 +262,7 @@ public class Spot : Touchable
 				//Debug.Log ("--- moins moins");
 				belowContainers--;
 			}
-			
+
 			belowContainers++;
 		}
 
@@ -451,6 +451,8 @@ public class Spot : Touchable
 
 		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
 		_doubleSizeSpotSpawned._isSpawned = true;
+
+		_doubleSizeSpotSpawned._containersParent = _containersParent;
 
 		_doubleSizeSpotSpawned.overlappingSpots.Clear ();
 

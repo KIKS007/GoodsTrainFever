@@ -13,6 +13,9 @@ public class Train : Touchable
 	public bool inTransition = false;
 	public bool waitingDeparture = true;
 
+	[Header ("Duration")]
+	public float duration;
+
 	[Header ("Length")]
 	public float trainLength;
 
@@ -30,6 +33,8 @@ public class Train : Touchable
 
 	private Vector3 _mouseDeltaPosition;
 	private Vector3 _mousePosition;
+	[HideInInspector]
+	public List<Spot> _allSpots = new List<Spot> ();
 
 	// Use this for initialization
 	void Awake ()
@@ -48,15 +53,16 @@ public class Train : Touchable
 	void SetupContainersList ()
 	{
 		containers.Clear ();
+		_allSpots.Clear ();
 
-		var spotsTemp = transform.GetComponentsInChildren<Spot> ().ToList ();
-		spotsTemp = spotsTemp.OrderBy (x => Vector3.Distance (transform.position, x.transform.position)).ToList ();
+		_allSpots = transform.GetComponentsInChildren<Spot> ().ToList ();
+		_allSpots = _allSpots.OrderBy (x => Vector3.Distance (transform.position, x.transform.position)).ToList ();
 
 		List<Spot> spots = new List<Spot> ();
-		spots.AddRange (spotsTemp);
+		spots.AddRange (_allSpots);
 
 		//Sort Spots
-		foreach(var s in spotsTemp)
+		foreach(var s in _allSpots)
 		{
 			if(s.isDoubleSize)
 			{

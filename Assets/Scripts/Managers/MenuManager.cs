@@ -89,20 +89,21 @@ public class MenuManager : Singleton<MenuManager>
 
 		_backButtonShowPos = backButton.anchoredPosition;
 
-		menuParent.gameObject.SetActive (true);
-
 		menulevels.SetupLevels ();
 
-		foreach(Transform t in menuParent)
-			if(t.gameObject.GetComponent<MenuComponent> () != null)
-				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
 
 		if (GameManager.Instance.gameState == GameState.Playing)
 			return;
 		
+		menuParent.gameObject.SetActive (true);
 		menuPanel.gameObject.SetActive (true);
 		title.gameObject.SetActive (true);
 		backButton.gameObject.SetActive (true);
+
+		foreach(Transform t in menuParent)
+			if(t.gameObject.GetComponent<MenuComponent> () != null)
+				ClearMenu (t.gameObject.GetComponent<MenuComponent> ());
+		
 
 		UIFadeOut ();
 
@@ -530,72 +531,50 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void RetryLevel ()
 	{
-		ShowPanel ();
-
-		ContainersMovementManager.Instance.DeselectContainer ();
-
-		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
+		StartCoroutine (LoadLevel (() => 
 			{
-				LevelsManager.Instance.LoadLevelSettings (LevelsManager.Instance.levelIndex);
-
-				if (OnLevelStart != null)
-					OnLevelStart ();
-			});
-
-		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
-			{
-				HidePanel ();
-				UIFadeIn ();
-				HideCurrentMenu ();
-				GameManager.Instance.StartLevel ();
-			});
+				LevelsManager.Instance.LoadLevel (LevelsManager.Instance.levelIndex);
+			}));
 	}
 
 	public void NextLevel ()
 	{
-		ShowPanel ();
-
-		ContainersMovementManager.Instance.DeselectContainer ();
-
-		DOVirtual.DelayedCall (menuAnimationDuration, ()=>
+		StartCoroutine (LoadLevel (() => 
 			{
 				LevelsManager.Instance.NextLevel ();
-
-				if (OnLevelStart != null)
-					OnLevelStart ();
-			});
-
-		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
-			{
-				HidePanel ();
-				UIFadeIn ();
-				HideCurrentMenu ();
-				GameManager.Instance.StartLevel ();
-			});
+			}));
 	}
 
 	public void StartLevel ()
+	{
+		StartCoroutine (LoadLevel ());
+	}
+
+	IEnumerator LoadLevel (Action action = null)
 	{
 		ShowPanel ();
 
 		ContainersMovementManager.Instance.DeselectContainer ();
 
-		if (OnLevelStart != null)
-			OnLevelStart ();
-		
-		if(currentMenu)
-			HideMenu (currentMenu);
-
 		HideTitle ();
-
+		
 		HideCurrentMenu ();
 
-		DOVirtual.DelayedCall (menuAnimationDuration * 2, ()=>
-			{
-				HidePanel ();
-				UIFadeIn ();
-				GameManager.Instance.StartLevel ();
-			});
+		yield return new WaitForSeconds (menuAnimationDuration);
+
+		if (OnLevelStart != null)
+			OnLevelStart ();
+
+		if (action != null)
+			action ();
+
+		yield return new WaitWhile (() => LevelsGenerationManager.Instance.isGeneratingLevel);
+
+		yield return new WaitForSeconds (0.5f);
+
+		HidePanel ();
+		UIFadeIn ();
+		GameManager.Instance.StartLevel ();
 	}
 
 	public void UIFadeOut ()

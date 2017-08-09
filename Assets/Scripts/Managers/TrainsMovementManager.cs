@@ -328,7 +328,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train.transform.Translate (position * Time.fixedDeltaTime);
 	}
 
-	public Train SpawnTrain (Rail rail, Train_Level train_Level, bool waitOtherTrain = false)
+	public Train SpawnTrain (Rail rail, Train_Level train_Level )
 	{
 		if (rail.train != null)
 		{
@@ -340,22 +340,26 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
+		if(rail == rail2)
+			position.x += xDeparturePosition2 - xDeparturePosition1;
+
 		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
 
 		Train trainScript = train.GetComponent<Train> ();
 		trainScript.inTransition = true;
 
-		float trainLength = locomotiveLength;
+		float trainLength = 0;
+		float previousWagonLength = 0;
+		float wagonLength = 0;
 
 		Vector3 wagonPosition = position;
-		wagonPosition.x -= locomotiveLength;
 
-		foreach(var w in train_Level.wagons)
+		for(int i = 0; i < train_Level.wagons.Count; i++)
 		{
 			GameObject prefab = wagonFourtyPrefab;
-			float wagonLength = 0;
+			float length = 0;
 
-			switch (w.wagonType)
+			switch (train_Level.wagons[i].wagonType)
 			{
 			case WagonType.Fourty:
 				prefab = wagonFourtyPrefab;
@@ -366,21 +370,28 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				wagonLength = wagonSixtyLength;
 				break;
 			case WagonType.Eighty:
-				prefab = wagonSixtyPrefab;
+				prefab = wagonEightyPrefab;
 				wagonLength = wagonEightyLength;
 				break;
 			}
 
-			trainLength += wagonLength;
-			wagonPosition.x -= wagonLength;
+			length = wagonLength * 0.5f + previousWagonLength * 0.5f;
+
+			wagonPosition.x -= length;
 
 			GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+
 			Wagon wagonScript = wagon.GetComponent<Wagon> ();
 			trainScript.wagons.Add (wagonScript);
 
-			wagonScript.maxWeight = w.wagonMaxWeight;
+			wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
+
+
+			trainLength += wagonLength;
+			previousWagonLength = wagonLength;
 		}
 
+		trainLength += locomotiveLength;
 		trainScript.trainLength = trainLength;
 
 		rail.train = trainScript;
@@ -395,11 +406,120 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
 
-		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration, waitOtherTrain) );
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration ) );
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
 		return trainScript;
+	}
+
+	public Train SpawnTrain (Rail rail, Train train, int duration )
+	{
+		if (rail.train != null)
+		{
+			Debug.LogWarning ("Rail has train!", this);
+			return null;
+		}
+
+		Vector3 position = rail.transform.position;
+		position.y = trainPrefab.transform.position.y;
+		position.x = xArrivingPosition;
+
+		if(rail == rail2)
+			position.x += xDeparturePosition2 - xDeparturePosition1;
+
+		train.transform.position = position;
+
+		Train trainScript = train.GetComponent<Train> ();
+		trainScript.inTransition = true;
+
+		rail.train = trainScript;
+		TrainsMovementManager.Instance.AddTrain (trainScript);
+
+		if(rail == rail1)
+			rail1Text.text = "";
+		else
+			rail2Text.text = "";
+
+		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
+
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
+
+		_trainsDurationCoroutines.Add ( TrainDuration (rail, duration ) );
+
+		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
+
+		return trainScript;
+	}
+
+	public List<Train> GenerateTrains (List<Train_LD> trains)
+	{
+		List<Train> trainsGenerated = new List<Train> ();
+
+		Vector3 position = new Vector3 ();
+		position.x = xArrivingPosition;
+
+		foreach(Train_LD train_Level in trains)
+		{
+			position.y = trainPrefab.transform.position.y;
+			
+			GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
+			
+			Train trainScript = train.GetComponent<Train> ();
+			trainsGenerated.Add (trainScript); 
+
+			trainScript.inTransition = true;
+			
+			float trainLength = 0;
+			float previousWagonLength = 0;
+			float wagonLength = 0;
+			
+			Vector3 wagonPosition = position;
+			
+			for(int i = 0; i < train_Level.wagons.Count; i++)
+			{
+				GameObject prefab = wagonFourtyPrefab;
+				float length = 0;
+				
+				switch (train_Level.wagons[i].wagonType)
+				{
+				case WagonType.Fourty:
+					prefab = wagonFourtyPrefab;
+					wagonLength = wagonFourtyLength;
+					break;
+				case WagonType.Sixty:
+					prefab = wagonSixtyPrefab;
+					wagonLength = wagonSixtyLength;
+					break;
+				case WagonType.Eighty:
+					prefab = wagonEightyPrefab;
+					wagonLength = wagonEightyLength;
+					break;
+				}
+				
+				length = wagonLength * 0.5f + previousWagonLength * 0.5f;
+				
+				wagonPosition.x -= length;
+				
+				GameObject wagon = Instantiate (prefab, wagonPosition, prefab.transform.rotation, trainScript.wagonsParent);
+				
+				Wagon wagonScript = wagon.GetComponent<Wagon> ();
+				trainScript.wagons.Add (wagonScript);
+				
+				wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
+				
+				
+				trainLength += wagonLength;
+				previousWagonLength = wagonLength;
+			}
+			
+			trainLength += locomotiveLength;
+			trainScript.trainLength = trainLength;
+
+			position.x -= trainLength;
+		}
+
+		return trainsGenerated;
 	}
 
 	void OnTrainArrived (Rail rail, Train trainScript)
@@ -407,9 +527,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		trainScript.inTransition = false;
 	}
 
-	IEnumerator TrainDuration (Rail rail, int duration, bool waitOtherTrain = false)
+	IEnumerator TrainDuration (Rail rail, int duration)
 	{
-		float time = Mathf.Round (Time.time) + 1.5f;
+		float time = Mathf.Round (Time.time) + 1f;
+
+		rail.train.duration = duration;
 
 		yield return new WaitUntil (() => Time.time >= time);
 
@@ -424,11 +546,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		trainText.text = duration.ToString ();
 
-		do
+		while (duration > 0)
 		{
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-			yield return new WaitForSeconds (1f);
+			yield return new WaitForSeconds (1);
 
 			if(rail.train == null || !rail.train.waitingDeparture)
 				yield break;
@@ -438,7 +560,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			duration--;
 			trainText.text = duration.ToString ();
 		}
-		while (duration > 0);
 
 		if(rail.train != null && !rail.train.inTransition)
 			SendTrain (rail);

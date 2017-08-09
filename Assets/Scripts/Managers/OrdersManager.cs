@@ -116,6 +116,9 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	void ContainerAdded (Container container)
 	{
+		if (orders.Count == 0)
+			return;
+
 		foreach(var o in orders)
 		{
 			if (o.ContainerAdded (container))
@@ -132,6 +135,9 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	void ContainerRemoved (Container container)
 	{
+		if (orders.Count == 0)
+			return;
+
 		if (containersFromNoOrder.Contains (container))
 			containersFromNoOrder.Remove (container);
 		

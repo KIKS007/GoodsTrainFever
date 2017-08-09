@@ -53,6 +53,7 @@ public class ScoreManager : Singleton<ScoreManager>
 		{
 			Level level = t.GetComponent<Level> ();
 
+
 			for(int i = 0; i < 3; i++)
 			{
 				if (level.starsStates [i] == StarState.Unlocked)
@@ -72,9 +73,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 			if (PlayerPrefs.HasKey ("Stars" + i))
 				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
-
-			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
-
+			
 			for (int j = 0; j < 3; j++)
 			{
 				if (j < level.starsEarned)
@@ -82,6 +81,9 @@ public class ScoreManager : Singleton<ScoreManager>
 				else
 					level.starsStates [j] = StarState.Locked;
 			}
+			
+			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
+
 
 			//Debug.Log (level + " : " + level.starsEarned);
 		}
@@ -104,7 +106,7 @@ public class ScoreManager : Singleton<ScoreManager>
 		foreach(Transform t in LevelsManager.Instance.transform)
 		{
 			Level level = t.GetComponent<Level> ();
-
+			
 			starsEarned += level.starsEarned;
 		}
 
@@ -114,13 +116,13 @@ public class ScoreManager : Singleton<ScoreManager>
 	public void UnlockStars (int ordersPrepared, int trainsCount, int levelIndex)
 	{
 		Level level = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<Level> ();
-
+		
 		MostOrdersStar (ordersPrepared, level, levelIndex);
 		AllOrdersStar (ordersPrepared, trainsCount, level, levelIndex);
-
 		UpdateStars ();
 
 		Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned);
+
 	}
 
 	void MostOrdersStar (int ordersPrepared, Level level, int levelIndex)
@@ -157,7 +159,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			return;
 		}
 
-		if(ordersPrepared == level.orders.Count)
+		if(ordersPrepared == level.ordersCount)
 		{
 			LeastTrainsStar (trainsCount, level, levelIndex);
 
@@ -190,7 +192,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			level.starsStates [2] = StarState.Unlocked;
 		}
 	}
-
+		
 	void OnApplicationQuit ()
 	{
 		if (saveOnStop)

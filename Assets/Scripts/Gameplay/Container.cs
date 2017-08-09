@@ -96,6 +96,15 @@ public class Container : Touchable
 		UpdateWeightText ();
 
 		SetIsDoubleSize ();
+
+		constraints.Clear ();
+
+		foreach (var c in transform.GetComponents<Constraint> ())
+		{
+			constraints.Add (new ContainerConstraint ());
+			constraints [constraints.Count - 1].constraint = c;
+			c._container = this;
+		}
 	}
 
 	public void SetIsDoubleSize ()
@@ -117,7 +126,13 @@ public class Container : Touchable
 
 	public void SetInitialSpot (Spot spot)
 	{
+		RemoveContainer ();
+
+		spot.SetContainer (this);
+
 		spotOccupied = spot;
+
+		selected = false;
 
 		transform.position = spot.transform.position;
 
@@ -128,9 +143,18 @@ public class Container : Touchable
 		{
 			wagon = spot._wagon;
 			train = wagon.train;
+
+			CheckConstraints ();
+		}
+		else
+		{
+			wagon = null;
+			train = null;
+
+			allConstraintsRespected = true;
 		}
 
-		spot.SetContainer (this);
+		SetPileSpot ();
 
 		//Debug.Log (spotOccupied, this);
 	}
@@ -138,6 +162,9 @@ public class Container : Touchable
 	void UpdateWeightText ()
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
+
+		_weightText = transform.GetComponentInChildren<Text> ();
+		_weightImage = transform.GetComponentInChildren<Image> ();
 
 		_weightText.text = weight.ToString ();
 
@@ -285,7 +312,7 @@ public class Container : Touchable
 
 	public bool CheckConstraints (Spot spot)
 	{
-		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
+		if(spot == null || spot.spotType != SpotType.Train)
 		{
 			allConstraintsRespected = true;
 			return allConstraintsRespected;
@@ -357,7 +384,7 @@ public class Container : Touchable
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
-		containerColor = (ContainerColor) UnityEngine.Random.Range (1, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+		containerColor = (ContainerColor) UnityEngine.Random.Range (0, (int) Enum.GetNames (typeof(ContainerColor)).Length);
 
 		Color color = new Color ();
 
@@ -413,10 +440,10 @@ public class Container : Touchable
 			break;
 		}
 
-		if(_material.HasProperty ("_Albedo"))
-			_material.SetColor ("_Albedo", color);
+		if(_material.HasProperty (shaderColorProperty))
+			_material.SetColor (shaderColorProperty, color);
 		else
-			_material.SetColor ("_Albedo1", color);
+			_material.SetColor (shaderColorProperty, color);
 
 		UpdateWeightText ();
 	}

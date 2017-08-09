@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Constraint : MonoBehaviour 
 {
-	protected Container _container;
+	[HideInInspector]
+	public Container _container;
 
 	protected virtual void Start ()
 	{
