@@ -91,8 +91,6 @@ public class Container_Level
 	public ContainerType containerType;
 	public ContainerColor containerColor;
 	public bool isDoubleSize = false;
-	public int containerWeight = 1;
-	public int containerCount = 1;
 
 	public Container_Level ()
 	{
@@ -104,8 +102,6 @@ public class Container_Level
 		containerType = original.containerType;
 		containerColor = original.containerColor;
 		isDoubleSize = original.isDoubleSize;
-		containerWeight = original.containerWeight;
-		containerCount = original.containerCount;
 	}
 
 }

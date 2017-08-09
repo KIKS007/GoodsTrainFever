@@ -175,10 +175,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			FillContainerZone (boat.containersParent, boat.spotsParent, ContainersMovementManager.Instance.boatPileCount, _boatMaxFilling);
 		}
 
-		GlobalVariables.Instance.ClearLog ();
-
-		Debug.Log ("PARASITES");
-
 		ParasiteContainers ();
 
 		SetupTrains ();
@@ -255,43 +251,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			selectedTrains.Add (_currentLevelSettings.trainsAvailable [Random.Range (0, _currentLevelSettings.trainsAvailable.Count)]);
 	}
 
-	void SetWeight (Container_Level c)
-	{
-		switch (c.containerType)
-		{
-		case ContainerType.Basic:
-			if (!c.isDoubleSize)
-				c.containerWeight = basicContainerWeights [0];
-			else
-				c.containerWeight = basicContainerWeights [1];
-			break;
-
-		case ContainerType.Cooled:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = cooledContainerWeights [0];
-			else
-				c.containerWeight = cooledContainerWeights [1];
-			break;
-
-		case ContainerType.Tank:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = tankContainerWeights [0];
-			else
-				c.containerWeight = tankContainerWeights [1];
-			break;
-
-		case ContainerType.Dangerous:
-			
-			if (!c.isDoubleSize)
-				c.containerWeight = dangerousContainerWeights [0];
-			else
-				c.containerWeight = dangerousContainerWeights [1];
-			break;
-		}
-	}
-
 	void RandomColor (Container_Level c)
 	{
 		c.containerColor = (ContainerColor)Random.Range (0, System.Enum.GetValues (typeof(ContainerColor)).Length);
@@ -366,7 +325,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				Container_Level containerLevel = containersToTest [Random.Range (0, containersToTest.Count)];
 				Spot spot = null;
 
-				SetWeight (containerLevel);
 				RandomColor (containerLevel);
 
 				//Create Container
@@ -423,7 +381,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		//Choose Random Container Among Those Not Tested
 		Spot spot = null;
 		
-		SetWeight (containerLevel);
 		RandomColor (containerLevel);
 		
 		//Create Container
@@ -524,8 +481,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				
 				containerLevel.containerColor = c.containerColor;
 				containerLevel.containerType = c.containerType;
-				containerLevel.containerCount = 1;
-				containerLevel.containerWeight = c.weight;
 				containerLevel.isDoubleSize = c.isDoubleSize;
 			}
 		}
@@ -539,8 +494,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 			containerLevel.containerColor = c.containerColor;
 			containerLevel.containerType = c.containerType;
-			containerLevel.containerCount = 1;
-			containerLevel.containerWeight = c.weight;
 			containerLevel.isDoubleSize = c.isDoubleSize;
 		}
 	}
@@ -564,7 +517,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				validContainer = true;
 
 				generatedContainerLevel = RandomContainerLevel (); 
-				SetWeight (generatedContainerLevel);
 
 				foreach(var c in _containersGenerated)
 				{

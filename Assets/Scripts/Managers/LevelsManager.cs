@@ -602,58 +602,52 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Spawn Containers & Assign Spot
 		foreach(var containterLevel in containers_Levels)
 		{
-			if (containterLevel.containerCount == 0)
-				containterLevel.containerCount = 1;
-
-			for(int i = 0; i < containterLevel.containerCount; i++)
+			Container container = CreateContainer (containterLevel, containersParent);
+			
+			spotsTemp.Clear ();
+			spotsTemp.AddRange (spots);
+			
+			//Add Spawned Spots
+			if(containterLevel.isDoubleSize)
 			{
-				Container container = CreateContainer (containterLevel, containersParent);
-				
-				spotsTemp.Clear ();
-				spotsTemp.AddRange (spots);
-				
-				//Add Spawned Spots
-				if(containterLevel.isDoubleSize)
-				{
-					foreach(var s in spots)
-					{
-						if(s.isDoubleSize)
-						{
-							Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
-							
-							if (spotSpawned != null)
-								spotsTemp.Add (spotSpawned);
-						}
-					}
-				}
-				
-				//Remove Invalid Spots
 				foreach(var s in spots)
 				{
-					if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
-						spotsTemp.Remove (s);
+					if(s.isDoubleSize)
+					{
+						Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
+						
+						if (spotSpawned != null)
+							spotsTemp.Add (spotSpawned);
+					}
 				}
-				
-				if(spotsTemp.Count == 0)
-				{
-					Debug.LogError ("No more free spots!", this);
-
-					if(!forceSpawnDoubleFirst)
-						StartCoroutine (FillContainerZone (containers_Base, zoneParent, containersParent, true));
-					else
-						Debug.LogError ("Too many containers to spawn!", this);
-					
-					yield break;
-				}
-				
-				//Take Spot
-				Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
-				
-				spots.Remove (spotTaken);
-				spots.AddRange (container._pileSpots);
-				
-				spotTaken.SetInitialContainer (container);
 			}
+			
+			//Remove Invalid Spots
+			foreach(var s in spots)
+			{
+				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
+					spotsTemp.Remove (s);
+			}
+			
+			if(spotsTemp.Count == 0)
+			{
+				Debug.LogError ("No more free spots!", this);
+				
+				if(!forceSpawnDoubleFirst)
+					StartCoroutine (FillContainerZone (containers_Base, zoneParent, containersParent, true));
+				else
+					Debug.LogError ("Too many containers to spawn!", this);
+				
+				yield break;
+			}
+			
+			//Take Spot
+			Spot spotTaken = spotsTemp [Random.Range (0, spotsTemp.Count)];
+			
+			spots.Remove (spotTaken);
+			spots.AddRange (container._pileSpots);
+			
+			spotTaken.SetInitialContainer (container);
 		}
 	}
 
