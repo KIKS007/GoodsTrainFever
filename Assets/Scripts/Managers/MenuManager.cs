@@ -125,8 +125,14 @@ public class MenuManager : Singleton<MenuManager>
 				MenuPosition ();
 		}*/
 
-		if(Input.GetKeyDown (KeyCode.Escape) && currentMenu)
-			Back ();
+		if(Input.GetKeyDown (KeyCode.Escape))
+		{
+			if(currentMenu && GameManager.Instance.gameState != GameState.Playing)
+				Back ();
+
+			if (GameManager.Instance.gameState == GameState.Playing)
+				PauseAndShowMenu (pauseMenu);
+		}
 	}
 
 	void BackButton (MenuComponent menu)
