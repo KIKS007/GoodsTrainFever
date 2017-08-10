@@ -5,7 +5,10 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
 using System.IO;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Reflection;
 
 public class GlobalVariables : Singleton<GlobalVariables>
@@ -42,13 +45,13 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	public UnityEngine.Object objectToCreate;
 
 	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
 		
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void Update ()
 	{
 		FPS ();
 	}
@@ -57,14 +60,15 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	{
 		fpsText.text = ((int)1.0f / Time.smoothDeltaTime).ToString ("##.00");
 	}
-
-	public void ClearLog() 
+	#if UNITY_EDITOR
+	public void ClearLog ()
 	{ 
-		var assembly = Assembly.GetAssembly(typeof(UnityEditor.ActiveEditorTracker)); 
-		var type = assembly.GetType("UnityEditorInternal.LogEntries"); 
-		var method = type.GetMethod("Clear"); 
-		method.Invoke(new object(), null); 
+		var assembly = Assembly.GetAssembly (typeof(UnityEditor.ActiveEditorTracker)); 
+		var type = assembly.GetType ("UnityEditorInternal.LogEntries"); 
+		var method = type.GetMethod ("Clear"); 
+		method.Invoke (new object (), null); 
 	}
+	#endif
 
 	#if UNITY_EDITOR
 	[Button]
@@ -73,12 +77,9 @@ public class GlobalVariables : Singleton<GlobalVariables>
 		var asset = ScriptableObject.CreateInstance (objectToCreate.name);
 
 		string path = AssetDatabase.GetAssetPath (Selection.activeObject);
-		if (path == "") 
-		{
+		if (path == "") {
 			path = "Assets";
-		} 
-		else if (Path.GetExtension (path) != "") 
-		{
+		} else if (Path.GetExtension (path) != "") {
 			path = path.Replace (Path.GetFileName (AssetDatabase.GetAssetPath (objectToCreate)), "");
 		}
 
@@ -87,7 +88,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 		AssetDatabase.CreateAsset (asset, assetPathAndName);
 
 		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh();
+		AssetDatabase.Refresh ();
 		EditorUtility.FocusProjectWindow ();
 		Selection.activeObject = asset;
 	}
