@@ -54,6 +54,7 @@ public class Train_Level
 {
 	public int trainDuration;
 	public List<Wagon_Level> wagons;
+	public List<Container_Level> parasiteContainers = new List<Container_Level> ();
 }
 
 [System.Serializable]

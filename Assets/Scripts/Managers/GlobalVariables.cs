@@ -55,7 +55,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 
 	void FPS ()
 	{
-		fpsText.text = ((int)1.0f / Time.smoothDeltaTime).ToString ("##.00");
+		fpsText.text = (Mathf.RoundToInt (1.0f / Time.smoothDeltaTime)).ToString ("##.00");
 	}
 
 	public void ClearLog() 

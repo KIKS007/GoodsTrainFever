@@ -56,7 +56,7 @@ public class ScreenshakeManager : Singleton<ScreenshakeManager>
 
 		shakeTarget.DOKill (true);
 
-		shakeTarget.DOPunchPosition (shakePunch, shakeDuration, shakeVibrato).SetDelay (shakeDelay).OnComplete (ResetCameraRotation);
+		shakeTarget.DOPunchPosition (shakePunch, shakeDuration, shakeVibrato).SetDelay (shakeDelay).OnComplete (ResetCameraRotation).SetUpdate (true);
 	}
 
 	void ResetCameraRotation ()
@@ -64,7 +64,7 @@ public class ScreenshakeManager : Singleton<ScreenshakeManager>
 		if (DOTween.IsTweening (shakeTarget))
 			return;
 
-		shakeTarget.DOMove (_initialPosition, resetDuration);
+		shakeTarget.DOMove (_initialPosition, resetDuration).SetUpdate (true);
 	}
 
 	[ButtonGroup ("A")]

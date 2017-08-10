@@ -412,7 +412,47 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
+		if (train_Level.parasiteContainers.Count > 0)
+			DOVirtual.DelayedCall (0.1f, ()=> TrainParasiteContainers (trainScript, train_Level));
+
 		return trainScript;
+	}
+
+	void TrainParasiteContainers (Train train, Train_Level train_Level)
+	{
+		foreach(var s in train._allSpots)
+		{
+			s.isOccupied = false;
+			s.container = null;
+		}
+
+		foreach(var c in train_Level.parasiteContainers)
+		{
+			var containerLevel = LevelsGenerationManager.Instance.RandomColor (c);
+
+			var container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
+			bool fillSucess = false;
+
+			int spotsTaken = 0;
+
+			foreach (var s in train._allSpots)
+				if (s.isOccupied)
+					spotsTaken++;
+			
+			if (spotsTaken == train._allSpots.Count)
+				continue;
+			
+			var spots = new List<Spot> (train._allSpots);
+			
+			fillSucess = LevelsGenerationManager.Instance.FillContainer (spots, container);
+			
+			if (!fillSucess)
+			{
+				Destroy (container.gameObject);
+				Debug.LogWarning ("Can't Place All Parasite Containers!");
+				break;
+			}
+		}
 	}
 
 	public Train SpawnTrain (Rail rail, Train train, int duration )

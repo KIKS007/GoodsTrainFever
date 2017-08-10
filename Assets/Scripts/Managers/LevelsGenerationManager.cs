@@ -188,12 +188,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
-		GlobalVariables.Instance.ClearLog ();
-
-		Debug.Log ("Containers To Place: " + _containersToPlace.Count);
-		Debug.Log ("Containers: " + _storage.containersParent.childCount);
-		Debug.Log ("Spots: " + _storage.spotsParent.childCount);
-
 		FillContainerZone (_storage.containersParent, _storage.spotsParent, ContainersMovementManager.Instance.storagePileCount, _storageMaxFilling, _currentLevelSettings.storageFillingPercentage);
 
 		_boatsGenerated.Clear ();
@@ -288,7 +282,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			selectedTrains.Add (_currentLevelSettings.trainsAvailable [Random.Range (0, _currentLevelSettings.trainsAvailable.Count)]);
 	}
 
-	Container_Level RandomColor (Container_Level c)
+	public Container_Level RandomColor (Container_Level c)
 	{
 		var container = new Container_Level (c);
 
@@ -665,8 +659,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 			bool containerPlaced = FillContainer (spots, container, forceSpawnDoubleFirst);
 
-			Debug.Log ("containerPlaced: " + containerPlaced, container);
-
 			//Fill Failed
 			if(!containerPlaced)
 			{
@@ -694,14 +686,14 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			}
 		}
 
-		Debug.Log ("ContainersPercentage: " + containersPercentage + "% && zoneFillingPercentage: " + zoneFillingPercentage + "%", containersParent.parent);
+		//Debug.Log ("ContainersPercentage: " + containersPercentage + "% && zoneFillingPercentage: " + zoneFillingPercentage + "%", containersParent.parent);
 
 		//Update Containers To Place
 		_containersToPlace.Clear ();
 		_containersToPlace.AddRange (containersToPlace);
 	}
 
-	bool FillContainer (List<Spot> spots, Container container, bool forceSpawnDoubleFirst = false)
+	public bool FillContainer (List<Spot> spots, Container container, bool forceSpawnDoubleFirst = false)
 	{
 		List<Spot> spotsTemp = new List<Spot> (spots);
 
@@ -729,8 +721,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
 				spotsTemp.Remove (s);
 		}
-
-		Debug.Log ("Spots Count: " + spotsTemp.Count, container);
 
 		if(spotsTemp.Count == 0)
 		{

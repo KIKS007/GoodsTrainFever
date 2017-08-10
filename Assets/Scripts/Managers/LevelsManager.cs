@@ -213,8 +213,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (spawnAllOrderContainers)
 			foreach (var o in orders)
 				containers.AddRange (o.levelContainers);
-		else
-			containers = storageContainers;
+		
+		containers.AddRange (storageContainers);
 		
 		StartCoroutine (FillContainerZone (containers, _storage.transform, _storage.containersParent));
 
@@ -321,7 +321,10 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		//Debug.Log ("randomOffset : " + _randomColorOffset);
 
-		foreach(var c in containers)
+		for (int i = 0; i < containers.Count; i++)
+			containers [i] = LevelsGenerationManager.Instance.RandomColor (containers [i]);
+
+		/*	foreach(var c in containers)
 		{
 			if (c.containerColor != ContainerColor.Random)
 				continue;
@@ -340,7 +343,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 
 			c.containerColor = (ContainerColor)color;
-		}
+		}*/
 	}
 
 	IEnumerator AddOrder (Order_Level order)
