@@ -188,7 +188,7 @@ public class OrdersManager : Singleton<OrdersManager>
 			DOTween.Kill (rect);
 
 			if (animated)
-				rect.DOAnchorPos (position, ordersLayoutDuration).SetEase (ordersLayoutEase).SetDelay (ordersLayoutDelay * i);
+				rect.DOAnchorPos (position, ordersLayoutDuration).SetEase (ordersLayoutEase).SetDelay (ordersLayoutDelay * i).SetUpdate (true);
 			else
 				rect.anchoredPosition = position;
 
@@ -219,7 +219,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		if(animated)
 		{
-			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).OnComplete (()=> Destroy (order.gameObject));
+			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).SetUpdate (true).OnComplete (()=> Destroy (order.gameObject));
 			yield return new WaitForSeconds (removeOrderDuration);
 			UpdateOrdersLayout (true, orderRect);
 		}
@@ -349,14 +349,14 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		ordersHidden = true;
 
-		ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase);
+		ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
 	}
 
 	void FadeInGroup ()
 	{
 		DOTween.Kill (ordersCanvasGroup);
 
-		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).OnComplete (()=> ordersHidden = false);
+		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (()=> ordersHidden = false);
 	}
 
 	public void ClearOrders (bool animated)

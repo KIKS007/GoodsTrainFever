@@ -186,6 +186,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		yield return new WaitForEndOfFrame ();
 
+		yield return new WaitForEndOfFrame ();
+
 		FillContainerZone (_storage.containersParent, _storage.spotsParent, ContainersMovementManager.Instance.storagePileCount, _storageMaxFilling, _currentLevelSettings.storageFillingPercentage);
 
 		_boatsGenerated.Clear ();
@@ -280,7 +282,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			selectedTrains.Add (_currentLevelSettings.trainsAvailable [Random.Range (0, _currentLevelSettings.trainsAvailable.Count)]);
 	}
 
-	Container_Level RandomColor (Container_Level c)
+	public Container_Level RandomColor (Container_Level c)
 	{
 		var container = new Container_Level (c);
 
@@ -604,8 +606,12 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		//Get & Sort Spots
 		foreach (var s in spotsArray)
+		{
+			//Debug.Log (s.isOccupied, s);
+
 			if (!s.isPileSpot && !s._isSpawned)
 				spots.Add (s);
+		}
 
 		//Free Spots
 		foreach (var s in spots)
@@ -657,9 +663,12 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			if(!containerPlaced)
 			{
 				if(!forceSpawnDoubleFirst)
+				{
 					FillContainerZone (containersParent, spotsParent, pileCount, zoneMaxFilling, percentageToFill, true);
-				
-				return;
+					return;
+				}
+
+				break;
 			}
 
 			//Fill Succeeded
@@ -684,7 +693,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		_containersToPlace.AddRange (containersToPlace);
 	}
 
-	bool FillContainer (List<Spot> spots, Container container, bool forceSpawnDoubleFirst = false)
+	public bool FillContainer (List<Spot> spots, Container container, bool forceSpawnDoubleFirst = false)
 	{
 		List<Spot> spotsTemp = new List<Spot> (spots);
 
