@@ -513,6 +513,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			containers.Remove (removedContainer);
 			_containersGenerated.Remove (removedContainer);
 
+			removedContainer.RemoveContainer ();
 			Destroy (removedContainer.gameObject);
 
 			int containersCount = 0;
@@ -524,6 +525,11 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			fillingPercentage = Mathf.RoundToInt (((float)containersCount / (float)train.containers.Count) * 100f);
 		}
 
+		foreach(var t in _trainsGenerated)
+		{
+			foreach(var w in t.wagons)
+				w.UpdateWeight ();
+		}
 	}
 
 	void CreateOrders ()
