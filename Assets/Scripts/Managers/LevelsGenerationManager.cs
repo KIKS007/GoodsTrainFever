@@ -38,6 +38,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	public int boatMaxFillingPercentage = 80;
 
 	[Header ("Wagons Weight")]
+	[MinMaxSlider (-2, 10)]
 	public Vector2 wagonExtraWeight = new Vector2 ();
 	[Range (0, 100)]
 	public int wagonInfiniteWeightChance;
@@ -151,6 +152,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
 
 		yield return new WaitWhile (() => _trainsGenerationCount > 0);
+
+		SetWagonsWeight ();
 
 		isGeneratingTrains = false;
 
@@ -452,6 +455,26 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			Debug.LogWarning ("Can't Fill Forced Container: " + container.name);
 			
 			Destroy (container.gameObject);
+		}
+	}
+
+	void SetWagonsWeight ()
+	{
+		foreach(var t in _trainsGenerated)
+		{
+			foreach(var w in t.wagons)
+			{
+				w.UpdateWeight ();
+
+				int maxWeight = w.currentWeight;
+
+				if (Random.Range (0, 100) < wagonInfiniteWeightChance)
+					maxWeight = 666;
+				else
+					maxWeight += Mathf.RoundToInt (Random.Range (wagonExtraWeight.x, wagonExtraWeight.y));
+
+				w.maxWeight = maxWeight;
+			}
 		}
 	}
 
