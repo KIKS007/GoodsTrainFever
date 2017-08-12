@@ -471,7 +471,12 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				if (Random.Range (0, 100) < wagonInfiniteWeightChance)
 					maxWeight = 666;
 				else
-					maxWeight += Mathf.RoundToInt (Random.Range (wagonExtraWeight.x, wagonExtraWeight.y));
+				{
+					int randomExtra = Mathf.RoundToInt (Random.Range (wagonExtraWeight.x, wagonExtraWeight.y));
+
+					if(maxWeight + randomExtra > 0)
+						maxWeight += randomExtra;
+				}
 
 				w.maxWeight = maxWeight;
 			}
