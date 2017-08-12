@@ -33,7 +33,10 @@ public class Wagon : Touchable
 
 	public void UpdateWeight ()
 	{
+
 		currentWeight = 0;
+
+		int containersCount = 0;
 
 		for(int i = 0 ; i < containers.Count; i++)
 		{
@@ -42,6 +45,7 @@ public class Wagon : Touchable
 				if (i > 0 && containers [i] == containers [i - 1])
 					continue;
 
+				containersCount++;
 				currentWeight += containers [i].weight;
 			}
 		}
@@ -50,5 +54,7 @@ public class Wagon : Touchable
 
 		_weightText.text = currentWeight.ToString ("00") + "/" + maxWeight.ToString ("00");
 		_weightImage.color = overweight ? GlobalVariables.Instance.wagonOverweightColor : GlobalVariables.Instance.wagonNormalWeightColor;
+
+		train.UpdateWeight ();
 	}
 }

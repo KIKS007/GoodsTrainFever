@@ -130,14 +130,20 @@ public class Train : Touchable
 		spot.OnSpotFreed += (arg) => containers [trainContainersIndex] = null;
 
 		//Update Wagon Containers
-		spot.OnSpotTaken += (arg) => spot._wagon.containers [wagonContainersIndex] = arg;
-		spot.OnSpotFreed += (arg) => spot._wagon.containers [wagonContainersIndex] = null;
-
 		//Update Weight
 		if(!secondDoubleSize)
 		{
-			spot.OnSpotTaken += (arg) => spot._wagon.UpdateWeight ();
-			spot.OnSpotFreed += (arg) => spot._wagon.UpdateWeight ();
+			spot.OnSpotTaken += (arg) => 
+			{
+				spot._wagon.containers [wagonContainersIndex] = arg;
+				spot._wagon.UpdateWeight ();
+			};
+
+			spot.OnSpotFreed += (arg) => 
+			{
+				spot._wagon.containers [wagonContainersIndex] = null;
+				spot._wagon.UpdateWeight ();
+			};
 		}
 
 		if(spot.container)
