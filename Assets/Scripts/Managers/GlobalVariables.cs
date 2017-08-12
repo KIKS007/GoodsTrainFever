@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
 using System.IO;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -60,7 +61,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	}
 
 	#if UNITY_EDITOR
-	public void ClearLog() 
+	public void ClearLog ()
 	{ 
 		var assembly = Assembly.GetAssembly (typeof(UnityEditor.ActiveEditorTracker)); 
 		var type = assembly.GetType ("UnityEditorInternal.LogEntries"); 
@@ -69,6 +70,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	}
 	#endif
 
+	#if UNITY_EDITOR
 	[Button]
 	public void CreateAsset ()
 	{
