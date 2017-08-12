@@ -548,9 +548,6 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				Wagon wagonScript = wagon.GetComponent<Wagon> ();
 				trainScript.wagons.Add (wagonScript);
 				
-				wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
-				
-				
 				trainLength += wagonLength;
 				previousWagonLength = wagonLength;
 			}
