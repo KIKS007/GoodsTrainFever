@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
 using System.IO;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -47,7 +46,6 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	// Use this for initialization
 	void Start ()
 	{
-		
 	}
 	
 	// Update is called once per frame
@@ -60,8 +58,9 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	{
 		fpsText.text = (Mathf.RoundToInt (1.0f / Time.smoothDeltaTime)).ToString ("##.00");
 	}
+
 	#if UNITY_EDITOR
-	public void ClearLog ()
+	public void ClearLog() 
 	{ 
 		var assembly = Assembly.GetAssembly (typeof(UnityEditor.ActiveEditorTracker)); 
 		var type = assembly.GetType ("UnityEditorInternal.LogEntries"); 
@@ -70,7 +69,6 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	}
 	#endif
 
-	#if UNITY_EDITOR
 	[Button]
 	public void CreateAsset ()
 	{
