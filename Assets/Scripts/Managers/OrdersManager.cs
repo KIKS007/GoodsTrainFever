@@ -368,5 +368,8 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		foreach (var o in ordersTemp)
 			RemoveOrder (o, 0, animated);
+
+		foreach (Transform t in ordersScrollView)
+			Destroy (t.gameObject);
 	}
 }
