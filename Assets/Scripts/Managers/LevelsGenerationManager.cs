@@ -377,7 +377,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				//Test Container Wich Each Spot
 				foreach(var s in spots)
 				{
-					if(s.IsSameSize (container) && container.CheckConstraints (s))
+					if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isSubordinate)
 					{
 						spot = s;
 						spot.SetInitialContainer (container);
@@ -433,7 +433,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		//Test Container Wich Each Spot
 		foreach(var s in spots)
 		{
-			if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isOccupied)
+			if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isOccupied && !s.isSubordinate)
 			{
 				spot = s;
 				spot.SetInitialContainer (container);
@@ -752,7 +752,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		//Remove Invalid Spots
 		foreach(var s in spots)
 		{
-			if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
+			if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null || s.isSubordinate)
 				spotsTemp.Remove (s);
 		}
 

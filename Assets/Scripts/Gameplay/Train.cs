@@ -81,7 +81,7 @@ public class Train : Touchable
 				spotIndex--;
 
 			//New Slot
-			if(i > 0 && !spots [i - 1].isSubordinate)
+			if(i == 0 || i > 0 && !spots [i - 1].isSubordinate)
 				AddContainerSlot (spots [i]);
 
 			//First Slot
