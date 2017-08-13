@@ -364,6 +364,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		ordersSentCount = 0;
 		ordersCount = 0;
 
+		containersFromNoOrder.Clear ();
+
 		List<Order_UI> ordersTemp = new List<Order_UI> (orders);
 
 		foreach (var o in ordersTemp)
