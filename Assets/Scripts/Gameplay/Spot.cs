@@ -31,6 +31,11 @@ public class Spot : Touchable
 	[Header ("Overlapping Spots")]
 	public List<Spot> overlappingSpots = new List<Spot> ();
 
+	[Header ("Subordinate Spot")]
+	public bool isSubordinate = false;
+	[ShowIf("isSubordinate")]
+	public Spot chiefSpot = null;
+
 	[HideInInspector]
 	public Wagon _wagon;
 	[HideInInspector]
@@ -140,6 +145,12 @@ public class Spot : Touchable
 		if (_isSpawned)
 			foreach (var o in overlappingSpots)
 				o.overlappingSpots.Add (this);
+
+		if (chiefSpot != null && overlappingSpots.Contains (chiefSpot))
+		{
+			chiefSpot.overlappingSpots.Remove (this);
+			overlappingSpots.Remove (chiefSpot);
+		}
 	}
 
 	public void OverlappingSpotsOccupied ()
@@ -149,12 +160,12 @@ public class Spot : Touchable
 
 		foreach(var s in overlappingSpots)
 		{
-			if (s.isOccupied)
+			if (s.container)
 			{
 				if(!isDoubleSize && s.isDoubleSize && s.container != null)
 					isOccupied = true;
 
-				if(isDoubleSize)
+				if(isDoubleSize && !s.isDoubleSize)
 					isOccupied = true;
 			}
 		}
@@ -337,7 +348,10 @@ public class Spot : Touchable
 
 		if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
 			return;
-		
+
+		if (isSubordinate && !IsChiefSpotOccupied ())
+			return;
+
 		if (!IsSameSize (container))
 			return;
 
@@ -409,6 +423,14 @@ public class Spot : Touchable
 
 		foreach (var s in overlappingSpots)
 			s.isPileUp = piled;
+	}
+
+	public bool IsChiefSpotOccupied ()
+	{
+		if (!isSubordinate || chiefSpot == null)
+			return false;
+
+		return chiefSpot.isOccupied;			
 	}
 
 	public Spot SpawnDoubleSizeSpot (Container c, bool selectOnStart = true)
