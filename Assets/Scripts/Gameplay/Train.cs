@@ -62,7 +62,7 @@ public class Train : Touchable
 		//Sort Spots
 		foreach(var s in _allSpots)
 		{
-			if(s.isDoubleSize)
+			if(s.isDoubleSize && !s.isSubordinate)
 			{
 				foreach (var o in s.overlappingSpots)
 					spots.Remove (o);
@@ -77,15 +77,19 @@ public class Train : Touchable
 		//Setup Spots Events
 		for(int i = 0; i < spots.Count; i++)
 		{
+			if(spots [i].isSubordinate)
+				spotIndex--;
+
 			//New Slot
-			AddContainerSlot (spots [i]);
+			if(i == 0 || i > 0 && !spots [i - 1].isSubordinate)
+				AddContainerSlot (spots [i]);
 
 			//First Slot
 			AddSpotEvents (spots [i]);
 
 			spots [i]._spotTrainIndex = spotIndex;
 
-			if(spots [i].isDoubleSize)
+			if(spots [i].isDoubleSize && !spots [i].isSubordinate)
 			{
 				//First Overlapping 20
 				AddSpotEvents (spots [i].overlappingSpots [0]);
@@ -106,6 +110,15 @@ public class Train : Touchable
 				spots [i].overlappingSpots [1]._spotTrainIndex = spotIndex;
 			}
 
+			if(spots [i].isSubordinate)
+			{
+				//New Slot
+				AddContainerSlot (spots [i], true);
+
+				//Fill The Second 40 Slot
+				AddSpotEvents (spots [i], true);
+			}
+
 			spotIndex++;
 		}
 
@@ -113,8 +126,11 @@ public class Train : Touchable
 			w.UpdateWeight ();
 	}
 
-	void AddContainerSlot (Spot spot)
+	void AddContainerSlot (Spot spot, bool forced = false)
 	{
+		if (spot.isSubordinate && !forced)
+			return;
+
 		containers.Add (null);
 
 		spot._wagon.containers.Add (null);
@@ -131,20 +147,17 @@ public class Train : Touchable
 
 		//Update Wagon Containers
 		//Update Weight
-		if(!secondDoubleSize)
+		spot.OnSpotTaken += (arg) => 
 		{
-			spot.OnSpotTaken += (arg) => 
-			{
-				spot._wagon.containers [wagonContainersIndex] = arg;
-				spot._wagon.UpdateWeight ();
-			};
-
-			spot.OnSpotFreed += (arg) => 
-			{
-				spot._wagon.containers [wagonContainersIndex] = null;
-				spot._wagon.UpdateWeight ();
-			};
-		}
+			spot._wagon.containers [wagonContainersIndex] = arg;
+			spot._wagon.UpdateWeight ();
+		};
+		
+		spot.OnSpotFreed += (arg) => 
+		{
+			spot._wagon.containers [wagonContainersIndex] = null;
+			spot._wagon.UpdateWeight ();
+		};
 
 		if(spot.container)
 		{
