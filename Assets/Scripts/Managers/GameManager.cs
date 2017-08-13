@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
 {
 	public Action OnMenu;
 	public Action OnPlaying;
+	public Action OnLevelEnd;
 
 	[Header ("Game State")]
 	public GameState gameState = GameState.Playing;
@@ -32,6 +33,14 @@ public class GameManager : Singleton<GameManager>
 
 		if (OnPlaying != null)
 			OnPlaying ();
+	}
+
+	public void EndLevel ()
+	{
+		gameState = GameState.End;
+
+		if (OnLevelEnd != null)
+			OnLevelEnd ();
 	}
 
 	public void LevelEndOrders ()

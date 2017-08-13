@@ -381,7 +381,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 
 			if (trainsToSend == 0)
-				GameManager.Instance.gameState = GameState.End;
+				GameManager.Instance.EndLevel ();
 			
 			if (OrdersManager.Instance.allOrdersSent)
 			{
@@ -458,7 +458,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 
 			if (trainsToSend == 0)
-				GameManager.Instance.gameState = GameState.End;
+				GameManager.Instance.EndLevel ();
 
 			if (OrdersManager.Instance.allOrdersSent)
 			{
