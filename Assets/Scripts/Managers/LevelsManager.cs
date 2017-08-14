@@ -51,6 +51,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	public int trainsToSend;
 	public List<Train_Level> rail1Trains = new List<Train_Level> ();
 	public List<Train_Level> rail2Trains = new List<Train_Level> ();
+	public Text trainsToSendText;
 
 	[Header ("Boats")]
 	public float boatsDuration;
@@ -106,9 +107,10 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		trainsUsed = 0;
 		levelDuration = 0;
-		trainsToSend = 0;
 		currentErrors = 0;
 		errorsLocked = 0;
+
+		UpdateTrainSendCount (0);
 
 		orders.Clear ();
 		storageContainers.Clear ();
@@ -226,14 +228,16 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (rail1Trains.Count > 0)
 		{
 			_rail1Occupied = true;
-			trainsToSend += rail1Trains.Count;
+
+			UpdateTrainSendCount (trainsToSend + rail1Trains.Count);
 			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
 		}
 
 		if (rail2Trains.Count > 0)
 		{
 			_rail2Occupied = true;
-			trainsToSend += rail2Trains.Count;
+
+			UpdateTrainSendCount (trainsToSend + rail2Trains.Count);
 			StartCoroutine (SpawnTrains (rail2Trains, TrainsMovementManager.Instance.rail2));
 		}
 
@@ -291,7 +295,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (currentLevelGenerated.rail1Trains.Count > 0)
 		{
 			_rail1Occupied = true;
-			trainsToSend += currentLevelGenerated.rail1Trains.Count;
+
+			UpdateTrainSendCount (trainsToSend + currentLevelGenerated.rail1Trains.Count);
 
 			bool trainDelayed = false;
 			if (currentLevelGenerated.rail2Trains.Count > 0 && delay == 1)
@@ -303,7 +308,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (currentLevelGenerated.rail2Trains.Count > 0)
 		{
 			_rail2Occupied = true;
-			trainsToSend += currentLevelGenerated.rail2Trains.Count;
+
+			UpdateTrainSendCount (trainsToSend + currentLevelGenerated.rail2Trains.Count);
 
 			bool trainDelayed = false;
 			if (currentLevelGenerated.rail2Trains.Count > 0 && delay == 2)
@@ -371,7 +377,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			CheckConstraints ();
 
 			trainsUsed++;
-			trainsToSend--;
+
+			UpdateTrainSendCount (trainsToSend - 1);
+
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
 			if(errorsLocked > errorsAllowed)
@@ -448,7 +456,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			CheckConstraints ();
 
 			trainsUsed++;
-			trainsToSend--;
+
+			UpdateTrainSendCount (trainsToSend - 1);
+
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
 			if(errorsLocked > errorsAllowed)
@@ -860,6 +870,12 @@ public class LevelsManager : Singleton<LevelsManager>
 			levelDuration++;
 		}
 		while (GameManager.Instance.gameState == GameState.Playing);
+	}
+
+	void UpdateTrainSendCount (int count)
+	{
+		trainsToSend = count;
+		trainsToSendText.text = trainsToSend.ToString ();
 	}
 
 	#region Level Start	
