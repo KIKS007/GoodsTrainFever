@@ -32,6 +32,7 @@ public class MenuManager : Singleton<MenuManager>
 	public MenuComponent endLevelMenu;
 
 	[Header ("Pause Menu")]
+	public Button pauseButton;
 	public MenuComponent pauseMenu;
 
 	[Header ("Menu Trophies")]
@@ -92,6 +93,16 @@ public class MenuManager : Singleton<MenuManager>
 
 		menulevels.SetupLevels ();
 
+		GameManager.Instance.OnPlaying += ()=> 
+		{
+			pauseButton.gameObject.SetActive (true);
+			pauseButton.interactable = true;
+		};
+
+		GameManager.Instance.OnLevelEnd += () => 
+		{
+			pauseButton.interactable = false;
+		};
 
 		if (GameManager.Instance.gameState == GameState.Playing)
 			return;
