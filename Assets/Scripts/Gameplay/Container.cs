@@ -44,6 +44,13 @@ public class Container : Touchable
 	[Header ("Color")]
 	public string shaderColorProperty = "_Albedo1";
 
+	[Header ("UI")]
+	public Text weightText;
+	public Image weightImage; 
+	public CanvasGroup errorsCanvasGroup;
+
+	private bool _showWeightOnSelection = true;
+
 	[HideInInspector]
 	public Mesh _mesh;
 	[HideInInspector]
@@ -52,16 +59,19 @@ public class Container : Touchable
 	[HideInInspector]
 	public Spot[] _pileSpots = new Spot[0];
 	private Material _material;
-	private Text _weightText;
-	private Image _weightImage;
+	private CanvasGroup _weightCanvasGroup;
+	private float _weightImageInitialPosition;
+	private float _errorsInitialScale;
 
 	void Awake ()
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
-		_weightText = transform.GetComponentInChildren<Text> ();
-		_weightImage = transform.GetComponentInChildren<Image> ();
+
+		_weightCanvasGroup = weightImage.transform.GetComponent<CanvasGroup> ();
+		_weightImageInitialPosition = weightImage.rectTransform.anchoredPosition.x;
+		_errorsInitialScale = errorsCanvasGroup.transform.localScale.x;
 
 		OnContainerMoved += IsPileUp;
 		OnContainerMoved += CheckConstraints;
@@ -80,9 +90,10 @@ public class Container : Touchable
 
 		SetIsDoubleSize ();
 
-		//SetupColor ();
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, 0);
 
-		//SetWeight ();
+		ErrorDisplay ();
 	}
 
 	public void Setup (Container_Level container_Level)
@@ -182,10 +193,10 @@ public class Container : Touchable
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 
-		_weightText = transform.GetComponentInChildren<Text> ();
-		_weightImage = transform.GetComponentInChildren<Image> ();
+		weightText = transform.GetComponentInChildren<Text> ();
+		weightImage = transform.GetComponentInChildren<Image> ();
 
-		_weightText.text = weight.ToString ();
+		weightText.text = weight.ToString ();
 
 		Color color = new Color ();
 
@@ -205,7 +216,7 @@ public class Container : Touchable
 			break;
 		}
 
-		_weightImage.color = color;
+		weightImage.color = color;
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -243,6 +254,9 @@ public class Container : Touchable
 
 		selected = true;
 
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+
 		if (OnContainerSelected != null)
 			OnContainerSelected (this);
 	}
@@ -255,6 +269,9 @@ public class Container : Touchable
 		ContainersMovementManager.Instance.StopHover (this);
 
 		selected = false;
+
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
@@ -280,8 +297,6 @@ public class Container : Touchable
 			wagon = spot._wagon;
 			train = wagon.train;
 			TrainsMovementManager.Instance.trainContainerInMotion = train;
-
-			CheckConstraints ();
 		}
 		else
 		{
@@ -291,7 +306,12 @@ public class Container : Touchable
 			allConstraintsRespected = true;
 		}
 
+		CheckConstraints ();
+
 		SetPileSpot ();
+
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
 		if (OnContainerMoved != null)
 			OnContainerMoved ();
@@ -312,7 +332,13 @@ public class Container : Touchable
 	{
 		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
 		{
+			foreach (var c in constraints)
+				c.isRespected = true;
+
 			allConstraintsRespected = true;
+
+			ErrorDisplay ();
+
 			return;
 		}
 
@@ -327,6 +353,8 @@ public class Container : Touchable
 		}
 
 		allConstraintsRespected = allRespected;
+
+		ErrorDisplay ();
 	}
 
 	public bool CheckConstraints (Spot spot)
@@ -465,6 +493,20 @@ public class Container : Touchable
 			_material.SetColor (shaderColorProperty, color);
 
 		UpdateWeightText ();
+	}
+
+	void ErrorDisplay ()
+	{
+		if(allConstraintsRespected)
+		{
+			errorsCanvasGroup.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			weightImage.rectTransform.DOAnchorPosX (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		}
+		else
+		{
+			errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			weightImage.rectTransform.DOAnchorPosX (_weightImageInitialPosition, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		}
 	}
 
 	[PropertyOrder (-1)]
