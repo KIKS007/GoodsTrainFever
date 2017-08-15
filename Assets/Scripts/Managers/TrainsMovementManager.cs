@@ -82,6 +82,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public InputField movementMaxVelocityInput;
 	public InputField movementDecelerationInput;
 
+	[Header ("Train Arrow")]
+	public float trainsVisibleXPosition;
+	public Image train1Arrow;
+	public Image train2Arrow;
+
 	private Vector3 _deltaPosition;
 	private Dictionary<Train, float> _trainsVelocity = new Dictionary<Train, float> ();
 	private List<System.Collections.IEnumerator> _trainsDurationCoroutines = new List<System.Collections.IEnumerator> ();
@@ -109,6 +114,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			if(Time.timeScale != 1)
 				FastForward (false);
 		};
+
+		train1Arrow.gameObject.SetActive (true);
+		train2Arrow.gameObject.SetActive (true);
+
+		train1Arrow.DOFade (0, 0);
+		train2Arrow.DOFade (0, 0);
 
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
 		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainContainerInMotion = null;
@@ -203,6 +214,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				if (selectedTrain && t == selectedTrain || selectedTrain == null)
 					selectedTrainHasMoved = true;
 			}
+
+			TrainArrow (t);
 		}
 	}
 
@@ -326,6 +339,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		}
 
 		train.transform.Translate (position * Time.fixedDeltaTime);
+
 	}
 
 	public Train SpawnTrain (Rail rail, Train_Level train_Level )
@@ -568,6 +582,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	void OnTrainArrived (Rail rail, Train trainScript)
 	{
 		trainScript.inTransition = false;
+
+		TrainArrow (rail.train);
 	}
 
 	IEnumerator TrainDuration (Rail rail, int duration)
@@ -622,6 +638,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train.waitingDeparture = false;
 
 		fastForwardButton.interactable = false;
+
+		TrainArrow (rail.train);
 
 		if (Time.timeScale != 1)
 		{
@@ -702,5 +720,42 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			StopCoroutine (c);
 
 		_trainsDurationCoroutines.Clear ();
+	}
+
+	public void TrainArrow (Train train)
+	{
+		Image trainArrow = null;
+		float xPosition = trainsVisibleXPosition;
+
+		if (train == rail1.train)
+			trainArrow = train1Arrow;
+		else
+		{
+			trainArrow = train2Arrow;
+			xPosition += xDeparturePosition2 - xDeparturePosition1;
+		}
+
+		if(train.inTransition && !train.waitingDeparture)
+		{
+			if (trainArrow.color.a == 1)
+				trainArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+
+			return;
+		}
+
+		if(train.transform.position.x - train.trainLength < xPosition)
+		{
+			if (trainArrow.color.a == 0)
+				trainArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+
+			return;
+		}
+		else
+		{
+			if (trainArrow.color.a == 1)
+				trainArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+
+			return;
+		}
 	}
 }

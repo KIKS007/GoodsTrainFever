@@ -410,8 +410,9 @@ public class OrdersManager : Singleton<OrdersManager>
 			{
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
+
+			return;
 		}
 
 		if(ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage)
@@ -420,8 +421,9 @@ public class OrdersManager : Singleton<OrdersManager>
 			{
 				_arrowVisible = true;
 				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
+
+			return;
 		}
 		else
 		{
@@ -429,8 +431,8 @@ public class OrdersManager : Singleton<OrdersManager>
 			{
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
+			return;
 		}
 	}
 }
