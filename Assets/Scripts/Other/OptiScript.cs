@@ -13,6 +13,8 @@ public class OptiScript : MonoBehaviour
 	[Tooltip ("Time in sec between each Framerate sample")]
 	public float frameRateSamplesTime = 0.2f;
 
+	[Tooltip ("Minimum Resize Downsclae Allowed (0.5f is half the resolution)")]
+	public float downscaleLimit = 0.5f;
 
 
 	private float aspectRatio;
@@ -25,7 +27,6 @@ public class OptiScript : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log ("Start");
 		aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
 		if (PlayerPrefs.GetInt ("FramerateDeviceHeight", 0) != 0) {
 			int tmpDeciveHeight = PlayerPrefs.GetInt ("FramerateDeviceHeight", Screen.currentResolution.height);
@@ -39,8 +40,7 @@ public class OptiScript : MonoBehaviour
 
 	private void Resize ()
 	{
-		Debug.Log ("Resizing");
-		if (f > 0.5f) {
+		if (f > downscaleLimit) {
 			f -= .1f;
 			Debug.Log ("f= " + f);
 			framerateDeviceHeight = (int)(deviceHeight * f);
@@ -55,14 +55,12 @@ public class OptiScript : MonoBehaviour
 
 	private void ActivateFramerateAnalyser ()
 	{
-		Debug.Log ("Starting Analyser");
 		StopCoroutine ("AnalyseFramerate");
 		StartCoroutine (AnalyseFramerate ());
 	}
 
 	private void SaveCurrentRes ()
 	{
-		Debug.Log ("Saving Res");
 		StopCoroutine ("AnalyseFramerate");
 		framerateSamples.Clear ();
 		PlayerPrefs.SetInt ("FramerateDeviceHeight", framerateDeviceHeight);
@@ -70,16 +68,15 @@ public class OptiScript : MonoBehaviour
 
 	private void SaveDeviceRes ()
 	{
-		Debug.Log ("Saving Default Res");
 		PlayerPrefs.SetInt ("DefaultDeviceHeight", deviceHeight);
 	}
 
 	public void ResetAndAnalyse ()
 	{
-		Debug.Log ("Reset Analyse");
 		f = 1;
 		PlayerPrefs.DeleteKey ("FramerateDeviceHeight");
 		Screen.SetResolution ((int)(PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height) * aspectRatio), PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height), true);
+		deviceHeight = PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height);
 		Invoke ("ActivateFramerateAnalyser", 2f);
 	}
 
@@ -87,12 +84,10 @@ public class OptiScript : MonoBehaviour
 	IEnumerator AnalyseFramerate ()
 	{
 		if (framerateSamples.Count < frameRateSamples) {
-			Debug.Log ("Adding Framerate");
 			framerateSamples.Add ((Mathf.RoundToInt (1.0f / Time.smoothDeltaTime)));
 			yield return new WaitForSeconds (frameRateSamplesTime);
 			ActivateFramerateAnalyser ();
 		} else {
-			Debug.Log ("Calculating...");
 			float tmpfloat = 0f;
 			foreach (float value in framerateSamples) {
 				tmpfloat += value;

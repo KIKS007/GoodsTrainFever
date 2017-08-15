@@ -80,7 +80,9 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void UnlockAllLevels ()
 	{
-		
+		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
+			UnlockStars (100, 1, i);
+		}
 	}
 
 	public void LoadLevelStars ()
