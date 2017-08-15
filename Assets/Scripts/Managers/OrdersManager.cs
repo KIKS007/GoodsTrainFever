@@ -387,14 +387,14 @@ public class OrdersManager : Singleton<OrdersManager>
 			if (_arrowVisible) {
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
 		} else {
 			if (!_arrowVisible) {
 				_arrowVisible = true;
 				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
+
+			return;
 		}
 		/*if (ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage) {
 			if (!_arrowVisible) {
@@ -406,7 +406,6 @@ public class OrdersManager : Singleton<OrdersManager>
 			if (_arrowVisible) {
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-				return;
 			}
 		}*/
 	}
