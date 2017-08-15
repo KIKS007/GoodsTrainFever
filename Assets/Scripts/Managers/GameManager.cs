@@ -91,7 +91,6 @@ public class GameManager : Singleton<GameManager>
 
 	public void ResetPlayerPrefs ()
 	{
-		Debug.Log ("WAT");
 		PlayerPrefs.DeleteAll ();
 	}
 }
