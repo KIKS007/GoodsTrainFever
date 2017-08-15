@@ -5,7 +5,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
-public class OrdersManager : Singleton<OrdersManager> 
+public class OrdersManager : Singleton<OrdersManager>
 {
 	public RectTransform removeOrderTest;
 	public Order_Level levelOrderTest;
@@ -73,19 +73,18 @@ public class OrdersManager : Singleton<OrdersManager>
 	private bool _arrowVisible = false;
 
 	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
 		_fadeInValue = ordersCanvasGroup.alpha;
 
-		Container.OnContainerSelected += (c)=> FadeOutGroup ();
-		Container.OnContainerDeselected += (c)=> FadeInGroup ();
+		Container.OnContainerSelected += (c) => FadeOutGroup ();
+		Container.OnContainerDeselected += (c) => FadeInGroup ();
 
 		Container.OnContainerSelected += ContainerSelected;
 
 		Train.OnContainerAdded += ContainerAdded;
 		Train.OnContainerRemoved += ContainerRemoved;
-
-		moreOrdersArrow.gameObject.SetActive (true);
+		moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 
 		UpdateOrdersLayout ();
 	}
@@ -95,35 +94,31 @@ public class OrdersManager : Singleton<OrdersManager>
 		var containers = new List<Container> (trainContainers);
 		var currentOrders = new List<Order_UI> (orders);
 
-		foreach(var c in containers)
-		{
+		foreach (var c in containers) {
 			if (c == null)
 				continue;
 
 			currentOrders.Clear ();
 			currentOrders = new List<Order_UI> (orders);
 
-			foreach(var o in currentOrders)
-			{
-				if (o.ContainerSent (c))
-				{
+			foreach (var o in currentOrders) {
+				if (o.ContainerSent (c)) {
 					//Debug.Log ("Container Valid");
 				}
 
-				if (o.isSent)
-				{
+				if (o.isSent) {
 					ordersSentCount++;
 					//o.OrderSent ();
 					LevelsManager.Instance.OrderSent (o.orderLevel);
 					RemoveOrder (o, removeOrderLayoutDelay);
 
-					if(ordersSentCount == ordersCount || currentOrders.Count == 0)
+					if (ordersSentCount == ordersCount || currentOrders.Count == 0)
 						allOrdersSent = true;
 				}
 			}
 		}
 
-		if(ordersSentCount == ordersCount || currentOrders.Count == 0)
+		if (ordersSentCount == ordersCount || currentOrders.Count == 0)
 			allOrdersSent = true;
 	}
 
@@ -132,10 +127,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		if (orders.Count == 0)
 			return;
 
-		foreach(var o in orders)
-		{
-			if (o.ContainerAdded (container))
-			{
+		foreach (var o in orders) {
+			if (o.ContainerAdded (container)) {
 				//Debug.Log ("Container Valid");
 				return;
 			}
@@ -154,10 +147,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		if (containersFromNoOrder.Contains (container))
 			containersFromNoOrder.Remove (container);
 		
-		foreach(var o in orders)
-		{
-			if (o.ContainerRemoved (container))
-			{
+		foreach (var o in orders) {
+			if (o.ContainerRemoved (container)) {
 				//Debug.Log ("Container Valid");
 				return;
 			}
@@ -171,8 +162,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		if (orders.Count == 0)
 			return;
 
-		foreach(var o in orders)
-		{
+		foreach (var o in orders) {
 			if (o.ContainerSelected (container))
 				return;
 		}
@@ -190,8 +180,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		Vector2 previousPosition = new Vector2 ();
 		float previousWidth = 0f;
 
-		for(int i = 0; i <  ordersScrollView.transform.childCount; i++)
-		{
+		for (int i = 0; i < ordersScrollView.transform.childCount; i++) {
 			Vector2 position = new Vector2 ();
 			RectTransform rect = ordersScrollView.transform.GetChild (i).GetComponent<RectTransform> ();
 
@@ -201,13 +190,11 @@ public class OrdersManager : Singleton<OrdersManager>
 			position.y = topPadding;
 			position.x += rect.sizeDelta.x * 0.5f;
 
-			if(i > 0)
-			{
+			if (i > 0) {
 				position.x += previousPosition.x;
 				position.x += previousWidth * 0.5f;
 				position.x += ordersSpacing;
-			}
-			else
+			} else
 				position.x += leftPadding;
 
 			DOTween.Kill (rect);
@@ -226,7 +213,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		MoreOrdersArrow ();
 	}
-		
+
 	public void RemoveOrder (Order_UI order, float delay = 0, bool animated = true)
 	{
 		StartCoroutine (RemoveOrderCoroutine (order, delay, animated));
@@ -244,14 +231,11 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		RectTransform orderRect = order.GetComponent<RectTransform> ();
 
-		if(animated)
-		{
-			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).SetUpdate (true).OnComplete (()=> Destroy (order.gameObject));
+		if (animated) {
+			orderRect.DOAnchorPos (orderRect.anchoredPosition + removeOrderLocalPosition, removeOrderDuration).SetUpdate (true).OnComplete (() => Destroy (order.gameObject));
 			yield return new WaitForSeconds (removeOrderDuration);
 			UpdateOrdersLayout (true, orderRect);
-		}
-		else
-		{
+		} else {
 			Destroy (order.gameObject);
 			UpdateOrdersLayout (true, orderRect);
 		}
@@ -266,8 +250,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void AddOrder (Order_Level levelOrder)
 	{
-		if(levelOrder == null)
-		{
+		if (levelOrder == null) {
 			Debug.LogError ("Invalid LevelOrder!", this);
 			return;
 		}
@@ -291,10 +274,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		int linesCount = 0;
 		int rowsCount = 1;
 
-		foreach(var c in levelOrder.levelContainers)
-		{
-			if (linesCount == maxLinesCount)
-			{
+		foreach (var c in levelOrder.levelContainers) {
+			if (linesCount == maxLinesCount) {
 				linesCount = 0;
 				rowsCount++;
 			}
@@ -345,10 +326,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		int linesCount = 0;
 		int rowsCount = 1;
 
-		for(int i = 1; i < panel.childCount; i++)
-		{
-			if (linesCount == maxLinesCount)
-			{
+		for (int i = 1; i < panel.childCount; i++) {
+			if (linesCount == maxLinesCount) {
 				linesCount = 0;
 				rowsCount++;
 			}
@@ -356,7 +335,7 @@ public class OrdersManager : Singleton<OrdersManager>
 			RectTransform rect = panel.GetChild (i).GetComponent<RectTransform> ();
 			Vector2 position = rect.anchoredPosition;
 
-			position.x = (ordersPanelWidth * 0.5f) + containersRowSpacing + ( (rowsCount - 1) * (ordersPanelWidth + containersRowSpacing) );
+			position.x = (ordersPanelWidth * 0.5f) + containersRowSpacing + ((rowsCount - 1) * (ordersPanelWidth + containersRowSpacing));
 
 			rect.anchoredPosition = position;
 
@@ -383,7 +362,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	{
 		DOTween.Kill (ordersCanvasGroup);
 
-		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (()=> ordersHidden = false);
+		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
 	}
 
 	public void ClearOrders (bool animated)
@@ -404,33 +383,31 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void MoreOrdersArrow ()
 	{
-		if (ordersScrollView.sizeDelta.x <= moreOrdersOutOfScreenSize)
-		{
-			if(_arrowVisible)
-			{
+		if (ordersScrollView.sizeDelta.x <= moreOrdersOutOfScreenSize) {
+			if (_arrowVisible) {
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 				return;
 			}
-		}
-
-		if(ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage)
-		{
-			if(!_arrowVisible)
-			{
+		} else {
+			if (!_arrowVisible) {
 				_arrowVisible = true;
 				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
 				return;
 			}
 		}
-		else
-		{
-			if(_arrowVisible)
-			{
+		/*if (ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage) {
+			if (!_arrowVisible) {
+				_arrowVisible = true;
+				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+				return;
+			}
+		} else {
+			if (_arrowVisible) {
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 				return;
 			}
-		}
+		}*/
 	}
 }
