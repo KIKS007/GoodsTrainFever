@@ -100,6 +100,43 @@ public class Order_UI : MonoBehaviour
 		return false;
 	}
 
+	public bool ContainerSelected (Container container)
+	{
+		foreach(var c in containers)
+		{
+			if(c.container != null && c.container == container)
+			{
+				c.ContainerSelected ();
+
+				return true;
+			}
+		}
+
+		foreach(var c in containers)
+		{
+			if (c.isSent)
+				continue;
+
+			if (c.neededCount == 0)
+				continue;
+
+			if (c.containerLevel.containerColor != container.containerColor)
+				continue;
+
+			if (c.containerLevel.containerType != container.containerType)
+				continue;
+
+			if (c.containerLevel.isDoubleSize != container.isDoubleSize)
+				continue;
+
+			c.ContainerSelected ();
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public bool ContainerRemoved (Container container)
 	{
 		List<Container_UI> containersTemp = new List<Container_UI> (containers);

@@ -31,6 +31,8 @@ public class Container_UI : MonoBehaviour
 
 		preparedCount = 0;
 		preparedCountText.enabled = false;
+
+		Container.OnContainerDeselected += ContainerDeselected;
 	}
 
 	public void Setup (Container_Level c)
@@ -97,6 +99,20 @@ public class Container_UI : MonoBehaviour
 		StartCoroutine (ContainerAddedFeedback ());
 	}
 
+	public void ContainerSelected ()
+	{
+		_canvasGroup.ignoreParentGroups = true;
+	}
+
+	public void ContainerDeselected (Container c)
+	{
+		DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
+			
+			_canvasGroup.ignoreParentGroups = false;
+		});
+
+	}
+
 	IEnumerator ContainerAddedFeedback ()
 	{
 		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
@@ -150,5 +166,10 @@ public class Container_UI : MonoBehaviour
 		}
 		else
 			preparedCountText.enabled = false;
+	}
+
+	void OnDestroy ()
+	{
+		Container.OnContainerDeselected -= ContainerDeselected;
 	}
 }

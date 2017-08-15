@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
 
 public class OrdersManager : Singleton<OrdersManager> 
 {
@@ -22,6 +23,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public Canvas UICanvas;
 	public CanvasGroup ordersCanvasGroup;
 	public RectTransform ordersScrollView;
+	public ScrollRect ordersScrollRect;
 
 	[Header ("Orders Feedback")]
 	public float containerFeedbackPunchScale = 0.3f;
@@ -34,6 +36,12 @@ public class OrdersManager : Singleton<OrdersManager>
 	public GameObject orderPanel;
 	public GameObject container20;
 	public GameObject container40;
+
+	[Header ("Arrow")]
+	public Image moreOrdersArrow;
+	public float moreOrdersOutOfScreenSize;
+	[Range (0, 100)]
+	public int moreOrdersEndPercentage;
 
 	[Header ("Orders Layout")]
 	public float ordersPanelWidth = 165f;
@@ -62,6 +70,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public float fadeInDelay = 0.1f;
 
 	private float _fadeInValue;
+	private bool _arrowVisible = false;
 
 	// Use this for initialization
 	void Start () 
@@ -71,8 +80,12 @@ public class OrdersManager : Singleton<OrdersManager>
 		Container.OnContainerSelected += (c)=> FadeOutGroup ();
 		Container.OnContainerDeselected += (c)=> FadeInGroup ();
 
+		Container.OnContainerSelected += ContainerSelected;
+
 		Train.OnContainerAdded += ContainerAdded;
 		Train.OnContainerRemoved += ContainerRemoved;
+
+		moreOrdersArrow.gameObject.SetActive (true);
 
 		UpdateOrdersLayout ();
 	}
@@ -153,6 +166,18 @@ public class OrdersManager : Singleton<OrdersManager>
 		//Debug.Log ("No Container");
 	}
 
+	void ContainerSelected (Container container)
+	{
+		if (orders.Count == 0)
+			return;
+
+		foreach(var o in orders)
+		{
+			if (o.ContainerSelected (container))
+				return;
+		}
+	}
+
 	[PropertyOrder (-1)]
 	[Button ("Update Orders Layout")]
 	void UpdateOrdersLayoutTest ()
@@ -198,6 +223,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 
 		ordersScrollView.sizeDelta = new Vector2 (previousPosition.x + previousWidth * 0.5f + ordersSpacing, ordersScrollView.sizeDelta.y);
+
+		MoreOrdersArrow ();
 	}
 		
 	public void RemoveOrder (Order_UI order, float delay = 0, bool animated = true)
@@ -373,5 +400,37 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		foreach (Transform t in ordersScrollView)
 			Destroy (t.gameObject);
+	}
+
+	public void MoreOrdersArrow ()
+	{
+		if (ordersScrollView.sizeDelta.x <= moreOrdersOutOfScreenSize)
+		{
+			if(_arrowVisible)
+			{
+				_arrowVisible = false;
+				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+				return;
+			}
+		}
+
+		if(ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage)
+		{
+			if(!_arrowVisible)
+			{
+				_arrowVisible = true;
+				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+				return;
+			}
+		}
+		else
+		{
+			if(_arrowVisible)
+			{
+				_arrowVisible = false;
+				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+				return;
+			}
+		}
 	}
 }
