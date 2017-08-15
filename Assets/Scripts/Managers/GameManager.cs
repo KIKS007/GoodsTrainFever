@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum GameState { Menu, Playing, Pause, End }
+public enum GameState
+{
+	Menu,
+	Playing,
+	Pause,
+	End
 
-public enum LevelEndType { Orders, Trains, Errors }
+}
 
-public class GameManager : Singleton<GameManager> 
+public enum LevelEndType
+{
+	Orders,
+	Trains,
+	Errors
+
+}
+
+public class GameManager : Singleton<GameManager>
 {
 	public Action OnMenu;
 	public Action OnPlaying;
@@ -17,14 +30,9 @@ public class GameManager : Singleton<GameManager>
 	public GameState gameState = GameState.Playing;
 
 	// Use this for initialization
-	void Awake () 
+	void Awake ()
 	{
 		Application.targetFrameRate = -1;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void StartLevel ()
@@ -65,8 +73,7 @@ public class GameManager : Singleton<GameManager>
 
 		gameState = GameState.Menu;
 
-		switch (levelEndType)
-		{
+		switch (levelEndType) {
 		case LevelEndType.Orders:
 			LevelEndOrders ();
 			break;
@@ -81,4 +88,11 @@ public class GameManager : Singleton<GameManager>
 		if (OnMenu != null)
 			OnMenu ();
 	}
+
+	public void ResetPlayerPrefs ()
+	{
+		Debug.Log ("WAT");
+		PlayerPrefs.DeleteAll ();
+	}
 }
+

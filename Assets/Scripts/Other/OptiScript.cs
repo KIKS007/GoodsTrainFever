@@ -4,81 +4,96 @@ using UnityEngine;
 
 public class OptiScript : MonoBehaviour
 {
-	public float aspectRatio;
-	public float frameCount = 180;
+	[Tooltip ("Framerate Targeted")]
 	public float frameRateAvarageTarget = 30;
-	private List<float> StartFramerate = new List<float> ();
-	private bool Analyse = false;
-	private float deviceHeight;
+
+	[Tooltip ("Number of Framerate Sample taken before ajusting Resolution")]
+	public float frameRateSamples = 9;
+
+	[Tooltip ("Time in sec between each Framerate sample")]
+	public float frameRateSamplesTime = 0.2f;
+
+
+
+	private float aspectRatio;
+	private List<float> framerateSamples = new List<float> ();
+	private int deviceHeight;
 	private float f = 1;
 	private int framerateDeviceHeight;
 	// Use this for initialization
+
+
+	void Start ()
+	{
+		Debug.Log ("TEST");
+		aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
+		if (PlayerPrefs.GetInt ("FramerateDeviceHeight", 0) != 0) {
+			int tmpDeciveHeight = PlayerPrefs.GetInt ("FramerateDeviceHeight", Screen.currentResolution.height);
+			Screen.SetResolution ((int)(tmpDeciveHeight * aspectRatio), tmpDeciveHeight, true);
+		} else {
+			deviceHeight = Screen.currentResolution.height;
+			SaveDeviceRes ();
+			Invoke ("ActivateFramerateAnalyser", 2);
+		}
+	}
+
 	private void Resize ()
 	{
 		if (f > 0.5f) {
 			f -= .1f;
-			aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
 			framerateDeviceHeight = (int)(deviceHeight * f);
 			Screen.SetResolution ((int)(framerateDeviceHeight * aspectRatio), framerateDeviceHeight, true);
-			StartFramerate.Clear ();
-			Analyse = true;
+			ActivateFramerateAnalyser ();
 		} else {
-			StartFramerate.Clear ();
 			SaveCurrentRes ();
 		}
 
 	}
 
-	void Start ()
+	private void ActivateFramerateAnalyser ()
 	{
-		if (PlayerPrefs.GetInt ("FramerateDeviceHeight", 0) != 0) {
-			int tmpDeciveHeight = PlayerPrefs.GetInt ("FramerateDeviceHeight", Screen.currentResolution.height);
-			aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
-			Screen.SetResolution ((int)(tmpDeciveHeight * aspectRatio), tmpDeciveHeight, true);
-		} else {
-			deviceHeight = Screen.currentResolution.height;
-			Invoke ("ActivateFramerateAnalyser", 2);
-			
-		}
-	}
-
-	void ActivateFramerateAnalyser ()
-	{
-		Analyse = true;
-	}
-
-	void Update ()
-	{
-		if (Analyse) {
-			if (StartFramerate.Count < frameCount) {
-				StartFramerate.Add ((Mathf.RoundToInt (1.0f / Time.smoothDeltaTime)));
-			} else {
-				Analyse = false;
-				float tmpfloat = 0f;
-				foreach (float value in StartFramerate) {
-					tmpfloat += value;
-				}
-				if ((tmpfloat / frameCount) < frameRateAvarageTarget) {
-					Resize ();
-				} else {
-					SaveCurrentRes ();
-					StartFramerate.Clear ();
-				}
-
-			}
-		}
+		
+		StopCoroutine ("AnalyseFramerate");
+		framerateSamples.Clear ();
+		StartCoroutine (AnalyseFramerate ());
 	}
 
 	private void SaveCurrentRes ()
 	{
+		StopCoroutine ("AnalyseFramerate");
+		framerateSamples.Clear ();
 		PlayerPrefs.SetInt ("FramerateDeviceHeight", framerateDeviceHeight);
+	}
+
+	private void SaveDeviceRes ()
+	{
+		PlayerPrefs.SetInt ("DefaultDeviceHeight", deviceHeight);
 	}
 
 	public void ResetAndAnalyse ()
 	{
 		PlayerPrefs.DeleteKey ("FramerateDeviceHeight");
-		aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
-		Screen.SetResolution ((int)(Screen.currentResolution.height * aspectRatio), Screen.currentResolution.height, true);
-		Analyse = true;
+		Screen.SetResolution ((int)(PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height) * aspectRatio), PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height), true);
+		ActivateFramerateAnalyser ();
+	}
+
+
+	IEnumerator AnalyseFramerate ()
+	{
+		if (framerateSamples.Count < frameRateSamples) {
+			framerateSamples.Add ((Mathf.RoundToInt (1.0f / Time.smoothDeltaTime)));
+			yield return new WaitForSeconds (frameRateSamplesTime);
+			ActivateFramerateAnalyser ();
+		} else {
+			float tmpfloat = 0f;
+			foreach (float value in framerateSamples) {
+				tmpfloat += value;
+			}
+			if ((tmpfloat / frameRateSamples) < frameRateAvarageTarget) {
+				Resize ();
+			} else {
+				SaveCurrentRes ();
+			}
+		}
 	}
 }
