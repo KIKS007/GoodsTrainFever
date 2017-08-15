@@ -42,14 +42,14 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	[PropertyOrder (-1)]
 	[ButtonAttribute]
-	void DeletePlayerPrefs ()
+	public void DeletePlayerPrefs ()
 	{
 		PlayerPrefs.DeleteAll ();
 
 		if (Application.isPlaying)
 			saveOnStop = false;
 	}
-	
+
 	public bool IsLevelUnlocked (int levelIndex)
 	{
 		return menuLevels._levelsMenu [levelIndex].isUnlocked;
@@ -57,13 +57,11 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void OnLevelStart ()
 	{
-		foreach(Transform t in LevelsManager.Instance.transform)
-		{
+		foreach (Transform t in LevelsManager.Instance.transform) {
 			Level level = t.GetComponent<Level> ();
 
 
-			for(int i = 0; i < 3; i++)
-			{
+			for (int i = 0; i < 3; i++) {
 				if (level.starsStates [i] == StarState.Unlocked)
 					level.starsStates [i] = StarState.Saved;
 				
@@ -73,17 +71,27 @@ public class ScoreManager : Singleton<ScoreManager>
 		}
 	}
 
+	public void ResetAllLevelsStars ()
+	{
+		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
+			ResetLevelStars (i);
+		}
+	}
+
+	public void UnlockAllLevels ()
+	{
+		
+	}
+
 	public void LoadLevelStars ()
 	{
-		for(int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 
 			if (PlayerPrefs.HasKey ("Stars" + i))
 				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
 			
-			for (int j = 0; j < 3; j++)
-			{
+			for (int j = 0; j < 3; j++) {
 				if (j < level.starsEarned)
 					level.starsStates [j] = StarState.Saved;
 				else
@@ -101,8 +109,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void SaveLevelStars ()
 	{
-		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.levelsCount; i++) {
 			PlayerPrefs.SetInt ("Stars" + i, LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ().starsEarned);	
 		}
 	}
@@ -119,7 +126,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 		level.starsEarned = 0;
 
-		for(int i = 0; i < level.starsStates.Length; i++)
+		for (int i = 0; i < level.starsStates.Length; i++)
 			level.starsStates [i] = StarState.Locked;
 
 		FindObjectOfType<MenuLevels> ().UpdateLevels ();
@@ -129,8 +136,7 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		starsEarned = 0;
 
-		foreach(Transform t in LevelsManager.Instance.transform)
-		{
+		foreach (Transform t in LevelsManager.Instance.transform) {
 			Level level = t.GetComponent<Level> ();
 			
 			starsEarned += level.starsEarned;
@@ -158,15 +164,13 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void FirstStar (int ordersPercentage, Level level, int levelIndex)
 	{
-		if(!PlayerPrefs.HasKey ("FirstStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed)
-		{
+		if (!PlayerPrefs.HasKey ("FirstStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed) {
 			level.starsStates [0] = StarState.ErrorLocked;
 			success = false;
 			return;
 		}
 
-		if(ordersPercentage >= stars1OrdersPercentage)
-		{
+		if (ordersPercentage >= stars1OrdersPercentage) {
 			success = true;
 
 			if (PlayerPrefs.HasKey ("FirstStar" + levelIndex))
@@ -176,26 +180,22 @@ public class ScoreManager : Singleton<ScoreManager>
 			PlayerPrefs.SetInt ("FirstStar" + levelIndex, 1);
 
 			level.starsStates [0] = StarState.Unlocked;
-		}
-		else
+		} else
 			success = false;
 	}
 
 	void SecondStar (int ordersPercentage, Level level, int levelIndex)
 	{
-		if(!PlayerPrefs.HasKey ("SecondStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed)
-		{
+		if (!PlayerPrefs.HasKey ("SecondStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed) {
 			level.starsStates [1] = StarState.ErrorLocked;
 			level.starsStates [2] = StarState.ErrorLocked;
 			return;
 		}
 
-		if(ordersPercentage >= stars2OrdersPercentage)
-		{
+		if (ordersPercentage >= stars2OrdersPercentage) {
 			//LeastTrainsStar (trainsCount, level, levelIndex);
 
-			if (!PlayerPrefs.HasKey ("SecondStar" + levelIndex))
-			{
+			if (!PlayerPrefs.HasKey ("SecondStar" + levelIndex)) {
 				level.starsEarned++;
 				PlayerPrefs.SetInt ("SecondStar" + levelIndex, 1);
 
@@ -209,25 +209,22 @@ public class ScoreManager : Singleton<ScoreManager>
 		if (PlayerPrefs.HasKey ("ThirdStar" + levelIndex))
 			return;
 
-		if (LevelsManager.Instance.errorsLocked > 0)
-		{
+		if (LevelsManager.Instance.errorsLocked > 0) {
 			level.starsStates [2] = StarState.ErrorLocked;
 			return;
 		}
 
-		if(ordersPercentage >= stars3OrdersPercentage)
-		{
+		if (ordersPercentage >= stars3OrdersPercentage) {
 			level.starsEarned++;
 			PlayerPrefs.SetInt ("ThirdStar" + levelIndex, 1);
 
 			level.starsStates [2] = StarState.Unlocked;
 		}
 	}
-		
+
 	void OnApplicationQuit ()
 	{
-		if (saveOnStop)
-		{
+		if (saveOnStop) {
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
 		}
@@ -235,8 +232,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void OnApplicationFocus (bool hasFocus)
 	{
-		if (saveOnStop && !hasFocus)
-		{
+		if (saveOnStop && !hasFocus) {
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
 		}

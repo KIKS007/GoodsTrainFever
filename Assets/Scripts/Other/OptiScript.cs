@@ -42,9 +42,11 @@ public class OptiScript : MonoBehaviour
 		Debug.Log ("Resizing");
 		if (f > 0.5f) {
 			f -= .1f;
+			Debug.Log ("f= " + f);
 			framerateDeviceHeight = (int)(deviceHeight * f);
 			Screen.SetResolution ((int)(framerateDeviceHeight * aspectRatio), framerateDeviceHeight, true);
-			ActivateFramerateAnalyser ();
+			framerateSamples.Clear ();
+			Invoke ("ActivateFramerateAnalyser", 1);
 		} else {
 			SaveCurrentRes ();
 		}
@@ -78,7 +80,7 @@ public class OptiScript : MonoBehaviour
 		f = 1;
 		PlayerPrefs.DeleteKey ("FramerateDeviceHeight");
 		Screen.SetResolution ((int)(PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height) * aspectRatio), PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height), true);
-		ActivateFramerateAnalyser ();
+		Invoke ("ActivateFramerateAnalyser", 2f);
 	}
 
 
