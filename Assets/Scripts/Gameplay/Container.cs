@@ -465,7 +465,6 @@ public class Container : Touchable
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
-
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
