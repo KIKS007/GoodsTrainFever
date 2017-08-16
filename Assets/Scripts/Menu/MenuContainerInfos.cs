@@ -6,9 +6,17 @@ using System.Reflection;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
-public enum ConstraintType { LimitedPerTrain_Constraint, LimitedPerWagon_Constraint, NotNextTo_Constraint, NotOnTrainCenter_Constraint, NotOnTrainExtremities_Constraint }
+public enum ConstraintType
+{
+	LimitedPerTrain_Constraint,
+	LimitedPerWagon_Constraint,
+	NotNextTo_Constraint,
+	NotOnTrainCenter_Constraint,
+	NotOnTrainExtremities_Constraint
 
-public class MenuContainerInfos : MenuComponent 
+}
+
+public class MenuContainerInfos : MenuComponent
 {
 	[Header ("Infos Button")]
 	public Button infosButton;
@@ -37,13 +45,13 @@ public class MenuContainerInfos : MenuComponent
 		Container.OnContainerSelected += ChangeButtonColor;
 		Container.OnContainerMoved += () => ChangeButtonColor (_selectedContainer);
 
+		GlobalVariables.Instance.containerInfos = this;
+
 		infosButton.interactable = false;
 		Container.OnContainerSelected += (c) => infosButton.interactable = true;
 
-		TrainsMovementManager.Instance.OnTrainDeparture += (arg) =>
-		{
-			if(arg.containers.Contains (_selectedContainer))
-			{
+		TrainsMovementManager.Instance.OnTrainDeparture += (arg) => {
+			if (arg.containers.Contains (_selectedContainer)) {
 				_selectedContainer = null;
 				infosButton.interactable = false;
 				infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
@@ -55,8 +63,7 @@ public class MenuContainerInfos : MenuComponent
 	{
 		if (container.allConstraintsRespected)
 			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
-		else
-		{
+		else {
 			infosButtonImage.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
 			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonNotRespectedColor, MenuManager.Instance.menuAnimationDuration);
 		}
@@ -78,8 +85,7 @@ public class MenuContainerInfos : MenuComponent
 
 		Vector2 position = constraintPosition;
 
-		for(int i = 0; i < _selectedContainer.constraints.Count; i++)
-		{
+		for (int i = 0; i < _selectedContainer.constraints.Count; i++) {
 			Constraint constraintScript = _selectedContainer.constraints [i].constraint;
 
 			RectTransform constraint = (Instantiate (constraintPrefab, Vector3.zero, Quaternion.identity, constraintsParent.transform).GetComponent<RectTransform> ());
@@ -88,18 +94,14 @@ public class MenuContainerInfos : MenuComponent
 			constraint.anchoredPosition = position;
 
 			//Change Description
-			foreach (var d in descriptions)
-			{
-				if(d.constraintType.ToString () == constraintScript.GetType ().ToString ())
-				{
+			foreach (var d in descriptions) {
+				if (d.constraintType.ToString () == constraintScript.GetType ().ToString ()) {
 					constraint.GetComponent<Text> ().text = d.title;
 					constraint.GetChild (0).GetComponent<Text> ().text = d.description;
 
 					//Replace Dollar
-					if(d.replaceDollar)
-					{
-						if (constraintScript.GetType ().GetField (d.propertyName) == null)
-						{
+					if (d.replaceDollar) {
+						if (constraintScript.GetType ().GetField (d.propertyName) == null) {
 							Debug.LogError ("Wrong Field Name!", this);
 							break;
 						}
@@ -114,13 +116,10 @@ public class MenuContainerInfos : MenuComponent
 				}
 			}
 
-			if(_selectedContainer.constraints [i].isRespected)
-			{
+			if (_selectedContainer.constraints [i].isRespected) {
 				constraint.GetChild (0).GetChild (0).gameObject.SetActive (true);
 				constraint.GetChild (0).GetChild (1).gameObject.SetActive (false);
-			}
-			else
-			{
+			} else {
 				constraint.GetChild (0).GetChild (0).gameObject.SetActive (false);
 				constraint.GetChild (0).GetChild (1).gameObject.SetActive (true);
 			}

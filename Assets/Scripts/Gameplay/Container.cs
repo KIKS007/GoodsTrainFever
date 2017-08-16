@@ -89,6 +89,7 @@ public class Container : Touchable
 		_weightImageInitialPosition = weightImage.rectTransform.anchoredPosition.x;
 		_errorsInitialScale = errorsCanvasGroup.transform.localScale.x;
 
+
 		OnContainerMoved += IsPileUp;
 		OnContainerMoved += CheckConstraints;
 		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
@@ -265,6 +266,7 @@ public class Container : Touchable
 
 		selected = true;
 		_errorDisplayed = false;
+		errorsCanvasGroup.transform.DOKill (true);
 		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce);
 
 		if (_showWeightOnSelection)
@@ -282,7 +284,7 @@ public class Container : Touchable
 		ContainersMovementManager.Instance.StopHover (this);
 
 		selected = false;
-
+		CheckConstraints ();
 		if (_showWeightOnSelection)
 			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
@@ -495,13 +497,15 @@ public class Container : Touchable
 		UpdateWeightText ();
 	}
 
+	public void ShowContainerInfosMenu ()
+	{
+		//TEMPORARY UGLY THING
+		Select ();
+		MenuManager.Instance.PauseAndShowMenu (GlobalVariables.Instance.containerInfos);
+	}
+
 	void ErrorDisplay ()
 	{
-		/*if (ContainersMovementManager.Instance.selectedContainer == this) {
-			
-		}*/
-
-
 		if (allConstraintsRespected) {
 			errorsCanvasGroup.transform.DOKill (true);
 			weightImage.rectTransform.DOKill (true);
@@ -514,13 +518,38 @@ public class Container : Touchable
 				weightImage.rectTransform.DOKill (true);
 				DOVirtual.DelayedCall (0.3f, () => {
 					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (Ease.Linear).OnComplete (() => {
-						errorsCanvasGroup.transform.DOPunchScale (Vector3.one / 4, 0.2f, 3);
+						errorsCanvasGroup.transform.DOPunchScale (Vector3.one / 6, 0.2f, 3).OnComplete (() => {
+							ErrorBreathing ();
+						});
 					});
 				});
 
 				weightImage.rectTransform.DOAnchorPosX (_weightImageInitialPosition, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 			}
 		}
+	}
+
+	private void ErrorBreathing ()
+	{
+		if (_errorDisplayed) {
+			errorsCanvasGroup.transform.DOScale (_errorsInitialScale + 0.05f, 0.4f).SetEase (Ease.Linear).OnComplete (() => {
+				if (_errorDisplayed) {
+					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, 0.4f).SetEase (Ease.Linear).OnComplete (() => {
+						if (_errorDisplayed) {
+							ErrorBreathing ();
+						} else {
+							return;
+						}
+					});
+				} else {
+					return;
+				}
+
+			});
+		} else {
+			return;
+		}
+
 	}
 
 	[PropertyOrder (-1)]
