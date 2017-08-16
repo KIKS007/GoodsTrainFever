@@ -19,6 +19,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("Parents")]
 	public Transform gameplayParent;
 	public Transform extraContainersParent;
+	public Transform cameraPosition;
 
 	[Header ("Container Color")]
 	public Color redColor;

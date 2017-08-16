@@ -77,6 +77,7 @@ public class Container : Touchable
 	private CanvasGroup _weightCanvasGroup;
 	private float _weightImageInitialPosition;
 	private float _errorsInitialScale;
+	private bool _errorDisplayed = false;
 
 	void Awake ()
 	{
@@ -263,6 +264,8 @@ public class Container : Touchable
 		ContainersMovementManager.Instance.StartHover (this);
 
 		selected = true;
+		_errorDisplayed = false;
+		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce);
 
 		if (_showWeightOnSelection)
 			_weightCanvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
@@ -495,12 +498,29 @@ public class Container : Touchable
 
 	void ErrorDisplay ()
 	{
+		/*if (ContainersMovementManager.Instance.selectedContainer == this) {
+			
+		}*/
+
+
 		if (allConstraintsRespected) {
+			errorsCanvasGroup.transform.DOKill (true);
+			weightImage.rectTransform.DOKill (true);
 			errorsCanvasGroup.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 			weightImage.rectTransform.DOAnchorPosX (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 		} else {
-			errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
-			weightImage.rectTransform.DOAnchorPosX (_weightImageInitialPosition, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			if (!_errorDisplayed) {
+				_errorDisplayed = true;
+				errorsCanvasGroup.transform.DOKill (true);
+				weightImage.rectTransform.DOKill (true);
+				DOVirtual.DelayedCall (0.3f, () => {
+					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (Ease.Linear).OnComplete (() => {
+						errorsCanvasGroup.transform.DOPunchScale (Vector3.one / 4, 0.2f, 3);
+					});
+				});
+
+				weightImage.rectTransform.DOAnchorPosX (_weightImageInitialPosition, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			}
 		}
 	}
 
