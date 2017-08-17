@@ -42,6 +42,7 @@ public class MenuContainerInfos : MenuComponent
 	void Start ()
 	{
 		Container.OnContainerSelected += (c) => _selectedContainer = c;
+		Container.OnContainerErrorSelected += (c) => _selectedContainer = c;
 		Container.OnContainerSelected += ChangeButtonColor;
 		Container.OnContainerMoved += () => ChangeButtonColor (_selectedContainer);
 

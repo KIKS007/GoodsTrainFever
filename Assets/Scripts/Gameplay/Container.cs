@@ -27,6 +27,7 @@ public enum ContainerColor
 public class Container : Touchable
 {
 	public static Action <Container> OnContainerSelected;
+	public static Action <Container> OnContainerErrorSelected;
 	public static Action <Container> OnContainerDeselected;
 	public static Action OnContainerMoved;
 
@@ -276,11 +277,17 @@ public class Container : Touchable
 			OnContainerSelected (this);
 	}
 
+	public void ErrorSelect ()
+	{
+
+		OnContainerErrorSelected (this);
+	}
+
 	public void Deselect ()
 	{
 		if (ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
-
+		
 		ContainersMovementManager.Instance.StopHover (this);
 
 		selected = false;
@@ -499,8 +506,7 @@ public class Container : Touchable
 
 	public void ShowContainerInfosMenu ()
 	{
-		//TEMPORARY UGLY THING
-		Select ();
+		ErrorSelect ();
 		MenuManager.Instance.PauseAndShowMenu (GlobalVariables.Instance.containerInfos);
 	}
 
