@@ -21,7 +21,7 @@ public class Container_UI : MonoBehaviour
 	public int neededCount;
 	public int preparedCount = 0;
 
-	private RectTransform _rectTransform;
+	//private RectTransform _rectTransform;
 	private CanvasGroup _canvasGroup;
 
 	private Color concolor;
@@ -142,9 +142,9 @@ public class Container_UI : MonoBehaviour
 	{
 		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
 
-		DOTween.Kill (_rectTransform);
+		/*DOTween.Kill (_rectTransform);
 
-		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);
+		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);*/
 
 		transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
 

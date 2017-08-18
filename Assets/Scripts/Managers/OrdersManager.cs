@@ -76,7 +76,7 @@ public class OrdersManager : Singleton<OrdersManager>
 	public float fadeInDelay = 0.1f;
 
 	private float _fadeInValue;
-	private bool _arrowVisible = false;
+	//private bool _arrowVisible = false;
 
 	// Use this for initialization
 	void Start ()
@@ -234,7 +234,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		//StartCoroutine (RemoveOrderCoroutine (order, delay, animated));
 	}
 
-	IEnumerator RemoveOrderCoroutine (Order_Level order, float delay = 0, bool animated = true)
+	/*IEnumerator RemoveOrderCoroutine (Order_Level order, float delay = 0, bool animated = true)
 	{
 		
 
@@ -255,8 +255,8 @@ public class OrdersManager : Singleton<OrdersManager>
 		} else {
 			Destroy (order.gameObject);
 			UpdateOrdersLayout (true, orderRect);
-		}*/
-	}
+		}
+	}*/
 
 	[PropertyOrder (-1)]
 	[Button ("Add Order")]

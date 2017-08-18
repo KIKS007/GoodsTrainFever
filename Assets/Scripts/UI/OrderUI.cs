@@ -19,8 +19,6 @@ public class OrderUI : MonoBehaviour
 	private Dictionary<Order_Level, GameObject> _orders = new Dictionary<Order_Level, GameObject> ();
 	// stock order gameObject representation
 	private List<Order_Level> _orderList = new List<Order_Level> ();
-	// stock orders following their arrival
-	private Dictionary<Container_Level, GameObject> _containerRepresentations = new Dictionary<Container_Level, GameObject> ();
 	//stock container representation
 	private bool _showOrders = false;
 	//if true, all the orders are shown, when false only the first three
