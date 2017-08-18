@@ -82,10 +82,11 @@ public class OrdersManager : Singleton<OrdersManager>
 	void Start ()
 	{
 		_fadeInValue = ordersCanvasGroup.alpha;
-
+		ordersCanvasGroup.alpha = 0;
 		Container.OnContainerSelected += (c) => FadeOutGroup ();
 		Container.OnContainerDeselected += (c) => FadeInGroup ();
-
+		GameManager.Instance.OnPlaying += Appear;
+		GameManager.Instance.OnMenu += Disappear;
 		Container.OnContainerSelected += ContainerSelected;
 
 		Train.OnContainerAdded += ContainerAdded;
@@ -106,27 +107,34 @@ public class OrdersManager : Singleton<OrdersManager>
 
 			currentOrders.Clear ();
 			currentOrders = new List<Order_UI> (newOrderUI.OrderThing);
-
+			Debug.Log ("WOOOOT1");
 
 			foreach (var o in currentOrders) {
 				if (o.ContainerSent (c)) {
 					//Debug.Log ("Container Valid");
 				}
-
+				Debug.Log ("WOOOOTY: " + o.isSent);
 				if (o.isSent) {
 					ordersSentCount++;
+					Debug.Log ("WOOOOT");
 					//o.OrderSent ();
 					LevelsManager.Instance.OrderSent (o.orderLevel);
+
 					RemoveOrder (o.orderLevel);
 
-					if (ordersSentCount == ordersCount || currentOrders.Count == 0)
+					if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
+						Debug.Log ("All Order frome Here 1");
 						allOrdersSent = true;
+					}
 				}
 			}
 		}
 
-		if (ordersSentCount == ordersCount || currentOrders.Count == 0)
+		if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
+			Debug.Log ("All Order frome Here 2");
 			allOrdersSent = true;
+		}
+
 	}
 
 	void ContainerAdded (Container container)
@@ -266,7 +274,8 @@ public class OrdersManager : Singleton<OrdersManager>
 	{
 		orders.Add (levelOrder);
 		newOrderUI.AddOrder (levelOrder);
-
+		ordersCount++;
+		allOrdersSent = false;
 		/*if (levelOrder == null) {
 			Debug.LogError ("Invalid LevelOrder!", this);
 			return;
@@ -382,12 +391,31 @@ public class OrdersManager : Singleton<OrdersManager>
 		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
 	}
 
+	void Appear ()
+	{
+		DOTween.Kill (ordersCanvasGroup);
+
+		ordersHidden = true;
+
+		ordersCanvasGroup.DOFade (1, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
+	}
+
+	void Disappear ()
+	{
+		DOTween.Kill (ordersCanvasGroup);
+
+		ordersHidden = true;
+
+		ordersCanvasGroup.DOFade (0, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
+	}
+
 	public void ClearOrders (bool animated)
 	{
 
 		newOrderUI.ClearAllOrder ();
-		/*ordersSentCount = 0;
+		ordersSentCount = 0;
 		ordersCount = 0;
+		/*
 
 		containersFromNoOrder.Clear ();
 
