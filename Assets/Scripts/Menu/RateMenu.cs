@@ -12,6 +12,12 @@ public class RateMenu : MonoBehaviour
 	private int rate1 = 0;
 	private int rate2 = 0;
 	// Update is called once per frame
+	void OnEnable ()
+	{
+		SetRatingTo (0);
+		SetDifficultyRatingTo (0);
+	}
+
 	public void SetRatingTo (int value)
 	{
 		for (int i = 0; i < value; i++) {
@@ -38,5 +44,6 @@ public class RateMenu : MonoBehaviour
 	public void ValidateRating ()
 	{
 		StatsManager.Instance.SendRatedLevelData (rate1, rate2);
+		StatsManager.Instance.EndRatingPasstrough ();
 	}
 }

@@ -229,6 +229,7 @@ public class ScoreManager : Singleton<ScoreManager>
 		if (saveOnStop) {
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
+			StatsManager.Instance.StopLevelTrack (false);
 		}
 	}
 
