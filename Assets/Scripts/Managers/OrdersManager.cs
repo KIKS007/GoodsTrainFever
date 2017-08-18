@@ -107,23 +107,19 @@ public class OrdersManager : Singleton<OrdersManager>
 
 			currentOrders.Clear ();
 			currentOrders = new List<Order_UI> (newOrderUI.OrderThing);
-			Debug.Log ("WOOOOT1");
 
 			foreach (var o in currentOrders) {
 				if (o.ContainerSent (c)) {
 					//Debug.Log ("Container Valid");
 				}
-				Debug.Log ("WOOOOTY: " + o.isSent);
 				if (o.isSent) {
 					ordersSentCount++;
-					Debug.Log ("WOOOOT");
 					//o.OrderSent ();
 					LevelsManager.Instance.OrderSent (o.orderLevel);
 
 					RemoveOrder (o.orderLevel);
 
 					if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
-						Debug.Log ("All Order frome Here 1");
 						allOrdersSent = true;
 					}
 				}
@@ -131,7 +127,6 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 
 		if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
-			Debug.Log ("All Order frome Here 2");
 			allOrdersSent = true;
 		}
 
@@ -400,7 +395,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		ordersCanvasGroup.DOFade (1, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
 	}
 
-	void Disappear ()
+	public void Disappear ()
 	{
 		DOTween.Kill (ordersCanvasGroup);
 
