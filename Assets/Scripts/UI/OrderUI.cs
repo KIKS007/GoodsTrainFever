@@ -165,6 +165,22 @@ public class OrderUI : MonoBehaviour
     }
 
     /// <summary>
+    /// clear all orders without transition
+    /// /// </summary>
+    public void ClearAllOrder()
+    {
+        foreach (var order in _orderList)
+        {
+            Destroy(_orders[order]);
+            _orders.Remove(order);
+        }
+        _orderList.Clear();
+
+        _notificationPos = 0;
+        (_notification.GetChild(0) as RectTransform).DOAnchorPosX(_notificationPos, 0.5f).OnComplete(() => _notification.gameObject.SetActive(false));
+    }
+
+    /// <summary>
     /// Show all orders
     /// </summary>
     public void ShowOrders()
