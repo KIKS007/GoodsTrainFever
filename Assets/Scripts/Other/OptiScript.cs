@@ -42,7 +42,6 @@ public class OptiScript : MonoBehaviour
 	{
 		if (f > downscaleLimit) {
 			f -= .1f;
-			Debug.Log ("f= " + f);
 			framerateDeviceHeight = (int)(deviceHeight * f);
 			Screen.SetResolution ((int)(framerateDeviceHeight * aspectRatio), framerateDeviceHeight, true);
 			framerateSamples.Clear ();
@@ -64,6 +63,7 @@ public class OptiScript : MonoBehaviour
 		StopCoroutine ("AnalyseFramerate");
 		framerateSamples.Clear ();
 		PlayerPrefs.SetInt ("FramerateDeviceHeight", framerateDeviceHeight);
+		StatsManager.Instance.SendOptiAnalytics (deviceHeight, framerateDeviceHeight, f);
 	}
 
 	private void SaveDeviceRes ()

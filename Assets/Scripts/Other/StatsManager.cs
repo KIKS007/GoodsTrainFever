@@ -174,6 +174,13 @@ public class StatsManager : Singleton<StatsManager>
 		Debug.Log ("------------ END   " + id + "-----------");
 	}
 
+	private void DebugLogSimple (string name, string data)
+	{
+		Debug.Log ("------------ START " + name + "-----------");
+		Debug.Log ("DATA: " + data);
+		Debug.Log ("------------ END   " + name + "-----------");
+	}
+
 	public void StartLevelTrack ()
 	{
 		if (Trials == 0) {
@@ -232,6 +239,30 @@ public class StatsManager : Singleton<StatsManager>
 		} else {
 			MainMenu.Invoke ();
 		}
+	}
+
+	public void SetRatingStatus (bool status)
+	{
+		RateLevels = status;
+	}
+
+	public void SendOptiAnalytics (int DefaultDeviceHeight, int FramerateDeviceHeight, float RatioDeviceHeight)
+	{
+		if (UseUnityAnalytics) {
+			Analytics.CustomEvent ("OptiSettings", new Vector3 (DefaultDeviceHeight, FramerateDeviceHeight, RatioDeviceHeight));
+		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:DefaultDeviceHeight:" + DefaultDeviceHeight);
+			GameAnalytics.NewDesignEvent ("Other:Device:FramerateDeviceHeight:" + FramerateDeviceHeight);
+			GameAnalytics.NewDesignEvent ("Other:Device:RatioDeviceHeight:" + RatioDeviceHeight);
+		}
+		if (DebugLogDataSended) {
+			DebugLogSimple ("DefaultDeviceHeight", DefaultDeviceHeight.ToString ());
+			DebugLogSimple ("FramerateDeviceHeight", FramerateDeviceHeight.ToString ());
+			DebugLogSimple ("RatioDeviceHeight", RatioDeviceHeight.ToString ());
+		}
+
 	}
 
 	IEnumerator Timer ()
