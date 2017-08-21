@@ -83,6 +83,8 @@ public class ScoreManager : Singleton<ScoreManager>
 		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
 			UnlockStars (100, 1, i);
 		}
+		//Comment if you don't want unlocking levels to have wierd stars state
+		//ResetAllLevelsStars ();
 	}
 
 	public void LoadLevelStars ()
@@ -153,7 +155,7 @@ public class ScoreManager : Singleton<ScoreManager>
 		
 		int ordersPreparedPercentage = Mathf.RoundToInt (((float)ordersPrepared / (float)level.ordersCount) * 100f);
 
-		Debug.Log (ordersPreparedPercentage + "% orders done");
+		//Debug.Log (ordersPreparedPercentage + "% orders done");
 
 		FirstStar (ordersPreparedPercentage, level, levelIndex);
 		SecondStar (ordersPreparedPercentage, level, levelIndex);
@@ -161,7 +163,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 		UpdateStars ();
 
-		Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
+		//Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
 	}
 
 	void FirstStar (int ordersPercentage, Level level, int levelIndex)

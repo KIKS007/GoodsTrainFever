@@ -7,7 +7,15 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
 
-public enum HoldState { None, Touched, Holding, SwipingRight, SwipingLeft }
+public enum HoldState
+{
+	None,
+	Touched,
+	Holding,
+	SwipingRight,
+	SwipingLeft
+
+}
 
 public class TrainsMovementManager : Singleton<TrainsMovementManager>
 {
@@ -107,11 +115,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		else
 			TouchManager.Instance.OnTouchMoved += TouchHold;*/
 
-		GameManager.Instance.OnMenu += ()=> 
-		{
+		GameManager.Instance.OnMenu += () => {
 			fastForwardButton.interactable = false;
 
-			if(Time.timeScale != 1)
+			if (Time.timeScale != 1)
 				FastForward (false);
 		};
 
@@ -122,7 +129,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		train2Arrow.DOFade (0, 0);
 
 		ContainersMovementManager.Instance.OnContainerMovement += ResetTrainsVelocity;
-		ContainersMovementManager.Instance.OnContainerMovementEnd += ()=> trainContainerInMotion = null;
+		ContainersMovementManager.Instance.OnContainerMovementEnd += () => trainContainerInMotion = null;
 
 		touchMovementThresholdInput.text = touchMovementThreshold.ToString ();
 		deltaTouchPositionFactorInput.text = deltaTouchPositionFactor.ToString ();
@@ -149,20 +156,16 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void Update ()
 	{
-		if (rail1.train && rail1.train.inTransition || rail2.train && rail2.train.inTransition || GameManager.Instance.gameState != GameState.Playing)
-		{
-			if(fastForwardButton.interactable)
+		if (rail1.train && rail1.train.inTransition || rail2.train && rail2.train.inTransition || GameManager.Instance.gameState != GameState.Playing) {
+			if (fastForwardButton.interactable)
 				fastForwardButton.interactable = false;
-		}
-
-		else
-		{
-			if(!fastForwardButton.interactable)
+		} else {
+			if (!fastForwardButton.interactable)
 				fastForwardButton.interactable = true;
 		}
 	}
 
-	void FixedUpdate () 
+	void FixedUpdate ()
 	{
 		if (resetingTrains)
 			return;
@@ -172,14 +175,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (TouchManager.Instance.isTouchingUI)
 			return;
 
-		if (holdState != HoldState.None)
-		{
+		if (holdState != HoldState.None) {
 			//if(selectedTrain && trainContainerInMotion != selectedTrain)
-			if(selectedTrain)
+			if (selectedTrain)
 				MoveTrain (selectedTrain);
-			
-			else
-			{
+			else {
 				foreach (var t in allTrains)
 					//if(trainContainerInMotion != t)
 						MoveTrain (t);
@@ -189,9 +189,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void SetTrainsVelocity ()
 	{
-		foreach(var t in allTrains)
-		{
-			if(t == null)
+		foreach (var t in allTrains) {
+			if (t == null)
 				continue;
 
 			if (t.inTransition)
@@ -209,8 +208,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			if (holdState == HoldState.None || holdState == HoldState.Touched || holdState == HoldState.Holding)
 				t.transform.Translate (position * Time.fixedDeltaTime);
 
-			if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold)
-			{
+			if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold) {
 				if (selectedTrain && t == selectedTrain || selectedTrain == null)
 					selectedTrainHasMoved = true;
 			}
@@ -234,18 +232,17 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		ResetTrainsVelocity ();
 
-		foreach (var t in allTrains)
-		{
+		foreach (var t in allTrains) {
 			if (t == null)
 				continue;
 
 			if (t.inTransition)
 				continue;
 			
-			if(t.transform.position.z > -5)
-				t.transform.DOMoveX (xDeparturePosition1, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+			if (t.transform.position.z > -5)
+				t.transform.DOMoveX (xDeparturePosition1, resetDuration).SetEase (resetEase).OnComplete (() => resetingTrains = false);
 			else
-				t.transform.DOMoveX (xDeparturePosition2, resetDuration).SetEase (resetEase).OnComplete (()=> resetingTrains = false);
+				t.transform.DOMoveX (xDeparturePosition2, resetDuration).SetEase (resetEase).OnComplete (() => resetingTrains = false);
 		}
 	}
 
@@ -261,18 +258,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		_deltaPosition = deltaPosition;
 
-		if (_deltaPosition.x < 0)
-		{
+		if (_deltaPosition.x < 0) {
 			holdState = HoldState.SwipingLeft;
-		}
-
-		else if(_deltaPosition.x > 0)
-		{
+		} else if (_deltaPosition.x > 0) {
 			holdState = HoldState.SwipingRight;
-		}
-
-		else if(holdState != HoldState.Touched)
-		{
+		} else if (holdState != HoldState.Touched) {
 			holdState = HoldState.Holding;
 
 			//ResetTrainsVelocity ();
@@ -294,7 +284,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	{
 		yield return new WaitForSeconds (holdDelay);
 
-		if(holdState == HoldState.Touched)
+		if (holdState == HoldState.Touched)
 			holdState = HoldState.Holding;
 	}
 
@@ -314,14 +304,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position = new Vector3 ();
 
 		#if UNITY_EDITOR
-		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
-		{
+		if (Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected) {
 			position.x += _deltaPosition.x * deltaMousePositionFactor;
 
 			_trainsVelocity [train] = _deltaPosition.x * deltaMousePositionFactor;
-		}
-		else
-		{
+		} else {
 			position.x += _deltaPosition.x * deltaTouchPositionFactor;
 
 			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
@@ -332,8 +319,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			_trainsVelocity [train] = _deltaPosition.x * deltaTouchPositionFactor;
 		#endif
 
-		if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold)
-		{
+		if (Mathf.Abs (_deltaPosition.x) > trainMovementThreshold) {
 			if (selectedTrain && train == selectedTrain)
 				selectedTrainHasMoved = true;
 		}
@@ -342,10 +328,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	}
 
-	public Train SpawnTrain (Rail rail, Train_Level train_Level )
+	public Train SpawnTrain (Rail rail, Train_Level train_Level)
 	{
-		if (rail.train != null)
-		{
+		if (rail.train != null) {
 			Debug.LogWarning ("Rail has train!", this);
 			return null;
 		}
@@ -354,7 +339,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
-		if(rail == rail2)
+		if (rail == rail2)
 			position.x += xDeparturePosition2 - xDeparturePosition1;
 
 		GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
@@ -368,13 +353,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		Vector3 wagonPosition = position;
 
-		for(int i = 0; i < train_Level.wagons.Count; i++)
-		{
+		for (int i = 0; i < train_Level.wagons.Count; i++) {
 			GameObject prefab = wagonFourtyPrefab;
 			float length = 0;
 
-			switch (train_Level.wagons[i].wagonType)
-			{
+			switch (train_Level.wagons [i].wagonType) {
 			case WagonType.Fourty:
 				prefab = wagonFourtyPrefab;
 				wagonLength = wagonFourtyLength;
@@ -398,7 +381,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			Wagon wagonScript = wagon.GetComponent<Wagon> ();
 			trainScript.wagons.Add (wagonScript);
 
-			wagonScript.maxWeight = train_Level.wagons[i].wagonMaxWeight;
+			wagonScript.maxWeight = train_Level.wagons [i].wagonMaxWeight;
 
 
 			trainLength += wagonLength;
@@ -413,35 +396,33 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
-		if(rail == rail1)
+		if (rail == rail1)
 			rail1Text.text = "";
 		else
 			rail2Text.text = "";
 
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
-		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (() => OnTrainArrived (rail, trainScript)).SetSpeedBased ();
 
-		_trainsDurationCoroutines.Add ( TrainDuration (rail, train_Level.trainDuration ) );
+		_trainsDurationCoroutines.Add (TrainDuration (rail, train_Level.trainDuration));
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
 		if (train_Level.parasiteContainers.Count > 0)
-			DOVirtual.DelayedCall (0.1f, ()=> TrainParasiteContainers (trainScript, train_Level));
+			DOVirtual.DelayedCall (0.1f, () => TrainParasiteContainers (trainScript, train_Level));
 
 		return trainScript;
 	}
 
 	void TrainParasiteContainers (Train train, Train_Level train_Level)
 	{
-		foreach(var s in train._allSpots)
-		{
+		foreach (var s in train._allSpots) {
 			s.isOccupied = false;
 			s.container = null;
 		}
 
-		foreach(var c in train_Level.parasiteContainers)
-		{
+		foreach (var c in train_Level.parasiteContainers) {
 			var containerLevel = LevelsGenerationManager.Instance.RandomColor (c);
 
 			var container = LevelsManager.Instance.CreateContainer (containerLevel, GlobalVariables.Instance.extraContainersParent);
@@ -460,8 +441,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			
 			fillSucess = LevelsGenerationManager.Instance.FillContainer (spots, container);
 			
-			if (!fillSucess)
-			{
+			if (!fillSucess) {
 				Destroy (container.gameObject);
 				Debug.LogWarning ("Can't Place All Parasite Containers!");
 				break;
@@ -469,10 +449,9 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		}
 	}
 
-	public Train SpawnTrain (Rail rail, Train train, int duration )
+	public Train SpawnTrain (Rail rail, Train train, int duration)
 	{
-		if (rail.train != null)
-		{
+		if (rail.train != null) {
 			Debug.LogWarning ("Rail has train!", this);
 			return null;
 		}
@@ -481,7 +460,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		position.y = trainPrefab.transform.position.y;
 		position.x = xArrivingPosition;
 
-		if(rail == rail2)
+		if (rail == rail2)
 			position.x += xDeparturePosition2 - xDeparturePosition1;
 
 		train.transform.position = position;
@@ -492,16 +471,16 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train = trainScript;
 		TrainsMovementManager.Instance.AddTrain (trainScript);
 
-		if(rail == rail1)
+		if (rail == rail1)
 			rail1Text.text = "";
 		else
 			rail2Text.text = "";
 
 		float departurePosition = rail == rail1 ? xDeparturePosition1 : xDeparturePosition2;
 
-		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (()=> OnTrainArrived (rail, trainScript)).SetSpeedBased ();
+		train.transform.DOMoveX (departurePosition, arrivingSpeed).SetEase (trainMovementEase).SetDelay (arrivingDelay).OnComplete (() => OnTrainArrived (rail, trainScript)).SetSpeedBased ();
 
-		_trainsDurationCoroutines.Add ( TrainDuration (rail, duration ) );
+		_trainsDurationCoroutines.Add (TrainDuration (rail, duration));
 
 		StartCoroutine (_trainsDurationCoroutines [_trainsDurationCoroutines.Count - 1]);
 
@@ -515,8 +494,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Vector3 position = new Vector3 ();
 		position.x = xArrivingPosition;
 
-		foreach(Train_LD train_Level in trains)
-		{
+		foreach (Train_LD train_Level in trains) {
 			position.y = trainPrefab.transform.position.y;
 			
 			GameObject train = Instantiate (trainPrefab, position, trainPrefab.transform.rotation, GlobalVariables.Instance.gameplayParent);
@@ -532,13 +510,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			
 			Vector3 wagonPosition = position;
 			
-			for(int i = 0; i < train_Level.wagons.Count; i++)
-			{
+			for (int i = 0; i < train_Level.wagons.Count; i++) {
 				GameObject prefab = wagonFourtyPrefab;
 				float length = 0;
 				
-				switch (train_Level.wagons[i].wagonType)
-				{
+				switch (train_Level.wagons [i].wagonType) {
 				case WagonType.Fourty:
 					prefab = wagonFourtyPrefab;
 					wagonLength = wagonFourtyLength;
@@ -573,7 +549,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			position.x -= trainLength;
 		}
 
-		foreach(var t in trainsGenerated)
+		foreach (var t in trainsGenerated)
 			t.SetupTrain ();
 
 		return trainsGenerated;
@@ -605,13 +581,12 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		trainText.text = duration.ToString ();
 
-		while (duration > 0)
-		{
+		while (duration > 0) {
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
 			yield return new WaitForSeconds (1);
 
-			if(rail.train == null || !rail.train.waitingDeparture)
+			if (rail.train == null || !rail.train.waitingDeparture)
 				yield break;
 
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
@@ -620,7 +595,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 			trainText.text = duration.ToString ();
 		}
 
-		if(rail.train != null && !rail.train.inTransition)
+		if (rail.train != null && !rail.train.inTransition)
 			SendTrain (rail);
 	}
 
@@ -641,31 +616,29 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		TrainArrow (rail.train);
 
-		if (Time.timeScale != 1)
-		{
+		if (Time.timeScale != 1) {
 			StopFastForward ();
-			yield return new WaitWhile (()=> DOTween.IsTweening ("FastForward"));
+			yield return new WaitWhile (() => DOTween.IsTweening ("FastForward"));
 		}
 
 		if (OnTrainDeparture != null)
 			OnTrainDeparture (rail.train);
 
-		if(rail == rail1)
+		if (rail == rail1)
 			rail1Text.text = "Sent";
 		else
 			rail2Text.text = "Sent";
 
 		if (trainContainerInMotion == rail.train)
-			yield return new WaitUntil (()=> trainContainerInMotion != rail.train);
+			yield return new WaitUntil (() => trainContainerInMotion != rail.train);
 
 		float xPosition = xDeparturePosition1 + rail.train.trainLength + offsetLength;
 
-		rail.train.transform.DOMoveX (xPosition, trainSendingSpeed).SetEase (trainMovementEase).SetSpeedBased ().OnComplete (()=> 
-			{
-				RemoveTrain (rail.train);
-				Destroy (rail.train.gameObject);
+		rail.train.transform.DOMoveX (xPosition, trainSendingSpeed).SetEase (trainMovementEase).SetSpeedBased ().OnComplete (() => {
+			RemoveTrain (rail.train);
+			Destroy (rail.train.gameObject);
 
-			});
+		});
 
 		yield return 0;
 	}
@@ -675,38 +648,33 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		if (!fastForwardButton.interactable)
 			return;
 		
-		if(fastForward)
-		{
+		if (fastForward) {
 			DOTween.Kill ("FastForward");
-			DOTween.To (()=> Time.timeScale, x => Time.timeScale = x, fastForwardValue, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
-		}
-		else
-		{
+			DOTween.To (() => Time.timeScale, x => Time.timeScale = x, fastForwardValue, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
+		} else {
 			DOTween.Kill ("FastForward");
-			DOTween.To (()=> Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
+			DOTween.To (() => Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
 		}
 	}
 
 	public void StopFastForward ()
 	{
 		DOTween.Kill ("FastForward");
-		DOTween.To (()=> Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
+		DOTween.To (() => Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
 	}
 
 	public void ClearTrains ()
 	{
 		ClearTrainsDuration ();
 
-		if(rail1.train)
-		{
+		if (rail1.train) {
 			GameObject t = rail1.train.gameObject;
 			RemoveTrain (rail1.train);
 			rail1.train = null;
 			Destroy (t);
 		}
 
-		if(rail2.train)
-		{
+		if (rail2.train) {
 			GameObject t = rail2.train.gameObject;
 			RemoveTrain (rail2.train);
 			rail2.train = null;
@@ -729,29 +697,24 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		if (train == rail1.train)
 			trainArrow = train1Arrow;
-		else
-		{
+		else {
 			trainArrow = train2Arrow;
 			xPosition += xDeparturePosition2 - xDeparturePosition1;
 		}
 
-		if(train.inTransition && !train.waitingDeparture)
-		{
+		if (train.inTransition && !train.waitingDeparture) {
 			if (trainArrow.color.a == 1)
 				trainArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 
 			return;
 		}
 
-		if(train.transform.position.x - train.trainLength < xPosition)
-		{
+		if (train.transform.position.x - train.trainLength < xPosition) {
 			if (trainArrow.color.a == 0)
 				trainArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
 
 			return;
-		}
-		else
-		{
+		} else {
 			if (trainArrow.color.a == 1)
 				trainArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 

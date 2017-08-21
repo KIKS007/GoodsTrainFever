@@ -75,13 +75,13 @@ public class OrdersManager : Singleton<OrdersManager>
 	public float fadeOutDelay = 0.1f;
 	public float fadeInDelay = 0.1f;
 
-	private float _fadeInValue;
+	//private float _fadeInValue;
 	//private bool _arrowVisible = false;
 
 	// Use this for initialization
 	void Start ()
 	{
-		_fadeInValue = ordersCanvasGroup.alpha;
+		//_fadeInValue = ordersCanvasGroup.alpha;
 		ordersCanvasGroup.alpha = 0;
 		Container.OnContainerSelected += (c) => FadeOutGroup ();
 		Container.OnContainerDeselected += (c) => FadeInGroup ();
@@ -173,8 +173,10 @@ public class OrdersManager : Singleton<OrdersManager>
 			return;
 
 		foreach (var o in newOrderUI.OrderThing) {
-			if (o.ContainerSelected (container))
-				return;
+			if (o.ContainerSelected (container)) {
+				
+				//return;
+			}
 		}
 	}
 
@@ -372,18 +374,18 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	void FadeOutGroup ()
 	{
-		DOTween.Kill (ordersCanvasGroup);
+		//DOTween.Kill (ordersCanvasGroup);
 
 		ordersHidden = true;
 
-		ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
+		//ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
 	}
 
 	void FadeInGroup ()
 	{
-		DOTween.Kill (ordersCanvasGroup);
+		//DOTween.Kill (ordersCanvasGroup);
 
-		ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
+		//ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
 	}
 
 	void Appear ()
