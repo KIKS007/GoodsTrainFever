@@ -107,7 +107,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	public void SendRatedLevelData (int rate, int diffRate)
 	{
-		Debug.Log ("RATING SENDED" + rate + " " + diffRate);
+		//Debug.Log ("RATING SENDED" + rate + " " + diffRate);
 		int id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
 
 		Dictionary<string, object> RatedLevelDataDictionnary = new Dictionary<string, object> {
