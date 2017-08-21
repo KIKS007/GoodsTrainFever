@@ -88,11 +88,5 @@ public class GameManager : Singleton<GameManager>
 		if (OnMenu != null)
 			OnMenu ();
 	}
-
-	public void ResetPlayerPrefs ()
-	{
-		Debug.Log ("WAT");
-		PlayerPrefs.DeleteAll ();
-	}
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class Container_UI : MonoBehaviour 
+public class Container_UI : MonoBehaviour
 {
 	public bool isPrepared = false;
 	public bool isSent = false;
@@ -21,16 +21,22 @@ public class Container_UI : MonoBehaviour
 	public int neededCount;
 	public int preparedCount = 0;
 
-	private RectTransform _rectTransform;
+	//private RectTransform _rectTransform;
 	private CanvasGroup _canvasGroup;
 
-	public void Awake ()
-	{
-		_rectTransform = GetComponent<RectTransform> ();
-		_canvasGroup = GetComponent<CanvasGroup> ();
+	private Color concolor;
 
+	public void Start ()
+	{
+		/*_rectTransform = GetComponent<RectTransform> ();
+		 */
+		_canvasGroup = GetComponent<CanvasGroup> ();
+		containerImage = GetComponentInChildren<Image> ();
+		/*
 		preparedCount = 0;
-		preparedCountText.enabled = false;
+		preparedCountText.enabled = false;*/
+
+		Container.OnContainerDeselected += ContainerDeselected;
 	}
 
 	public void Setup (Container_Level c)
@@ -40,32 +46,30 @@ public class Container_UI : MonoBehaviour
 		SetColor (c);
 
 		neededCount = 1;
-		neededCountText.text = neededCount.ToString ();
+		/*neededCountText.text = neededCount.ToString ();
 
-		containerTypeText.text = c.containerType.ToString ();
+		containerTypeText.text = c.containerType.ToString ();*/
 	}
 
 	void SetColor (Container_Level c)
 	{
-		Color color = new Color ();
 
-		switch (c.containerColor)
-		{
+		switch (c.containerColor) {
 		case ContainerColor.Red:
-			color = GlobalVariables.Instance.redColor;
+			concolor = GlobalVariables.Instance.redColor;
 			break;
 		case ContainerColor.Blue:
-			color = GlobalVariables.Instance.blueColor;
+			concolor = GlobalVariables.Instance.blueColor;
 			break;
 		case ContainerColor.Yellow:
-			color = GlobalVariables.Instance.yellowColor;
+			concolor = GlobalVariables.Instance.yellowColor;
 			break;
 		case ContainerColor.Violet:
-			color = GlobalVariables.Instance.violetColor;
+			concolor = GlobalVariables.Instance.violetColor;
 			break;
 		}
 
-		containerImage.color = color;
+		//containerImage.color = color;
 	}
 
 	public void ContainerSent ()
@@ -77,10 +81,10 @@ public class Container_UI : MonoBehaviour
 
 	IEnumerator ContainerSentFeedback ()
 	{
-		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
 
-		preparedCountText.enabled = false;
-		neededCountText.enabled = false;
+		/*preparedCountText.enabled = false;
+		neededCountText.enabled = false;*/
 
 		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
 	}
@@ -97,13 +101,29 @@ public class Container_UI : MonoBehaviour
 		StartCoroutine (ContainerAddedFeedback ());
 	}
 
+	public void ContainerSelected ()
+	{
+		_canvasGroup.ignoreParentGroups = true;
+	}
+
+	public void ContainerDeselected (Container c)
+	{
+		DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
+			
+			_canvasGroup.ignoreParentGroups = false;
+		});
+
+	}
+
 	IEnumerator ContainerAddedFeedback ()
 	{
-		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
 
 		DOTween.Kill (transform);
 
-		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale, OrdersManager.Instance.containerAddedDuration);
+		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerAddedDuration);
+
+		containerImage.color = Color.green;
 	}
 
 	public void ContainerRemoved ()
@@ -120,35 +140,37 @@ public class Container_UI : MonoBehaviour
 
 	IEnumerator ContainerRemovedFeedback ()
 	{
-		yield return new WaitWhile (()=> OrdersManager.Instance.ordersHidden);
+		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
 
-		DOTween.Kill (_rectTransform);
+		/*DOTween.Kill (_rectTransform);
 
-		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);
+		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);*/
 
-		//transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale, OrdersManager.Instance.containerRemovedDuration);
+		transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
+
+		containerImage.color = concolor;
 	}
 
 	void UpdateTexts ()
 	{
-		if(neededCount > 0)
-		{
+		/*if (neededCount > 0) {
 			isPrepared = false;
 			neededCountText.enabled = true;
 			neededCountText.text = neededCount.ToString ();
-		}
-		else
-		{
+		} else {
 			neededCountText.enabled = false;
 			isPrepared = true;
 		}
 
-		if(preparedCount > 0)
-		{
+		if (preparedCount > 0) {
 			preparedCountText.enabled = true;
 			preparedCountText.text = preparedCount.ToString ();
-		}
-		else
-			preparedCountText.enabled = false;
+		} else
+			preparedCountText.enabled = false;*/
+	}
+
+	void OnDestroy ()
+	{
+		Container.OnContainerDeselected -= ContainerDeselected;
 	}
 }

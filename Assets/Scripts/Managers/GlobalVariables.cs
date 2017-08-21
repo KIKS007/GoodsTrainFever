@@ -19,6 +19,7 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("Parents")]
 	public Transform gameplayParent;
 	public Transform extraContainersParent;
+	public Transform cameraPosition;
 
 	[Header ("Container Color")]
 	public Color redColor;
@@ -44,10 +45,9 @@ public class GlobalVariables : Singleton<GlobalVariables>
 	[Header ("Scriptable Object")]
 	public UnityEngine.Object objectToCreate;
 
-	// Use this for initialization
-	void Start ()
-	{
-	}
+	[HideInInspector]
+	public MenuComponent containerInfos;
+
 	
 	// Update is called once per frame
 	void Update ()

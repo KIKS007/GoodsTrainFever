@@ -13,6 +13,8 @@ public class OptiScript : MonoBehaviour
 	[Tooltip ("Time in sec between each Framerate sample")]
 	public float frameRateSamplesTime = 0.2f;
 
+	[Tooltip ("Minimum Resize Downsclae Allowed (0.5f is half the resolution)")]
+	public float downscaleLimit = 0.5f;
 
 
 	private float aspectRatio;
@@ -25,7 +27,6 @@ public class OptiScript : MonoBehaviour
 
 	void Start ()
 	{
-		Debug.Log ("TEST");
 		aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
 		if (PlayerPrefs.GetInt ("FramerateDeviceHeight", 0) != 0) {
 			int tmpDeciveHeight = PlayerPrefs.GetInt ("FramerateDeviceHeight", Screen.currentResolution.height);
@@ -39,11 +40,12 @@ public class OptiScript : MonoBehaviour
 
 	private void Resize ()
 	{
-		if (f > 0.5f) {
+		if (f > downscaleLimit) {
 			f -= .1f;
 			framerateDeviceHeight = (int)(deviceHeight * f);
 			Screen.SetResolution ((int)(framerateDeviceHeight * aspectRatio), framerateDeviceHeight, true);
-			ActivateFramerateAnalyser ();
+			framerateSamples.Clear ();
+			Invoke ("ActivateFramerateAnalyser", 1);
 		} else {
 			SaveCurrentRes ();
 		}
@@ -52,9 +54,7 @@ public class OptiScript : MonoBehaviour
 
 	private void ActivateFramerateAnalyser ()
 	{
-		
 		StopCoroutine ("AnalyseFramerate");
-		framerateSamples.Clear ();
 		StartCoroutine (AnalyseFramerate ());
 	}
 
@@ -63,6 +63,7 @@ public class OptiScript : MonoBehaviour
 		StopCoroutine ("AnalyseFramerate");
 		framerateSamples.Clear ();
 		PlayerPrefs.SetInt ("FramerateDeviceHeight", framerateDeviceHeight);
+		StatsManager.Instance.SendOptiAnalytics (deviceHeight, framerateDeviceHeight, f);
 	}
 
 	private void SaveDeviceRes ()
@@ -72,9 +73,11 @@ public class OptiScript : MonoBehaviour
 
 	public void ResetAndAnalyse ()
 	{
+		f = 1;
 		PlayerPrefs.DeleteKey ("FramerateDeviceHeight");
 		Screen.SetResolution ((int)(PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height) * aspectRatio), PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height), true);
-		ActivateFramerateAnalyser ();
+		deviceHeight = PlayerPrefs.GetInt ("DefaultDeviceHeight", Screen.height);
+		Invoke ("ActivateFramerateAnalyser", 2f);
 	}
 
 

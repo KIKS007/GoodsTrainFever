@@ -6,13 +6,28 @@ using Sirenix.OdinInspector;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public enum ContainerType { Basic, Cooled, Tank, Dangerous };
+public enum ContainerType
+{
+	Basic,
+	Cooled,
+	Tank,
+	Dangerous}
+;
 
-public enum ContainerColor { Random, Red, Blue, Yellow, Violet }
+public enum ContainerColor
+{
+	Random,
+	Red,
+	Blue,
+	Yellow,
+	Violet
 
-public class Container : Touchable 
+}
+
+public class Container : Touchable
 {
 	public static Action <Container> OnContainerSelected;
+	public static Action <Container> OnContainerErrorSelected;
 	public static Action <Container> OnContainerDeselected;
 	public static Action OnContainerMoved;
 
@@ -44,6 +59,14 @@ public class Container : Touchable
 	[Header ("Color")]
 	public string shaderColorProperty = "_Albedo1";
 
+	[Header ("UI")]
+	public Text weightText;
+	public Image weightImage;
+	public bool useContainerColorOnWeightUI = false;
+	public CanvasGroup errorsCanvasGroup;
+
+	private bool _showWeightOnSelection = true;
+
 	[HideInInspector]
 	public Mesh _mesh;
 	[HideInInspector]
@@ -52,16 +75,21 @@ public class Container : Touchable
 	[HideInInspector]
 	public Spot[] _pileSpots = new Spot[0];
 	private Material _material;
-	private Text _weightText;
-	private Image _weightImage;
+	private CanvasGroup _weightCanvasGroup;
+	private float _weightImageInitialPosition;
+	private float _errorsInitialScale;
+	private bool _errorDisplayed = false;
 
 	void Awake ()
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
-		_weightText = transform.GetComponentInChildren<Text> ();
-		_weightImage = transform.GetComponentInChildren<Image> ();
+
+		_weightCanvasGroup = weightImage.transform.GetComponent<CanvasGroup> ();
+		_weightImageInitialPosition = weightImage.rectTransform.anchoredPosition.x;
+		_errorsInitialScale = errorsCanvasGroup.transform.localScale.x;
+
 
 		OnContainerMoved += IsPileUp;
 		OnContainerMoved += CheckConstraints;
@@ -69,8 +97,7 @@ public class Container : Touchable
 
 		constraints.Clear ();
 
-		foreach (var c in transform.GetComponents<Constraint> ())
-		{
+		foreach (var c in transform.GetComponents<Constraint> ()) {
 			constraints.Add (new ContainerConstraint ());
 			constraints [constraints.Count - 1].constraint = c;
 		}
@@ -80,9 +107,10 @@ public class Container : Touchable
 
 		SetIsDoubleSize ();
 
-		//SetupColor ();
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, 0);
 
-		//SetWeight ();
+		ErrorDisplay ();
 	}
 
 	public void Setup (Container_Level container_Level)
@@ -99,8 +127,7 @@ public class Container : Touchable
 
 		constraints.Clear ();
 
-		foreach (var c in transform.GetComponents<Constraint> ())
-		{
+		foreach (var c in transform.GetComponents<Constraint> ()) {
 			constraints.Add (new ContainerConstraint ());
 			constraints [constraints.Count - 1].constraint = c;
 			c._container = this;
@@ -109,8 +136,7 @@ public class Container : Touchable
 
 	public void SetWeight ()
 	{
-		switch (containerType)
-		{
+		switch (containerType) {
 		case ContainerType.Basic:
 			weight = isDoubleSize ? LevelsGenerationManager.Instance.basicContainerWeights [1] : LevelsGenerationManager.Instance.basicContainerWeights [0];
 			break;
@@ -155,18 +181,15 @@ public class Container : Touchable
 
 		transform.position = spot.transform.position;
 
-		if(spot._containersParent != null)
+		if (spot._containersParent != null)
 			transform.SetParent (spot._containersParent);
 
-		if(spot.spotType == SpotType.Train)
-		{
+		if (spot.spotType == SpotType.Train) {
 			wagon = spot._wagon;
 			train = wagon.train;
 
 			CheckConstraints ();
-		}
-		else
-		{
+		} else {
 			wagon = null;
 			train = null;
 
@@ -182,15 +205,14 @@ public class Container : Touchable
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 
-		_weightText = transform.GetComponentInChildren<Text> ();
-		_weightImage = transform.GetComponentInChildren<Image> ();
+		weightText = transform.GetComponentInChildren<Text> ();
+		weightImage = transform.GetComponentInChildren<Image> ();
 
-		_weightText.text = weight.ToString ();
+		weightText.text = weight.ToString ();
 
 		Color color = new Color ();
 
-		switch (containerColor)
-		{
+		switch (containerColor) {
 		case ContainerColor.Red:
 			color = globalVariables.redColor;
 			break;
@@ -205,7 +227,9 @@ public class Container : Touchable
 			break;
 		}
 
-		_weightImage.color = color;
+		if (useContainerColorOnWeightUI) {
+			weightImage.color = color;
+		}
 	}
 
 	public override void OnTouchUpAsButton ()
@@ -242,19 +266,34 @@ public class Container : Touchable
 		ContainersMovementManager.Instance.StartHover (this);
 
 		selected = true;
+		_errorDisplayed = false;
+		errorsCanvasGroup.transform.DOKill (true);
+		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce);
+
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
 		if (OnContainerSelected != null)
 			OnContainerSelected (this);
 	}
 
+	public void ErrorSelect ()
+	{
+
+		OnContainerErrorSelected (this);
+	}
+
 	public void Deselect ()
 	{
-		if(ContainersMovementManager.Instance.selectedContainer == this)
+		if (ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
-
+		
 		ContainersMovementManager.Instance.StopHover (this);
 
 		selected = false;
+		CheckConstraints ();
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
@@ -262,7 +301,7 @@ public class Container : Touchable
 
 	public void TakeSpot (Spot spot)
 	{
-		if(ContainersMovementManager.Instance.selectedContainer == this)
+		if (ContainersMovementManager.Instance.selectedContainer == this)
 			ContainersMovementManager.Instance.selectedContainer = null;
 
 		RemoveContainer ();
@@ -275,23 +314,23 @@ public class Container : Touchable
 
 		transform.SetParent (spot._containersParent);
 
-		if(spot.spotType == SpotType.Train)
-		{
+		if (spot.spotType == SpotType.Train) {
 			wagon = spot._wagon;
 			train = wagon.train;
 			TrainsMovementManager.Instance.trainContainerInMotion = train;
-
-			CheckConstraints ();
-		}
-		else
-		{
+		} else {
 			wagon = null;
 			train = null;
 
 			allConstraintsRespected = true;
 		}
 
+		CheckConstraints ();
+
 		SetPileSpot ();
+
+		if (_showWeightOnSelection)
+			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 
 		if (OnContainerMoved != null)
 			OnContainerMoved ();
@@ -302,7 +341,7 @@ public class Container : Touchable
 
 	public void RemoveContainer ()
 	{
-		if(spotOccupied != null)
+		if (spotOccupied != null)
 			spotOccupied.RemoveContainer ();
 
 		spotOccupied = null;
@@ -310,16 +349,20 @@ public class Container : Touchable
 
 	public void CheckConstraints ()
 	{
-		if(spotOccupied == null || spotOccupied.spotType != SpotType.Train)
-		{
+		if (spotOccupied == null || spotOccupied.spotType != SpotType.Train) {
+			foreach (var c in constraints)
+				c.isRespected = true;
+
 			allConstraintsRespected = true;
+
+			ErrorDisplay ();
+
 			return;
 		}
 
 		bool allRespected = true;
 
-		foreach(var c in constraints)
-		{
+		foreach (var c in constraints) {
 			c.isRespected = c.constraint.IsRespected ();
 
 			if (!c.isRespected)
@@ -327,20 +370,20 @@ public class Container : Touchable
 		}
 
 		allConstraintsRespected = allRespected;
+
+		ErrorDisplay ();
 	}
 
 	public bool CheckConstraints (Spot spot)
 	{
-		if(spot == null || spot.spotType != SpotType.Train)
-		{
+		if (spot == null || spot.spotType != SpotType.Train) {
 			allConstraintsRespected = true;
 			return allConstraintsRespected;
 		}
 
 		bool allRespected = true;
 
-		foreach(var c in constraints)
-		{
+		foreach (var c in constraints) {
 			c.isRespected = c.constraint.IsRespected (spot);
 
 			if (!c.isRespected)
@@ -353,8 +396,7 @@ public class Container : Touchable
 
 	void SetPileSpot ()
 	{
-		foreach (var s in _pileSpots)
-		{
+		foreach (var s in _pileSpots) {
 			s.spotType = spotOccupied.spotType;
 			s._containersParent = transform.parent;
 		}
@@ -364,10 +406,8 @@ public class Container : Touchable
 	{
 		bool isPiledUpTemp = false;
 
-		foreach(var s in _pileSpots)
-		{
-			if(s.isOccupied)
-			{
+		foreach (var s in _pileSpots) {
+			if (s.isOccupied) {
 				isPiledUpTemp = true;
 				break;
 			}
@@ -378,7 +418,7 @@ public class Container : Touchable
 		if (spotOccupied)
 			spotOccupied.SetIsPileUp (isPiledUpTemp);
 	}
-		
+
 	public void OnContainerMovedEvent ()
 	{
 		if (OnContainerMoved != null)
@@ -403,12 +443,11 @@ public class Container : Touchable
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
-		containerColor = (ContainerColor) UnityEngine.Random.Range (1, (int) Enum.GetNames (typeof(ContainerColor)).Length);
+		containerColor = (ContainerColor)UnityEngine.Random.Range (1, (int)Enum.GetNames (typeof(ContainerColor)).Length);
 
 		Color color = new Color ();
 
-		switch (containerColor)
-		{
+		switch (containerColor) {
 		case ContainerColor.Red:
 			color = globalVariables.redColor;
 			break;
@@ -423,7 +462,7 @@ public class Container : Touchable
 			break;
 		}
 
-		if(_material.HasProperty (shaderColorProperty))
+		if (_material.HasProperty (shaderColorProperty))
 			_material.SetColor (shaderColorProperty, color);
 		else
 			_material.SetColor (shaderColorProperty, color);
@@ -435,7 +474,6 @@ public class Container : Touchable
 	{
 		GlobalVariables globalVariables = FindObjectOfType<GlobalVariables> ();
 		MeshRenderer meshRenderer = GetComponent<MeshRenderer> ();
-
 		meshRenderer.sharedMaterial = new Material (meshRenderer.sharedMaterial);
 		_material = meshRenderer.sharedMaterial;
 
@@ -443,8 +481,7 @@ public class Container : Touchable
 
 		Color color = new Color ();
 
-		switch (c)
-		{
+		switch (c) {
 		case ContainerColor.Red:
 			color = globalVariables.redColor;
 			break;
@@ -459,12 +496,66 @@ public class Container : Touchable
 			break;
 		}
 
-		if(_material.HasProperty (shaderColorProperty))
+		if (_material.HasProperty (shaderColorProperty))
 			_material.SetColor (shaderColorProperty, color);
 		else
 			_material.SetColor (shaderColorProperty, color);
 
 		UpdateWeightText ();
+	}
+
+	public void ShowContainerInfosMenu ()
+	{
+		ErrorSelect ();
+		MenuManager.Instance.PauseAndShowMenu (GlobalVariables.Instance.containerInfos);
+	}
+
+	void ErrorDisplay ()
+	{
+		if (allConstraintsRespected) {
+			errorsCanvasGroup.transform.DOKill (true);
+			weightImage.rectTransform.DOKill (true);
+			errorsCanvasGroup.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			weightImage.rectTransform.DOAnchorPosX (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		} else {
+			if (!_errorDisplayed) {
+				_errorDisplayed = true;
+				errorsCanvasGroup.transform.DOKill (true);
+				weightImage.rectTransform.DOKill (true);
+				DOVirtual.DelayedCall (0.3f, () => {
+					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (Ease.Linear).OnComplete (() => {
+						errorsCanvasGroup.transform.DOPunchScale (Vector3.one / 6, 0.2f, 3).OnComplete (() => {
+							ErrorBreathing ();
+						});
+					});
+				});
+
+				weightImage.rectTransform.DOAnchorPosX (_weightImageInitialPosition, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			}
+		}
+	}
+
+	private void ErrorBreathing ()
+	{
+		if (_errorDisplayed) {
+			errorsCanvasGroup.transform.DOScale (_errorsInitialScale + 0.05f, 0.4f).SetEase (Ease.Linear).OnComplete (() => {
+				if (_errorDisplayed) {
+					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, 0.4f).SetEase (Ease.Linear).OnComplete (() => {
+						if (_errorDisplayed) {
+							ErrorBreathing ();
+						} else {
+							return;
+						}
+					});
+				} else {
+					return;
+				}
+
+			});
+		} else {
+			return;
+		}
+
 	}
 
 	[PropertyOrder (-1)]
@@ -479,8 +570,7 @@ public class Container : Touchable
 	[ButtonAttribute ("Take Spot")]
 	public void EditorTakeSpot ()
 	{
-		if(spotOccupied == null)
-		{
+		if (spotOccupied == null) {
 			Debug.LogWarning ("No Spot!");
 			return;
 		}
