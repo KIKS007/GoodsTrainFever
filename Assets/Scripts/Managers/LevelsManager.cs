@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class LevelsManager : Singleton<LevelsManager> 
+public class LevelsManager : Singleton<LevelsManager>
 {
 	public int levelToStart = 0;
 	public bool loadLevelOnStart = false;
@@ -78,7 +78,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	//public List<Spot> spotsTemp = new List<Spot> ();
 
 	// Use this for initialization
-	void Awake () 
+	void Awake ()
 	{
 		_storage = FindObjectOfType<Storage> ();
 		_boat = FindObjectOfType<Boat> ();
@@ -91,11 +91,11 @@ public class LevelsManager : Singleton<LevelsManager>
 		if (loadLevelOnStart)
 			LoadLevel (levelToStart);
 
-		Container.OnContainerMoved += ()=> DOVirtual.DelayedCall (0.01f, ()=> CheckConstraints ());
+		Container.OnContainerMoved += () => DOVirtual.DelayedCall (0.01f, () => CheckConstraints ());
 
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevel;
-		MenuManager.Instance.OnMainMenu += ()=> _previousRandomColorOffset.Clear ();
+		MenuManager.Instance.OnMainMenu += () => _previousRandomColorOffset.Clear ();
 
 		errorsText.text = "0";
 		errorsTextParent.localScale = Vector3.zero;
@@ -134,8 +134,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	public void LoadLevel (int index)
 	{
-		if(index > transform.childCount - 1)
-		{
+		if (index > transform.childCount - 1) {
 			Debug.LogError ("Invalid Level!");
 			return;
 		}
@@ -152,10 +151,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		levelIndex = index;
 
-		if (randomColors)
-		{
-			do 
-			{
+		if (randomColors) {
+			do {
 				_randomColorOffset = Random.Range (0, 4);
 
 			} while (_previousRandomColorOffset.Contains (_randomColorOffset));
@@ -165,8 +162,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			if (_previousRandomColorOffset.Count > 3)
 				_previousRandomColorOffset.RemoveAt (0);
 
-		}
-		else
+		} else
 			_randomColorOffset = 0;
 		
 		LevelHandmade level = transform.GetChild (index).GetComponent<LevelHandmade> ();
@@ -199,7 +195,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		errorsSecondStarAllowed = Mathf.RoundToInt (errorsAllowed * 0.5f);
 
-		foreach(var o in orders)
+		foreach (var o in orders)
 			RandomColors (o.levelContainers);
 
 		if (storageContainers.Count != 0)
@@ -225,16 +221,14 @@ public class LevelsManager : Singleton<LevelsManager>
 			StartCoroutine (AddOrder (o));
 
 		//Trains
-		if (rail1Trains.Count > 0)
-		{
+		if (rail1Trains.Count > 0) {
 			_rail1Occupied = true;
 
 			UpdateTrainSendCount (trainsToSend + rail1Trains.Count);
 			StartCoroutine (SpawnTrains (rail1Trains, TrainsMovementManager.Instance.rail1));
 		}
 
-		if (rail2Trains.Count > 0)
-		{
+		if (rail2Trains.Count > 0) {
 			_rail2Occupied = true;
 
 			UpdateTrainSendCount (trainsToSend + rail2Trains.Count);
@@ -253,8 +247,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	IEnumerator LoadGeneratedLevelCoroutine (int index)
 	{
-		if(index > transform.childCount - 1)
-		{
+		if (index > transform.childCount - 1) {
 			Debug.LogError ("Invalid Level!");
 			yield break;
 		}
@@ -292,8 +285,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		int delay = Random.Range (1, 3);
 
 		//Trains
-		if (currentLevelGenerated.rail1Trains.Count > 0)
-		{
+		if (currentLevelGenerated.rail1Trains.Count > 0) {
 			_rail1Occupied = true;
 
 			UpdateTrainSendCount (trainsToSend + currentLevelGenerated.rail1Trains.Count);
@@ -305,8 +297,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			StartCoroutine (SpawnTrains (currentLevelGenerated.rail1Trains, TrainsMovementManager.Instance.rail1, currentLevelGenerated.trainsDuration, trainDelayed));
 		}
 
-		if (currentLevelGenerated.rail2Trains.Count > 0)
-		{
+		if (currentLevelGenerated.rail2Trains.Count > 0) {
 			_rail2Occupied = true;
 
 			UpdateTrainSendCount (trainsToSend + currentLevelGenerated.rail2Trains.Count);
@@ -365,13 +356,12 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 	
-		for(int i = 0; i < train_Level.Count; i++)
-		{
+		for (int i = 0; i < train_Level.Count; i++) {
 			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, train_Level [i]);
 
-			yield return new WaitWhile (()=> train.inTransition);
+			yield return new WaitWhile (() => train.inTransition);
 
-			yield return new WaitWhile (()=> train.waitingDeparture);
+			yield return new WaitWhile (() => train.waitingDeparture);
 
 			CheckConstraints (train);
 			CheckConstraints ();
@@ -382,8 +372,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
-			if(errorsLocked > errorsAllowed)
-			{
+			if (errorsLocked > errorsAllowed) {
 				LevelEnd (LevelEndType.Errors);
 				yield break;
 			}
@@ -391,34 +380,27 @@ public class LevelsManager : Singleton<LevelsManager>
 			if (trainsToSend == 0)
 				GameManager.Instance.EndLevel ();
 			
-			if (OrdersManager.Instance.allOrdersSent)
-			{
+			if (OrdersManager.Instance.allOrdersSent) {
 				LevelEnd (LevelEndType.Orders);
 				yield break;
 			}
 
-			yield return new WaitUntil (()=> train == null);
+			yield return new WaitUntil (() => train == null);
 
-			if(i != train_Level.Count - 1)
+			if (i != train_Level.Count - 1)
 				yield return new WaitForSeconds (waitDurationBetweenTrains);
-			else
-			{
-				if (rail == TrainsMovementManager.Instance.rail1)
-				{
+			else {
+				if (rail == TrainsMovementManager.Instance.rail1) {
 					_rail1Occupied = false;
 
-					if (_rail2Occupied == false)
-					{
+					if (_rail2Occupied == false) {
 						LevelEnd (LevelEndType.Trains);
 						yield break;
 					}
-				}
-				else
-				{
+				} else {
 					_rail2Occupied = false;
 
-					if (_rail1Occupied == false)
-					{
+					if (_rail1Occupied == false) {
 						LevelEnd (LevelEndType.Trains);
 						yield break;
 					}
@@ -426,8 +408,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 		}
 
-		if (OrdersManager.Instance.allOrdersSent)
-		{
+		if (OrdersManager.Instance.allOrdersSent) {
 			LevelEnd (LevelEndType.Orders);
 			yield break;
 		}
@@ -437,20 +418,19 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		for(int i = 0; i < trains.Count; i++)
-		{
+		for (int i = 0; i < trains.Count; i++) {
 			Train train = trains [i];
 
-			if(firstTrainDelay)
+			if (firstTrainDelay)
 				yield return new WaitForSeconds (Random.Range (LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.x, LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.y));
 
 			TrainsMovementManager.Instance.SpawnTrain (rail, train, trainsDuration);
 
-			yield return new WaitWhile (()=> train.inTransition);
+			yield return new WaitWhile (() => train.inTransition);
 
 			CheckConstraints ();
 
-			yield return new WaitWhile (()=> train.waitingDeparture);
+			yield return new WaitWhile (() => train.waitingDeparture);
 
 			CheckConstraints (train);
 			CheckConstraints ();
@@ -461,8 +441,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
-			if(errorsLocked > errorsAllowed)
-			{
+			if (errorsLocked > errorsAllowed) {
 				LevelEnd (LevelEndType.Errors);
 				yield break;
 			}
@@ -470,34 +449,27 @@ public class LevelsManager : Singleton<LevelsManager>
 			if (trainsToSend == 0)
 				GameManager.Instance.EndLevel ();
 
-			if (OrdersManager.Instance.allOrdersSent)
-			{
+			if (OrdersManager.Instance.allOrdersSent) {
 				LevelEnd (LevelEndType.Orders);
 				yield break;
 			}
 
-			yield return new WaitUntil (()=> train == null);
+			yield return new WaitUntil (() => train == null);
 
-			if(i != trains.Count - 1)
+			if (i != trains.Count - 1)
 				yield return new WaitForSeconds (waitDurationBetweenTrains);
-			else
-			{
-				if (rail == TrainsMovementManager.Instance.rail1)
-				{
+			else {
+				if (rail == TrainsMovementManager.Instance.rail1) {
 					_rail1Occupied = false;
 
-					if (_rail2Occupied == false)
-					{
+					if (_rail2Occupied == false) {
 						LevelEnd (LevelEndType.Trains);
 						yield break;
 					}
-				}
-				else
-				{
+				} else {
 					_rail2Occupied = false;
 
-					if (_rail1Occupied == false)
-					{
+					if (_rail1Occupied == false) {
 						LevelEnd (LevelEndType.Trains);
 						yield break;
 					}
@@ -505,8 +477,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 		}
 
-		if (OrdersManager.Instance.allOrdersSent)
-		{
+		if (OrdersManager.Instance.allOrdersSent) {
 			LevelEnd (LevelEndType.Orders);
 			yield break;
 		}
@@ -516,8 +487,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 	
-		foreach(var b in boats)
-		{
+		foreach (var b in boats) {
 			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
 
 			if (b.delay > 0)
@@ -543,17 +513,15 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		foreach(var b in boats)
-		{
-			if(delay > 0)
+		foreach (var b in boats) {
+			if (delay > 0)
 				yield return new WaitForSeconds (delay);
 
 			BoatsMovementManager.Instance.BoatStart (b);
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
-			while (boatDuration > 0)
-			{
+			while (boatDuration > 0) {
 
 				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
@@ -574,14 +542,13 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	public void EmptyZone (Transform parent, bool destroyContainers = true)
 	{
-		foreach (Transform c in parent)
-		{
+		foreach (Transform c in parent) {
 			var container = c.GetComponent<Container> ();
 
 			if (container != null)
 				container.RemoveContainer ();
 
-			if(destroyContainers)
+			if (destroyContainers)
 				Destroy (c.gameObject);
 		}
 	}
@@ -601,8 +568,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		//Sort Containers_Levels
 		List<Container_Level> containers_Levels = new List<Container_Level> ();
 
-		if(spawnDoubleSizeFirst || forceSpawnDoubleFirst)
-		{
+		if (spawnDoubleSizeFirst || forceSpawnDoubleFirst) {
 			foreach (var c in containers_Base)
 				if (c.isDoubleSize)
 					containers_Levels.Add (c);
@@ -610,8 +576,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			foreach (var c in containers_Base)
 				if (!c.isDoubleSize)
 					containers_Levels.Add (c);
-		}
-		else
+		} else
 			containers_Levels.AddRange (containers_Base);
 
 
@@ -629,20 +594,16 @@ public class LevelsManager : Singleton<LevelsManager>
 				spots.Add (s);
 
 		//Spawn Containers & Assign Spot
-		foreach(var containterLevel in containers_Levels)
-		{
+		foreach (var containterLevel in containers_Levels) {
 			Container container = CreateContainer (containterLevel, containersParent);
 			
 			spotsTemp.Clear ();
 			spotsTemp.AddRange (spots);
 			
 			//Add Spawned Spots
-			if(containterLevel.isDoubleSize)
-			{
-				foreach(var s in spots)
-				{
-					if(s.isDoubleSize)
-					{
+			if (containterLevel.isDoubleSize) {
+				foreach (var s in spots) {
+					if (s.isDoubleSize) {
 						Spot spotSpawned = s.SpawnDoubleSizeSpot (container, false);
 						
 						if (spotSpawned != null)
@@ -652,17 +613,15 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 			
 			//Remove Invalid Spots
-			foreach(var s in spots)
-			{
+			foreach (var s in spots) {
 				if (s.isOccupied || !s.IsSameSize (container) || !s.CanPileContainer () || s == null)
 					spotsTemp.Remove (s);
 			}
 			
-			if(spotsTemp.Count == 0)
-			{
-				Debug.LogError ("No more free spots!", this);
+			if (spotsTemp.Count == 0) {
+				//Debug.LogError ("No more free spots!", this);
 				
-				if(!forceSpawnDoubleFirst)
+				if (!forceSpawnDoubleFirst)
 					StartCoroutine (FillContainerZone (containers_Base, zoneParent, containersParent, true));
 				else
 					Debug.LogError ("Too many containers to spawn!", this);
@@ -684,8 +643,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		GameObject prefab = basicContainersPrefabs [0];
 
-		switch (container_Level.containerType)
-		{
+		switch (container_Level.containerType) {
 		case ContainerType.Basic:
 			prefab = container_Level.isDoubleSize ? basicContainersPrefabs [1] : basicContainersPrefabs [0];
 			break;
@@ -713,21 +671,18 @@ public class LevelsManager : Singleton<LevelsManager>
 		currentErrors = 0;
 		nextToGroups = 0;
 
-		foreach (var c in specialConstraint)
-		{
+		foreach (var c in specialConstraint) {
 			c.count = 0;
 			c.groupCount = 0;
 		}
 
-		if(checkedTrain == null)
-		{
+		if (checkedTrain == null) {
 			if (TrainsMovementManager.Instance.rail1.train && TrainsMovementManager.Instance.rail1.train.waitingDeparture)
 				CheckTrainConstraints (TrainsMovementManager.Instance.rail1.train);
 			
 			if (TrainsMovementManager.Instance.rail2.train && TrainsMovementManager.Instance.rail2.train.waitingDeparture)
 				CheckTrainConstraints (TrainsMovementManager.Instance.rail2.train);
-		}
-		else
+		} else
 			CheckTrainConstraints (checkedTrain);
 
 		foreach (var c in specialConstraint)
@@ -739,8 +694,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		if (checkedTrain != null)
 			errorsLocked += currentErrors;
-		else
-		{
+		else {
 			errorsText.text = currentErrors.ToString ();
 			
 			if (currentErrors == 0)
@@ -755,25 +709,19 @@ public class LevelsManager : Singleton<LevelsManager>
 		Container previousContainer = null;
 		int nextToPreviousType = 0;
 
-		foreach(var container in train.containers)
-		{
+		foreach (var container in train.containers) {
 			bool hasNextToNotRespected = false;
 
-			if(container != null && previousContainer != container)
-			{
-				foreach(var constraint in container.constraints)
-				{
-					if (!constraint.isRespected)
-					{
+			if (container != null && previousContainer != container) {
+				foreach (var constraint in container.constraints) {
+					if (!constraint.isRespected) {
 						bool special = false;
 						
 						if (ConstraintType.NotNextTo_Constraint.ToString () == constraint.constraint.GetType ().ToString ())
 							hasNextToNotRespected = true;
 						
-						foreach(var c in specialConstraint)
-						{
-							if(c.constraintType.ToString () == constraint.constraint.GetType ().ToString ())
-							{
+						foreach (var c in specialConstraint) {
+							if (c.constraintType.ToString () == constraint.constraint.GetType ().ToString ()) {
 								c.count++;
 								special = true;
 								
@@ -781,7 +729,7 @@ public class LevelsManager : Singleton<LevelsManager>
 							}
 						}
 						
-						if(!special)
+						if (!special)
 							currentErrors++;
 						
 					}
@@ -789,32 +737,23 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 
 			//Next To Groups
-			if(container == null || container != null && previousContainer != container)
-			{
-				if (hasNextToNotRespected)
-				{
+			if (container == null || container != null && previousContainer != container) {
+				if (hasNextToNotRespected) {
 					if (nextToPreviousType == 0)
 						nextToPreviousType = 1;
-					
 					else if (nextToPreviousType == 1)
 						nextToPreviousType = 2;
-				}
-				else 
-				{
-					if(nextToPreviousType == 2)
-					{
+				} else {
+					if (nextToPreviousType == 2) {
 						nextToPreviousType = 0;
 						nextToGroups++;
-					}
-
-					else if (nextToPreviousType == 1)
+					} else if (nextToPreviousType == 1)
 						nextToPreviousType = 0;
 				}
 
-				if(container != null && container.spotOccupied._spotTrainIndex == train.containers.Count - 1
-					|| container != null && container.isDoubleSize && container.spotOccupied._spotTrainIndex == train.containers.Count - 2)
-				{
-					if(nextToPreviousType == 1 || nextToPreviousType == 2)
+				if (container != null && container.spotOccupied._spotTrainIndex == train.containers.Count - 1
+				   || container != null && container.isDoubleSize && container.spotOccupied._spotTrainIndex == train.containers.Count - 2) {
+					if (nextToPreviousType == 1 || nextToPreviousType == 2)
 						nextToGroups++;
 				}
 			}
@@ -823,19 +762,16 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 
 		//Wagons Overweight
-		foreach(var w in train.wagons)
-		{
-			if(w.overweight)
+		foreach (var w in train.wagons) {
+			if (w.overweight)
 				currentErrors++;
 		}
 	}
 
 	public void OrderSent (Order_Level orderLevel)
 	{
-		foreach(var o in orders)
-		{
-			if(o == orderLevel)
-			{
+		foreach (var o in orders) {
+			if (o == orderLevel) {
 				o.isPrepared = true;
 				return;
 			}
@@ -860,16 +796,14 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		yield return new WaitUntil (() => GameManager.Instance.gameState == GameState.Playing);
 
-		do
-		{
-			if(GameManager.Instance.gameState == GameState.Pause)
+		do {
+			if (GameManager.Instance.gameState == GameState.Pause)
 				yield return new WaitWhile (() => GameManager.Instance.gameState == GameState.Pause);
 
 			yield return new WaitForSecondsRealtime (1f);
 			
 			levelDuration++;
-		}
-		while (GameManager.Instance.gameState == GameState.Playing);
+		} while (GameManager.Instance.gameState == GameState.Playing);
 	}
 
 	void UpdateTrainSendCount (int count)
@@ -878,7 +812,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		trainsToSendText.text = trainsToSend.ToString ();
 	}
 
-	#region Level Start	
+	#region Level Start
+
 	[ButtonGroup ("1", -1)]
 	public void LoadLevel ()
 	{
@@ -887,27 +822,29 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	public void NextLevel ()
 	{
-		if (levelIndex + 1 >= transform.childCount)
-		{
+		if (levelIndex + 1 >= transform.childCount) {
 			Debug.LogWarning ("Invalid Level Index!");
 			return;
 		}
 
 		LoadLevel (levelIndex + 1);
 	}
+
 	#endregion
 
 	#region Other
+
 	[PropertyOrder (-1)]
 	[ButtonAttribute]
 	void RenameLevels ()
 	{
 		for (int i = 0; i < transform.childCount; i++)
-			if(transform.GetChild (i).GetComponent<Level> () != null)
+			if (transform.GetChild (i).GetComponent<Level> () != null)
 				transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
 			else
 				transform.GetChild (i).name = "Level Settings #" + (i + 1).ToString ();
 	}
+
 	#endregion
 
 	[System.Serializable]

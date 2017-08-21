@@ -78,18 +78,22 @@ public class Container_UI : MonoBehaviour
 	public void ContainerSent ()
 	{
 		isSent = true;
-		if (this.gameObject.activeInHierarchy)
+
+		if (this.gameObject.activeInHierarchy) {
 			StartCoroutine (ContainerSentFeedback ());
+		}
 	}
 
 	IEnumerator ContainerSentFeedback ()
 	{
-		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
+		yield return new WaitForSeconds (0.2f);
 
 		/*preparedCountText.enabled = false;
 		neededCountText.enabled = false;*/
-
+		/*Debug.Log ("WAT");
+		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);*/
 		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
+		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
 	}
 
 	public void ContainerAdded (Container c)
