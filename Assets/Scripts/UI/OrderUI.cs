@@ -52,8 +52,8 @@ public class OrderUI : MonoBehaviour
 
 		Order_UI tmpThing = orderGO.AddComponent (typeof(Order_UI)) as Order_UI;
 		tmpThing.orderLevel = order;
-
-
+		tmpThing.parentOrderUI = this;
+		OrderThing.Add (tmpThing);
 
 
 		//according to what we have to show we set the alpha of the new order
@@ -144,7 +144,9 @@ public class OrderUI : MonoBehaviour
 		}
 		tmpThing.containers = tmpThingCont;
 		tmpThing.Setup ();
-		OrderThing.Add (tmpThing);
+		ShowOrders ();
+		HideOrders ();
+
 	}
 
 	/// <summary>
@@ -184,6 +186,41 @@ public class OrderUI : MonoBehaviour
 		}
 	}
 
+
+	public void SetOrderAtPosition (RectTransform order, int pos)
+	{
+		Order_Level tempOL = _orderList [GetChildPosition (order)];
+		_orderList.Remove (_orderList [GetChildPosition (order)]);
+		_orderList.Insert (pos, tempOL);
+		order.transform.SetSiblingIndex (pos);
+
+	}
+
+
+	/// <summary>
+	/// Return child count without notification (last index)
+	/// </summary>
+	/// <returns>The child count.</returns>
+	public int GetChildCount ()
+	{
+		return this.transform.childCount - 1;
+	}
+
+	/// <summary>
+	/// Return child position
+	/// </summary>
+	/// <returns>Child position</returns>
+	public int GetChildPosition (RectTransform order)
+	{
+		for (int i = 0; i < transform.childCount; i++) {
+			if (transform.GetChild (i) == order) {
+				return i;
+			}
+		}
+		Debug.Log ("Should Not Happen -- Contact Feno that will contact Enol");
+		return 0;
+	}
+
 	/// <summary>
 	/// clear all orders without transition
 	/// /// </summary>
@@ -210,8 +247,10 @@ public class OrderUI : MonoBehaviour
 		_showOrders = true;
 		foreach (var order in _orders) {
 			var canvasGrp = order.Value.GetComponent<CanvasGroup> ();
-			if (!order.Value.activeSelf)
+			if (!order.Value.activeSelf) {
 				order.Value.SetActive (true);
+			}
+
 			canvasGrp.DOKill ();
 			canvasGrp.DOFade (1, 0.2f);
 		}
@@ -239,6 +278,34 @@ public class OrderUI : MonoBehaviour
 				DOVirtual.DelayedCall (0.2f, () => go.SetActive (false));
 			if (alphaTarget > 0 && !go.activeSelf)
 				go.SetActive (true);
+			i++;
+		}
+	}
+
+	public void Selected ()
+	{
+		foreach (var order in _orderList) {
+			var go = _orders [order];
+			var canvasGrp = go.GetComponent<CanvasGroup> ();
+			float alphaTarget = 1;
+			canvasGrp.DOKill ();
+			if (go.activeSelf) {
+				canvasGrp.DOFade (alphaTarget, 0.2f);
+			}
+		}
+	}
+
+	public void UnSelected ()
+	{
+		int i = 0;
+		foreach (var order in _orderList) {
+			var go = _orders [order];
+			var canvasGrp = go.GetComponent<CanvasGroup> ();
+			float alphaTarget = 1f - i / 3f;
+			canvasGrp.DOKill ();
+			if (go.activeSelf) {
+				canvasGrp.DOFade (alphaTarget, 1f - go.transform.GetSiblingIndex () / 3f);
+			}
 			i++;
 		}
 	}

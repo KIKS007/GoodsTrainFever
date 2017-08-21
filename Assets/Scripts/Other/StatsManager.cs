@@ -97,7 +97,7 @@ public class StatsManager : Singleton<StatsManager>
 			Analytics.CustomEvent ("LevelData-" + (id + 1), LevelDataDictionnary);	
 		}
 		if (UseGameAnalytics) {
-			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", ScoreManager.Instance.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, true);
+			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", LevelsManager.Instance.currentLevel.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, true);
 		}
 		if (DebugLogDataSended) {
 			DebugLogData (id, LevelDataDictionnary);
@@ -127,7 +127,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, rate.ToString (), diffRate.ToString (), ScoreManager.Instance.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), true, true);
+			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, rate.ToString (), diffRate.ToString (), LevelsManager.Instance.currentLevel.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), true, true);
 		}
 		if (DebugLogDataSended) {
 			DebugLogData (id, RatedLevelDataDictionnary);

@@ -10,6 +10,7 @@ public class Container_UI : MonoBehaviour
 	public bool isSent = false;
 	public Container_Level containerLevel;
 	public Container container;
+	public Container myContainer;
 
 	[Header ("UI")]
 	public Image containerImage;
@@ -20,6 +21,8 @@ public class Container_UI : MonoBehaviour
 	[Header ("Counts")]
 	public int neededCount;
 	public int preparedCount = 0;
+
+	public Order_UI myOrderUI;
 
 	//private RectTransform _rectTransform;
 	private CanvasGroup _canvasGroup;
@@ -75,8 +78,8 @@ public class Container_UI : MonoBehaviour
 	public void ContainerSent ()
 	{
 		isSent = true;
-
-		StartCoroutine (ContainerSentFeedback ());
+		if (this.gameObject.activeInHierarchy)
+			StartCoroutine (ContainerSentFeedback ());
 	}
 
 	IEnumerator ContainerSentFeedback ()
@@ -97,21 +100,29 @@ public class Container_UI : MonoBehaviour
 		preparedCount++;
 
 		UpdateTexts ();
-
-		StartCoroutine (ContainerAddedFeedback ());
+		containerImage.color = Color.green;
+		if (this.gameObject.activeInHierarchy) {
+			StartCoroutine (ContainerAddedFeedback ());	
+		}
 	}
 
-	public void ContainerSelected ()
+	public void ContainerSelected (bool isMe)
 	{
-		_canvasGroup.ignoreParentGroups = true;
+		if (isMe) {
+			this.GetComponent<Image> ().DOFade (1, 0.2f);
+		} else {
+			this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
+		}
 	}
 
 	public void ContainerDeselected (Container c)
 	{
-		DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
+		myOrderUI.ContainerDeselected ();
+		myContainer = null;
+		/*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
 			
 			_canvasGroup.ignoreParentGroups = false;
-		});
+		});*/
 
 	}
 
@@ -123,7 +134,7 @@ public class Container_UI : MonoBehaviour
 
 		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerAddedDuration);
 
-		containerImage.color = Color.green;
+
 	}
 
 	public void ContainerRemoved ()
@@ -134,8 +145,9 @@ public class Container_UI : MonoBehaviour
 		preparedCount--;
 
 		UpdateTexts ();
-
-		StartCoroutine (ContainerRemovedFeedback ());
+		containerImage.color = concolor;
+		if (this.gameObject.activeInHierarchy)
+			StartCoroutine (ContainerRemovedFeedback ());
 	}
 
 	IEnumerator ContainerRemovedFeedback ()
@@ -148,25 +160,24 @@ public class Container_UI : MonoBehaviour
 
 		transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
 
-		containerImage.color = concolor;
+
 	}
 
 	void UpdateTexts ()
 	{
-		/*if (neededCount > 0) {
+		if (neededCount > 0) {
 			isPrepared = false;
-			neededCountText.enabled = true;
-			neededCountText.text = neededCount.ToString ();
+			/*neededCountText.enabled = true;
+			neededCountText.text = neededCount.ToString ();*/
 		} else {
-			neededCountText.enabled = false;
+			/*neededCountText.enabled = false;*/
 			isPrepared = true;
 		}
 
-		if (preparedCount > 0) {
-			preparedCountText.enabled = true;
+/*		if (preparedCount > 0) {
+			/*	preparedCountText.enabled = true;
 			preparedCountText.text = preparedCount.ToString ();
-		} else
-			preparedCountText.enabled = false;*/
+		}*/
 	}
 
 	void OnDestroy ()

@@ -25,13 +25,13 @@ public class TouchManager : Singleton<TouchManager>
 	}
 
 	// Update is called once per frame
-	void Update () 
+	void Update ()
 	{
 		if (GameManager.Instance.gameState != GameState.Playing)
 			return;
 
 		#if UNITY_EDITOR
-		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
+		if (Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 			MouseHold ();
 		else
 			TouchHold ();
@@ -42,16 +42,14 @@ public class TouchManager : Singleton<TouchManager>
 
 	void TouchHold ()
 	{
-		if (Input.touchCount > 0)
-		{
+		if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch (0);
 
 			Touchable touchable = null;
 
 			_deltaPosition = touch.deltaPosition;
 
-			switch (touch.phase)
-			{
+			switch (touch.phase) {
 			case TouchPhase.Began:
 				
 				_touchDown = true;
@@ -81,15 +79,15 @@ public class TouchManager : Singleton<TouchManager>
 
 				_deltaPosition = new Vector3 ();
 
-				if (!isTouchingUI) 
-				{
+				if (!isTouchingUI) {
 					touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
 						touchable.OnTouchUpAsButton ();
 				}
 				
-				if (OnTouchUpNoTarget != null && !isTouchingTouchable)
+				if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
 					OnTouchUpNoTarget ();
+				}
 				
 				if (OnTouchUp != null)
 					OnTouchUp ();
@@ -104,8 +102,7 @@ public class TouchManager : Singleton<TouchManager>
 
 	void MouseHold ()
 	{
-		if(Input.GetMouseButtonDown (0))
-		{
+		if (Input.GetMouseButtonDown (0)) {
 			_touchDown = true;
 
 			_mousePosition = Input.mousePosition;
@@ -116,22 +113,18 @@ public class TouchManager : Singleton<TouchManager>
 
 			if (OnTouchDown != null)
 				OnTouchDown ();
-		}
-		
-		else if(Input.GetMouseButtonUp (0))
-		{
+		} else if (Input.GetMouseButtonUp (0)) {
 			_touchDown = false;
 
 			_deltaPosition = new Vector3 ();
 
-			if(!isTouchingUI)
-			{
+			if (!isTouchingUI) {
 				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)
 					touchable.OnTouchUpAsButton ();
 			}
 
-			if (OnTouchUpNoTarget != null && !isTouchingTouchable)
+			if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI)
 				OnTouchUpNoTarget ();
 
 			if (OnTouchUp != null)
@@ -139,10 +132,7 @@ public class TouchManager : Singleton<TouchManager>
 			
 			isTouchingTouchable = false;
 			isTouchingUI = false;
-		}
-
-		else if(Input.GetMouseButton (0))
-		{
+		} else if (Input.GetMouseButton (0)) {
 			_deltaPosition = Input.mousePosition - _mousePosition; 
 			
 			if (OnTouchHold != null)
@@ -158,19 +148,17 @@ public class TouchManager : Singleton<TouchManager>
 		RaycastHit hit;
 		Ray ray = _camera.ScreenPointToRay (position);
 
-		if (Physics.Raycast (ray, out hit, Mathf.Infinity, mask)) 
-		{
-			Touchable touchable = hit.collider.GetComponent<Touchable>();
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity, mask)) {
+			Touchable touchable = hit.collider.GetComponent<Touchable> ();
 
 			if (touchable == null && hit.rigidbody)
-				touchable = hit.rigidbody.gameObject.GetComponent<Touchable>();
+				touchable = hit.rigidbody.gameObject.GetComponent<Touchable> ();
 			
 			if (touchable != null)
 				return touchable;
 			else
 				return null;
-		}
-		else
+		} else
 			return null;
 	}
 
@@ -179,26 +167,23 @@ public class TouchManager : Singleton<TouchManager>
 		RaycastHit hit;
 		Ray ray = _camera.ScreenPointToRay (position);
 
-		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) 
-		{
-			Touchable touchable = hit.collider.GetComponent<Touchable>();
+		if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
+			Touchable touchable = hit.collider.GetComponent<Touchable> ();
 
 			if (touchable == null && hit.rigidbody)
-				touchable = hit.rigidbody.gameObject.GetComponent<Touchable>();
+				touchable = hit.rigidbody.gameObject.GetComponent<Touchable> ();
 
 			if (touchable != null)
 				return touchable;
 			else
 				return null;
-		}
-		else
+		} else
 			return null;
 	}
 
 	IEnumerator TouchHoldCoroutine ()
 	{
-		while (_touchDown)
-		{
+		while (_touchDown) {
 			if (OnTouchHold != null)
 				OnTouchHold (_deltaPosition);
 			

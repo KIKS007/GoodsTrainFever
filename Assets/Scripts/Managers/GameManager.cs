@@ -53,17 +53,17 @@ public class GameManager : Singleton<GameManager>
 
 	public void LevelEndOrders ()
 	{
-		Debug.Log ("ORDERS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
+		//	Debug.Log ("ORDERS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
 	}
 
 	public void LevelEndTrains ()
 	{
-		Debug.Log ("TRAINS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
+		//	Debug.Log ("TRAINS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
 	}
 
 	public void LevelEndErrors ()
 	{
-		Debug.Log ("ERRORS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
+		//	Debug.Log ("ERRORS LEVEL" + (LevelsManager.Instance.levelIndex + 1).ToString () + " END!");
 	}
 
 	public void LevelEnd (LevelEndType levelEndType)
