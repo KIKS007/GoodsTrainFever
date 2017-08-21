@@ -8,498 +8,498 @@ using Sirenix.OdinInspector;
 
 public enum SpotType { Train, Storage, Boat, Road }
 
-public class Spot : Touchable 
+public class Spot : Touchable
 {
-	public Action<Container> OnSpotTaken;
-	public Action<Container> OnSpotFreed;
-
-	[Header ("Spot")]
-	public SpotType spotType;
-	public bool isOccupied = false;
-
-	[Header ("Read Only")]
-	[ReadOnlyAttribute]
-	public bool isDoubleSize = false;
-	[ReadOnlyAttribute]
-	public bool isPileSpot;
-	[ReadOnlyAttribute]
-	public bool isPileUp = false;
-
-	[Header ("Container")]
-	public Container container;
-
-	[Header ("Overlapping Spots")]
-	public List<Spot> overlappingSpots = new List<Spot> ();
-
-	[Header ("Subordinate Spot")]
-	public bool isSubordinate = false;
-	[ShowIf("isSubordinate")]
-	public Spot chiefSpot = null;
-
-	[HideInInspector]
-	public Wagon _wagon;
-	[HideInInspector]
-	public Transform _containersParent;
-	[HideInInspector]
-	public Container _parentContainer;
-	[HideInInspector]
-	public bool _isSpawned = false;
-	public int _spotTrainIndex;
-
-	private Collider _collider;
-	private MeshRenderer _meshRenderer;
-	private MeshFilter _meshFilter;
-	private Material _material;
-	private float _fadeDuration = 0.2f;
-	private Spot _doubleSizeSpotSpawned;
-	private float _hologramOpacity;
-	private float _opacity;
-
-	void Awake () 
-	{
-		_collider = GetComponent<Collider> ();
-		_meshRenderer = GetComponent<MeshRenderer> ();
-		_material = _meshRenderer.material;
-		_meshFilter = GetComponent<MeshFilter> ();
-
-		_hologramOpacity = _material.GetFloat ("_HologramOpacity");
-		_opacity = _material.GetFloat ("_Opacity");
-
-		_material.SetFloat ("_HologramOpacity", 0f);
-		_material.SetFloat ("_Opacity", 0f);
-
-		Container.OnContainerSelected += OnContainerSelected;
-		Container.OnContainerDeselected += OnContainerDeselected;
-
-		if(transform.GetComponentInParent<Container> () != null)
-		{
-			isPileSpot = true;
-			_parentContainer = transform.GetComponentInParent<Container> ();
-		}
-
-		SetIsDoubleSize ();
-
-		SetIsPileSpot ();
-
-		GetOverlappingSpots ();
-
-		SetSpotType (true);
-
-		IsOccupied ();
-	}
-
-	void Start () 
-	{
-		SetSpotType ();
-
-		if(!_isSpawned)
-			OnContainerDeselected ();
-
-		OverlappingSpotsOccupied ();
-
-		if (ContainersMovementManager.Instance.selectedContainer != null)
-			OnContainerSelected (ContainersMovementManager.Instance.selectedContainer);
-	}
-
-	public void SetIsDoubleSize ()
-	{
-		_collider = GetComponent<Collider> ();
-		BoxCollider boxCollider = _collider as BoxCollider;
-
-		if (boxCollider.size.x > 12f)
-			isDoubleSize = true;
-		else
-			isDoubleSize = false;
-	}
-
-	public void SetIsPileSpot ()
-	{
-		if (transform.parent.GetComponent<Container> () != null || transform.parent.parent.GetComponent<Container> () != null)
-			isPileSpot = true;
-		else
-			isPileSpot = false;
-	}
-
-	public void GetOverlappingSpots ()
-	{
-		int spotsMask = 1 << LayerMask.NameToLayer ("Spots");
-
-		Vector3 position = transform.position;
-		position.y += 0.5f;
-
-		Collider[] colliders = Physics.OverlapBox (position, new Vector3 (0.5f, 0.25f, 0.5f), Quaternion.identity, spotsMask, QueryTriggerInteraction.Collide);
-
-		foreach (var c in colliders)
-		{
-			Spot spot = c.GetComponent<Spot> ();
-
-			if (c != _collider && spot != null)
-			{
-				if(!isDoubleSize && spot.isDoubleSize || isDoubleSize)
-					overlappingSpots.Add (spot);
-			}
-		}
-
-		overlappingSpots = overlappingSpots.OrderByDescending (x => x.transform.position.x).ToList ();
-
-		if (_isSpawned)
-			foreach (var o in overlappingSpots)
-				o.overlappingSpots.Add (this);
-
-		if (chiefSpot != null && overlappingSpots.Contains (chiefSpot))
-		{
-			chiefSpot.overlappingSpots.Remove (this);
-			overlappingSpots.Remove (chiefSpot);
-		}
-	}
-
-	public void OverlappingSpotsOccupied ()
-	{
-		if(container == null)
-			isOccupied = false;
-
-		foreach(var s in overlappingSpots)
-		{
-			if (s.container)
-			{
-				if(!isDoubleSize && s.isDoubleSize && s.container != null)
-					isOccupied = true;
-
-				if(isDoubleSize && !s.isDoubleSize)
-					isOccupied = true;
-			}
-		}
-	}
-
-	void SetSpotType (bool onlyType = false)
-	{
-		if(transform.GetComponentInParent<Storage> () != null)
-		{
-			spotType = SpotType.Storage;
-
-			if(!onlyType)
-				_containersParent = transform.GetComponentInParent<Storage> ().containersParent;
-
-			return;
-		}
-
-		if(transform.GetComponentInParent<Wagon> () != null)
-		{
-			spotType = SpotType.Train;
-
-			if(!isPileSpot)
-				_wagon = transform.GetComponentInParent<Wagon> ();
-
-			if(!onlyType)
-				_containersParent = transform.GetComponentInParent<Wagon> ().train.containersParent;
-			return;
-		}
-
-		if(transform.GetComponentInParent<Boat> () != null)
-		{
-			spotType = SpotType.Boat;
-
-			if(!onlyType)
-				_containersParent = transform.GetComponentInParent<Boat> ().containersParent;
-			return;
-		}
-	}
-
-	public void IsOccupied ()
-	{
-		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
-
-		Vector3 position = transform.position;
-
-		RaycastHit hit;
-		Physics.Raycast (transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
-
-		isOccupied = false;
-
-		if (hit.collider != null)
-		{
-			isOccupied = true;
-
-			if (IsSameSize (hit.collider.GetComponent<Container> ()))
-			{
-				container = hit.collider.GetComponent<Container> ();
-				hit.collider.GetComponent<Container> ().SetInitialSpot (this);
-			}
-		}
-
-		if(container != null && container.spotOccupied != null && container.spotOccupied == this)
-			isOccupied = true;
-	}
-
-	public void SetInitialContainer (Container c)
-	{
-		if(!IsSameSize (c))
-		{
-			Debug.LogWarning ("Not Same Size with " + c.name + " !", this);
-			return;
-		}
-
-		isOccupied = true;
-
-		c.SetInitialSpot (this);
-	}
-
-	public bool CanPileContainer ()
-	{
-		int containersMask = 1 << LayerMask.NameToLayer ("Containers");
-
-		int belowContainers = 0;
-
-		Vector3 rayPosition = transform.position;
-		rayPosition.x -= 0.01f;
-
-		if (isPileSpot && _parentContainer.isMoving)
-		{
-			rayPosition = _parentContainer.spotOccupied.transform.position;
-			rayPosition.y += ContainersMovementManager.Instance.containerHeight;
-
-			belowContainers = 1;
-		}
-
-		RaycastHit[] hits = Physics.RaycastAll (rayPosition, Vector3.down, 100f, containersMask, QueryTriggerInteraction.Collide);
-
-		foreach (var h in hits)
-		{
-			if (container && h.collider.gameObject == container.gameObject)
-				continue;
-
-			if (isPileSpot && _parentContainer.isMoving && h.collider.gameObject == _parentContainer.gameObject)
-			{
-				//Debug.Log ("--- moins moins");
-				belowContainers--;
-			}
-
-			belowContainers++;
-		}
-
-		if (spotType == SpotType.Train)
-		{
-			if (belowContainers == 0 && !isPileSpot)
-				return true;
-			else
-				return false;
-		}
-
-		else
-		{
-			int pileCount = spotType == SpotType.Storage ? ContainersMovementManager.Instance.storagePileCount : ContainersMovementManager.Instance.boatPileCount;
-
-			if (belowContainers <= pileCount)
-				return true;
-			else
-				return false;
-		}
-	}
-
-	public void SetContainer (Container container)
-	{
-		isOccupied = true;
-		this.container = container;
-
-		foreach (var s in overlappingSpots)
-			s.OverlappingSpotsOccupied ();
-
-		if (OnSpotTaken != null)
-			OnSpotTaken (this.container);
-	}
-
-	public void RemoveContainer ()
-	{
-		isOccupied = false;
-
-		if (OnSpotFreed != null)
-			OnSpotFreed (container);
-		
-		container = null;
-
-		foreach (var s in overlappingSpots)
-			s.OverlappingSpotsOccupied ();
-	}
-
-	public override void OnTouchUpAsButton ()
-	{
-		base.OnTouchUpAsButton ();
-
-		/*if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
+    public Action<Container> OnSpotTaken;
+    public Action<Container> OnSpotFreed;
+
+    [Header("Spot")]
+    public SpotType spotType;
+    public bool isOccupied = false;
+
+    [Header("Read Only")]
+    [ReadOnlyAttribute]
+    public bool isDoubleSize = false;
+    [ReadOnlyAttribute]
+    public bool isPileSpot;
+    [ReadOnlyAttribute]
+    public bool isPileUp = false;
+
+    [Header("Container")]
+    public Container container;
+
+    [Header("Overlapping Spots")]
+    public List<Spot> overlappingSpots = new List<Spot>();
+
+    [Header("Subordinate Spot")]
+    public bool isSubordinate = false;
+    [ShowIf("isSubordinate")]
+    public Spot chiefSpot = null;
+
+    [HideInInspector]
+    public Wagon _wagon;
+    [HideInInspector]
+    public Transform _containersParent;
+    [HideInInspector]
+    public Container _parentContainer;
+    [HideInInspector]
+    public bool _isSpawned = false;
+    public int _spotTrainIndex;
+
+    private Collider _collider;
+    //private MeshRenderer _meshRenderer;
+    private MeshFilter _meshFilter;
+    //private Material _material;
+    private float _fadeDuration = 0.2f;
+    private Spot _doubleSizeSpotSpawned;
+    private float _hologramOpacity;
+    private float _opacity;
+
+    void Awake()
+    {
+        _collider = GetComponent<Collider>();
+        // _meshRenderer = GetComponent<MeshRenderer> ();
+        // _material = _meshRenderer.material;
+        _meshFilter = GetComponent<MeshFilter>();
+
+        // _hologramOpacity = _material.GetFloat ("_HologramOpacity");
+        // _opacity = _material.GetFloat ("_Opacity");
+
+        // _material.SetFloat ("_HologramOpacity", 0f);
+        // _material.SetFloat ("_Opacity", 0f);
+
+        Container.OnContainerSelected += OnContainerSelected;
+        Container.OnContainerDeselected += OnContainerDeselected;
+
+        if (transform.GetComponentInParent<Container>() != null)
+        {
+            isPileSpot = true;
+            _parentContainer = transform.GetComponentInParent<Container>();
+        }
+
+        SetIsDoubleSize();
+
+        SetIsPileSpot();
+
+        GetOverlappingSpots();
+
+        SetSpotType(true);
+
+        IsOccupied();
+    }
+
+    void Start()
+    {
+        SetSpotType();
+
+        if (!_isSpawned)
+            OnContainerDeselected();
+
+        OverlappingSpotsOccupied();
+
+        if (ContainersMovementManager.Instance.selectedContainer != null)
+            OnContainerSelected(ContainersMovementManager.Instance.selectedContainer);
+    }
+
+    public void SetIsDoubleSize()
+    {
+        _collider = GetComponent<Collider>();
+        BoxCollider boxCollider = _collider as BoxCollider;
+
+        if (boxCollider.size.x > 12f)
+            isDoubleSize = true;
+        else
+            isDoubleSize = false;
+    }
+
+    public void SetIsPileSpot()
+    {
+        if (transform.parent.GetComponent<Container>() != null || transform.parent.parent.GetComponent<Container>() != null)
+            isPileSpot = true;
+        else
+            isPileSpot = false;
+    }
+
+    public void GetOverlappingSpots()
+    {
+        int spotsMask = 1 << LayerMask.NameToLayer("Spots");
+
+        Vector3 position = transform.position;
+        position.y += 0.5f;
+
+        Collider[] colliders = Physics.OverlapBox(position, new Vector3(0.5f, 0.25f, 0.5f), Quaternion.identity, spotsMask, QueryTriggerInteraction.Collide);
+
+        foreach (var c in colliders)
+        {
+            Spot spot = c.GetComponent<Spot>();
+
+            if (c != _collider && spot != null)
+            {
+                if (!isDoubleSize && spot.isDoubleSize || isDoubleSize)
+                    overlappingSpots.Add(spot);
+            }
+        }
+
+        overlappingSpots = overlappingSpots.OrderByDescending(x => x.transform.position.x).ToList();
+
+        if (_isSpawned)
+            foreach (var o in overlappingSpots)
+                o.overlappingSpots.Add(this);
+
+        if (chiefSpot != null && overlappingSpots.Contains(chiefSpot))
+        {
+            chiefSpot.overlappingSpots.Remove(this);
+            overlappingSpots.Remove(chiefSpot);
+        }
+    }
+
+    public void OverlappingSpotsOccupied()
+    {
+        if (container == null)
+            isOccupied = false;
+
+        foreach (var s in overlappingSpots)
+        {
+            if (s.container)
+            {
+                if (!isDoubleSize && s.isDoubleSize && s.container != null)
+                    isOccupied = true;
+
+                if (isDoubleSize && !s.isDoubleSize)
+                    isOccupied = true;
+            }
+        }
+    }
+
+    void SetSpotType(bool onlyType = false)
+    {
+        if (transform.GetComponentInParent<Storage>() != null)
+        {
+            spotType = SpotType.Storage;
+
+            if (!onlyType)
+                _containersParent = transform.GetComponentInParent<Storage>().containersParent;
+
+            return;
+        }
+
+        if (transform.GetComponentInParent<Wagon>() != null)
+        {
+            spotType = SpotType.Train;
+
+            if (!isPileSpot)
+                _wagon = transform.GetComponentInParent<Wagon>();
+
+            if (!onlyType)
+                _containersParent = transform.GetComponentInParent<Wagon>().train.containersParent;
+            return;
+        }
+
+        if (transform.GetComponentInParent<Boat>() != null)
+        {
+            spotType = SpotType.Boat;
+
+            if (!onlyType)
+                _containersParent = transform.GetComponentInParent<Boat>().containersParent;
+            return;
+        }
+    }
+
+    public void IsOccupied()
+    {
+        int containersMask = 1 << LayerMask.NameToLayer("Containers");
+
+        Vector3 position = transform.position;
+
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.up, out hit, 4f, containersMask, QueryTriggerInteraction.Collide);
+
+        isOccupied = false;
+
+        if (hit.collider != null)
+        {
+            isOccupied = true;
+
+            if (IsSameSize(hit.collider.GetComponent<Container>()))
+            {
+                container = hit.collider.GetComponent<Container>();
+                hit.collider.GetComponent<Container>().SetInitialSpot(this);
+            }
+        }
+
+        if (container != null && container.spotOccupied != null && container.spotOccupied == this)
+            isOccupied = true;
+    }
+
+    public void SetInitialContainer(Container c)
+    {
+        if (!IsSameSize(c))
+        {
+            Debug.LogWarning("Not Same Size with " + c.name + " !", this);
+            return;
+        }
+
+        isOccupied = true;
+
+        c.SetInitialSpot(this);
+    }
+
+    public bool CanPileContainer()
+    {
+        int containersMask = 1 << LayerMask.NameToLayer("Containers");
+
+        int belowContainers = 0;
+
+        Vector3 rayPosition = transform.position;
+        rayPosition.x -= 0.01f;
+
+        if (isPileSpot && _parentContainer.isMoving)
+        {
+            rayPosition = _parentContainer.spotOccupied.transform.position;
+            rayPosition.y += ContainersMovementManager.Instance.containerHeight;
+
+            belowContainers = 1;
+        }
+
+        RaycastHit[] hits = Physics.RaycastAll(rayPosition, Vector3.down, 100f, containersMask, QueryTriggerInteraction.Collide);
+
+        foreach (var h in hits)
+        {
+            if (container && h.collider.gameObject == container.gameObject)
+                continue;
+
+            if (isPileSpot && _parentContainer.isMoving && h.collider.gameObject == _parentContainer.gameObject)
+            {
+                //Debug.Log ("--- moins moins");
+                belowContainers--;
+            }
+
+            belowContainers++;
+        }
+
+        if (spotType == SpotType.Train)
+        {
+            if (belowContainers == 0 && !isPileSpot)
+                return true;
+            else
+                return false;
+        }
+
+        else
+        {
+            int pileCount = spotType == SpotType.Storage ? ContainersMovementManager.Instance.storagePileCount : ContainersMovementManager.Instance.boatPileCount;
+
+            if (belowContainers <= pileCount)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public void SetContainer(Container container)
+    {
+        isOccupied = true;
+        this.container = container;
+
+        foreach (var s in overlappingSpots)
+            s.OverlappingSpotsOccupied();
+
+        if (OnSpotTaken != null)
+            OnSpotTaken(this.container);
+    }
+
+    public void RemoveContainer()
+    {
+        isOccupied = false;
+
+        if (OnSpotFreed != null)
+            OnSpotFreed(container);
+
+        container = null;
+
+        foreach (var s in overlappingSpots)
+            s.OverlappingSpotsOccupied();
+    }
+
+    public override void OnTouchUpAsButton()
+    {
+        base.OnTouchUpAsButton();
+
+        /*if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
 			return;*/
 
-		if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
-			return;
+        if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
+            return;
 
-		if (spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
-			return;
+        if (spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
+            return;
 
-		ContainersMovementManager.Instance.TakeSpot (this);
-	}
+        ContainersMovementManager.Instance.TakeSpot(this);
+    }
 
-	void OnContainerSelected (Container container)
-	{
-		SpawnDoubleSizeSpot (container);
+    void OnContainerSelected(Container container)
+    {
+        SpawnDoubleSizeSpot(container);
 
-		OverlappingSpotsOccupied ();
+        OverlappingSpotsOccupied();
 
-		if (isOccupied)
-			return;
+        if (isOccupied)
+            return;
 
-		if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
-			return;
+        if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
+            return;
 
-		if (isSubordinate && !IsChiefSpotOccupied ())
-			return;
+        if (isSubordinate && !IsChiefSpotOccupied())
+            return;
 
-		if (!IsSameSize (container))
-			return;
+        if (!IsSameSize(container))
+            return;
 
-		if (!CanPileContainer ())
-			return;
+        if (!CanPileContainer())
+            return;
 
-		/*if (!AreConstraintsRespected (container))
+        /*if (!AreConstraintsRespected (container))
 			return;*/
-		
-		if (isPileSpot && _parentContainer.selected)
-			return;
 
-		_meshRenderer.enabled = true;
-			
-		_meshFilter.mesh = container._mesh;
-		_collider.enabled = true;
+        if (isPileSpot && _parentContainer.selected)
+            return;
 
-		DOTween.Kill (_material);
+        // _meshRenderer.enabled = true;
 
-		float delay = Vector3.Distance (container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
+        _meshFilter.mesh = container._mesh;
+        _collider.enabled = true;
 
-		_material.DOFloat (_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay (delay);
-		_material.DOFloat (_opacity, "_Opacity", _fadeDuration).SetDelay (delay);
-	}
+        // DOTween.Kill (_material);
 
-	void OnContainerDeselected (Container container = null)
-	{
-		_collider.enabled = false;
+        float delay = Vector3.Distance(container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
-		DOTween.Kill (_material);
+        // _material.DOFloat (_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay (delay);
+        // _material.DOFloat (_opacity, "_Opacity", _fadeDuration).SetDelay (delay);
+    }
 
-		_material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-		_material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=> 
-			{
-				if(_meshRenderer)
-					_meshRenderer.enabled = false;
-			});
-	}
+    void OnContainerDeselected(Container container = null)
+    {
+        _collider.enabled = false;
 
-	public bool AreConstraintsRespected (Container container)
-	{
-		if (spotType != SpotType.Train)
-			return true;
+        // DOTween.Kill (_material);
 
-		if (container.constraints.Count == 0)
-			return true;
+        // _material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
+        // _material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=>
+        // {
+        // if(_meshRenderer)
+        // _meshRenderer.enabled = false;
+        // });
+    }
 
-		foreach (var c in container.constraints)
-			if (!c.constraint.IsRespected (this))
-			{
-				//Debug.Log (_spotTrainIndex, this);
-				return false;
-			}
+    public bool AreConstraintsRespected(Container container)
+    {
+        if (spotType != SpotType.Train)
+            return true;
 
-		return true;
-	}
+        if (container.constraints.Count == 0)
+            return true;
 
-	public bool IsSameSize (Container container)
-	{
-		if(isDoubleSize && container.isDoubleSize || !isDoubleSize && !container.isDoubleSize)
-			return true;
-		else
-			return false;
-	}
+        foreach (var c in container.constraints)
+            if (!c.constraint.IsRespected(this))
+            {
+                //Debug.Log (_spotTrainIndex, this);
+                return false;
+            }
 
-	public void SetIsPileUp (bool piled)
-	{
-		isPileUp = piled;
+        return true;
+    }
 
-		foreach (var s in overlappingSpots)
-			s.isPileUp = piled;
-	}
+    public bool IsSameSize(Container container)
+    {
+        if (isDoubleSize && container.isDoubleSize || !isDoubleSize && !container.isDoubleSize)
+            return true;
+        else
+            return false;
+    }
 
-	public bool IsChiefSpotOccupied ()
-	{
-		if (!isSubordinate || chiefSpot == null)
-			return false;
+    public void SetIsPileUp(bool piled)
+    {
+        isPileUp = piled;
 
-		return chiefSpot.isOccupied;			
-	}
+        foreach (var s in overlappingSpots)
+            s.isPileUp = piled;
+    }
 
-	public Spot SpawnDoubleSizeSpot (Container c, bool selectOnStart = true)
-	{
-		if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.isOccupied)
-			return null;
+    public bool IsChiefSpotOccupied()
+    {
+        if (!isSubordinate || chiefSpot == null)
+            return false;
 
-		if (_doubleSizeSpotSpawned)
-			Destroy (_doubleSizeSpotSpawned.gameObject);
+        return chiefSpot.isOccupied;
+    }
 
-		if (!c.isDoubleSize)
-			return null;
-		
-		if (spotType == SpotType.Train)
-			return null;
+    public Spot SpawnDoubleSizeSpot(Container c, bool selectOnStart = true)
+    {
+        if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.isOccupied)
+            return null;
 
-		if (!isDoubleSize)
-			return null;
-		
-		if (container)
-			return null;
+        if (_doubleSizeSpotSpawned)
+            Destroy(_doubleSizeSpotSpawned.gameObject);
 
-		if (isPileUp)
-			return null;
+        if (!c.isDoubleSize)
+            return null;
 
-		foreach (var s in overlappingSpots)
-		{
-			if (s.isOccupied == false)
-				return null;
-			else
-			{
-				foreach(var pileSpot in s.container._pileSpots)
-					if(pileSpot.isOccupied)	
-						return null;
-			}
-		}
+        if (spotType == SpotType.Train)
+            return null;
 
-		Vector3 spotPosition = transform.position;
-		spotPosition.y += ContainersMovementManager.Instance.containerHeight;
+        if (!isDoubleSize)
+            return null;
 
-		_doubleSizeSpotSpawned = (Instantiate (GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot> ();
-		_doubleSizeSpotSpawned._isSpawned = true;
+        if (container)
+            return null;
 
-		_doubleSizeSpotSpawned._containersParent = _containersParent;
+        if (isPileUp)
+            return null;
 
-		_doubleSizeSpotSpawned.overlappingSpots.Clear ();
+        foreach (var s in overlappingSpots)
+        {
+            if (s.isOccupied == false)
+                return null;
+            else
+            {
+                foreach (var pileSpot in s.container._pileSpots)
+                    if (pileSpot.isOccupied)
+                        return null;
+            }
+        }
 
-		foreach(var o in overlappingSpots)
-			foreach (var p in o.container._pileSpots)
-				_doubleSizeSpotSpawned.overlappingSpots.Add (p);
+        Vector3 spotPosition = transform.position;
+        spotPosition.y += ContainersMovementManager.Instance.containerHeight;
 
-		_doubleSizeSpotSpawned.GetOverlappingSpots ();
+        _doubleSizeSpotSpawned = (Instantiate(GlobalVariables.Instance.spot40SpawnedPrefab, spotPosition, transform.rotation, transform.parent)).GetComponent<Spot>();
+        _doubleSizeSpotSpawned._isSpawned = true;
 
-		if(selectOnStart)
-			_doubleSizeSpotSpawned.OnContainerSelected (c);
+        _doubleSizeSpotSpawned._containersParent = _containersParent;
 
-		return _doubleSizeSpotSpawned;
-	}
+        _doubleSizeSpotSpawned.overlappingSpots.Clear();
 
-	void OnDestroy ()
-	{
-		if (TrainsMovementManager.applicationIsQuitting)
-			return;
+        foreach (var o in overlappingSpots)
+            foreach (var p in o.container._pileSpots)
+                _doubleSizeSpotSpawned.overlappingSpots.Add(p);
 
-		Container.OnContainerSelected -= OnContainerSelected;
-		Container.OnContainerDeselected -= OnContainerDeselected;
+        _doubleSizeSpotSpawned.GetOverlappingSpots();
 
-		if (_isSpawned)
-			foreach (var o in overlappingSpots)
-				o.overlappingSpots.Remove (this);
-	}
+        if (selectOnStart)
+            _doubleSizeSpotSpawned.OnContainerSelected(c);
+
+        return _doubleSizeSpotSpawned;
+    }
+
+    void OnDestroy()
+    {
+        if (TrainsMovementManager.applicationIsQuitting)
+            return;
+
+        Container.OnContainerSelected -= OnContainerSelected;
+        Container.OnContainerDeselected -= OnContainerDeselected;
+
+        if (_isSpawned)
+            foreach (var o in overlappingSpots)
+                o.overlappingSpots.Remove(this);
+    }
 }
