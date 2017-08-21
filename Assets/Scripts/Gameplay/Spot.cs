@@ -47,9 +47,9 @@ public class Spot : Touchable
     public int _spotTrainIndex;
 
     private Collider _collider;
-    //private MeshRenderer _meshRenderer;
+    private MeshRenderer _meshRenderer;
     private MeshFilter _meshFilter;
-    //private Material _material;
+    private Material _material;
     private float _fadeDuration = 0.2f;
     private Spot _doubleSizeSpotSpawned;
     private float _hologramOpacity;
@@ -58,15 +58,15 @@ public class Spot : Touchable
     void Awake()
     {
         _collider = GetComponent<Collider>();
-        // _meshRenderer = GetComponent<MeshRenderer> ();
-        // _material = _meshRenderer.material;
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _material = _meshRenderer.material;
         _meshFilter = GetComponent<MeshFilter>();
 
-        // _hologramOpacity = _material.GetFloat ("_HologramOpacity");
-        // _opacity = _material.GetFloat ("_Opacity");
+        _hologramOpacity = _material.GetFloat("_HologramOpacity");
+        _opacity = _material.GetFloat("_Opacity");
 
-        // _material.SetFloat ("_HologramOpacity", 0f);
-        // _material.SetFloat ("_Opacity", 0f);
+        _material.SetFloat("_HologramOpacity", 0f);
+        _material.SetFloat("_Opacity", 0f);
 
         Container.OnContainerSelected += OnContainerSelected;
         Container.OnContainerDeselected += OnContainerDeselected;
@@ -364,31 +364,31 @@ public class Spot : Touchable
         if (isPileSpot && _parentContainer.selected)
             return;
 
-        // _meshRenderer.enabled = true;
+        _meshRenderer.enabled = true;
 
         _meshFilter.mesh = container._mesh;
         _collider.enabled = true;
 
-        // DOTween.Kill (_material);
+        DOTween.Kill(_material);
 
         float delay = Vector3.Distance(container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
-        // _material.DOFloat (_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay (delay);
-        // _material.DOFloat (_opacity, "_Opacity", _fadeDuration).SetDelay (delay);
+        _material.DOFloat(_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay(delay);
+        _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
 
     void OnContainerDeselected(Container container = null)
     {
         _collider.enabled = false;
 
-        // DOTween.Kill (_material);
+        DOTween.Kill(_material);
 
-        // _material.DOFloat (0f, "_HologramOpacity", _fadeDuration);
-        // _material.DOFloat (0f, "_Opacity", _fadeDuration).OnComplete (()=>
-        // {
-        // if(_meshRenderer)
-        // _meshRenderer.enabled = false;
-        // });
+        _material.DOFloat(0f, "_HologramOpacity", _fadeDuration);
+        _material.DOFloat(0f, "_Opacity", _fadeDuration).OnComplete(() =>
+      {
+          if (_meshRenderer)
+              _meshRenderer.enabled = false;
+      });
     }
 
     public bool AreConstraintsRespected(Container container)
