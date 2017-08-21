@@ -189,11 +189,14 @@ public class Order_UI : MonoBehaviour
 			//May be usefull if we want to put an order back to initial place if it's "unprepared" after being prepared
 			//OrderPos = parentOrderUI.GetChildPosition (this.gameObject);
 			hasBeenPrepared = true;
-			this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-				parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-				parentOrderUI.ShowOrders ();
-				parentOrderUI.HideOrders ();
+			DOVirtual.DelayedCall (0.2f, () => {
+				this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+					parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+					parentOrderUI.ShowOrders ();
+					parentOrderUI.HideOrders ();
+				});
 			});
+
 
 		} else {
 			//ORDER NOT PREPARED
