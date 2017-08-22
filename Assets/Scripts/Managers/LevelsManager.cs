@@ -488,6 +488,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 	
 		foreach (var b in boats) {
+			Debug.Log (_boat.transform.position.y);
 			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
 
 			if (b.delay > 0)
@@ -752,7 +753,7 @@ public class LevelsManager : Singleton<LevelsManager>
 				}
 
 				if (container != null && container.spotOccupied._spotTrainIndex == train.containers.Count - 1
-				   || container != null && container.isDoubleSize && container.spotOccupied._spotTrainIndex == train.containers.Count - 2) {
+				    || container != null && container.isDoubleSize && container.spotOccupied._spotTrainIndex == train.containers.Count - 2) {
 					if (nextToPreviousType == 1 || nextToPreviousType == 2)
 						nextToGroups++;
 				}
