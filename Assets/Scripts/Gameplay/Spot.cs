@@ -62,10 +62,10 @@ public class Spot : Touchable
         _material = _meshRenderer.material;
         _meshFilter = GetComponent<MeshFilter>();
 
-        _hologramOpacity = _material.GetFloat("_HologramOpacity");
+        // _hologramOpacity = _material.GetFloat("_HologramOpacity");
         _opacity = _material.GetFloat("_Opacity");
 
-        _material.SetFloat("_HologramOpacity", 0f);
+        // _material.SetFloat("_HologramOpacity", 0f);
         _material.SetFloat("_Opacity", 0f);
 
         Container.OnContainerSelected += OnContainerSelected;
