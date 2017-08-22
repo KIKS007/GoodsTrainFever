@@ -595,14 +595,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1574365411891260, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4049596193195446, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.23
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
   m_IsPrefabParent: 0
@@ -1042,6 +1034,22 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 81.854004, z: 0}
+--- !u!1 &132282337 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1607317393163976, guid: 46d76590bbdc6d943881efde7c129d30,
+    type: 2}
+  m_PrefabInternal: {fileID: 1827135921}
+--- !u!225 &132282341
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 132282337}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &132771143
 GameObject:
   m_ObjectHideFlags: 0
@@ -7446,6 +7454,16 @@ Prefab:
       objectReference: {fileID: 1674711583}
     - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
         type: 2}
+      propertyPath: Train1Timer
+      value: 
+      objectReference: {fileID: 1673602206}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: Train2Timer
+      value: 
+      objectReference: {fileID: 132282337}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
       propertyPath: fastForwardButton
       value: 
       objectReference: {fileID: 1857497950}
@@ -7483,6 +7501,16 @@ Prefab:
         type: 2}
       propertyPath: allTrains.Array.data[0]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: allTrains.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: holdState
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
@@ -18571,6 +18599,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1670178278}
   m_Mesh: {fileID: 4300002, guid: eb437d7e28f3d33418814f54003e8bd5, type: 3}
+--- !u!1 &1673602206 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1741901864911824, guid: 46d76590bbdc6d943881efde7c129d30,
+    type: 2}
+  m_PrefabInternal: {fileID: 1827135921}
+--- !u!225 &1673602210
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1673602206}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1674711583 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114340263037451416, guid: 46d76590bbdc6d943881efde7c129d30,

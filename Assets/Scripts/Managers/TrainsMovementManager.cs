@@ -34,6 +34,8 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	[Header ("Train Buttons")]
 	public Text rail1Text;
 	public Text rail2Text;
+	public GameObject Train1Timer;
+	public GameObject Train2Timer;
 
 	[Header ("Hold")]
 	public HoldState holdState = HoldState.None;
@@ -101,6 +103,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void Start ()
 	{
+		Train1Timer.GetComponent<CanvasGroup> ().alpha = 0;
+		Train2Timer.GetComponent<CanvasGroup> ().alpha = 0;
+		Train1Timer.SetActive (false);
+		Train2Timer.SetActive (false);
+
 		allTrains = FindObjectsOfType<Train> ().ToList ();
 		_trainsVelocity.Clear ();
 
@@ -574,10 +581,18 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		Text trainText = null;
 
-		if (rail == rail1)
+		if (rail == rail1) {
+			Train1Timer.SetActive (true);
+			Train1Timer.GetComponent<CanvasGroup> ().DOKill ();
+			Train1Timer.GetComponent<CanvasGroup> ().DOFade (1, 0.2f);
 			trainText = rail1Text;
-		else
+			
+		} else {
+			Train2Timer.SetActive (true);
+			Train2Timer.GetComponent<CanvasGroup> ().DOKill ();
+			Train2Timer.GetComponent<CanvasGroup> ().DOFade (1, 0.2f);
 			trainText = rail2Text;
+		}
 
 		trainText.text = duration.ToString ();
 
@@ -586,8 +601,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 			yield return new WaitForSeconds (1);
 
-			if (rail.train == null || !rail.train.waitingDeparture)
+			if (rail.train == null || !rail.train.waitingDeparture) {
 				yield break;
+				
+			}
 
 			yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
@@ -601,6 +618,24 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void SendTrain (Rail rail)
 	{
+		if (rail == rail1) {
+			Train1Timer.GetComponent<CanvasGroup> ().DOKill ();
+			DOVirtual.DelayedCall (1f, () => {
+				Train1Timer.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
+					Train1Timer.SetActive (false);
+				});
+			});
+
+
+		} else {
+			Train2Timer.GetComponent<CanvasGroup> ().DOKill ();
+			DOVirtual.DelayedCall (1f, () => {
+				Train2Timer.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
+					Train2Timer.SetActive (false);
+				});
+			});
+
+		}
 		StartCoroutine (SendTrainCoroutine (rail));
 	}
 
@@ -666,7 +701,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public void ClearTrains ()
 	{
 		ClearTrainsDuration ();
-
+		Train1Timer.GetComponent<CanvasGroup> ().alpha = 0;
+		Train2Timer.GetComponent<CanvasGroup> ().alpha = 0;
+		Train1Timer.SetActive (false);
+		Train2Timer.SetActive (false);
 		if (rail1.train) {
 			GameObject t = rail1.train.gameObject;
 			RemoveTrain (rail1.train);
