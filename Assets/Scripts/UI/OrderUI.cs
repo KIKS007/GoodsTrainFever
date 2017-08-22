@@ -310,4 +310,15 @@ public class OrderUI : MonoBehaviour
 		}
 	}
 
+	public bool CheckAllOrdersPrepared ()
+	{
+		bool tmpCompleted = true;
+		foreach (Order_UI odui in OrderThing) {
+			if (!odui.isPrepared) {
+				tmpCompleted = false;
+			}
+		}
+		return tmpCompleted;
+	}
+
 }
