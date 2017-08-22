@@ -54,6 +54,11 @@ public class Container_UI : MonoBehaviour
 		containerTypeText.text = c.containerType.ToString ();*/
 	}
 
+	private void ForceGetmyOrderUI ()
+	{
+		myOrderUI = GetComponentInParent<Order_UI> ();
+	}
+
 	void SetColor (Container_Level c)
 	{
 
@@ -121,8 +126,14 @@ public class Container_UI : MonoBehaviour
 
 	public void ContainerDeselected (Container c)
 	{
-		myOrderUI.ContainerDeselected ();
 		myContainer = null;
+		if (myOrderUI != null) {
+			myOrderUI.ContainerDeselected ();
+		} else {
+			ForceGetmyOrderUI ();
+			myOrderUI.ContainerDeselected ();
+		}
+
 		/*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
 			
 			_canvasGroup.ignoreParentGroups = false;
