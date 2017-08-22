@@ -189,10 +189,13 @@ public class OrderUI : MonoBehaviour
 
 	public void SetOrderAtPosition (RectTransform order, int pos)
 	{
-		Order_Level tempOL = _orderList [GetChildPosition (order)];
-		_orderList.Remove (_orderList [GetChildPosition (order)]);
-		_orderList.Insert (pos, tempOL);
-		order.transform.SetSiblingIndex (pos);
+		if (_orderList [GetChildPosition (order)] != null) {
+			Order_Level tempOL = _orderList [GetChildPosition (order)];
+			_orderList.Remove (_orderList [GetChildPosition (order)]);
+			_orderList.Insert (pos, tempOL);
+			order.transform.SetSiblingIndex (pos);
+		}
+
 
 	}
 

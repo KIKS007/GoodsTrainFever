@@ -2411,12 +2411,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  starsEarned: 0
+  starsEarned: 2
   mostOrdersCount: 0
   leastTrainsCount: 1
   errorsAllowed: 1
-  starsStates: 000000000000000000000000
-  ordersCount: 0
+  starsStates: 020000000200000000000000
+  ordersCount: 2
   orders:
   - isPrepared: 0
     delay: 0
@@ -2436,9 +2436,6 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 0
       isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
   - isPrepared: 0
     delay: 0
     levelContainers:
@@ -2453,6 +2450,9 @@ MonoBehaviour:
       isDoubleSize: 0
     - containerType: 2
       containerColor: 1
+      isDoubleSize: 0
+    - containerType: 0
+      containerColor: 0
       isDoubleSize: 0
   spawnAllOrderContainers: 1
   storageContainers:
@@ -3067,7 +3067,7 @@ MonoBehaviour:
   ordersCount: 0
   levelDuration: 60
   ordersCountMin: 1
-  ordersCountMax: 4
+  ordersCountMax: 3
   trainsCountMin: 1
   trainsCountMax: 1
   trainsAvailable:
@@ -3101,9 +3101,9 @@ MonoBehaviour:
     isDoubleSize: 0
   forcedContainers: []
   parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 95
-  storageFillingPercentage: 85
+  extraContainersCount: 2
+  ordersFillingPercentage: 90
+  storageFillingPercentage: 80
 --- !u!1 &271168365
 GameObject:
   m_ObjectHideFlags: 0
@@ -8088,7 +8088,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -8098,7 +8098,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -11400,9 +11400,7 @@ MonoBehaviour:
   trainsCountMin: 2
   trainsCountMax: 2
   trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
   - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 569ef012fd0134b45a3de18124cec528, type: 2}
   firstTrainDelay: {x: 0.81068057, y: 3.5455005}
   boatsDelay: 4
   containersAvailable:
@@ -13635,6 +13633,11 @@ Prefab:
     - target: {fileID: 114920609184540054, guid: 40dfe76325605cf46b597922590e19e3,
         type: 2}
       propertyPath: isTouchingTouchable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114920609184540054, guid: 40dfe76325605cf46b597922590e19e3,
+        type: 2}
+      propertyPath: isTouchingUI
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -18359,10 +18362,10 @@ MonoBehaviour:
   starsEarned: 0
   mostOrdersCount: 0
   leastTrainsCount: 1
-  errorsAllowed: 3
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 30
+  levelDuration: 20
   ordersCountMin: 1
   ordersCountMax: 1
   trainsCountMin: 1
@@ -18401,8 +18404,8 @@ MonoBehaviour:
   forcedContainers: []
   parasiteContainers: []
   extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
+  ordersFillingPercentage: 100
+  storageFillingPercentage: 100
 --- !u!1 &1661749202
 GameObject:
   m_ObjectHideFlags: 0
@@ -22980,14 +22983,14 @@ MonoBehaviour:
   starsEarned: 0
   mostOrdersCount: 0
   leastTrainsCount: 1
-  errorsAllowed: 3
+  errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
+  levelDuration: 25
   ordersCountMin: 2
   ordersCountMax: 3
-  trainsCountMin: 3
-  trainsCountMax: 3
+  trainsCountMin: 2
+  trainsCountMax: 2
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
