@@ -51,6 +51,7 @@ public class Order_UI : MonoBehaviour
 			hasCheck = true;
 
 			foreach (var c in OrdersManager.Instance.containersFromNoOrder) {
+				//Debug.Log ("ContainerFromNoOrder: " + c.containerType + " | " + c.containerColor);
 				if (ContainerAdded (c)) {
 					OrdersManager.Instance.containersFromNoOrder.Remove (c);
 					hasCheck = false;

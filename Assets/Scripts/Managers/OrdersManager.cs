@@ -408,7 +408,11 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void ClearOrders (bool animated)
 	{
-		//orders.Clear ();
+		//Use this to have a derparture animation when clearing all orders
+		/*foreach (var o in orders)
+			RemoveOrder (o);*/
+		orders.Clear ();
+		containersFromNoOrder.Clear ();
 		newOrderUI.ClearAllOrder ();
 		ordersSentCount = 0;
 		ordersCount = 0;

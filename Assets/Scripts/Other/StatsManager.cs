@@ -269,6 +269,37 @@ public class StatsManager : Singleton<StatsManager>
 	public void SetRatingStatus (bool status)
 	{
 		RateLevels = status;
+		if (UseFenalytics) {
+			Fenalytics.Ev ("RatingLevelStatus", status);
+		}
+	}
+
+	public void ResetAll ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetPlayerPrefs", true);
+		}
+	}
+
+	public void UnlockLevels ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("UnlockAllLevels", true);
+		}
+	}
+
+	public void ResetStars ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetStars", true);
+		}
+	}
+
+	public void ResetAutoScaling ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetAutoScaling", true);
+		}
 	}
 
 	public void SendOptiAnalytics (int DefaultDeviceHeight, int FramerateDeviceHeight, float RatioDeviceHeight)
@@ -278,7 +309,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseFenalytics) {
-			Fenalytics.Ev ("OptiSettings", RatioDeviceHeight);
+			Fenalytics.Ev ("OptiRatio", RatioDeviceHeight);
 		}
 
 		if (UseGameAnalytics) {
