@@ -56,6 +56,7 @@ public class Container_UI : MonoBehaviour
 
 	private void ForceGetmyOrderUI ()
 	{
+		myOrderUI.ContainerDeselected ();
 		myOrderUI = GetComponentInParent<Order_UI> ();
 	}
 
@@ -132,7 +133,7 @@ public class Container_UI : MonoBehaviour
 			myOrderUI.ContainerDeselected ();
 		} else {
 			ForceGetmyOrderUI ();
-			myOrderUI.ContainerDeselected ();
+
 		}
 
 		/*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {

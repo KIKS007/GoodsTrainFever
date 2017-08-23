@@ -949,6 +949,79 @@ Transform:
   m_PrefabParentObject: {fileID: 4710460694004958, guid: cd0bd9ec63c70194f9c814e602fca2ec,
     type: 2}
   m_PrefabInternal: {fileID: 89092203}
+--- !u!1 &91253329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1701904671217676, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 91253330}
+  - component: {fileID: 91253331}
+  m_Layer: 0
+  m_Name: 'Level Settings #39'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &91253330
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4438413766666104, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 91253329}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 968295470}
+  m_RootOrder: 38
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &91253331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114697728659394212, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 91253329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starsEarned: 0
+  mostOrdersCount: 0
+  leastTrainsCount: 1
+  errorsAllowed: 3
+  starsStates: 000000000000000000000000
+  ordersCount: 0
+  levelDuration: 40
+  ordersCountMin: 2
+  ordersCountMax: 2
+  trainsCountMin: 3
+  trainsCountMax: 3
+  trainsAvailable:
+  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
+  firstTrainDelay: {x: 2.3340967, y: 8.671009}
+  boatsDelay: 4
+  containersAvailable:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 1
+    containerColor: 0
+    isDoubleSize: 0
+  forcedContainers: []
+  parasiteContainers: []
+  extraContainersCount: 5
+  ordersFillingPercentage: 90
+  storageFillingPercentage: 75
 --- !u!114 &98691718 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114926066881461534, guid: cd0bd9ec63c70194f9c814e602fca2ec,
@@ -1259,6 +1332,85 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 138995821}
   m_Mesh: {fileID: 4300000, guid: 852f5ee705d57144f86c3e8919f0220a, type: 3}
+--- !u!1 &140285835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1898473666337856, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 140285836}
+  - component: {fileID: 140285837}
+  m_Layer: 0
+  m_Name: 'Level Settings #40'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140285836
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4135437464182864, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 140285835}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 968295470}
+  m_RootOrder: 39
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &140285837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 140285835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starsEarned: 0
+  mostOrdersCount: 0
+  leastTrainsCount: 1
+  errorsAllowed: 3
+  starsStates: 000000000000000000000000
+  ordersCount: 0
+  levelDuration: 40
+  ordersCountMin: 2
+  ordersCountMax: 2
+  trainsCountMin: 3
+  trainsCountMax: 3
+  trainsAvailable:
+  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
+  firstTrainDelay: {x: 2.3340967, y: 8.671009}
+  boatsDelay: 4
+  containersAvailable:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 3
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 3
+    containerColor: 0
+    isDoubleSize: 1
+  forcedContainers: []
+  parasiteContainers: []
+  extraContainersCount: 5
+  ordersFillingPercentage: 90
+  storageFillingPercentage: 75
 --- !u!1 &140841716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,196 +2132,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 196878934}
   m_Mesh: {fileID: 4300002, guid: 852f5ee705d57144f86c3e8919f0220a, type: 3}
---- !u!1 &197000387
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 197000388}
-  - component: {fileID: 197000389}
-  m_Layer: 0
-  m_Name: 'Level Settings #17'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &197000388
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197000387}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &197000389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197000387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
---- !u!1 &197030106
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 197030107}
-  - component: {fileID: 197030108}
-  m_Layer: 0
-  m_Name: 'Level #3'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &197030107
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197030106}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &197030108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197030106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 2
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1001 &200189548
 Prefab:
   m_ObjectHideFlags: 0
@@ -2365,129 +2327,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 216552685}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &218778102
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 218778103}
-  - component: {fileID: 218778104}
-  m_Layer: 0
-  m_Name: 'Level #27'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &218778103
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 218778102}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 26
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &218778104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 218778102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 2
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 1
-  starsStates: 020000000200000000000000
-  ordersCount: 2
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 3
-    - wagonType: 1
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 3
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 1
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &228435507
 GameObject:
   m_ObjectHideFlags: 0
@@ -3013,94 +2852,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd0bd9ec63c70194f9c814e602fca2ec, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &271102172
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 271102173}
-  - component: {fileID: 271102174}
-  m_Layer: 0
-  m_Name: 'Level Settings #35'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &271102173
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 271102172}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 34
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &271102174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 271102172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 1
-  ordersCountMax: 3
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
-  firstTrainDelay: {x: 0, y: 1.9798381}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 80
 --- !u!1 &271168365
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,102 +4069,97 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 360715194}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &369714944
+--- !u!1 &384130130
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
+  m_PrefabParentObject: {fileID: 1610243862095202, guid: b19a4ceaa52630e4c8e2e6171b752452,
     type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 369714945}
-  - component: {fileID: 369714946}
+  - component: {fileID: 384130131}
+  - component: {fileID: 384130132}
   m_Layer: 0
-  m_Name: 'Level #2'
+  m_Name: 'Level Settings #38'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &369714945
+--- !u!4 &384130131
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
+  m_PrefabParentObject: {fileID: 4529137998415948, guid: b19a4ceaa52630e4c8e2e6171b752452,
     type: 2}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 369714944}
+  m_GameObject: {fileID: 384130130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 968295470}
-  m_RootOrder: 1
+  m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &369714946
+--- !u!114 &384130132
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
+  m_PrefabParentObject: {fileID: 114081534477940854, guid: b19a4ceaa52630e4c8e2e6171b752452,
     type: 2}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 369714944}
+  m_GameObject: {fileID: 384130130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
   mostOrdersCount: 0
   leastTrainsCount: 1
-  errorsAllowed: 0
+  errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
+  levelDuration: 40
+  ordersCountMin: 2
+  ordersCountMax: 2
+  trainsCountMin: 3
+  trainsCountMax: 3
+  trainsAvailable:
+  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
+  firstTrainDelay: {x: 2.3340967, y: 8.671009}
+  boatsDelay: 4
+  containersAvailable:
   - containerType: 0
-    containerColor: 1
+    containerColor: 0
     isDoubleSize: 0
-  - containerType: 0
+  - containerType: 2
     containerColor: 0
     isDoubleSize: 0
   - containerType: 0
     containerColor: 0
+    isDoubleSize: 1
+  - containerType: 3
+    containerColor: 0
     isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 3
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 1
+    containerColor: 0
+    isDoubleSize: 0
+  forcedContainers: []
+  parasiteContainers:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  extraContainersCount: 5
+  ordersFillingPercentage: 90
+  storageFillingPercentage: 75
 --- !u!1 &388421469
 GameObject:
   m_ObjectHideFlags: 0
@@ -4666,172 +4412,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &410126425
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 410126426}
-  - component: {fileID: 410126427}
-  m_Layer: 0
-  m_Name: 'Level Settings #28'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &410126426
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 410126425}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 27
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &410126427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 410126425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 3
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 70
---- !u!1 &412033871
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 412033872}
-  - component: {fileID: 412033873}
-  m_Layer: 0
-  m_Name: 'Level Settings #23'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &412033872
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 412033871}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &412033873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 412033871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 3
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 020000000200000002000000
-  ordersCount: 3
-  levelDuration: 45
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 1f85d5a2bf73ce24fb7d0c2ff5edaeee, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &414552280
 GameObject:
   m_ObjectHideFlags: 0
@@ -5369,90 +4949,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 474276482}
   m_Mesh: {fileID: 4300000, guid: eb437d7e28f3d33418814f54003e8bd5, type: 3}
---- !u!1 &486780091
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 486780092}
-  - component: {fileID: 486780093}
-  m_Layer: 0
-  m_Name: 'Level Settings #31'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &486780092
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 486780091}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 30
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &486780093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 486780091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 3
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 70
 --- !u!1 &491853266
 GameObject:
   m_ObjectHideFlags: 0
@@ -5613,6 +5109,97 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 495896966}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &497646430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1598134221380020, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 497646431}
+  - component: {fileID: 497646432}
+  m_Layer: 0
+  m_Name: 'Level Settings #37'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &497646431
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4450747280974620, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 497646430}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 968295470}
+  m_RootOrder: 36
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &497646432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 497646430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starsEarned: 0
+  mostOrdersCount: 0
+  leastTrainsCount: 1
+  errorsAllowed: 3
+  starsStates: 000000000000000000000000
+  ordersCount: 0
+  levelDuration: 40
+  ordersCountMin: 2
+  ordersCountMax: 2
+  trainsCountMin: 2
+  trainsCountMax: 2
+  trainsAvailable:
+  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
+  firstTrainDelay: {x: 2.3340967, y: 8.671009}
+  boatsDelay: 4
+  containersAvailable:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 3
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 3
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 1
+  - containerType: 1
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 1
+    containerColor: 0
+    isDoubleSize: 1
+  forcedContainers: []
+  parasiteContainers:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  extraContainersCount: 2
+  ordersFillingPercentage: 90
+  storageFillingPercentage: 75
 --- !u!1 &498926468
 GameObject:
   m_ObjectHideFlags: 0
@@ -7295,94 +6882,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   containersParent: {fileID: 140841717}
   spotsParent: {fileID: 1377724124}
---- !u!1 &696706796
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 696706797}
-  - component: {fileID: 696706798}
-  m_Layer: 0
-  m_Name: 'Level Settings #22'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &696706797
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 696706796}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &696706798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 696706796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 75
 --- !u!1001 &699851659
 Prefab:
   m_ObjectHideFlags: 0
@@ -7908,79 +7407,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224830064437362758, guid: 46d76590bbdc6d943881efde7c129d30,
     type: 2}
   m_PrefabInternal: {fileID: 1827135921}
---- !u!1 &719457516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 719457517}
-  - component: {fileID: 719457518}
-  m_Layer: 0
-  m_Name: 'Level Settings #9'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &719457517
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719457516}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &719457518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719457516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 4
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 50
 --- !u!4 &720815676 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4284761579553548, guid: 039d8990808b7fc4dba283f4980bd673,
@@ -8473,79 +7899,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 764131333}
---- !u!1 &767170921
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 767170922}
-  - component: {fileID: 767170923}
-  m_Layer: 0
-  m_Name: 'Level Settings #24'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &767170922
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 767170921}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &767170923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 767170921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 6
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &771309481 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114258190258420728, guid: 46d76590bbdc6d943881efde7c129d30,
@@ -9639,98 +8992,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 854285359}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &857931267
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 857931268}
-  - component: {fileID: 857931269}
-  m_Layer: 0
-  m_Name: 'Level Settings #30'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &857931268
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 857931267}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 29
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &857931269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 857931267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &864578042
 GameObject:
   m_ObjectHideFlags: 0
@@ -10115,91 +9376,63 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 880528854}
   m_Mesh: {fileID: 4300000, guid: 852f5ee705d57144f86c3e8919f0220a, type: 3}
---- !u!1 &882772185
-GameObject:
+--- !u!1001 &885771139
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 882772186}
-  - component: {fileID: 882772187}
-  m_Layer: 0
-  m_Name: 'Level Settings #16'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &882772186
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 882772185}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 15
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &882772187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 882772185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2132903314}
+    m_Modifications:
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: errorsText
+      value: 
+      objectReference: {fileID: 667900992}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: errorsTextParent
+      value: 
+      objectReference: {fileID: 581548859}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: trainsToSendText
+      value: 
+      objectReference: {fileID: 1742301381}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+  m_IsPrefabParent: 0
 --- !u!114 &888734294 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114926066881461534, guid: cd0bd9ec63c70194f9c814e602fca2ec,
@@ -10826,133 +10059,16 @@ Transform:
   m_PrefabParentObject: {fileID: 4984637559709768, guid: d055d71a0e0f59b49923e77f3bda207f,
     type: 2}
   m_PrefabInternal: {fileID: 946685857}
---- !u!1 &951445306
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 951445307}
-  - component: {fileID: 951445308}
-  m_Layer: 0
-  m_Name: 'Level Settings #25'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &951445307
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 951445306}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &951445308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 951445306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 5
-  ordersCountMax: 5
-  trainsCountMin: 4
-  trainsCountMax: 4
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!4 &959785596 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
     type: 2}
   m_PrefabInternal: {fileID: 699851659}
---- !u!4 &968295470
+--- !u!4 &968295470 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4746815029278008, guid: 4f48242fe62f3774bb7b4d0b925caf10,
+  m_PrefabParentObject: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2012167167}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1370661614}
-  - {fileID: 369714945}
-  - {fileID: 197030107}
-  - {fileID: 1979389437}
-  - {fileID: 2045804704}
-  - {fileID: 1310590849}
-  - {fileID: 1958367957}
-  - {fileID: 1184662465}
-  - {fileID: 719457517}
-  - {fileID: 1198949974}
-  - {fileID: 1412743110}
-  - {fileID: 2077120482}
-  - {fileID: 1735564839}
-  - {fileID: 1935455200}
-  - {fileID: 1838863303}
-  - {fileID: 882772186}
-  - {fileID: 197000388}
-  - {fileID: 1996737621}
-  - {fileID: 1285933305}
-  - {fileID: 1337774372}
-  - {fileID: 1876821197}
-  - {fileID: 696706797}
-  - {fileID: 412033872}
-  - {fileID: 767170922}
-  - {fileID: 951445307}
-  - {fileID: 1807841698}
-  - {fileID: 218778103}
-  - {fileID: 410126426}
-  - {fileID: 1378777095}
-  - {fileID: 857931268}
-  - {fileID: 486780092}
-  - {fileID: 2063312851}
-  - {fileID: 1658551005}
-  - {fileID: 1011834955}
-  - {fileID: 271102173}
-  m_Father: {fileID: 2132903314}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_PrefabInternal: {fileID: 885771139}
 --- !u!21 &974910935
 Material:
   serializedVersion: 6
@@ -11368,94 +10484,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1011834954
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1011834955}
-  - component: {fileID: 1011834956}
-  m_Layer: 0
-  m_Name: 'Level Settings #34'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1011834955
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1011834954}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 33
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1011834956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1011834954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 45
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
 --- !u!1001 &1012338529
 Prefab:
   m_ObjectHideFlags: 0
@@ -13218,143 +12246,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2074855455}
   m_Script: {fileID: 11500000, guid: 3c5d890dd3a819841b6ad840ab58eef1, type: 3}
---- !u!1 &1184662464
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1184662465}
-  - component: {fileID: 1184662466}
-  m_Layer: 0
-  m_Name: 'Level #8'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1184662465
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1184662464}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1184662466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1184662464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 0
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats:
-  - delay: 10
-    overrideDuration: 0
-    duration: 0
-    boatContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
 --- !u!21 &1189256606
 Material:
   serializedVersion: 6
@@ -13457,79 +12348,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1211173292}
   m_Script: {fileID: 11500000, guid: ff6881d22a7f7b0448715580baba200b, type: 3}
---- !u!1 &1198949973
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1198949974}
-  - component: {fileID: 1198949975}
-  m_Layer: 0
-  m_Name: 'Level Settings #10'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1198949974
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1198949973}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1198949975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1198949973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &1200517911
 GameObject:
   m_ObjectHideFlags: 0
@@ -14174,88 +12992,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4710460694004958, guid: cd0bd9ec63c70194f9c814e602fca2ec,
     type: 2}
   m_PrefabInternal: {fileID: 268625754}
---- !u!1 &1285933304
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1285933305}
-  - component: {fileID: 1285933306}
-  m_Layer: 0
-  m_Name: 'Level Settings #19'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1285933305
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1285933304}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1285933306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1285933304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 30
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!1 &1295974743
 GameObject:
   m_ObjectHideFlags: 0
@@ -14449,99 +13185,6 @@ Material:
     - _Albedo: {r: 0.91764706, g: 0, b: 0.13333334, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!1 &1310590848
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1310590849}
-  - component: {fileID: 1310590850}
-  m_Layer: 0
-  m_Name: 'Level #6'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1310590849
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1310590848}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1310590850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1310590848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 2
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  rail2Trains: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &1313855117
 GameObject:
   m_ObjectHideFlags: 0
@@ -14688,106 +13331,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1324738337}
   m_Mesh: {fileID: 4300000, guid: eb437d7e28f3d33418814f54003e8bd5, type: 3}
---- !u!1 &1337774371
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1337774372}
-  - component: {fileID: 1337774373}
-  m_Layer: 0
-  m_Name: 'Level Settings #20'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1337774372
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1337774371}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1337774373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1337774371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 20
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!1 &1347126352
 GameObject:
   m_ObjectHideFlags: 0
@@ -15249,94 +13792,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1370661613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1370661614}
-  - component: {fileID: 1370661615}
-  m_Layer: 0
-  m_Name: 'Level #1'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1370661614
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1370661613}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1370661615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1370661613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &1370927766
 GameObject:
   m_ObjectHideFlags: 0
@@ -15403,103 +13858,6 @@ Transform:
   m_Father: {fileID: 695525614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1378777094
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1378777095}
-  - component: {fileID: 1378777096}
-  m_Layer: 0
-  m_Name: 'Level Settings #29'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1378777095
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1378777094}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 28
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1378777096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1378777094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 30
-  ordersCountMin: 1
-  ordersCountMax: 1
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
 --- !u!1 &1379546612
 GameObject:
   m_ObjectHideFlags: 0
@@ -15743,79 +14101,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1412743109
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1412743110}
-  - component: {fileID: 1412743111}
-  m_Layer: 0
-  m_Name: 'Level Settings #11'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1412743110
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1412743109}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1412743111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1412743109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 85
-  storageFillingPercentage: 75
 --- !u!1 &1415493651
 GameObject:
   m_ObjectHideFlags: 0
@@ -18474,96 +16759,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4984637559709768, guid: d055d71a0e0f59b49923e77f3bda207f,
     type: 2}
   m_PrefabInternal: {fileID: 1656227673}
---- !u!1 &1658551004
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1658551005}
-  - component: {fileID: 1658551006}
-  m_Layer: 0
-  m_Name: 'Level Settings #33'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1658551005
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1658551004}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 32
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1658551006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1658551004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 1
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 20
-  ordersCountMin: 1
-  ordersCountMax: 1
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 569ef012fd0134b45a3de18124cec528, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!1 &1661749202
 GameObject:
   m_ObjectHideFlags: 0
@@ -19371,142 +17566,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1735564838
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1735564839}
-  - component: {fileID: 1735564840}
-  m_Layer: 0
-  m_Name: 'Level #13'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1735564839
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1735564838}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1735564840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1735564838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 3
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 1
-    - containerType: 3
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats:
-  - delay: 10
-    overrideDuration: 0
-    duration: 0
-    boatContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 3
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
 --- !u!114 &1742301381 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114696868655126834, guid: 46d76590bbdc6d943881efde7c129d30,
@@ -19883,123 +17942,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 54.414, z: 0}
---- !u!1 &1807841697
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1807841698}
-  - component: {fileID: 1807841699}
-  m_Layer: 0
-  m_Name: 'Level #26'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1807841698
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1807841697}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1807841699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1807841697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 3
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 7
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 7
-    - wagonType: 0
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &1808682186 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1698893315159992, guid: 7d622d8dd331d594abf59b008734a987,
@@ -20558,73 +18500,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1831816667}
---- !u!1 &1838863302
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1838863303}
-  - component: {fileID: 1838863304}
-  m_Layer: 0
-  m_Name: 'Level Settings #15'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1838863303
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1838863302}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1838863304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1838863302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &1841357299
 GameObject:
   m_ObjectHideFlags: 0
@@ -20951,88 +18826,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1874315902}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1876821196
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1876821197}
-  - component: {fileID: 1876821198}
-  m_Layer: 0
-  m_Name: 'Level Settings #21'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1876821197
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1876821196}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1876821198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1876821196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 75
 --- !u!1 &1890488295
 GameObject:
   m_ObjectHideFlags: 0
@@ -21376,85 +19169,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1922998497}
   m_Mesh: {fileID: 4300000, guid: eb437d7e28f3d33418814f54003e8bd5, type: 3}
---- !u!1 &1935455199
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1935455200}
-  - component: {fileID: 1935455201}
-  m_Layer: 0
-  m_Name: 'Level Settings #14'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1935455200
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1935455199}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1935455201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1935455199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &1941656148
 GameObject:
   m_ObjectHideFlags: 0
@@ -21620,129 +19334,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1958367956
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1958367957}
-  - component: {fileID: 1958367958}
-  m_Layer: 0
-  m_Name: 'Level #7'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1958367957
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1958367956}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1958367958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1958367956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 2
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 10
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &1971214532
 GameObject:
   m_ObjectHideFlags: 0
@@ -21816,126 +19407,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1971214532}
   m_Mesh: {fileID: 4300000, guid: eb437d7e28f3d33418814f54003e8bd5, type: 3}
---- !u!1 &1979389436
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1979389437}
-  - component: {fileID: 1979389438}
-  m_Layer: 0
-  m_Name: 'Level #4'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1979389437
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1979389436}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1979389438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1979389436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1001 &1980621942
 Prefab:
   m_ObjectHideFlags: 0
@@ -22091,190 +19562,6 @@ Transform:
   m_Father: {fileID: 320241342}
   m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 36.836002, z: 0}
---- !u!1 &1996737620
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1996737621}
-  - component: {fileID: 1996737622}
-  m_Layer: 0
-  m_Name: 'Level Settings #18'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1996737621
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1996737620}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1996737622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1996737620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 12
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
---- !u!1 &2012167167
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1168054421411914, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 968295470}
-  - component: {fileID: 2012167168}
-  m_Layer: 0
-  m_Name: (singleton) LevelsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2012167168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114295878711116718, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2012167167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cba7733993d660442a7ccfcb3a351885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelToStart: 0
-  loadLevelOnStart: 0
-  clearLevelOnStart: 1
-  levelIndex: 0
-  levelsCount: 0
-  currentLevel: {fileID: 0}
-  currentHandmadeLevel: {fileID: 0}
-  currentLevelGenerated: {fileID: 0}
-  errorsLocked: 0
-  errorsAllowed: 0
-  errorsSecondStarAllowed: 0
-  currentErrors: 0
-  errorsText: {fileID: 667900992}
-  errorsTextParent: {fileID: 581548859}
-  nextToGroups: 0
-  specialConstraint:
-  - constraintType: 0
-    groupCount: 0
-    count: 0
-  - constraintType: 1
-    groupCount: 0
-    count: 0
-  - constraintType: 2
-    groupCount: 0
-    count: 0
-  levelDuration: 0
-  randomColors: 0
-  orders: []
-  spawnDoubleSizeFirst: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  trainsUsed: 0
-  waitDurationBetweenTrains: 2
-  trainsToSend: 0
-  rail1Trains: []
-  rail2Trains: []
-  trainsToSendText: {fileID: 1742301381}
-  boatsDuration: 0
-  lastBoatStay: 1
-  waitDurationBetweenBoats: 2
-  boats: []
-  basicContainersPrefabs:
-  - {fileID: 1265508688834536, guid: cd0bd9ec63c70194f9c814e602fca2ec, type: 2}
-  - {fileID: 1693686800772070, guid: e53bcce4d06c6234eb864a510eaa45f9, type: 2}
-  cooledContainersPrefabs:
-  - {fileID: 1147344577093678, guid: 0cdf32664eda44c8f8af70addca51c1b, type: 2}
-  - {fileID: 1675583211874182, guid: 807ce0e7664284f9aba91dc0da799b2f, type: 2}
-  tankContainersPrefabs:
-  - {fileID: 1698893315159992, guid: 7d622d8dd331d594abf59b008734a987, type: 2}
-  - {fileID: 1841959657375952, guid: 0786f2ba55c270f42954fbd7f3cff573, type: 2}
-  dangerousContainersPrefabs:
-  - {fileID: 1579743288638886, guid: 12ada6c33f8e6419896423bd7f600ad6, type: 2}
-  - {fileID: 1823375027465384, guid: 495899c0a899949888ddf3e200422804, type: 2}
-  _storage: {fileID: 0}
-  _boat: {fileID: 0}
 --- !u!1 &2015427838
 GameObject:
   m_ObjectHideFlags: 0
@@ -22811,128 +20098,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2042373780}
   m_Mesh: {fileID: 4300002, guid: 852f5ee705d57144f86c3e8919f0220a, type: 3}
---- !u!1 &2045804703
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1888117010687990, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2045804704}
-  - component: {fileID: 2045804705}
-  m_Layer: 0
-  m_Name: 'Level #5'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2045804704
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4391333246519434, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2045804703}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2045804705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788773195404964, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2045804703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 10
-    levelContainers:
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!1 &2058373732
 GameObject:
   m_ObjectHideFlags: 0
@@ -23093,95 +20258,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2061391035}
   m_Mesh: {fileID: 4300000, guid: 852f5ee705d57144f86c3e8919f0220a, type: 3}
---- !u!1 &2063312850
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2063312851}
-  - component: {fileID: 2063312852}
-  m_Layer: 0
-  m_Name: 'Level Settings #32'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2063312851
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2063312850}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 31
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2063312852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2063312850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!1 &2070149091
 GameObject:
   m_ObjectHideFlags: 0
@@ -23413,79 +20489,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4984637559709768, guid: d055d71a0e0f59b49923e77f3bda207f,
     type: 2}
   m_PrefabInternal: {fileID: 2074855455}
---- !u!1 &2077120481
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479064558496220, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2077120482}
-  - component: {fileID: 2077120483}
-  m_Layer: 0
-  m_Name: 'Level Settings #12'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2077120482
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251813196726468, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2077120481}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 968295470}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2077120483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114171384810502048, guid: 4f48242fe62f3774bb7b4d0b925caf10,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2077120481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 5
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 0.67300445, y: 4.273776}
-  boatsDelay: 2
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 80
 --- !u!1 &2085394350
 GameObject:
   m_ObjectHideFlags: 0
