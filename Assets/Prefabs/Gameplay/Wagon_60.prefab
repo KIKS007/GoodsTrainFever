@@ -677,12 +677,15 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 1
-  chiefSpot: {fileID: 114919188224959694}
+  chiefSpots:
+  - {fileID: 114919188224959694}
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114418113328938810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -735,12 +738,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114597933399002858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -760,12 +765,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114676426266587442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -785,12 +792,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114720724148286528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -864,12 +873,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114960382500112708
 MonoBehaviour:
   m_ObjectHideFlags: 1
