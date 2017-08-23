@@ -66,7 +66,7 @@ public class StatsManager : Singleton<StatsManager>
 	{
 		int id;
 		if (LevelsManager.Instance != null) {
-			id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+			id = GetStringLevelID ();
 		} else {
 			id = -1;
 		}
@@ -98,7 +98,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	private void SendLevelData ()
 	{
-		int id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+		int id = GetStringLevelID ();
 
 		Dictionary<string, object> LevelDataDictionnary = new Dictionary<string, object> {
 			{ "ID",  id },
@@ -128,7 +128,7 @@ public class StatsManager : Singleton<StatsManager>
 	public void SendRatedLevelData (int rate, int diffRate)
 	{
 		//Debug.Log ("RATING SENDED" + rate + " " + diffRate);
-		int id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+		int id = GetStringLevelID ();
 
 		Dictionary<string, object> RatedLevelDataDictionnary = new Dictionary<string, object> {
 			{ "ID",  id },
@@ -208,7 +208,9 @@ public class StatsManager : Singleton<StatsManager>
 	{
 		if (Trials == 0) {
 			IncTrials ();
-			Fenalytics.To ("level." + (LevelsManager.Instance.currentLevel.transform.GetSiblingIndex () + 1));
+			if (UseFenalytics) {
+				Fenalytics.To ("level." + GetStringLevelID ().ToString ());
+			}
 			TimerValue = 0;
 			isTimerStopped = false;
 			StartCoroutine ("Timer");
@@ -220,6 +222,12 @@ public class StatsManager : Singleton<StatsManager>
 		}
 	}
 
+	public int GetStringLevelID ()
+	{
+
+		return int.Parse (LevelsManager.Instance.currentLevel.name.Split ('#') [LevelsManager.Instance.currentLevel.name.Split ('#').Length - 1]);
+
+	}
 
 	public void StopLevelTrack (bool Completed)
 	{
