@@ -11,6 +11,8 @@ using UnityEngine.iOS;
 using FenalyticsScripts.Serialization;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using System.Reflection;
+using System.Net.Cache;
 
 
 namespace FenalyticsScripts
@@ -26,6 +28,7 @@ namespace FenalyticsScripts
 
 		private static int _refreshRate;
 
+		private static string RootSession = "";
 		private static bool SessionInited = false;
 		public static string AccountId = null;
 		public static string DeviceId = null;
@@ -46,136 +49,146 @@ namespace FenalyticsScripts
 
 		public static void Stop ()
 		{
-			t.Abort ();
+			QueueManager.Requests.Add (new Request ("/v1/session/" + RootSession, JsonUtility.ToJson (new FenalyticsEndAt (DateTimeOffset.Now.ToString ("o")))));
+			abort = true;
 
 			// SAVING DATA HERE
 		}
 
-		private static bool stop = false;
+		private static bool abort = false;
 
 		public static void Loop ()
 		{
-			try {
-				while (Thread.CurrentThread.IsAlive) {
-					Thread.Sleep (_refreshRate);
-					if (Requests.Count > 0) {
-						stop = false;
-						for (int i = 0; i <= Requests.Count - 1; i++) {
-							Request r = Requests [i];
-							string model = r.endpoint.Split ('/') [r.endpoint.Split ('/').Length - 1];
 
-							if (model == "sessions") {
-								stop = true;
-								if (AccountId == null || DeviceId == null || BuildId == null) {
-									continue;
-								} else {
-									FenalyticsSession s = JsonUtility.FromJson<FenalyticsSession> (r.json [0]);
-
-									if (s.name != "session" && !SessionInited) {
-										continue;
-									}
-
-									if (s.name == "session") {
-										SessionInited = true;
-										s.device_id = DeviceId;
-										s.account_id = AccountId;
-										s.build_id = BuildId;
-									} else {
-										s.prev_id = SessionId;
-									}
-
-									r.json [0] = Newtonsoft.Json.JsonConvert.SerializeObject (s);
-								}
-
-								if (i != 0)
-									continue;
-							}
-
-							if (model == "events") {
-								if (SessionId == null) {
-									continue;
-								}
-
-								for (int j = 0; j <= r.json.Count - 1; j++) {
-									FenalyticsEvent e = Newtonsoft.Json.JsonConvert.DeserializeObject<FenalyticsEvent> (r.json [j]);
-									e.session_id = SessionId;
-
-									r.json [j] = Newtonsoft.Json.JsonConvert.SerializeObject (e);
-								}
-
-								if (i != 0)
-									continue;
-							} 
-
-							// check
-
-							Requests.RemoveAt (i);
-
-							WebRequest req = WebRequest.Create (_protocol + "://" + _hostname + ":" + _port + "/" + r.endpoint);
-							req.Method = "POST";
-							req.ContentType = "application/json";
-							//req.Headers.Add ("Content-Encoding: gzip");
-
-
-							Stream reqStream = req.GetRequestStream ();
-
-
-							/*
-							GZipStream gz = new GZipStream (reqStream, CompressionMode.Compress);
-
-							StreamWriter sw = new StreamWriter (gz, Encoding.ASCII);
-						
-							if (r.json.Count == 1 && model != "events")
-								sw.Write (r.json [0]);
-							else
-								sw.Write (Newtonsoft.Json.JsonConvert.SerializeObject (r.json));
-							
-
-
-							sw.Close ();
-							gz.Close ();
-							*/
-							Byte[] data;
-						
-							if (r.json.Count == 1 && model != "events")
-								data = Encoding.ASCII.GetBytes (r.json [0]);
-							else
-								data = Encoding.ASCII.GetBytes (Newtonsoft.Json.JsonConvert.SerializeObject (r.json));
-
-							reqStream.Write (data, 0, data.Length);
-
-							reqStream.Close ();
-
-							WebResponse resp = req.GetResponse ();
-							string response = new StreamReader (resp.GetResponseStream ()).ReadToEnd ();
-
-
-							/*WWW www = new WWW (_protocol + "://" + _hostname + ":" + _port + "/" + r.endpoint);
-							yield return www;*/
-
-
-//							Debug.Log (model + " " + response);
-
-							switch (model) {
-							case "devices":
-								DeviceId = response;
-								break;
-							case "builds":
-								BuildId = response;
-								break;
-							case "accounts":
-								AccountId = response;
-								break;
-							case "sessions":
-								SessionId = response;
-								break;
-							}
-						}
+			while (Thread.CurrentThread.IsAlive) {
+				Thread.Sleep (_refreshRate);
+				if (abort) {
+					_refreshRate = 1;
+					if (Requests.Count == 0) {
+						t.Abort ();
 					}
 				}
-			} catch (Exception e) {
-				Debug.Log (e);
+
+				if (Requests.Count > 0) {
+					for (int i = 0; i <= Requests.Count - 1; i++) {
+						Request r = Requests [i];
+						string model = r.endpoint.Split ('/') [r.endpoint.Split ('/').Length - 1];
+
+						if (model == "sessions") {
+							if (AccountId == null || DeviceId == null || BuildId == null) {
+								continue;
+							} else {
+								FenalyticsSession s = JsonUtility.FromJson<FenalyticsSession> (r.json [0]);
+
+								if (s.name != "session" && !SessionInited) {
+									continue;
+								}
+
+								if (s.name == "session") {
+									s.device_id = DeviceId;
+									s.account_id = AccountId;
+									s.build_id = BuildId;
+								} else {
+									s.prev_id = SessionId;
+								}
+
+								r.json [0] = Newtonsoft.Json.JsonConvert.SerializeObject (s);
+							}
+
+							if (i != 0)
+								continue;
+						}
+
+						if (model == "events") {
+							if (SessionId == null) {
+								continue;
+							}
+
+							for (int j = 0; j <= r.json.Count - 1; j++) {
+								FenalyticsEvent e = Newtonsoft.Json.JsonConvert.DeserializeObject<FenalyticsEvent> (r.json [j]);
+								e.session_id = SessionId;
+
+								r.json [j] = Newtonsoft.Json.JsonConvert.SerializeObject (e);
+							}
+
+							if (i != 0)
+								continue;
+						} 
+
+						// check
+
+						string response = "";
+						WebExceptionStatus status = WebExceptionStatus.Success;
+
+						try {
+							response = Request (r, "POST");
+						} catch (WebException e) {
+							status = (e.Status);	
+							Debug.Log ("WebRequest ERROR:" + e);
+						}
+
+						if (status == WebExceptionStatus.Success) {
+							Requests.RemoveAt (i);
+						}
+
+						switch (model) {
+						case "devices":
+							DeviceId = response;
+							break;
+						case "builds":
+							BuildId = response;
+							break;
+						case "accounts":
+							AccountId = response;
+							break;
+						case "sessions":
+							SessionId = response;
+							if (!SessionInited) {
+								SessionInited = true;
+								RootSession = SessionId;
+							}
+							break;
+						}
+
+
+					}
+				}
 			}
+
+		}
+
+		public static string Request (Request r, string method)
+		{
+			WebRequest req = WebRequest.Create (_protocol + "://" + _hostname + ":" + _port + "/" + r.endpoint);
+
+			req.Method = method;
+			req.ContentType = "application/json";
+
+
+			Stream reqStream = req.GetRequestStream ();
+
+
+			#if UNITY_EDITOR_WIN
+			req.Headers.Add ("Content-Encoding: gzip");
+			GZipStream gz = new GZipStream (reqStream, CompressionMode.Compress);
+			StreamWriter sw = new StreamWriter (gz, Encoding.ASCII);
+			sw.Write (Newtonsoft.Json.JsonConvert.SerializeObject (r.json));
+			sw.Close ();
+			gz.Close ();
+			#else
+			Byte[] data = Encoding.ASCII.GetBytes (Newtonsoft.Json.JsonConvert.SerializeObject (r.json));
+
+			reqStream.Write (data, 0, data.Length);
+			#endif
+
+			reqStream.Close ();
+
+			WebResponse resp = req.GetResponse ();
+
+			string response = new StreamReader (resp.GetResponseStream ()).ReadToEnd ();
+			return response;
+
 		}
 	}
+
 }

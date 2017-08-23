@@ -10,6 +10,8 @@ namespace FenalyticsScripts
 {
 	namespace Serialization
 	{
+
+
 		[Serializable]
 		public class FenalyticsEvent
 		{
@@ -23,6 +25,17 @@ namespace FenalyticsScripts
 				name = _name;
 				data = _data;
 				start_at = _start_at;
+			}
+		}
+
+		[Serializable]
+		public class FenalyticsEndAt
+		{
+			public string end_at;
+
+			public FenalyticsEndAt (string _end_at)
+			{
+				end_at = _end_at;
 			}
 		}
 

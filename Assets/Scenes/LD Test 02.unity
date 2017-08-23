@@ -8105,7 +8105,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -8115,7 +8115,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -22546,6 +22546,21 @@ Prefab:
       propertyPath: MainMenu.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 985185454}
+    - target: {fileID: 114928028251022222, guid: e693ae8cdaa66d645a37bf0bb81d33da,
+        type: 2}
+      propertyPath: nextEndpoint
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114928028251022222, guid: e693ae8cdaa66d645a37bf0bb81d33da,
+        type: 2}
+      propertyPath: nextData
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114934852764568782, guid: e693ae8cdaa66d645a37bf0bb81d33da,
+        type: 2}
+      propertyPath: UseFenalytics
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e693ae8cdaa66d645a37bf0bb81d33da, type: 2}
   m_IsPrefabParent: 0
