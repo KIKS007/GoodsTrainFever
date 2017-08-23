@@ -247,7 +247,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1455626880368656}
   m_LocalRotation: {x: -0.0000014603138, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.6, y: 2.05, z: -2}
+  m_LocalPosition: {x: -58.197395, y: 0.49999997, z: -1.9145584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4780209582117086}
@@ -584,12 +584,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114552630738627252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -642,12 +644,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114918332932260510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -667,12 +671,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!222 &222196036468783284
 CanvasRenderer:
   m_ObjectHideFlags: 1
