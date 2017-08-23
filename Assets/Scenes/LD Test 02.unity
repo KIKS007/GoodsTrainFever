@@ -7373,7 +7373,13 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   forcedContainers: []
-  parasiteContainers: []
+  parasiteContainers:
+  - containerType: 0
+    containerColor: 0
+    isDoubleSize: 0
+  - containerType: 2
+    containerColor: 0
+    isDoubleSize: 0
   extraContainersCount: 3
   ordersFillingPercentage: 100
   storageFillingPercentage: 75
@@ -16986,6 +16992,26 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 2132903314}
     m_Modifications:
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4159486217262712, guid: 0ade4f8628b2f45499d28608e0d9873a, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -17038,6 +17064,121 @@ Prefab:
       propertyPath: newOrderUI
       value: 
       objectReference: {fileID: 734633872}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[1].containerColor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[0].containerColor
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[0].isDoubleSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[1].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[1].isDoubleSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: containersFromNoOrder.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: ordersHidden
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[1].isDoubleSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[2].containerColor
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[2].isDoubleSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[3].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[0].containerType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[2].containerColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[3].containerType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[3].containerColor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[1].levelContainers.Array.data[3].isDoubleSize
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ade4f8628b2f45499d28608e0d9873a, type: 2}
   m_IsPrefabParent: 0

@@ -700,8 +700,9 @@ public class LevelsManager : Singleton<LevelsManager>
 			
 			if (currentErrors == 0)
 				errorsTextParent.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
-			else
+			else {
 				errorsTextParent.DOScale (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			}
 		}
 	}
 
@@ -717,7 +718,6 @@ public class LevelsManager : Singleton<LevelsManager>
 				foreach (var constraint in container.constraints) {
 					if (!constraint.isRespected) {
 						bool special = false;
-						
 						if (ConstraintType.NotNextTo_Constraint.ToString () == constraint.constraint.GetType ().ToString ())
 							hasNextToNotRespected = true;
 						
@@ -730,8 +730,11 @@ public class LevelsManager : Singleton<LevelsManager>
 							}
 						}
 						
-						if (!special)
+						if (!special) {
 							currentErrors++;
+							container.UpdateErrorDisplay ();
+							container.CheckConstraints ();
+						}
 						
 					}
 				}
