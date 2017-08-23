@@ -52833,7 +52833,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1890488295}
   m_LocalRotation: {x: 0.3345653, y: -0.3345653, z: 0.1284276, w: 0.87157243}
-  m_LocalPosition: {x: 7.7, y: 19.6, z: -14}
+  m_LocalPosition: {x: 8.8, y: 21.1, z: -15.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1450869171}
@@ -52865,7 +52865,7 @@ MonoBehaviour:
   frameRateAvarageTarget: 45
   frameRateSamples: 9
   frameRateSamplesTime: 0.2
-  downscaleLimit: 0.5
+  downscaleLimit: 0.75
 --- !u!114 &1890488303
 MonoBehaviour:
   m_ObjectHideFlags: 0
