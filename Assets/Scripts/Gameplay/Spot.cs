@@ -163,14 +163,24 @@ public class Spot : Touchable
 
         foreach (var s in overlappingSpots)
         {
-            if (s.container)
+			if (s.container && s.container != null)
+			//if (s.container && s.container != null && !isSubordinate)
             {
-                if (!isDoubleSize && s.isDoubleSize && s.container != null)
+                if (!isDoubleSize && s.isDoubleSize)
                     isOccupied = true;
 
                 if (isDoubleSize && !s.isDoubleSize)
                     isOccupied = true;
             }
+
+			/*if(s.isOccupied && isSubordinate)
+			{
+				if (!isDoubleSize && s.isDoubleSize)
+					isOccupied = true;
+
+				if (isDoubleSize && !s.isDoubleSize)
+					isOccupied = true;
+			}*/
         }
 
 		foreach (var s in subordinatesSpots)
@@ -439,11 +449,16 @@ public class Spot : Touchable
 		if (!isSubordinate || chiefSpots.Count == 0)
             return false;
 
-		foreach (var c in chiefSpots)
-			if (!c.isOccupied)
-				return false;
+		int occupiedCount = 0;
 
-		return true;
+		foreach (var c in chiefSpots)
+			if (c.isOccupied && c.container == null || c.isOccupied && c.container == ContainersMovementManager.Instance.selectedContainer)
+				occupiedCount++;
+
+		if(occupiedCount == chiefSpots.Count)
+			return true;
+		else
+			return false;
     }
 
     public Spot SpawnDoubleSizeSpot(Container c, bool selectOnStart = true)
