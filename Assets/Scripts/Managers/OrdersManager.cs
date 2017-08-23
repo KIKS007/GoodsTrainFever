@@ -408,7 +408,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void ClearOrders (bool animated)
 	{
-
+		//orders.Clear ();
 		newOrderUI.ClearAllOrder ();
 		ordersSentCount = 0;
 		ordersCount = 0;

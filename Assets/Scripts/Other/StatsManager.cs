@@ -19,6 +19,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	[Header ("Level Analytic Systems")]
 	public bool UseUnityAnalytics;
+	public bool UseFenalytics;
 	public bool UseGameAnalytics;
 	public bool DebugLogDataSended;
 
@@ -33,6 +34,7 @@ public class StatsManager : Singleton<StatsManager>
 	void Start ()
 	{
 		StartTrackingData ();
+		OnMainMenu ();
 	}
 
 	public void StartTrackingData ()
@@ -45,8 +47,20 @@ public class StatsManager : Singleton<StatsManager>
 			isTimerStopped = true;
 		};	
 
+		MenuManager.Instance.OnMainMenu += () => {
+			Fenalytics.To ("menu.main");
+		};
+		//This show up on level end screen
+		/*GameManager.Instance.OnMenu += () => {
+			Fenalytics.To ("menu.main");
+		};*/
+
 	}
 
+	public void OnMainMenu ()
+	{
+		Fenalytics.To ("menu.main");
+	}
 
 	private void SendUnfinishedLevelData ()
 	{
@@ -69,6 +83,9 @@ public class StatsManager : Singleton<StatsManager>
 
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("UnfinishedLevelData-" + (id + 1), UnfinishedLevelDataDictionnary);	
+		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", UnfinishedLevelDataDictionnary);
 		}
 		if (UseGameAnalytics) {
 			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", ScoreManager.Instance.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, false);
@@ -95,6 +112,9 @@ public class StatsManager : Singleton<StatsManager>
 
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("LevelData-" + (id + 1), LevelDataDictionnary);	
+		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", LevelDataDictionnary);
 		}
 		if (UseGameAnalytics) {
 			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", LevelsManager.Instance.currentLevel.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, true);
@@ -124,6 +144,9 @@ public class StatsManager : Singleton<StatsManager>
 
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("Rated-LevelData-" + (id + 1), RatedLevelDataDictionnary);
+		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", RatedLevelDataDictionnary);
 		}
 
 		if (UseGameAnalytics) {
@@ -184,6 +207,8 @@ public class StatsManager : Singleton<StatsManager>
 	public void StartLevelTrack ()
 	{
 		if (Trials == 0) {
+			IncTrials ();
+			Fenalytics.To ("level." + (LevelsManager.Instance.currentLevel.transform.GetSiblingIndex () + 1));
 			TimerValue = 0;
 			isTimerStopped = false;
 			StartCoroutine ("Timer");

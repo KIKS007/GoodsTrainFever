@@ -239,6 +239,9 @@ public class OrderUI : MonoBehaviour
 		_orderList.Clear ();
 		OrderThing.Clear ();
 		_notificationPos = 0;
+		if (_notification == null) {
+			_notification = transform.GetChild (0);
+		}
 		(_notification.GetChild (0) as RectTransform).DOAnchorPosX (_notificationPos, 0.5f).OnComplete (() => _notification.gameObject.SetActive (false));
 	}
 
