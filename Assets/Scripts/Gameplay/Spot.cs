@@ -34,7 +34,8 @@ public class Spot : Touchable
     [Header("Subordinate Spot")]
     public bool isSubordinate = false;
     [ShowIf("isSubordinate")]
-    public Spot chiefSpot = null;
+	public List<Spot> chiefSpots = new List<Spot>();
+	public List<Spot> subordinatesSpots = new List<Spot>();
 
     [HideInInspector]
     public Wagon _wagon;
@@ -44,7 +45,8 @@ public class Spot : Touchable
     public Container _parentContainer;
     [HideInInspector]
     public bool _isSpawned = false;
-    public int _spotTrainIndex;
+	public int _spotTrainIndex;
+    public int _spotWagonIndex;
 
     private Collider _collider;
     private MeshRenderer _meshRenderer;
@@ -133,7 +135,10 @@ public class Spot : Touchable
         {
             Spot spot = c.GetComponent<Spot>();
 
-            if (c != _collider && spot != null)
+			if (isSubordinate && spot.isDoubleSize)
+				continue;
+
+			if (c != _collider && spot != null && !spot.isSubordinate)
             {
                 if (!isDoubleSize && spot.isDoubleSize || isDoubleSize)
                     overlappingSpots.Add(spot);
@@ -142,15 +147,13 @@ public class Spot : Touchable
 
         overlappingSpots = overlappingSpots.OrderByDescending(x => x.transform.position.x).ToList();
 
-        if (_isSpawned)
+		if (_isSpawned || isSubordinate)
             foreach (var o in overlappingSpots)
                 o.overlappingSpots.Add(this);
 
-        if (chiefSpot != null && overlappingSpots.Contains(chiefSpot))
-        {
-            chiefSpot.overlappingSpots.Remove(this);
-            overlappingSpots.Remove(chiefSpot);
-        }
+		if (isSubordinate)
+			foreach (var c in chiefSpots)
+				c.subordinatesSpots.Add (this);
     }
 
     public void OverlappingSpotsOccupied()
@@ -169,6 +172,12 @@ public class Spot : Touchable
                     isOccupied = true;
             }
         }
+
+		foreach (var s in subordinatesSpots)
+		{
+			if(s.container && s.container != ContainersMovementManager.Instance.selectedContainer)
+				isOccupied = true;
+		}
     }
 
     void SetSpotType(bool onlyType = false)
@@ -349,7 +358,7 @@ public class Spot : Touchable
         if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
             return;
 
-        if (isSubordinate && !IsChiefSpotOccupied())
+        if (isSubordinate && !AreChiefSpotOccupied())
             return;
 
         if (!IsSameSize(container))
@@ -425,12 +434,16 @@ public class Spot : Touchable
             s.isPileUp = piled;
     }
 
-    public bool IsChiefSpotOccupied()
+    public bool AreChiefSpotOccupied()
     {
-        if (!isSubordinate || chiefSpot == null)
+		if (!isSubordinate || chiefSpots.Count == 0)
             return false;
 
-        return chiefSpot.isOccupied;
+		foreach (var c in chiefSpots)
+			if (!c.isOccupied)
+				return false;
+
+		return true;
     }
 
     public Spot SpawnDoubleSizeSpot(Container c, bool selectOnStart = true)
