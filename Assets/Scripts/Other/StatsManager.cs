@@ -277,6 +277,10 @@ public class StatsManager : Singleton<StatsManager>
 			Analytics.CustomEvent ("OptiSettings", new Vector3 (DefaultDeviceHeight, FramerateDeviceHeight, RatioDeviceHeight));
 		}
 
+		if (UseFenalytics) {
+			Fenalytics.Ev ("OptiSettings", RatioDeviceHeight);
+		}
+
 		if (UseGameAnalytics) {
 			GameAnalytics.NewDesignEvent ("Other:Device:DefaultDeviceHeight:" + DefaultDeviceHeight);
 			GameAnalytics.NewDesignEvent ("Other:Device:FramerateDeviceHeight:" + FramerateDeviceHeight);
