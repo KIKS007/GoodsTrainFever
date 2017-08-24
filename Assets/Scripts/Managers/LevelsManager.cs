@@ -418,11 +418,15 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		for (int i = 0; i < trains.Count; i++) {
+		for (int i = 0; i < trains.Count; i++) 
+		{
 			Train train = trains [i];
 
 			if (firstTrainDelay)
+			{
+				firstTrainDelay = false;
 				yield return new WaitForSeconds (Random.Range (LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.x, LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.y));
+			}
 
 			TrainsMovementManager.Instance.SpawnTrain (rail, train, trainsDuration);
 
