@@ -2157,7 +2157,7 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 25
+  levelDuration: 30
   ordersCountMin: 2
   ordersCountMax: 3
   trainsCountMin: 2
@@ -2411,7 +2411,7 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 40
+  levelDuration: 25
   ordersCountMin: 2
   ordersCountMax: 2
   trainsCountMin: 2
@@ -3703,6 +3703,9 @@ MonoBehaviour:
   - containerType: 3
     containerColor: 0
     isDoubleSize: 1
+  - containerType: 1
+    containerColor: 0
+    isDoubleSize: 0
   forcedContainers: []
   parasiteContainers: []
   extraContainersCount: 5

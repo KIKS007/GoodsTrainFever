@@ -760,40 +760,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &25
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1871578325734098, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 601}
-  - component: {fileID: 1926}
-  m_Layer: 0
-  m_Name: 'Level Settings #33'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &26
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1864053216659192, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 602}
-  - component: {fileID: 1927}
-  m_Layer: 0
-  m_Name: 'Level Settings #23'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &27
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,23 +882,6 @@ GameObject:
   - component: {fileID: 1932}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &34
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1960645380421022, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 606}
-  - component: {fileID: 1933}
-  m_Layer: 0
-  m_Name: 'Level #13'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1185,23 +1134,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &49
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1982943784258088, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 763}
-  - component: {fileID: 1944}
-  m_Layer: 0
-  m_Name: (singleton) LevelsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &50
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,23 +1220,6 @@ GameObject:
   - component: {fileID: 1946}
   m_Layer: 5
   m_Name: Retry
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &55
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1994423214442242, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 617}
-  - component: {fileID: 1949}
-  m_Layer: 0
-  m_Name: 'Level Settings #15'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1839,23 +1754,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &85
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1707130949366582, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 636}
-  - component: {fileID: 1977}
-  m_Layer: 0
-  m_Name: 'Level Settings #28'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &86
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,23 +1769,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &87
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1112833143390400, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 638}
-  - component: {fileID: 1978}
-  m_Layer: 0
-  m_Name: 'Level Settings #24'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &88
 GameObject:
@@ -2221,23 +2102,6 @@ GameObject:
   - component: {fileID: 1991}
   m_Layer: 0
   m_Name: (singleton) GlobalVariables
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &107
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1248480963690622, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 651}
-  - component: {fileID: 1992}
-  m_Layer: 0
-  m_Name: 'Level Settings #19'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2727,23 +2591,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &135
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1186232580712972, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 669}
-  - component: {fileID: 2010}
-  m_Layer: 0
-  m_Name: 'Level Settings #25'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &136
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,23 +2657,6 @@ GameObject:
   - component: {fileID: 1712}
   m_Layer: 5
   m_Name: Sliding Area
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &140
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1488806142769562, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 672}
-  - component: {fileID: 2014}
-  m_Layer: 0
-  m_Name: 'Level Settings #29'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2939,40 +2769,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &147
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1898473666337856, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 678}
-  - component: {fileID: 2018}
-  m_Layer: 0
-  m_Name: 'Level Settings #40'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &148
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1366760695355934, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 679}
-  - component: {fileID: 2019}
-  m_Layer: 0
-  m_Name: 'Level Settings #12'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &149
 GameObject:
@@ -3133,23 +2929,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1569643244657988, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 690}
-  - component: {fileID: 2025}
-  m_Layer: 0
-  m_Name: 'Level Settings #18'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3282,23 +3061,6 @@ GameObject:
   - component: {fileID: 2037}
   m_Layer: 10
   m_Name: Spot_20 (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &166
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1939599791443212, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 695}
-  - component: {fileID: 2038}
-  m_Layer: 0
-  m_Name: 'Level Settings #16'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3663,23 +3425,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &187
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1131753437160096, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 707}
-  - component: {fileID: 2053}
-  m_Layer: 0
-  m_Name: 'Level #26'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &188
 GameObject:
   m_ObjectHideFlags: 0
@@ -3934,23 +3679,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &202
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1439539367762482, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 714}
-  - component: {fileID: 2067}
-  m_Layer: 0
-  m_Name: 'Level Settings #30'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4059,23 +3787,6 @@ GameObject:
   - component: {fileID: 2070}
   m_Layer: 5
   m_Name: Orders Holder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &209
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1965733739792580, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 720}
-  - component: {fileID: 2074}
-  m_Layer: 0
-  m_Name: 'Level Settings #35'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4193,23 +3904,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &216
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1240284951828670, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 723}
-  - component: {fileID: 2083}
-  m_Layer: 0
-  m_Name: 'Level #5'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &217
 GameObject:
   m_ObjectHideFlags: 0
@@ -4288,23 +3982,6 @@ GameObject:
   - component: {fileID: 2087}
   m_Layer: 5
   m_Name: Dangereux
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &222
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1288180214644978, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 725}
-  - component: {fileID: 2088}
-  m_Layer: 0
-  m_Name: 'Level Settings #22'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4541,23 +4218,6 @@ GameObject:
   - component: {fileID: 2100}
   m_Layer: 5
   m_Name: RateStars
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &236
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1610243862095202, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 730}
-  - component: {fileID: 2101}
-  m_Layer: 0
-  m_Name: 'Level Settings #38'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4851,23 +4511,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &253
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1865475656025056, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 746}
-  - component: {fileID: 2111}
-  m_Layer: 0
-  m_Name: 'Level Settings #10'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &254
 GameObject:
@@ -5378,23 +5021,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &282
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1353021389014640, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 764}
-  - component: {fileID: 2133}
-  m_Layer: 0
-  m_Name: 'Level Settings #11'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &283
 GameObject:
   m_ObjectHideFlags: 0
@@ -5625,23 +5251,6 @@ GameObject:
   - component: {fileID: 2146}
   m_Layer: 5
   m_Name: Error Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &296
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1529377463231946, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 772}
-  - component: {fileID: 2148}
-  m_Layer: 0
-  m_Name: 'Level Settings #32'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6238,23 +5847,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &330
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1349843964982716, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 796}
-  - component: {fileID: 2170}
-  m_Layer: 0
-  m_Name: 'Level #8'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &331
 GameObject:
   m_ObjectHideFlags: 0
@@ -6372,23 +5964,6 @@ GameObject:
   - component: {fileID: 2176}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &338
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1479368057252390, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 798}
-  - component: {fileID: 2177}
-  m_Layer: 0
-  m_Name: 'Level #27'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6649,23 +6224,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &353
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1170264309766348, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 806}
-  - component: {fileID: 2188}
-  m_Layer: 0
-  m_Name: 'Level Settings #17'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &354
 GameObject:
   m_ObjectHideFlags: 0
@@ -6825,23 +6383,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &363
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1691192733186184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 813}
-  - component: {fileID: 2195}
-  m_Layer: 0
-  m_Name: 'Level #6'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &364
 GameObject:
@@ -7695,23 +7236,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &412
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1687160602162366, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 845}
-  - component: {fileID: 2225}
-  m_Layer: 0
-  m_Name: 'Level Settings #14'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &413
 GameObject:
   m_ObjectHideFlags: 0
@@ -8083,23 +7607,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &434
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1286479206293984, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 860}
-  - component: {fileID: 2241}
-  m_Layer: 0
-  m_Name: 'Level #4'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &435
 GameObject:
@@ -8497,23 +8004,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &457
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1212457473452888, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 875}
-  - component: {fileID: 2262}
-  m_Layer: 0
-  m_Name: 'Level Settings #36'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &458
 GameObject:
   m_ObjectHideFlags: 0
@@ -8564,23 +8054,6 @@ GameObject:
   - component: {fileID: 2265}
   m_Layer: 11
   m_Name: Cloud
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &461
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1850929048264262, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 878}
-  - component: {fileID: 2266}
-  m_Layer: 0
-  m_Name: 'Level #7'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8675,23 +8148,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &467
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1856181718767880, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 881}
-  - component: {fileID: 2271}
-  m_Layer: 0
-  m_Name: 'Level #3'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &468
 GameObject:
@@ -8978,23 +8434,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &484
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1256003509517920, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 891}
-  - component: {fileID: 2285}
-  m_Layer: 0
-  m_Name: 'Level #2'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &485
 GameObject:
   m_ObjectHideFlags: 0
@@ -9174,23 +8613,6 @@ GameObject:
   - component: {fileID: 2298}
   m_Layer: 5
   m_Name: Resume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1306879128269946, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 896}
-  - component: {fileID: 2299}
-  m_Layer: 0
-  m_Name: 'Level Settings #20'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9445,23 +8867,6 @@ GameObject:
   - component: {fileID: 2308}
   m_Layer: 5
   m_Name: RateStars
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &510
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1701904671217676, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 905}
-  - component: {fileID: 2310}
-  m_Layer: 0
-  m_Name: 'Level Settings #39'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9806,23 +9211,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1688679349209976, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 914}
-  - component: {fileID: 2331}
-  m_Layer: 0
-  m_Name: 'Level Settings #9'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &530
 GameObject:
   m_ObjectHideFlags: 0
@@ -9858,23 +9246,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &532
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1598134221380020, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 917}
-  - component: {fileID: 2332}
-  m_Layer: 0
-  m_Name: 'Level Settings #37'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &533
 GameObject:
@@ -9912,23 +9283,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1497636379061576, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 919}
-  - component: {fileID: 2335}
-  m_Layer: 0
-  m_Name: 'Level Settings #34'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &536
 GameObject:
@@ -10842,40 +10196,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1642725071075682, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 951}
-  - component: {fileID: 2370}
-  m_Layer: 0
-  m_Name: 'Level #1'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1263878854318628, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 952}
-  - component: {fileID: 2371}
-  m_Layer: 0
-  m_Name: 'Level Settings #21'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &589
 GameObject:
   m_ObjectHideFlags: 0
@@ -10893,23 +10213,6 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
---- !u!1 &590
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1507820512826278, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 954}
-  - component: {fileID: 2372}
-  m_Layer: 0
-  m_Name: 'Level Settings #31'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &591
 Transform:
@@ -11052,34 +10355,6 @@ Transform:
   m_Father: {fileID: 637}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: -44.837, z: 0}
---- !u!4 &601
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4508024935594870, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 25}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 32
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &602
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4715930982836670, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 26}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &603
 Transform:
   m_ObjectHideFlags: 0
@@ -11125,20 +10400,6 @@ Transform:
   - {fileID: 1887}
   m_Father: {fileID: 612}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &606
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4652594046381584, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 34}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &607
 Transform:
@@ -11294,20 +10555,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 627}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &617
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4218161078582376, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 55}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &618
 Transform:
@@ -11568,20 +10815,6 @@ Transform:
   m_Father: {fileID: 658}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &636
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4317115874871010, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 85}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 27
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &637
 Transform:
   m_ObjectHideFlags: 0
@@ -11646,20 +10879,6 @@ Transform:
   - {fileID: 852}
   m_Father: {fileID: 947}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &638
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4282207404675522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 87}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &639
 Transform:
@@ -11835,20 +11054,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 924}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &651
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4148375844116062, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 107}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &652
 Transform:
@@ -12093,20 +11298,6 @@ Transform:
   m_Father: {fileID: 811}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &669
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4790770964924500, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 135}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &670
 Transform:
   m_ObjectHideFlags: 0
@@ -12133,20 +11324,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 924}
   m_RootOrder: 29
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &672
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4903964369349148, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 140}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &673
 Transform:
@@ -12216,34 +11393,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 658}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &678
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4135437464182864, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 147}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 39
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &679
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4268694509593220, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 148}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &680
 Transform:
@@ -12391,20 +11540,6 @@ Transform:
   m_Father: {fileID: 770}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: -15.044001}
---- !u!4 &690
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4530771738892908, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 158}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &691
 Transform:
   m_ObjectHideFlags: 0
@@ -12462,20 +11597,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 822}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &695
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4552004536906004, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 166}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &696
 Transform:
@@ -12631,20 +11752,6 @@ Transform:
   m_Father: {fileID: 637}
   m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 34.125, z: 0}
---- !u!4 &707
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4672782968948120, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 187}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &708
 Transform:
   m_ObjectHideFlags: 0
@@ -12731,20 +11838,6 @@ Transform:
   m_Father: {fileID: 783}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &714
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4644652838243752, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 202}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 29
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &715
 Transform:
   m_ObjectHideFlags: 0
@@ -12814,20 +11907,6 @@ Transform:
   m_Father: {fileID: 949}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &720
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4360153241551314, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 209}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 34
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &721
 Transform:
   m_ObjectHideFlags: 0
@@ -12855,20 +11934,6 @@ Transform:
   m_Father: {fileID: 924}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &723
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4904314239813420, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 216}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &724
 Transform:
   m_ObjectHideFlags: 0
@@ -12884,20 +11949,6 @@ Transform:
   - {fileID: 752}
   m_Father: {fileID: 637}
   m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &725
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4373262605024440, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 222}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &726
 Transform:
@@ -12956,20 +12007,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 777}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &730
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4529137998415948, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 236}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &731
 Transform:
@@ -13181,20 +12218,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 949}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &746
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4168389017449626, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 253}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &747
 Transform:
@@ -13429,74 +12452,11 @@ Transform:
   m_Father: {fileID: 949}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &763
+--- !u!4 &763 stripped
 Transform:
-  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 49}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 951}
-  - {fileID: 891}
-  - {fileID: 881}
-  - {fileID: 860}
-  - {fileID: 723}
-  - {fileID: 813}
-  - {fileID: 878}
-  - {fileID: 796}
-  - {fileID: 914}
-  - {fileID: 746}
-  - {fileID: 764}
-  - {fileID: 679}
-  - {fileID: 606}
-  - {fileID: 845}
-  - {fileID: 617}
-  - {fileID: 695}
-  - {fileID: 806}
-  - {fileID: 690}
-  - {fileID: 651}
-  - {fileID: 896}
-  - {fileID: 952}
-  - {fileID: 725}
-  - {fileID: 602}
-  - {fileID: 638}
-  - {fileID: 669}
-  - {fileID: 707}
-  - {fileID: 798}
-  - {fileID: 636}
-  - {fileID: 672}
-  - {fileID: 714}
-  - {fileID: 954}
-  - {fileID: 772}
-  - {fileID: 601}
-  - {fileID: 919}
-  - {fileID: 720}
-  - {fileID: 875}
-  - {fileID: 917}
-  - {fileID: 730}
-  - {fileID: 905}
-  - {fileID: 678}
-  m_Father: {fileID: 949}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &764
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4247130314161270, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 282}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_PrefabInternal: {fileID: 256517866}
 --- !u!4 &765
 Transform:
   m_ObjectHideFlags: 0
@@ -13597,20 +12557,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 740}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &772
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4613425200041108, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 296}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &773
 Transform:
@@ -13944,20 +12890,6 @@ Transform:
   m_Father: {fileID: 829}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: 0}
---- !u!4 &796
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4780972525348162, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 330}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &797
 Transform:
   m_ObjectHideFlags: 0
@@ -13970,20 +12902,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 924}
   m_RootOrder: 40
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &798
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4504673664908004, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 338}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &799
 Transform:
@@ -14084,20 +13002,6 @@ Transform:
   m_Father: {fileID: 833}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &806
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4813578165387718, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 353}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &807
 Transform:
   m_ObjectHideFlags: 0
@@ -14186,20 +13090,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 918}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &813
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4888433791392602, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 363}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &814
 Transform:
@@ -14664,20 +13554,6 @@ Transform:
   m_Father: {fileID: 947}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &845
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4278834485877426, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 412}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &846
 Transform:
   m_ObjectHideFlags: 0
@@ -14883,20 +13759,6 @@ Transform:
   m_Father: {fileID: 740}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &860
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4925342932501930, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 434}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &861
 Transform:
   m_ObjectHideFlags: 0
@@ -15100,20 +13962,6 @@ Transform:
   m_Father: {fileID: 911}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &875
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4444839941053142, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 457}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 35
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &876
 Transform:
   m_ObjectHideFlags: 0
@@ -15143,20 +13991,6 @@ Transform:
   m_Father: {fileID: 827}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &878
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4042947693258808, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 461}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &879
 Transform:
   m_ObjectHideFlags: 0
@@ -15183,20 +14017,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 826}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &881
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4219912458626428, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 467}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &882
 Transform:
@@ -15330,20 +14150,6 @@ Transform:
   m_Father: {fileID: 947}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &891
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4601033858314268, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 484}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &892
 Transform:
   m_ObjectHideFlags: 0
@@ -15405,20 +14211,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 627}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &896
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4784194199843562, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 495}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &897
 Transform:
@@ -15530,20 +14322,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 924}
   m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &905
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4438413766666104, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 510}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &906
 Transform:
@@ -15658,20 +14436,6 @@ Transform:
   m_Father: {fileID: 667}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &914
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4531522961854100, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 529}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &915
 Transform:
   m_ObjectHideFlags: 0
@@ -15700,20 +14464,6 @@ Transform:
   m_Father: {fileID: 811}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &917
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4450747280974620, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 532}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 36
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &918
 Transform:
   m_ObjectHideFlags: 0
@@ -15729,20 +14479,6 @@ Transform:
   - {fileID: 812}
   m_Father: {fileID: 637}
   m_RootOrder: 24
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &919
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4019808472314394, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 535}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &920
 Transform:
@@ -16250,34 +14986,6 @@ Transform:
   m_Father: {fileID: 637}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &951
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4420805273170508, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 587}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &952
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4562766713071246, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 588}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &953
 Transform:
   m_ObjectHideFlags: 0
@@ -16291,20 +14999,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 627}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &954
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4681650751491354, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 590}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 763}
-  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &955
 Camera:
@@ -29020,7 +27714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -669.99994, y: 61}
+  m_AnchoredPosition: {x: -669.9999, y: 61}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1718
@@ -29260,7 +27954,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -706.99994, y: 64}
+  m_AnchoredPosition: {x: -706.9999, y: 64}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1730
@@ -30811,7 +29505,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 660.99994, y: 627}
+  m_AnchoredPosition: {x: 660.9999, y: 627}
   m_SizeDelta: {x: 90, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1808
@@ -31458,7 +30152,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 809.9998, y: 0}
+  m_AnchoredPosition: {x: 809.9999, y: 0}
   m_SizeDelta: {x: 270, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &1841
@@ -32357,7 +31051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 734.99994, y: 54}
+  m_AnchoredPosition: {x: 735.0002, y: 54}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1885
@@ -33102,116 +31796,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &1926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114029193560583264, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 25}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 1
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 20
-  ordersCountMin: 1
-  ordersCountMax: 1
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 569ef012fd0134b45a3de18124cec528, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
---- !u!114 &1927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114205033325658656, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 26}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 3
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 020000000200000002000000
-  ordersCount: 3
-  levelDuration: 45
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 1f85d5a2bf73ce24fb7d0c2ff5edaeee, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &1928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33347,111 +31931,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
---- !u!114 &1933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114211843935553112, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 34}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 3
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 1
-    - containerType: 3
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats:
-  - delay: 10
-    overrideDuration: 0
-    duration: 0
-    boatContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 3
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
 --- !u!114 &1934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33734,91 +32213,6 @@ MonoBehaviour:
   ZBirthRange: {x: -80, y: 20}
   XBirthScaleRange: {x: 6, y: 12}
   ZBirthScaleRange: {x: 3, y: 18}
---- !u!114 &1944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 49}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cba7733993d660442a7ccfcb3a351885, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelToStart: 0
-  loadLevelOnStart: 0
-  clearLevelOnStart: 1
-  levelIndex: 0
-  levelsCount: 0
-  currentLevel: {fileID: 0}
-  currentHandmadeLevel: {fileID: 0}
-  currentLevelGenerated: {fileID: 0}
-  errorsLocked: 0
-  errorsAllowed: 0
-  errorsSecondStarAllowed: 0
-  currentErrors: 0
-  errorsText: {fileID: 2054}
-  errorsTextParent: {fileID: 1717}
-  nextToGroups: 0
-  specialConstraint:
-  - constraintType: 0
-    groupCount: 0
-    count: 0
-  - constraintType: 1
-    groupCount: 0
-    count: 0
-  - constraintType: 2
-    groupCount: 0
-    count: 0
-  levelDuration: 0
-  randomColors: 0
-  orders: []
-  spawnDoubleSizeFirst: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  trainsUsed: 0
-  waitDurationBetweenTrains: 2
-  trainsToSend: 0
-  rail1Trains: []
-  rail2Trains: []
-  trainsToSendText: {fileID: 2287}
-  boatsDuration: 0
-  lastBoatStay: 1
-  waitDurationBetweenBoats: 2
-  boats: []
-  basicContainersPrefabs:
-  - {fileID: 1265508688834536, guid: cd0bd9ec63c70194f9c814e602fca2ec, type: 2}
-  - {fileID: 1693686800772070, guid: e53bcce4d06c6234eb864a510eaa45f9, type: 2}
-  cooledContainersPrefabs:
-  - {fileID: 1147344577093678, guid: 0cdf32664eda44c8f8af70addca51c1b, type: 2}
-  - {fileID: 1675583211874182, guid: 807ce0e7664284f9aba91dc0da799b2f, type: 2}
-  tankContainersPrefabs:
-  - {fileID: 1698893315159992, guid: 7d622d8dd331d594abf59b008734a987, type: 2}
-  - {fileID: 1841959657375952, guid: 0786f2ba55c270f42954fbd7f3cff573, type: 2}
-  dangerousContainersPrefabs:
-  - {fileID: 1579743288638886, guid: 12ada6c33f8e6419896423bd7f600ad6, type: 2}
-  - {fileID: 1823375027465384, guid: 495899c0a899949888ddf3e200422804, type: 2}
-  _storage: {fileID: 0}
-  _boat: {fileID: 0}
 --- !u!114 &1945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33964,42 +32358,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &1949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114007443564935346, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 55}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &1950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34841,101 +33199,6 @@ MonoBehaviour:
   touchMovementFactor: 1
   relativeMaxScale: 1.75
   relativeMinScale: 0.5
---- !u!114 &1977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114116953018540998, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 85}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 3
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
---- !u!114 &1978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114827661318756660, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 87}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 6
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &1979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35401,57 +33664,6 @@ MonoBehaviour:
     type: 2}
   objectToCreate: {fileID: 11500000, guid: 720d3a2e8226c46a5a167d64b3f57849, type: 3}
   containerInfos: {fileID: 0}
---- !u!114 &1992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114787031956848434, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 30
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!114 &1993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35916,48 +34128,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114878306438568396, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 5
-  ordersCountMax: 5
-  trainsCountMin: 4
-  trainsCountMax: 4
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!114 &2011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36056,72 +34226,6 @@ MonoBehaviour:
   ZBirthRange: {x: -80, y: 20}
   XBirthScaleRange: {x: 6, y: 12}
   ZBirthScaleRange: {x: 3, y: 18}
---- !u!114 &2014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114507851859747452, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 30
-  ordersCountMin: 1
-  ordersCountMax: 1
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
 --- !u!114 &2015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36201,96 +34305,6 @@ MonoBehaviour:
   _isSpawned: 0
   _spotTrainIndex: 0
   _spotWagonIndex: 0
---- !u!114 &2018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
---- !u!114 &2019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114722730801518360, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 5
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 0.67300445, y: 4.273776}
-  boatsDelay: 2
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 80
 --- !u!114 &2020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36430,57 +34444,6 @@ MonoBehaviour:
   _isSpawned: 0
   _spotTrainIndex: 0
   _spotWagonIndex: 0
---- !u!114 &2025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114589456485626830, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 12
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!114 &2026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36777,60 +34740,6 @@ MonoBehaviour:
   _isSpawned: 0
   _spotTrainIndex: 0
   _spotWagonIndex: 0
---- !u!114 &2038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114508161287408362, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37155,92 +35064,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114612099340248566, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 3
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 7
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 7
-    - wagonType: 0
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37652,67 +35475,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '!'
---- !u!114 &2067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114237122304959710, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37869,63 +35631,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
---- !u!114 &2074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114860410983232162, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 1
-  ordersCountMax: 3
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
-  firstTrainDelay: {x: 0, y: 1.9798381}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 80
 --- !u!114 &2075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38114,97 +35819,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 60.00
---- !u!114 &2083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114191400933487774, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 10
-    levelContainers:
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38316,64 +35930,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114612142992754734, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 30
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 75
 --- !u!114 &2089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38809,66 +36365,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114081534477940854, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39143,48 +36639,6 @@ MonoBehaviour:
   - feedbackType: 4
     particles: {fileID: 1249255772493726, guid: 2fa145ce4082bb34a94f438ccc4ad838,
       type: 2}
---- !u!114 &2111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114114740988158310, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39787,48 +37241,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Enter text...
---- !u!114 &2133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114756714496351438, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 85
-  storageFillingPercentage: 75
 --- !u!114 &2134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40302,64 +37714,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114677216979345534, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40956,112 +38310,6 @@ MonoBehaviour:
   ZBirthRange: {x: -80, y: 20}
   XBirthScaleRange: {x: 6, y: 12}
   ZBirthScaleRange: {x: 3, y: 18}
---- !u!114 &2170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114338581091078460, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-  spawnAllOrderContainers: 0
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats:
-  - delay: 10
-    overrideDuration: 0
-    duration: 0
-    boatContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
 --- !u!114 &2171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41230,98 +38478,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Play
---- !u!114 &2177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114207136401388156, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 2
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 1
-  starsStates: 020000000200000000000000
-  ordersCount: 2
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 1
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 2
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 2
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 3
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 3
-    - wagonType: 1
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 3
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 40
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 1
-      wagonMaxWeight: 6
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 30
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41606,60 +38762,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114970313488416776, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 353}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41865,68 +38967,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Type :'
---- !u!114 &2195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114745793760467436, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 2
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  rail2Trains: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42868,54 +39908,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &2225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114810873625816992, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43285,95 +40277,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!114 &2241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114208329196233820, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 4
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43965,59 +40868,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '!'
---- !u!114 &2262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114254989996884816, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 0, y: 6.51696}
-  boatsDelay: 2
-  containersAvailable:
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44091,98 +40941,6 @@ MonoBehaviour:
   ZBirthRange: {x: -80, y: 20}
   XBirthScaleRange: {x: 6, y: 12}
   ZBirthScaleRange: {x: 3, y: 18}
---- !u!114 &2266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114788379480246052, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 2
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 5
-    levelContainers:
-    - containerType: 2
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 10
-    levelContainers:
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 1
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 1
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 5
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  rail2Trains:
-  - trainDuration: 30
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 8
-    - wagonType: 0
-      wagonMaxWeight: 5
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44287,80 +41045,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Enter text...
---- !u!114 &2271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114561343716687288, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 2
-      wagonMaxWeight: 4
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44723,71 +41407,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114050373396458146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 2
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
 --- !u!114 &2286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45220,76 +41839,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toMenu: 0
   menu: {fileID: 0}
---- !u!114 &2299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114548689408437720, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 25
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 1
-  trainsCountMax: 1
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 100
 --- !u!114 &2300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45552,48 +42101,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &2310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114697728659394212, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 3
-  trainsCountMax: 3
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 5
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46219,108 +42726,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &2331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114303322505736272, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 4
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 50
---- !u!114 &2332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 40
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  extraContainersCount: 2
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 75
 --- !u!114 &2333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46366,63 +42771,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 0}
   limitedTo: 1
---- !u!114 &2335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114351342796595158, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 45
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  firstTrainDelay: {x: 0.81068057, y: 3.5455005}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 90
-  storageFillingPercentage: 70
 --- !u!114 &2336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47360,169 +43708,123 @@ MonoBehaviour:
   _isSpawned: 0
   _spotTrainIndex: 0
   _spotWagonIndex: 0
---- !u!114 &2370
-MonoBehaviour:
+--- !u!1001 &256517866
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114138863603490888, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f035ef59893d16428f95d6fed32778b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  orders:
-  - isPrepared: 0
-    delay: 0
-    levelContainers:
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 1
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 3
-      isDoubleSize: 0
-  spawnAllOrderContainers: 1
-  storageContainers:
-  - containerType: 0
-    containerColor: 1
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  rail1Trains: []
-  rail2Trains:
-  - trainDuration: 20
-    wagons:
-    - wagonType: 0
-      wagonMaxWeight: 2
-    - wagonType: 0
-      wagonMaxWeight: 2
-    parasiteContainers: []
-  boatsDuration: 0
-  lastBoatStay: 1
-  boats: []
---- !u!114 &2371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114091564701631282, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 35
-  ordersCountMin: 2
-  ordersCountMax: 2
-  trainsCountMin: 2
-  trainsCountMax: 2
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: 7a973f17d6099e9449b71745484f4d3e, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 100
-  storageFillingPercentage: 75
---- !u!114 &2372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114606126827085708, guid: b19a4ceaa52630e4c8e2e6171b752452,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 3
-  starsStates: 000000000000000000000000
-  ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 3
-  trainsCountMin: 3
-  trainsCountMax: 5
-  trainsAvailable:
-  - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
-  - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
-  firstTrainDelay: {x: 2.3340967, y: 8.671009}
-  boatsDelay: 4
-  containersAvailable:
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 1
-  - containerType: 0
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 3
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 2
-    containerColor: 0
-    isDoubleSize: 0
-  - containerType: 1
-    containerColor: 0
-    isDoubleSize: 0
-  forcedContainers: []
-  parasiteContainers: []
-  extraContainersCount: 3
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 70
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 949}
+    m_Modifications:
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: containersAvailable.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: errorsText
+      value: 
+      objectReference: {fileID: 2054}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: errorsTextParent
+      value: 
+      objectReference: {fileID: 1717}
+    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: trainsToSendText
+      value: 
+      objectReference: {fileID: 2287}
+    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsEarned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsEarned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: containersAvailable.Array.data[5].containerType
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
+  m_IsPrefabParent: 0
 --- !u!21 &1246802876
 Material:
   serializedVersion: 6
