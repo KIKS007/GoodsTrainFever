@@ -31051,7 +31051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 735.0002, y: 54}
+  m_AnchoredPosition: {x: 735.0001, y: 54}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1885
@@ -42556,7 +42556,7 @@ MonoBehaviour:
   wagonSixtyLength: 20
   wagonEightyLength: 26.3
   locomotiveLength: 22
-  offsetLength: 10
+  offsetLength: 1
   trainPrefab: {fileID: 1797708387134428, guid: a77cf87b205a5a44ea55ee76022f4ec3,
     type: 2}
   wagonFourtyPrefab: {fileID: 1455626880368656, guid: d1ebcb2b16925f446b81627e3512b92f,
@@ -43715,11 +43715,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 949}
     m_Modifications:
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: containersAvailable.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -43767,61 +43762,6 @@ Prefab:
       propertyPath: trainsToSendText
       value: 
       objectReference: {fileID: 2287}
-    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsEarned
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[1]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[2]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114485918580619522, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: ordersCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsEarned
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[1]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[2]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: ordersCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114993017750113214, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: containersAvailable.Array.data[5].containerType
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
   m_IsPrefabParent: 0
