@@ -10,8 +10,6 @@ namespace FenalyticsScripts
 {
 	namespace Serialization
 	{
-
-
 		[Serializable]
 		public class FenalyticsEvent
 		{
@@ -19,8 +17,9 @@ namespace FenalyticsScripts
 			public Dictionary<string, object> data;
 			public string session_id;
 			public string start_at;
+			public string root_id;
 
-			public FenalyticsEvent (string _name, Dictionary<string, object>  _data, string _start_at)
+			public FenalyticsEvent (string _name, Dictionary<string, object>  _data, string _start_at, string _root_id = null)
 			{
 				name = _name;
 				data = _data;
@@ -63,11 +62,13 @@ namespace FenalyticsScripts
 			public string device_id;
 			public string account_id;
 			public string build_id;
+			public string location_id;
 			public string start_at;
+			public string root_id;
 
 			public string prev_id;
 
-			public FenalyticsSession (string _name, string _start_at, string _device_id = null, string _account_id = null, string _build_id = null, string _prev_id = null)
+			public FenalyticsSession (string _name, string _start_at, string _device_id = null, string _account_id = null, string _build_id = null, string _prev_id = null, string _root_id = null)
 			{
 				name = _name;
 				device_id = _device_id;
@@ -75,6 +76,7 @@ namespace FenalyticsScripts
 				build_id = _build_id;
 				start_at = _start_at;
 				prev_id = _prev_id;
+				root_id = _root_id;
 			}
 		}
 

@@ -27,7 +27,7 @@ namespace FenalyticsScripts
 					                          new FenalyticsDisplay (new Vector2 (Display.main.renderingWidth, Display.main.renderingHeight), new Vector2 (Screen.currentResolution.width, Screen.currentResolution.height), 
 						                          Screen.fullScreen, Screen.currentResolution.refreshRate, Screen.orientation.ToString ()),
 					                          Display.displays.Length, Application.platform.ToString (), SystemInfo.operatingSystem, SystemInfo.operatingSystemFamily.ToString (), Application.systemLanguage.ToString ());
-				
+
 				QueueManager.Requests.Add (new Request ("/v1/devices", JsonUtility.ToJson (device)));
 
 			}
@@ -40,6 +40,15 @@ namespace FenalyticsScripts
 				FenalyticsBuild build = new FenalyticsBuild (_projectId, Application.version, Application.buildGUID, Application.unityVersion);
 
 				QueueManager.Requests.Add (new Request ("/v1/builds", JsonUtility.ToJson (build)));
+
+			}
+		}
+
+		public static class Location
+		{
+			public static void GetId ()
+			{
+				QueueManager.Requests.Add (new Request ("/v1/locations", "GET"));
 
 			}
 		}
@@ -104,6 +113,7 @@ namespace FenalyticsScripts
 			_instance = instance;
 			Device.GetId ();
 			Build.GetId ();
+			Location.GetId ();
 			Session.Init ();
 		}
 	}
