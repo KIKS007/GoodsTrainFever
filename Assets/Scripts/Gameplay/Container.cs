@@ -268,7 +268,10 @@ public class Container : Touchable
 		ContainersMovementManager.Instance.StartHover (this);
 		_hasmoved = true;
 		selected = true;
-
+		if (TutorialManager.Instance.isActive) {
+			
+			TutorialManager.Instance.Selected ();
+		}
 		errorsCanvasGroup.transform.DOKill (true);
 		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce).OnComplete (() => {
 			errorsCanvasGroup.gameObject.SetActive (false);

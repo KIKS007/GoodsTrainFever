@@ -335,7 +335,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	IEnumerator Timer ()
 	{
-		yield return StartCoroutine (CoroutineUtil.WaitForRealSeconds (1));
+		yield return new WaitForSecondsRealtime (1);
 		TimerValue++;
 		if (!isTimerStopped)
 			StartCoroutine ("Timer");
@@ -343,14 +343,4 @@ public class StatsManager : Singleton<StatsManager>
 		
 		
 }
-
-public static class CoroutineUtil
-{
-	public static IEnumerator WaitForRealSeconds (float time)
-	{
-		float start = Time.realtimeSinceStartup;
-		while (Time.realtimeSinceStartup < start + time) {
-			yield return null;
-		}
-	}
-}
+	

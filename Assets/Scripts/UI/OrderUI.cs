@@ -286,6 +286,27 @@ public class OrderUI : MonoBehaviour
 				go.SetActive (true);
 			i++;
 		}
+			
+	}
+
+	public void TutoHideOrders ()
+	{
+		_showOrders = false;
+		int i = 0;
+		_notificationImg.DOKill ();
+		_notificationImg.DOFade (1, 0f).SetDelay (0.4f);
+		foreach (var order in _orderList) {
+			var go = _orders [order];
+			var canvasGrp = go.GetComponent<CanvasGroup> ();
+			float alphaTarget = 0;
+			canvasGrp.DOKill ();
+			canvasGrp.DOFade (alphaTarget, 0.2f);
+			if (alphaTarget <= 0)
+				DOVirtual.DelayedCall (0.2f, () => go.SetActive (false));
+			if (alphaTarget > 0 && !go.activeSelf)
+				go.SetActive (true);
+			i++;
+		}
 	}
 
 	public void Selected ()

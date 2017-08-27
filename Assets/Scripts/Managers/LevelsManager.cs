@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System.Linq;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ public class LevelsManager : Singleton<LevelsManager>
 	public Level currentLevel;
 	public Level currentHandmadeLevel;
 	public LevelGenerated currentLevelGenerated;
+
+	[Header ("Tutorials")]
+	public UnityEvent[] Tutorials;
 
 	[Header ("Errors")]
 	public int errorsLocked = 0;
@@ -139,6 +143,13 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
+		switch (index) {
+		case 0:
+			Tutorials [0].Invoke ();
+			break;
+		default:
+			break;
+		}
 		ClearLevel ();
 
 		if (transform.GetChild (index).GetComponent<LevelHandmade> () != null)
@@ -418,12 +429,10 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		for (int i = 0; i < trains.Count; i++) 
-		{
+		for (int i = 0; i < trains.Count; i++) {
 			Train train = trains [i];
 
-			if (firstTrainDelay)
-			{
+			if (firstTrainDelay) {
 				firstTrainDelay = false;
 				yield return new WaitForSeconds (Random.Range (LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.x, LevelsGenerationManager.Instance._currentLevelSettings.firstTrainDelay.y));
 			}

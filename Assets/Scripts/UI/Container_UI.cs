@@ -111,6 +111,10 @@ public class Container_UI : MonoBehaviour
 
 		UpdateTexts ();
 		containerImage.color = Color.green;
+		if (TutorialManager.Instance.isActive) {
+
+			TutorialManager.Instance.OnTrain ();
+		}
 		//Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
 		if (this.gameObject.activeInHierarchy) {
 			StartCoroutine (ContainerAddedFeedback ());	

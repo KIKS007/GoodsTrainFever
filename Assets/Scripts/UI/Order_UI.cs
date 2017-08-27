@@ -228,6 +228,10 @@ public class Order_UI : MonoBehaviour
 
 		OrderPrepared (isPrepared);
 
+		if (isPrepared && TutorialManager.Instance.isActive) {
+			TutorialManager.Instance.OrderCompleted ();
+		}
+
 		bool sent = true;
 
 		foreach (var c in containers)
@@ -237,5 +241,9 @@ public class Order_UI : MonoBehaviour
 			}
 
 		isSent = sent;
+
+		if (isSent && TutorialManager.Instance.isActive) {
+			TutorialManager.Instance.OrderSent ();
+		}
 	}
 }

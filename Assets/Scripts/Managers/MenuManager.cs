@@ -412,6 +412,31 @@ public class MenuManager : Singleton<MenuManager>
 		ShowMenu (menu, false);
 	}
 
+	public void Pause (float delay)
+	{
+
+		DOVirtual.DelayedCall (delay, () => {
+			if (GameManager.Instance.gameState == GameState.Playing) {
+				_timeScaleOnPause = Time.timeScale;
+				Time.timeScale = 0;
+
+				GameManager.Instance.gameState = GameState.Pause;
+			}
+		});
+
+	}
+
+	public void UnPause (float delay)
+	{
+		DOVirtual.DelayedCall (delay, () => {
+			if (GameManager.Instance.gameState == GameState.Pause) {
+				Time.timeScale = _timeScaleOnPause;
+				GameManager.Instance.gameState = GameState.Playing;
+			}
+		});
+
+	}
+
 	public void ResumeAndHideMenu (MenuComponent menu)
 	{
 		HideMenu (menu);
@@ -518,6 +543,10 @@ public class MenuManager : Singleton<MenuManager>
 	public void MainMenu ()
 	{
 		Time.timeScale = 1;
+
+		if (TutorialManager.Instance.isActive) {
+			TutorialManager.Instance.ForceStop ();
+		}
 
 		ShowPanel ();
 
