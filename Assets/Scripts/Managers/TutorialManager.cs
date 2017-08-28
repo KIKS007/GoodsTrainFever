@@ -10,10 +10,25 @@ using DG.Tweening;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
-	[Header ("Level 1")]
+	[TabGroup ("Tutorial Level", "Level 1")]
 	public Tutorial[] TutorialList;
-	[Header ("Level 2")]
+	[TabGroup ("Tutorial Level", "Level 2")]
 	public Tutorial[] TutorialList2;
+	[TabGroup ("Tutorial Level", "Level 3")]
+	public Tutorial[] TutorialList3;
+	[TabGroup ("Tutorial Level", "Level 4")]
+	public Tutorial[] TutorialList4;
+	[TabGroup ("Tutorial Level", "Level 5")]
+	public Tutorial[] TutorialList5;
+	[TabGroup ("Tutorial Level", "Level 6")]
+	public Tutorial[] TutorialList6;
+	[TabGroup ("Tutorial Level", "Level 8")]
+	public Tutorial[] TutorialList8;
+	[TabGroup ("Tutorial Level", "Level 13")]
+	public Tutorial[] TutorialList13;
+	[TabGroup ("Tutorial Level", "Level 26")]
+	public Tutorial[] TutorialList26;
+	private  Tutorial[] CurrentList;
 	[Header ("General Settings")]
 	public Tutorial CurrentTutorial;
 	public Canvas MainTutorialCanvas;
@@ -26,8 +41,50 @@ public class TutorialManager : Singleton<TutorialManager>
 			ForceStop ();
 		} 
 		isActive = true;
-		CurrentTutorial = TutorialList [id];
-		CurrentTutorial.StartTutorial (id);
+		if (id < CurrentList.Length) {
+			CurrentTutorial = CurrentList [id];
+			CurrentTutorial.StartTutorial (id);
+		} else {
+			Debug.LogError ("The current tutorial list does not contain tutorial id: " + id);
+		}
+
+	}
+
+	public void SwitchTutorialList (int id)
+	{
+		switch (id) {
+		case 1:
+			CurrentList = TutorialList;
+			break;
+		case 2:
+			CurrentList = TutorialList2;
+			break;
+		case 3:
+			CurrentList = TutorialList3;
+			break;
+		case 4:
+			CurrentList = TutorialList4;
+			break;
+		case 5:
+			CurrentList = TutorialList5;
+			break;
+		case 6:
+			CurrentList = TutorialList6;
+			break;
+		case 8:
+			CurrentList = TutorialList8;
+			break;
+		case 13:
+			CurrentList = TutorialList13;
+			break;
+		case 26:
+			CurrentList = TutorialList26;
+			break;
+		default:
+			CurrentList = TutorialList;
+			Debug.Log ("Tutorial List Switching to an undifined Tutorial ID! Please set it. Setting it to 1 to avoid ERRORS");
+			break;
+		}
 	}
 
 	public void NextTutorial (bool force)
@@ -45,8 +102,12 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void ForceStop ()
 	{
-		this.transform.DOKill ();
-		CurrentTutorial.ForceStopTutorial ();
+		if (isActive) {
+			this.transform.DOKill ();
+			CurrentTutorial.ForceStopTutorial ();
+			isActive = false;
+		}
+
 	}
 
 	public void StopTutorial ()
@@ -99,6 +160,7 @@ public class TutorialManager : Singleton<TutorialManager>
 			NextTutorial (true);
 		});
 	}
+
 		
 }
 

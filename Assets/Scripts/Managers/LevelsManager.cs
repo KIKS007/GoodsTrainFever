@@ -147,7 +147,32 @@ public class LevelsManager : Singleton<LevelsManager>
 		case 0:
 			Tutorials [0].Invoke ();
 			break;
+		case 1:
+			Tutorials [1].Invoke ();
+			break;
+		case 2:
+			Tutorials [2].Invoke ();
+			break;
+		case 3:
+			Tutorials [3].Invoke ();
+			break;
+		case 4:
+			Tutorials [4].Invoke ();
+			break;
+		case 5:
+			Tutorials [5].Invoke ();
+			break;
+		case 7:
+			Tutorials [6].Invoke ();
+			break;
+		case 12:
+			Tutorials [7].Invoke ();
+			break;
+		case 25:
+			Tutorials [8].Invoke ();
+			break;
 		default:
+			Debug.Log ("No Tutorial for this Level");
 			break;
 		}
 		ClearLevel ();
@@ -501,7 +526,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 	
 		foreach (var b in boats) {
-			Debug.Log (_boat.transform.position.y);
+			//Debug.Log (_boat.transform.position.y);
 			StartCoroutine (FillContainerZone (b.boatContainers, _boat.transform, _boat.containersParent));
 
 			if (b.delay > 0)
