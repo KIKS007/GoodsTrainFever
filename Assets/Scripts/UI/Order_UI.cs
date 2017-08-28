@@ -43,13 +43,12 @@ public class Order_UI : MonoBehaviour
 		}
 	}
 
-	void CheckContainers ()
+	public void CheckContainers ()
 	{
 		bool hasCheck = true;
 
 		do {
 			hasCheck = true;
-
 			foreach (var c in OrdersManager.Instance.containersFromNoOrder) {
 				//Debug.Log ("ContainerFromNoOrder: " + c.containerType + " | " + c.containerColor);
 				if (ContainerAdded (c)) {
@@ -85,6 +84,7 @@ public class Order_UI : MonoBehaviour
 	public bool ContainerAdded (Container container)
 	{
 		foreach (var c in containers) {
+			//Debug.Log ("ReplacING start with: " + container.containerColor + "|" + container.containerType);
 			if (c.isSent)
 				continue;
 
@@ -99,7 +99,6 @@ public class Order_UI : MonoBehaviour
 
 			if (c.containerLevel.isDoubleSize != container.isDoubleSize)
 				continue;
-
 			c.ContainerAdded (container);
 
 			UpdateStates ();
@@ -164,7 +163,6 @@ public class Order_UI : MonoBehaviour
 	{
 		List<Container_UI> containersTemp = new List<Container_UI> (containers);
 		containersTemp.Reverse ();
-
 		foreach (var c in containersTemp) {
 			if (c.isSent)
 				continue;
@@ -173,7 +171,12 @@ public class Order_UI : MonoBehaviour
 				continue;
 			
 			c.ContainerRemoved ();
-			
+			foreach (var t in OrdersManager.Instance.containersFromNoOrder) {
+				if (ContainerAdded (t)) {
+					OrdersManager.Instance.containersFromNoOrder.Remove (t);
+					break;
+				}
+			}
 			UpdateStates ();
 			
 			return true;

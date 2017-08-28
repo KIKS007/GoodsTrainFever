@@ -34,20 +34,22 @@ public class TutorialManager : Singleton<TutorialManager>
 	public Canvas MainTutorialCanvas;
 	public bool isActive;
 	public float TextSpeed;
+	public bool BlockAllTutorial;
 
 	public void LaunchTutorial (int id)
 	{
-		if (isActive) {
-			ForceStop ();
-		} 
-		isActive = true;
-		if (id < CurrentList.Length) {
-			CurrentTutorial = CurrentList [id];
-			CurrentTutorial.StartTutorial (id);
-		} else {
-			Debug.LogError ("The current tutorial list does not contain tutorial id: " + id);
+		if (!BlockAllTutorial) {
+			if (isActive) {
+				ForceStop ();
+			} 
+			isActive = true;
+			if (id < CurrentList.Length) {
+				CurrentTutorial = CurrentList [id];
+				CurrentTutorial.StartTutorial (id);
+			} else {
+				Debug.LogError ("The current tutorial list does not contain tutorial id: " + id);
+			}
 		}
-
 	}
 
 	public void SwitchTutorialList (int id)

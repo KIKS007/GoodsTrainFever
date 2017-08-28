@@ -156,7 +156,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		if (containersFromNoOrder.Contains (container))
 			containersFromNoOrder.Remove (container);
-		
+
 		foreach (var o in newOrderUI.OrderThing) {
 			if (o.ContainerRemoved (container)) {
 				//Debug.Log ("Container Valid");
