@@ -165,6 +165,9 @@ public class LevelsManager : Singleton<LevelsManager>
 		case 7:
 			Tutorials [6].Invoke ();
 			break;
+		case 8:
+			Tutorials [9].Invoke ();
+			break;
 		case 12:
 			Tutorials [7].Invoke ();
 			break;
@@ -172,7 +175,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			Tutorials [8].Invoke ();
 			break;
 		default:
-			Debug.Log ("No Tutorial for this Level");
+			//Debug.Log ("No Tutorial for this Level");
 			break;
 		}
 		ClearLevel ();
