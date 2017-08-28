@@ -213,7 +213,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1693686800772070}
   m_LocalRotation: {x: 0.000000021855726, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.2559767, y: 0.49999997, z: 23.35741}
+  m_LocalPosition: {x: -36.96767, y: 0.49999997, z: 4.293598}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4864655894576032}
@@ -326,7 +326,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4768aba6738f95f49a14015798c136d6, type: 2}
+  - {fileID: 2100000, guid: 44b8731d7e427dc4c8e2c14545727b95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -358,7 +358,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4768aba6738f95f49a14015798c136d6, type: 2}
+  - {fileID: 2100000, guid: 44b8731d7e427dc4c8e2c14545727b95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -472,12 +472,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114424759376118546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -549,12 +551,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114622953161571448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -671,12 +675,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114918756214309618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -897,7 +903,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 22.94, y: 20.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224658753841209448

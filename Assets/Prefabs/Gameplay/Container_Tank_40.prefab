@@ -242,7 +242,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1841959657375952}
   m_LocalRotation: {x: 0.000000021855726, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 44.80723, y: 0.49999997, z: 7.5452776}
+  m_LocalPosition: {x: -39.176056, y: 0.49999997, z: 4.0042953}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4679581242061632}
@@ -295,7 +295,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4768aba6738f95f49a14015798c136d6, type: 2}
+  - {fileID: 2100000, guid: 44b8731d7e427dc4c8e2c14545727b95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -359,7 +359,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4768aba6738f95f49a14015798c136d6, type: 2}
+  - {fileID: 2100000, guid: 44b8731d7e427dc4c8e2c14545727b95, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -543,12 +543,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114439157682357058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -589,12 +591,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114531623057334790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -641,12 +645,14 @@ MonoBehaviour:
   container: {fileID: 0}
   overlappingSpots: []
   isSubordinate: 0
-  chiefSpot: {fileID: 0}
+  chiefSpots: []
+  subordinatesSpots: []
   _wagon: {fileID: 0}
   _containersParent: {fileID: 0}
   _parentContainer: {fileID: 0}
   _isSpawned: 0
   _spotTrainIndex: 0
+  _spotWagonIndex: 0
 --- !u!114 &114858495759130808
 MonoBehaviour:
   m_ObjectHideFlags: 1
