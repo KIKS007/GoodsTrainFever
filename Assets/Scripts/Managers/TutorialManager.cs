@@ -37,10 +37,11 @@ public class TutorialManager : Singleton<TutorialManager>
 	public bool isActive;
 	public float TextSpeed;
 	public bool BlockAllTutorial;
+	private int CurrentTutorialListID;
 
 	public void LaunchTutorial (int id)
 	{
-		if (!BlockAllTutorial) {
+		if (!BlockAllTutorial && !CheckTutorialDone (CurrentTutorialListID)) {
 			if (isActive) {
 				ForceStop ();
 			} 
@@ -52,10 +53,12 @@ public class TutorialManager : Singleton<TutorialManager>
 				Debug.LogError ("The current tutorial list does not contain tutorial id: " + id);
 			}
 		}
+
 	}
 
 	public void SwitchTutorialList (int id)
 	{
+		CurrentTutorialListID = id;
 		switch (id) {
 		case 1:
 			CurrentList = TutorialList;
@@ -101,7 +104,9 @@ public class TutorialManager : Singleton<TutorialManager>
 			if (force) {
 				CurrentTutorial.ForceStopTutorial ();
 			}
-			LaunchTutorial (CurrentTutorial.TutorialID + 1);
+			if (!CheckTutorialDone (CurrentTutorialListID)) {
+				LaunchTutorial (CurrentTutorial.TutorialID + 1);
+			}
 		} 
 
 
@@ -117,8 +122,20 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	}
 
+	public void ForceStopandSave ()
+	{
+		if (isActive) {
+			SaveTutorialProgression (CurrentTutorialListID);
+			this.transform.DOKill ();
+			CurrentTutorial.ForceStopTutorial ();
+			isActive = false;
+		}
+
+	}
+
 	public void StopTutorial ()
 	{
+		SaveTutorialProgression (CurrentTutorialListID);
 		CurrentTutorial.StopTutorial ();
 		isActive = false;
 	}
@@ -151,6 +168,11 @@ public class TutorialManager : Singleton<TutorialManager>
 		CurrentTutorial.OnTrain.Invoke ();
 	}
 
+	public void ToggleBlockAllTutorial (bool value)
+	{
+		BlockAllTutorial = !value;
+	}
+
 	public void OrderCompleted ()
 	{
 		CurrentTutorial.OrderCompleted.Invoke ();
@@ -168,7 +190,36 @@ public class TutorialManager : Singleton<TutorialManager>
 		});
 	}
 
-		
+	public void SaveTutorialProgression (int id)
+	{
+		PlayerPrefs.SetInt ("Tutorial-" + id, 1);
+		PlayerPrefs.Save ();
+		//Debug.Log ("Tutorial-" + id + " saved completed");
+	}
+
+	private bool CheckTutorialDone (int id)
+	{
+		if (PlayerPrefs.GetInt ("Tutorial-" + id, 0) == 1) {
+			//Debug.Log ("Tutorial-" + id + " already completed");
+			return true;
+		} else {
+			//Debug.Log ("Tutorial-" + id + " not completed");
+			return false;
+		}
+	}
+
+	public void ResetTutorial (int id)
+	{
+		PlayerPrefs.DeleteKey ("Tutorial-" + id);
+	}
+
+	[Button]
+	public void ResetAllTutorials ()
+	{
+		for (int i = 0; i < 100; i++) {
+			PlayerPrefs.DeleteKey ("Tutorial-" + i);
+		}
+	}
 }
 
 [System.Serializable]
