@@ -28,6 +28,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 
 	[Header ("NEW UI")]
+	public Touchable_UI newOrdersTouchable;
 	public OrderUI newOrderUI;
 	public Image[] containerType = new Image[4];
 	public float containerTypeFadeOut = 0.3f;
@@ -90,9 +91,9 @@ public class OrdersManager : Singleton<OrdersManager>
 		GameManager.Instance.OnMenu += Disappear;
 
 		Container.OnContainerSelected += ContainerSelected;
-		Container.OnContainerSelected += FadeContainersType;
+		Container.OnContainerSelected += NewUIContainerSelected;
 
-		Container.OnContainerDeselected += (c) => FadeStopContainersType ();
+		Container.OnContainerDeselected += (c) => NewUIContainerDeselected ();
 
 		Train.OnContainerAdded += ContainerAdded;
 		Train.OnContainerRemoved += ContainerRemoved;
@@ -185,19 +186,23 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 	}
 
-	void FadeContainersType (Container container)
+	void NewUIContainerSelected (Container container)
 	{
 		int notFadeIndex = (int)container.containerType;
 
 		for(int i = 0; i < containerType.Length; i++)
 			if(i != notFadeIndex)
 				containerType [i].DOFade (containerTypeFadeOut, MenuManager.Instance.menuAnimationDuration);
+
+		newOrdersTouchable.enabled = false;
 	}
 
-	void FadeStopContainersType ()
+	void NewUIContainerDeselected ()
 	{
 		for(int i = 0; i < containerType.Length; i++)
 			containerType [i].DOFade (1, MenuManager.Instance.menuAnimationDuration);
+
+		newOrdersTouchable.enabled = true;
 	}
 
 

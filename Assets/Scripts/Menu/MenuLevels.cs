@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
 
 public class MenuLevels : MenuComponent 
 {
@@ -22,10 +23,14 @@ public class MenuLevels : MenuComponent
 	[HideInInspector]
 	public List<Level_Menu> _levelsMenu = new List<Level_Menu> ();
 
+	private ScrollRect _scrollRect;
+
 	// Use this for initialization
 	void Start () 
 	{
 		//SetupLevels ();
+
+		_scrollRect = GetComponent<ScrollRect> ();
 	}
 
 	void OnEnable ()
@@ -52,6 +57,8 @@ public class MenuLevels : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
+		_scrollRect = GetComponent<ScrollRect> ();
+
 		_levelsPanelWidth = levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x;
 
 		foreach (Transform t in levelsScrollView.transform)
@@ -93,6 +100,15 @@ public class MenuLevels : MenuComponent
 
 		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (panelsCount) + levelPosition.x - levelsSpacing;
 		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
+
+		if(PlayerPrefs.HasKey ("LevelsScrollRect"))
+		{
+			Debug.Log ("Bite");
+
+			float x = PlayerPrefs.GetFloat ("LevelsScrollRect");
+			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
+			//_scrollRect.horizontalNormalizedPosition = x;
+		}
 
 		UpdateLevelStages ();
 	}
@@ -140,5 +156,10 @@ public class MenuLevels : MenuComponent
 
 			starsRequired += s.starsRequired;
 		}
+	}
+
+	void OnDestroy ()
+	{
+		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 }
