@@ -34,12 +34,14 @@ public class Container_UI : MonoBehaviour
 		/*_rectTransform = GetComponent<RectTransform> ();
 		 */
 		_canvasGroup = GetComponent<CanvasGroup> ();
-		containerImage = GetComponentInChildren<Image> ();
+		containerImage = GetComponent<Image> ();
 		/*
 		preparedCount = 0;
 		preparedCountText.enabled = false;*/
 
 		Container.OnContainerDeselected += ContainerDeselected;
+
+		transform.GetChild (0).gameObject.SetActive (false);
 	}
 
 	public void Setup (Container_Level c)
@@ -110,8 +112,14 @@ public class Container_UI : MonoBehaviour
 		preparedCount++;
 
 		UpdateTexts ();
-		containerImage.color = Color.green;
-		if (TutorialManager.Instance.isActive) {
+
+		//containerImage.color = Color.green;
+
+		transform.GetChild (0).gameObject.SetActive (true);
+		_canvasGroup.DOFade (0.5f, MenuManager.Instance.menuAnimationDuration);
+
+		if (TutorialManager.Instance.isActive)
+		{
 
 			TutorialManager.Instance.OnTrain ();
 		}
@@ -166,7 +174,12 @@ public class Container_UI : MonoBehaviour
 		preparedCount--;
 
 		UpdateTexts ();
-		containerImage.color = concolor;
+
+		//containerImage.color = concolor;
+
+		transform.GetChild (0).gameObject.SetActive (false);
+		_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+
 		if (this.gameObject.activeInHierarchy)
 			StartCoroutine (ContainerRemovedFeedback ());
 	}
