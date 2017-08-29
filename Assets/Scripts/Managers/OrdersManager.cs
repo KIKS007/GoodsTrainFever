@@ -29,7 +29,8 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	[Header ("NEW UI")]
 	public OrderUI newOrderUI;
-
+	public Image[] containerType = new Image[4];
+	public float containerTypeFadeOut = 0.3f;
 
 	[Header ("Orders Feedback")]
 	public float containerFeedbackPunchScale = 0.3f;
@@ -87,7 +88,11 @@ public class OrdersManager : Singleton<OrdersManager>
 		Container.OnContainerDeselected += (c) => FadeInGroup ();
 		GameManager.Instance.OnPlaying += Appear;
 		GameManager.Instance.OnMenu += Disappear;
+
 		Container.OnContainerSelected += ContainerSelected;
+		Container.OnContainerSelected += FadeContainersType;
+
+		Container.OnContainerDeselected += (c) => FadeStopContainersType ();
 
 		Train.OnContainerAdded += ContainerAdded;
 		Train.OnContainerRemoved += ContainerRemoved;
@@ -180,7 +185,20 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 	}
 
+	void FadeContainersType (Container container)
+	{
+		int notFadeIndex = (int)container.containerType;
 
+		for(int i = 0; i < containerType.Length; i++)
+			if(i != notFadeIndex)
+				containerType [i].DOFade (containerTypeFadeOut, MenuManager.Instance.menuAnimationDuration);
+	}
+
+	void FadeStopContainersType ()
+	{
+		for(int i = 0; i < containerType.Length; i++)
+			containerType [i].DOFade (1, MenuManager.Instance.menuAnimationDuration);
+	}
 
 
 	[PropertyOrder (-1)]
