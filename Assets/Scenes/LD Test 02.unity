@@ -29477,7 +29477,7 @@ Prefab:
     - target: {fileID: 224399858623141616, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224985516538506800, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29497,7 +29497,7 @@ Prefab:
     - target: {fileID: 224985516538506800, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224413693897860364, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29517,7 +29517,7 @@ Prefab:
     - target: {fileID: 224413693897860364, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224348852075308892, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29537,7 +29537,7 @@ Prefab:
     - target: {fileID: 224348852075308892, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224386429588956072, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29597,7 +29597,7 @@ Prefab:
     - target: {fileID: 224838037310983492, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224517365185370972, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29617,7 +29617,7 @@ Prefab:
     - target: {fileID: 224517365185370972, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224386429588956072, guid: 73c86cc2c982cbb41bbd4ef75ca517d9,
         type: 2}
@@ -29731,6 +29731,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 949}
     m_Modifications:
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4159486217262712, guid: 0ade4f8628b2f45499d28608e0d9873a, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -29803,6 +29813,41 @@ Prefab:
       propertyPath: containerType.Array.data[3]
       value: 
       objectReference: {fileID: 2086}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerColor
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[1].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[2].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: orders.Array.data[0].levelContainers.Array.data[3].containerColor
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
+        type: 2}
+      propertyPath: ordersHidden
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ade4f8628b2f45499d28608e0d9873a, type: 2}
   m_IsPrefabParent: 0

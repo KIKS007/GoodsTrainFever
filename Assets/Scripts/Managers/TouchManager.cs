@@ -22,6 +22,11 @@ public class TouchManager : Singleton<TouchManager>
 	void Start ()
 	{
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
+
+		MenuManager.Instance.OnLevelStart += () => {
+			isTouchingTouchable = false;
+			isTouchingUI = false;
+		};
 	}
 
 	// Update is called once per frame
@@ -42,60 +47,64 @@ public class TouchManager : Singleton<TouchManager>
 
 	void TouchHold ()
 	{
-		if (Input.touchCount > 0) {
-			Touch touch = Input.GetTouch (0);
-
-			Touchable touchable = null;
-
-			_deltaPosition = touch.deltaPosition;
-
-			switch (touch.phase) {
-			case TouchPhase.Began:
+		if (Input.touchCount > 0) 
+		{
+			for(int i = 0; i < Input.touchCount; i++)
+			{
+				Touch touch = Input.GetTouch (i);
 				
-				_touchDown = true;
+				Touchable touchable = null;
 				
-				touchable = RaycastTouchable (touch.position);
-				if (touchable != null)
-					touchable.OnTouchDown ();
+				_deltaPosition = touch.deltaPosition;
 				
-				
-				if (OnTouchDown != null)
-					OnTouchDown ();
-				
-				StartCoroutine (TouchHoldCoroutine ());
-				
-				break;
-				
-			case TouchPhase.Moved:
-				
-				if (OnTouchMoved != null)
-					OnTouchMoved (_deltaPosition);
-				
-				break;
-				
-			case TouchPhase.Ended:
-				
-				_touchDown = false;
-
-				_deltaPosition = new Vector3 ();
-
-				if (!isTouchingUI) {
+				switch (touch.phase) {
+				case TouchPhase.Began:
+					
+					_touchDown = true;
+					
 					touchable = RaycastTouchable (touch.position);
 					if (touchable != null)
-						touchable.OnTouchUpAsButton ();
+						touchable.OnTouchDown ();
+					
+					
+					if (OnTouchDown != null)
+						OnTouchDown ();
+					
+					StartCoroutine (TouchHoldCoroutine ());
+					
+					break;
+					
+				case TouchPhase.Moved:
+					
+					if (OnTouchMoved != null)
+						OnTouchMoved (_deltaPosition);
+					
+					break;
+					
+				case TouchPhase.Ended:
+					
+					_touchDown = false;
+					
+					_deltaPosition = new Vector3 ();
+					
+					if (!isTouchingUI) {
+						touchable = RaycastTouchable (touch.position);
+						if (touchable != null)
+							touchable.OnTouchUpAsButton ();
+					}
+					
+					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
+						OnTouchUpNoTarget ();
+					}
+					
+					if (OnTouchUp != null)
+						OnTouchUp ();
+					
+					isTouchingTouchable = false;
+					isTouchingUI = false;
+					
+					break;
 				}
-				
-				if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
-					OnTouchUpNoTarget ();
-				}
-				
-				if (OnTouchUp != null)
-					OnTouchUp ();
-				
-				isTouchingTouchable = false;
-				isTouchingUI = false;
-
-				break;
 			}
 		}
 	}
