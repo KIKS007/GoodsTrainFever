@@ -19,6 +19,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	[Header ("Level Analytic Systems")]
 	public bool UseUnityAnalytics;
+	public bool UseFenalytics;
 	public bool UseGameAnalytics;
 	public bool DebugLogDataSended;
 
@@ -33,6 +34,7 @@ public class StatsManager : Singleton<StatsManager>
 	void Start ()
 	{
 		StartTrackingData ();
+		OnMainMenu ();
 	}
 
 	public void StartTrackingData ()
@@ -45,14 +47,26 @@ public class StatsManager : Singleton<StatsManager>
 			isTimerStopped = true;
 		};	
 
+		MenuManager.Instance.OnMainMenu += () => {
+			Fenalytics.To ("menu.main");
+		};
+		//This show up on level end screen
+		/*GameManager.Instance.OnMenu += () => {
+			Fenalytics.To ("menu.main");
+		};*/
+
 	}
 
+	public void OnMainMenu ()
+	{
+		Fenalytics.To ("menu.main");
+	}
 
 	private void SendUnfinishedLevelData ()
 	{
 		int id;
 		if (LevelsManager.Instance != null) {
-			id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+			id = GetStringLevelID ();
 		} else {
 			id = -1;
 		}
@@ -70,6 +84,9 @@ public class StatsManager : Singleton<StatsManager>
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("UnfinishedLevelData-" + (id + 1), UnfinishedLevelDataDictionnary);	
 		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", UnfinishedLevelDataDictionnary);
+		}
 		if (UseGameAnalytics) {
 			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", ScoreManager.Instance.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, false);
 		}
@@ -81,7 +98,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	private void SendLevelData ()
 	{
-		int id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+		int id = GetStringLevelID ();
 
 		Dictionary<string, object> LevelDataDictionnary = new Dictionary<string, object> {
 			{ "ID",  id },
@@ -96,6 +113,9 @@ public class StatsManager : Singleton<StatsManager>
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("LevelData-" + (id + 1), LevelDataDictionnary);	
 		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", LevelDataDictionnary);
+		}
 		if (UseGameAnalytics) {
 			SendDataToGameAnalytic (id.ToString (), LevelsManager.Instance.currentLevel.name, "ERROR", "ERROR", LevelsManager.Instance.currentLevel.starsEarned.ToString (), LevelsManager.Instance.errorsLocked.ToString (), Trials.ToString (), TimerValue.ToString (), false, true);
 		}
@@ -108,7 +128,7 @@ public class StatsManager : Singleton<StatsManager>
 	public void SendRatedLevelData (int rate, int diffRate)
 	{
 		//Debug.Log ("RATING SENDED" + rate + " " + diffRate);
-		int id = LevelsManager.Instance.currentLevel.transform.GetSiblingIndex ();
+		int id = GetStringLevelID ();
 
 		Dictionary<string, object> RatedLevelDataDictionnary = new Dictionary<string, object> {
 			{ "ID",  id },
@@ -124,6 +144,9 @@ public class StatsManager : Singleton<StatsManager>
 
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("Rated-LevelData-" + (id + 1), RatedLevelDataDictionnary);
+		}
+		if (UseFenalytics) {
+			Fenalytics.Ev ("LevelEnd", RatedLevelDataDictionnary);
 		}
 
 		if (UseGameAnalytics) {
@@ -184,6 +207,10 @@ public class StatsManager : Singleton<StatsManager>
 	public void StartLevelTrack ()
 	{
 		if (Trials == 0) {
+			IncTrials ();
+			if (UseFenalytics) {
+				Fenalytics.To ("level." + GetStringLevelID ().ToString ());
+			}
 			TimerValue = 0;
 			isTimerStopped = false;
 			StartCoroutine ("Timer");
@@ -195,6 +222,12 @@ public class StatsManager : Singleton<StatsManager>
 		}
 	}
 
+	public int GetStringLevelID ()
+	{
+
+		return int.Parse (LevelsManager.Instance.currentLevel.name.Split ('#') [LevelsManager.Instance.currentLevel.name.Split ('#').Length - 1]);
+
+	}
 
 	public void StopLevelTrack (bool Completed)
 	{
@@ -244,12 +277,47 @@ public class StatsManager : Singleton<StatsManager>
 	public void SetRatingStatus (bool status)
 	{
 		RateLevels = status;
+		if (UseFenalytics) {
+			Fenalytics.Ev ("RatingLevelStatus", status);
+		}
+	}
+
+	public void ResetAll ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetPlayerPrefs", true);
+		}
+	}
+
+	public void UnlockLevels ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("UnlockAllLevels", true);
+		}
+	}
+
+	public void ResetStars ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetStars", true);
+		}
+	}
+
+	public void ResetAutoScaling ()
+	{
+		if (UseFenalytics) {
+			Fenalytics.Ev ("ResetAutoScaling", true);
+		}
 	}
 
 	public void SendOptiAnalytics (int DefaultDeviceHeight, int FramerateDeviceHeight, float RatioDeviceHeight)
 	{
 		if (UseUnityAnalytics) {
 			Analytics.CustomEvent ("OptiSettings", new Vector3 (DefaultDeviceHeight, FramerateDeviceHeight, RatioDeviceHeight));
+		}
+
+		if (UseFenalytics) {
+			Fenalytics.Ev ("OptiRatio", RatioDeviceHeight);
 		}
 
 		if (UseGameAnalytics) {
@@ -267,7 +335,7 @@ public class StatsManager : Singleton<StatsManager>
 
 	IEnumerator Timer ()
 	{
-		yield return StartCoroutine (CoroutineUtil.WaitForRealSeconds (1));
+		yield return new WaitForSecondsRealtime (1);
 		TimerValue++;
 		if (!isTimerStopped)
 			StartCoroutine ("Timer");
@@ -275,14 +343,4 @@ public class StatsManager : Singleton<StatsManager>
 		
 		
 }
-
-public static class CoroutineUtil
-{
-	public static IEnumerator WaitForRealSeconds (float time)
-	{
-		float start = Time.realtimeSinceStartup;
-		while (Time.realtimeSinceStartup < start + time) {
-			yield return null;
-		}
-	}
-}
+	

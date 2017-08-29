@@ -156,7 +156,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 		if (containersFromNoOrder.Contains (container))
 			containersFromNoOrder.Remove (container);
-		
+
 		foreach (var o in newOrderUI.OrderThing) {
 			if (o.ContainerRemoved (container)) {
 				//Debug.Log ("Container Valid");
@@ -408,8 +408,13 @@ public class OrdersManager : Singleton<OrdersManager>
 
 	public void ClearOrders (bool animated)
 	{
-
+		//Use this to have a derparture animation when clearing all orders
+		/*foreach (var o in orders)
+			RemoveOrder (o);*/
 		newOrderUI.ClearAllOrder ();
+		orders.Clear ();
+		containersFromNoOrder.Clear ();
+
 		ordersSentCount = 0;
 		ordersCount = 0;
 		/*

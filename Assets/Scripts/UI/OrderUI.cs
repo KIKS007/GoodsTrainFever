@@ -189,10 +189,13 @@ public class OrderUI : MonoBehaviour
 
 	public void SetOrderAtPosition (RectTransform order, int pos)
 	{
-		Order_Level tempOL = _orderList [GetChildPosition (order)];
-		_orderList.Remove (_orderList [GetChildPosition (order)]);
-		_orderList.Insert (pos, tempOL);
-		order.transform.SetSiblingIndex (pos);
+		if (_orderList [GetChildPosition (order)] != null) {
+			Order_Level tempOL = _orderList [GetChildPosition (order)];
+			_orderList.Remove (_orderList [GetChildPosition (order)]);
+			_orderList.Insert (pos, tempOL);
+			order.transform.SetSiblingIndex (pos);
+		}
+
 
 	}
 
@@ -236,6 +239,9 @@ public class OrderUI : MonoBehaviour
 		_orderList.Clear ();
 		OrderThing.Clear ();
 		_notificationPos = 0;
+		if (_notification == null) {
+			_notification = transform.GetChild (0);
+		}
 		(_notification.GetChild (0) as RectTransform).DOAnchorPosX (_notificationPos, 0.5f).OnComplete (() => _notification.gameObject.SetActive (false));
 	}
 
@@ -280,6 +286,27 @@ public class OrderUI : MonoBehaviour
 				go.SetActive (true);
 			i++;
 		}
+			
+	}
+
+	public void TutoHideOrders ()
+	{
+		_showOrders = false;
+		int i = 0;
+		_notificationImg.DOKill ();
+		_notificationImg.DOFade (1, 0f).SetDelay (0.4f);
+		foreach (var order in _orderList) {
+			var go = _orders [order];
+			var canvasGrp = go.GetComponent<CanvasGroup> ();
+			float alphaTarget = 0;
+			canvasGrp.DOKill ();
+			canvasGrp.DOFade (alphaTarget, 0.2f);
+			if (alphaTarget <= 0)
+				DOVirtual.DelayedCall (0.2f, () => go.SetActive (false));
+			if (alphaTarget > 0 && !go.activeSelf)
+				go.SetActive (true);
+			i++;
+		}
 	}
 
 	public void Selected ()
@@ -308,6 +335,17 @@ public class OrderUI : MonoBehaviour
 			}
 			i++;
 		}
+	}
+
+	public bool CheckAllOrdersPrepared ()
+	{
+		bool tmpCompleted = true;
+		foreach (Order_UI odui in OrderThing) {
+			if (!odui.isPrepared) {
+				tmpCompleted = false;
+			}
+		}
+		return tmpCompleted;
 	}
 
 }

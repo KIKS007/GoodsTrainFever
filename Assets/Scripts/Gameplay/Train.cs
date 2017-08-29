@@ -42,27 +42,40 @@ public class Train : Touchable
 		wagons.AddRange (transform.GetComponentsInChildren<Wagon> ());
 		
 		SetupContainersList ();
-		
+
 		foreach (var w in wagons)
 			maxWeight += w.maxWeight;
 	}
 
 	void SetupContainersList ()
 	{
-		containers.Clear ();
+		/*containers.Clear ();
+		foreach (var w in wagons)
+			w.containers.Clear ();*/
+
+		List<Spot> subordinateSpots = new List<Spot> ();
+
 		_allSpots.Clear ();
-
-
 		_allSpots = transform.GetComponentsInChildren<Spot> ().ToList ();
 		_allSpots = _allSpots.OrderBy (x => Vector3.Distance (transform.position, x.transform.position)).ToList ();
 
 		List<Spot> spots = new List<Spot> ();
 		spots.AddRange (_allSpots);
 
+		foreach (var s in spots)
+			if (s.isSubordinate)
+			{
+				subordinateSpots.Add (s);
+				_allSpots.Remove (s);
+			}
+
+		spots.Clear ();
+		spots.AddRange (_allSpots);
+
 		//Sort Spots
 		foreach(var s in _allSpots)
 		{
-			if(s.isDoubleSize && !s.isSubordinate)
+			if(s.isDoubleSize)
 			{
 				foreach (var o in s.overlappingSpots)
 					spots.Remove (o);
@@ -77,19 +90,15 @@ public class Train : Touchable
 		//Setup Spots Events
 		for(int i = 0; i < spots.Count; i++)
 		{
-			if(spots [i].isSubordinate)
-				spotIndex--;
-
 			//New Slot
-			if(i == 0 || i > 0 && !spots [i - 1].isSubordinate)
-				AddContainerSlot (spots [i]);
+			AddContainerSlot (spots [i]);
 
 			//First Slot
 			AddSpotEvents (spots [i]);
 
-			spots [i]._spotTrainIndex = spotIndex;
+			//spots [i]._spotTrainIndex = spotIndex;
 
-			if(spots [i].isDoubleSize && !spots [i].isSubordinate)
+			if(spots [i].isDoubleSize)
 			{
 				//First Overlapping 20
 				AddSpotEvents (spots [i].overlappingSpots [0]);
@@ -97,7 +106,7 @@ public class Train : Touchable
 				//New Slot
 				AddContainerSlot (spots [i]);
 
-				spots [i].overlappingSpots [0]._spotTrainIndex = spotIndex;
+				//spots [i].overlappingSpots [0]._spotTrainIndex = spotIndex;
 
 				spotIndex++;
 
@@ -107,23 +116,26 @@ public class Train : Touchable
 				//Second Overlapping 20
 				AddSpotEvents (spots [i].overlappingSpots [1]);
 
-				spots [i].overlappingSpots [1]._spotTrainIndex = spotIndex;
-			}
-
-			if(spots [i].isSubordinate)
-			{
-				//New Slot
-				AddContainerSlot (spots [i], true);
-
-				//Fill The Second 40 Slot
-				AddSpotEvents (spots [i], true);
+				//spots [i].overlappingSpots [1]._spotTrainIndex = spotIndex;
 			}
 
 			spotIndex++;
 		}
 
+		if(subordinateSpots.Count > 0)
+			SetupSubordinatesContainers (subordinateSpots);
+
 		foreach (var w in wagons)
 			w.UpdateWeight ();
+	}
+
+	void SetupSubordinatesContainers (List<Spot> subordinateSpots)
+	{
+		foreach(var s in subordinateSpots)
+		{
+			AddSpotEvents (s, s.overlappingSpots [0]._spotTrainIndex, s.overlappingSpots [0]._spotWagonIndex);
+			AddSpotEvents (s, s.overlappingSpots [1]._spotTrainIndex, s.overlappingSpots [1]._spotWagonIndex, true);
+		}
 	}
 
 	void AddContainerSlot (Spot spot, bool forced = false)
@@ -170,7 +182,44 @@ public class Train : Touchable
 		{	
 			spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
 			spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
+
+			spot._spotTrainIndex = trainContainersIndex;
+			spot._spotWagonIndex = wagonContainersIndex;
 		}
+	}
+
+	void AddSpotEvents (Spot spot, int trainContainersIndex, int wagonContainersIndex, bool secondDoubleSize = false)
+	{
+		//Update Train Containers
+		spot.OnSpotTaken += (arg) => containers [trainContainersIndex] = arg;
+		spot.OnSpotFreed += (arg) => containers [trainContainersIndex] = null;
+
+		//Update Wagon Containers
+		//Update Weight
+		spot.OnSpotTaken += (arg) => 
+		{
+			spot._wagon.containers [wagonContainersIndex] = arg;
+			spot._wagon.UpdateWeight ();
+		};
+
+		spot.OnSpotFreed += (arg) => 
+		{
+			spot._wagon.containers [wagonContainersIndex] = null;
+			spot._wagon.UpdateWeight ();
+		};
+
+		if(spot.container)
+		{
+			containers [trainContainersIndex] = spot.container;
+			spot._wagon.containers [wagonContainersIndex] = spot.container;
+		}
+
+		//Update Train Events
+		spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
+		spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
+		
+		spot._spotTrainIndex = trainContainersIndex;
+		spot._spotWagonIndex = wagonContainersIndex;
 	}
 
 	public void UpdateWeight ()

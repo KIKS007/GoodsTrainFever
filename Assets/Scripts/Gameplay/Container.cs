@@ -79,13 +79,14 @@ public class Container : Touchable
 	private float _weightImageInitialPosition;
 	private float _errorsInitialScale;
 	private bool _errorDisplayed = false;
+	private bool _hasmoved = false;
 
 	void Awake ()
 	{
 		_mesh = GetComponent<MeshFilter> ().mesh;
 		_collider = GetComponent<Collider> ();
 		_pileSpots = transform.GetComponentsInChildren<Spot> ();
-
+		_hasmoved = true;
 		_weightCanvasGroup = weightImage.transform.GetComponent<CanvasGroup> ();
 		_weightImageInitialPosition = weightImage.rectTransform.anchoredPosition.x;
 		_errorsInitialScale = errorsCanvasGroup.transform.localScale.x;
@@ -187,7 +188,7 @@ public class Container : Touchable
 		if (spot.spotType == SpotType.Train) {
 			wagon = spot._wagon;
 			train = wagon.train;
-
+			_errorDisplayed = false;
 			CheckConstraints ();
 		} else {
 			wagon = null;
@@ -258,20 +259,28 @@ public class Container : Touchable
 
 	public void Select ()
 	{
+		_errorDisplayed = false;
 		if (ContainersMovementManager.Instance.selectedContainer != null)
 			ContainersMovementManager.Instance.selectedContainer.Deselect ();
 		
 		ContainersMovementManager.Instance.selectedContainer = this;
 
 		ContainersMovementManager.Instance.StartHover (this);
-
+		_hasmoved = true;
 		selected = true;
-		_errorDisplayed = false;
+		if (TutorialManager.Instance.isActive) {
+			
+			TutorialManager.Instance.Selected ();
+		}
 		errorsCanvasGroup.transform.DOKill (true);
-		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce);
+		errorsCanvasGroup.transform.DOScale (0, 0.4f).SetEase (Ease.InBounce).OnComplete (() => {
+			errorsCanvasGroup.gameObject.SetActive (false);
+		});
 
-		if (_showWeightOnSelection)
+		if (_showWeightOnSelection) {
+			weightImage.gameObject.SetActive (true);
 			_weightCanvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+		}
 
 		if (OnContainerSelected != null)
 			OnContainerSelected (this);
@@ -292,11 +301,21 @@ public class Container : Touchable
 
 		selected = false;
 		CheckConstraints ();
-		if (_showWeightOnSelection)
+		if (_showWeightOnSelection) {
 			_weightCanvasGroup.DOFade (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			weightImage.gameObject.SetActive (false);
+		}
 
 		if (OnContainerDeselected != null)
 			OnContainerDeselected (this);
+	}
+
+	public void UpdateErrorDisplay ()
+	{
+		if (_hasmoved) {
+			_hasmoved = false;
+			_errorDisplayed = false;
+		}
 	}
 
 	public void TakeSpot (Spot spot)
@@ -510,17 +529,21 @@ public class Container : Touchable
 		MenuManager.Instance.PauseAndShowMenu (GlobalVariables.Instance.containerInfos);
 	}
 
-	void ErrorDisplay ()
+	public void ErrorDisplay ()
 	{
 		if (allConstraintsRespected) {
 			errorsCanvasGroup.transform.DOKill (true);
 			weightImage.rectTransform.DOKill (true);
-			errorsCanvasGroup.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
+			errorsCanvasGroup.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase).OnComplete (() => {
+				errorsCanvasGroup.gameObject.SetActive (false);
+			});
 			weightImage.rectTransform.DOAnchorPosX (0, MenuManager.Instance.menuAnimationDuration).SetEase (MenuManager.Instance.menuEase);
 		} else {
 			if (!_errorDisplayed) {
+				errorsCanvasGroup.transform.DOKill ();
+				errorsCanvasGroup.gameObject.SetActive (true);
 				_errorDisplayed = true;
-				errorsCanvasGroup.transform.DOKill (true);
+
 				weightImage.rectTransform.DOKill (true);
 				DOVirtual.DelayedCall (0.3f, () => {
 					errorsCanvasGroup.transform.DOScale (_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase (Ease.Linear).OnComplete (() => {

@@ -54,6 +54,12 @@ public class Container_UI : MonoBehaviour
 		containerTypeText.text = c.containerType.ToString ();*/
 	}
 
+	private void ForceGetmyOrderUI ()
+	{
+		myOrderUI.ContainerDeselected ();
+		myOrderUI = GetComponentInParent<Order_UI> ();
+	}
+
 	void SetColor (Container_Level c)
 	{
 
@@ -78,18 +84,22 @@ public class Container_UI : MonoBehaviour
 	public void ContainerSent ()
 	{
 		isSent = true;
-		if (this.gameObject.activeInHierarchy)
+
+		if (this.gameObject.activeInHierarchy) {
 			StartCoroutine (ContainerSentFeedback ());
+		}
 	}
 
 	IEnumerator ContainerSentFeedback ()
 	{
-		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
+		yield return new WaitForSeconds (0.2f);
 
 		/*preparedCountText.enabled = false;
 		neededCountText.enabled = false;*/
-
+		/*Debug.Log ("WAT");
+		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);*/
 		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
+		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
 	}
 
 	public void ContainerAdded (Container c)
@@ -101,6 +111,11 @@ public class Container_UI : MonoBehaviour
 
 		UpdateTexts ();
 		containerImage.color = Color.green;
+		if (TutorialManager.Instance.isActive) {
+
+			TutorialManager.Instance.OnTrain ();
+		}
+		//Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
 		if (this.gameObject.activeInHierarchy) {
 			StartCoroutine (ContainerAddedFeedback ());	
 		}
@@ -117,8 +132,14 @@ public class Container_UI : MonoBehaviour
 
 	public void ContainerDeselected (Container c)
 	{
-		myOrderUI.ContainerDeselected ();
 		myContainer = null;
+		if (myOrderUI != null) {
+			myOrderUI.ContainerDeselected ();
+		} else {
+			ForceGetmyOrderUI ();
+
+		}
+
 		/*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
 			
 			_canvasGroup.ignoreParentGroups = false;

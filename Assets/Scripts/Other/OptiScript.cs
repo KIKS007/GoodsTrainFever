@@ -63,6 +63,7 @@ public class OptiScript : MonoBehaviour
 		StopCoroutine ("AnalyseFramerate");
 		framerateSamples.Clear ();
 		PlayerPrefs.SetInt ("FramerateDeviceHeight", framerateDeviceHeight);
+		PlayerPrefs.Save ();
 		StatsManager.Instance.SendOptiAnalytics (deviceHeight, framerateDeviceHeight, f);
 	}
 

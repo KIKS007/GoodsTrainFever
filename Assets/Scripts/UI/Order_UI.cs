@@ -43,14 +43,14 @@ public class Order_UI : MonoBehaviour
 		}
 	}
 
-	void CheckContainers ()
+	public void CheckContainers ()
 	{
 		bool hasCheck = true;
 
 		do {
 			hasCheck = true;
-
 			foreach (var c in OrdersManager.Instance.containersFromNoOrder) {
+				//Debug.Log ("ContainerFromNoOrder: " + c.containerType + " | " + c.containerColor);
 				if (ContainerAdded (c)) {
 					OrdersManager.Instance.containersFromNoOrder.Remove (c);
 					hasCheck = false;
@@ -84,6 +84,7 @@ public class Order_UI : MonoBehaviour
 	public bool ContainerAdded (Container container)
 	{
 		foreach (var c in containers) {
+			//Debug.Log ("ReplacING start with: " + container.containerColor + "|" + container.containerType);
 			if (c.isSent)
 				continue;
 
@@ -98,7 +99,6 @@ public class Order_UI : MonoBehaviour
 
 			if (c.containerLevel.isDoubleSize != container.isDoubleSize)
 				continue;
-
 			c.ContainerAdded (container);
 
 			UpdateStates ();
@@ -163,7 +163,6 @@ public class Order_UI : MonoBehaviour
 	{
 		List<Container_UI> containersTemp = new List<Container_UI> (containers);
 		containersTemp.Reverse ();
-
 		foreach (var c in containersTemp) {
 			if (c.isSent)
 				continue;
@@ -172,7 +171,12 @@ public class Order_UI : MonoBehaviour
 				continue;
 			
 			c.ContainerRemoved ();
-			
+			foreach (var t in OrdersManager.Instance.containersFromNoOrder) {
+				if (ContainerAdded (t)) {
+					OrdersManager.Instance.containersFromNoOrder.Remove (t);
+					break;
+				}
+			}
 			UpdateStates ();
 			
 			return true;
@@ -189,11 +193,17 @@ public class Order_UI : MonoBehaviour
 			//May be usefull if we want to put an order back to initial place if it's "unprepared" after being prepared
 			//OrderPos = parentOrderUI.GetChildPosition (this.gameObject);
 			hasBeenPrepared = true;
-			this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-				parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-				parentOrderUI.ShowOrders ();
-				parentOrderUI.HideOrders ();
-			});
+			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
+				DOVirtual.DelayedCall (0.2f, () => {
+					this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+						parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+						parentOrderUI.ShowOrders ();
+						parentOrderUI.HideOrders ();
+					});
+				});
+			}
+
+
 
 		} else {
 			//ORDER NOT PREPARED
@@ -221,6 +231,10 @@ public class Order_UI : MonoBehaviour
 
 		OrderPrepared (isPrepared);
 
+		if (isPrepared && TutorialManager.Instance.isActive) {
+			TutorialManager.Instance.OrderCompleted ();
+		}
+
 		bool sent = true;
 
 		foreach (var c in containers)
@@ -230,5 +244,9 @@ public class Order_UI : MonoBehaviour
 			}
 
 		isSent = sent;
+
+		if (isSent && TutorialManager.Instance.isActive) {
+			TutorialManager.Instance.OrderSent ();
+		}
 	}
 }
