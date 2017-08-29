@@ -39,9 +39,13 @@ public class TutorialManager : Singleton<TutorialManager>
 	public bool BlockAllTutorial;
 	private int CurrentTutorialListID;
 
+	[Header ("Objects to Hide during Tutorials")]
+	public GameObject[] ObjectsToHide;
+
 	public void LaunchTutorial (int id)
 	{
 		if (!BlockAllTutorial && !CheckTutorialDone (CurrentTutorialListID)) {
+			HideObjects (false);
 			if (isActive) {
 				ForceStop ();
 			} 
@@ -54,6 +58,14 @@ public class TutorialManager : Singleton<TutorialManager>
 			}
 		}
 
+	}
+
+	//WIP HERE
+	private void HideObjects (bool type)
+	{
+		foreach (GameObject go in ObjectsToHide) {
+			go.SetActive (type);
+		}
 	}
 
 	public void SwitchTutorialList (int id)
@@ -99,6 +111,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void NextTutorial (bool force)
 	{
+		HideObjects (false);
 		StopTextAnimation ();
 		if (CurrentTutorial.StopTutorial () || force) {
 			if (force) {
@@ -192,6 +205,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void SaveTutorialProgression (int id)
 	{
+		HideObjects (true);
 		PlayerPrefs.SetInt ("Tutorial-" + id, 1);
 		PlayerPrefs.Save ();
 		//Debug.Log ("Tutorial-" + id + " saved completed");

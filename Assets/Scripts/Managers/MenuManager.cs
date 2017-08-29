@@ -94,8 +94,11 @@ public class MenuManager : Singleton<MenuManager>
 		menulevels.SetupLevels ();
 
 		GameManager.Instance.OnPlaying += () => {
-			pauseButton.gameObject.SetActive (true);
-			pauseButton.interactable = true;
+			if (!TutorialManager.Instance.isActive) {
+				pauseButton.gameObject.SetActive (true);
+				pauseButton.interactable = true;
+			}
+
 		};
 
 		GameManager.Instance.OnLevelEnd += () => {
