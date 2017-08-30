@@ -47,18 +47,15 @@ public class TouchManager : Singleton<TouchManager>
 
 	void TouchHold ()
 	{
-		if (Input.touchCount > 0) 
-		{
-			for(int i = 0; i < Input.touchCount; i++)
-			{
+		if (Input.touchCount > 0) {
+			for (int i = 0; i < Input.touchCount; i++) {
 				Touch touch = Input.GetTouch (i);
 				
 				Touchable touchable = null;
 				
 				_deltaPosition = touch.deltaPosition;
 				
-				switch (touch.phase) 
-				{
+				switch (touch.phase) {
 				case TouchPhase.Began:
 					
 					_touchDown = true;
@@ -67,7 +64,7 @@ public class TouchManager : Singleton<TouchManager>
 					if (touchable != null)
 						touchable.OnTouchDown ();
 					
-					
+					//Debug.Log ("Touchable: " + touchable);
 					if (OnTouchDown != null)
 						OnTouchDown ();
 					
@@ -88,18 +85,16 @@ public class TouchManager : Singleton<TouchManager>
 					
 					_deltaPosition = new Vector3 ();
 					
-					if (!isTouchingUI) 
-					{
+					if (!isTouchingUI) {
 						touchable = RaycastTouchable (touch.position);
 
 						if (touchable != null)
 							touchable.OnTouchUpAsButton ();
 					}
 
-					Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
+					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
 
-					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) 
-					{
+					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
 						OnTouchUpNoTarget ();
 					}
 					
