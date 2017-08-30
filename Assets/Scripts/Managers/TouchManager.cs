@@ -19,6 +19,8 @@ public class TouchManager : Singleton<TouchManager>
 	private Vector3 _mousePosition;
 	private Camera _camera;
 
+	private Touchable _currentTouchable = null;
+
 	void Start ()
 	{
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
@@ -57,7 +59,8 @@ public class TouchManager : Singleton<TouchManager>
 				
 				_deltaPosition = touch.deltaPosition;
 				
-				switch (touch.phase) {
+				switch (touch.phase) 
+				{
 				case TouchPhase.Began:
 					
 					_touchDown = true;
@@ -87,13 +90,16 @@ public class TouchManager : Singleton<TouchManager>
 					
 					_deltaPosition = new Vector3 ();
 					
-					if (!isTouchingUI) {
+					if (!isTouchingUI) 
+					{
 						touchable = RaycastTouchable (touch.position);
+
 						if (touchable != null)
 							touchable.OnTouchUpAsButton ();
 					}
 					
-					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
+					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) 
+					{
 						OnTouchUpNoTarget ();
 					}
 					
