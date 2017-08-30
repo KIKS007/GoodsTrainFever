@@ -34,6 +34,7 @@ public class MenuManager : Singleton<MenuManager>
 	[Header ("Pause Menu")]
 	public Button pauseButton;
 	public MenuComponent pauseMenu;
+	public Button fastforwardButton;
 
 	[Header ("Menu Trophies")]
 	public MenuTrophies menuTrophies;
@@ -97,6 +98,7 @@ public class MenuManager : Singleton<MenuManager>
 			if (!TutorialManager.Instance.isActive) {
 				pauseButton.gameObject.SetActive (true);
 				pauseButton.interactable = true;
+				fastforwardButton.gameObject.SetActive (true);
 			}
 
 		};

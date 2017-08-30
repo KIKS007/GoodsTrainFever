@@ -58,8 +58,9 @@ public class Container_UI : MonoBehaviour
 
 	private void ForceGetmyOrderUI ()
 	{
-		myOrderUI.ContainerDeselected ();
+		
 		myOrderUI = GetComponentInParent<Order_UI> ();
+		myOrderUI.ContainerDeselected ();
 	}
 
 	void SetColor (Container_Level c)
@@ -118,8 +119,7 @@ public class Container_UI : MonoBehaviour
 		transform.GetChild (0).gameObject.SetActive (true);
 		_canvasGroup.DOFade (0.5f, MenuManager.Instance.menuAnimationDuration);
 
-		if (TutorialManager.Instance.isActive)
-		{
+		if (TutorialManager.Instance.isActive) {
 
 			TutorialManager.Instance.OnTrain ();
 		}
