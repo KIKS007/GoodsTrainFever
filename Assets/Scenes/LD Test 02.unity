@@ -29271,11 +29271,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1548957214296772, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
     type: 2}
   m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &471371378 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1720027694133282, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 1323976315}
 --- !u!1 &479173488 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1114074158930198, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -29326,11 +29321,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1040645831641640, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
     type: 2}
   m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &961830725 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1239686124756824, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 1323976315}
 --- !u!1001 &964707248
 Prefab:
   m_ObjectHideFlags: 0
@@ -30265,124 +30255,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1349020303 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1245062156449376, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &1427472174 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1188639134795322, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &1429667193 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1308484476968546, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &1504252125 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1952668610741196, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 1323976315}
---- !u!1 &1567793891 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1937537705645628, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1881315880}
---- !u!21 &1575951600
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: M_Container_Basic_40_LP
-  m_Shader: {fileID: 4800000, guid: 075d0107520171c4f8273c7fcad6185b, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 0
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlbedoAO:
-        m_Texture: {fileID: 2800000, guid: 0a783a9a8e2b10342a85dc0f307df30a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: e76950458e884b1459b9a17c2542d21b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _BumpScale: 1
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _UVSec: 0
-    - _ZWrite: 1
-    - __dirty: 0
-    m_Colors:
-    - _Albedo: {r: 0.7176471, g: 0.19607843, b: 0.8, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
---- !u!1 &1577863831 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1690213780020230, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 1881315880}
 --- !u!1 &1670870911 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1280770355977722, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -30871,7 +30743,7 @@ Prefab:
         type: 2}
       propertyPath: TutorialList.Array.data[19].OnStartTutorial.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 961830725}
+      objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: TutorialList.Array.data[19].TutorialUI
@@ -31076,22 +30948,22 @@ Prefab:
         type: 2}
       propertyPath: ObjectsToHide.Array.data[0]
       value: 
-      objectReference: {fileID: 471371378}
+      objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: ObjectsToHide.Array.data[1]
       value: 
-      objectReference: {fileID: 2037297541}
+      objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: ObjectsToHide.Array.data[2]
       value: 
-      objectReference: {fileID: 961830725}
+      objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: ObjectsToHide.Array.data[3]
       value: 
-      objectReference: {fileID: 1504252125}
+      objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: TutorialList.Array.data[0].TextFinished
@@ -31200,11 +31072,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1603040242281844, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
     type: 2}
   m_PrefabInternal: {fileID: 1881315880}
---- !u!1 &2037297541 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1232407184061554, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 1323976315}
 --- !u!1 &2041995348 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1238390135346512, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,

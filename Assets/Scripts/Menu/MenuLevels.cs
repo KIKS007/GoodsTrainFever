@@ -4,7 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
-public class MenuLevels : MenuComponent 
+public class MenuLevels : MenuComponent
 {
 	[Header ("Level Prefab")]
 	public GameObject levelPanelPrefab;
@@ -26,7 +26,7 @@ public class MenuLevels : MenuComponent
 	private ScrollRect _scrollRect;
 
 	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
 		//SetupLevels ();
 
@@ -42,8 +42,7 @@ public class MenuLevels : MenuComponent
 	{
 		UpdateLevelStages ();
 
-		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.levelsCount; i++) {
 			if (i >= levelsScrollView.childCount)
 				break;
 
@@ -69,8 +68,7 @@ public class MenuLevels : MenuComponent
 
 		_levelsMenu.Clear ();
 
-		for(int i = 0; i < LevelsManager.Instance.levelsCount; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.levelsCount; i++) {
 			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
 
 			Vector2 panelPosition = levelPosition;
@@ -91,8 +89,7 @@ public class MenuLevels : MenuComponent
 			panelsCount++;
 
 			Stage_Menu stageTemp = SetupLevelStage (i, panelsCount);
-			if(stageTemp != null)
-			{
+			if (stageTemp != null) {
 				stageMenu = stageTemp;
 				panelsCount++;
 			}
@@ -101,9 +98,8 @@ public class MenuLevels : MenuComponent
 		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (panelsCount) + levelPosition.x - levelsSpacing;
 		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
 
-		if(PlayerPrefs.HasKey ("LevelsScrollRect"))
-		{
-			Debug.Log ("Bite");
+		if (PlayerPrefs.HasKey ("LevelsScrollRect")) {
+			//Debug.Log ("Bite");
 
 			float x = PlayerPrefs.GetFloat ("LevelsScrollRect");
 			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
@@ -115,10 +111,8 @@ public class MenuLevels : MenuComponent
 
 	Stage_Menu SetupLevelStage (int index, int panelsCount)
 	{
-		foreach(var s in ScoreManager.Instance.levelStages)
-		{
-			if(s.index == index + 1)
-			{
+		foreach (var s in ScoreManager.Instance.levelStages) {
+			if (s.index == index + 1) {
 				Vector2 stagePanelPosition = levelPosition;
 				stagePanelPosition.x += (_levelsPanelWidth + levelsSpacing) * panelsCount;
 
@@ -144,14 +138,13 @@ public class MenuLevels : MenuComponent
 	{
 		int starsRequired = 0;
 
-		foreach(var s in ScoreManager.Instance.levelStages)
-		{
+		foreach (var s in ScoreManager.Instance.levelStages) {
 			int stars = s.starsRequired;
 
-			if((ScoreManager.Instance.starsEarned - starsRequired) > 0)
+			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
 				stars = s.starsRequired - (ScoreManager.Instance.starsEarned - starsRequired);
 
-			if(s.stage != null)
+			if (s.stage != null)
 				s.stage.Setup (ScoreManager.Instance.starsEarned >= s.starsRequired + starsRequired, stars);
 
 			starsRequired += s.starsRequired;
