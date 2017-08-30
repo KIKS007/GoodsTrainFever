@@ -215,11 +215,14 @@ public class Train : Touchable
 		}
 
 		//Update Train Events
-		spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
-		spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
-		
-		spot._spotTrainIndex = trainContainersIndex;
-		spot._spotWagonIndex = wagonContainersIndex;
+		if(!secondDoubleSize)
+		{
+			spot.OnSpotTaken += (arg) => OnContainerAdded (arg);
+			spot.OnSpotFreed += (arg) => OnContainerRemoved (arg);
+			
+			spot._spotTrainIndex = trainContainersIndex;
+			spot._spotWagonIndex = wagonContainersIndex;
+		}
 	}
 
 	public void UpdateWeight ()
