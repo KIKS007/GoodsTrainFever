@@ -29713,6 +29713,18 @@ Prefab:
       propertyPath: m_Text
       value: "!Bienvenue dans \nGOODS TRAIN FEVER!"
       objectReference: {fileID: 0}
+    - target: {fileID: 1469760596760670, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1509947292051198, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1886971286867546, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
   m_IsPrefabParent: 0
@@ -34444,7 +34456,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 14.53
+      value: -0.87
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalPosition.y
@@ -34493,6 +34505,22 @@ Prefab:
         type: 2}
       propertyPath: vibrateColor.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 2.0401255e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 4.0720642e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000047375185
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
@@ -34618,7 +34646,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 19.91
+      value: 4.51
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalPosition.y
