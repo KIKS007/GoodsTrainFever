@@ -739,7 +739,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1241645364643762
 GameObject:
   m_ObjectHideFlags: 1
@@ -771,6 +771,9 @@ GameObject:
   - component: {fileID: 114716918610634264}
   - component: {fileID: 225797674774514000}
   - component: {fileID: 114168089444249714}
+  - component: {fileID: 223778926356433970}
+  - component: {fileID: 114088989506338568}
+  - component: {fileID: 114915944301414714}
   m_Layer: 5
   m_Name: LevelsMenu
   m_TagString: Untagged
@@ -2889,7 +2892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1962099888640830
 GameObject:
   m_ObjectHideFlags: 1
@@ -3107,6 +3110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 224834718568301644}
   contents: []
   menuCanvasGroup: {fileID: 0}
@@ -3416,7 +3420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3556,6 +3560,22 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.466}
   m_EffectDistance: {x: 0.5, y: -0.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &114088989506338568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1271821267960002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &114092571973772168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3614,9 +3634,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c256e5334620fd64b8e45c47845b0f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 0}
   contents:
   - content: {fileID: 224824108826870664}
+    disableOnHide: 1
     hidePosition: {x: -800, y: 136}
     showPosition: {x: 0, y: 0}
     delay: 0
@@ -3627,6 +3649,7 @@ MonoBehaviour:
     showOnShow: 1
     hideOnHide: 1
   - content: {fileID: 224389201064713598}
+    disableOnHide: 1
     hidePosition: {x: 900, y: 290}
     showPosition: {x: 0, y: 0}
     delay: 0
@@ -3876,7 +3899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4474,7 +4497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4622,9 +4645,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 0}
   contents:
   - content: {fileID: 224769627945122818}
+    disableOnHide: 1
     hidePosition: {x: -720, y: -50}
     showPosition: {x: 0, y: 0}
     delay: 0
@@ -5950,7 +5975,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6353,7 +6378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6492,7 +6517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6683,7 +6708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7025,7 +7050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7566,6 +7591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 224505066535127902}
   contents: []
   menuCanvasGroup: {fileID: 0}
@@ -8349,7 +8375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8409,7 +8435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8471,7 +8497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8544,7 +8570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8635,6 +8661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7405e4a8f899454da848f3f8eb7582f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 224275540736752744}
   contents: []
   menuCanvasGroup: {fileID: 0}
@@ -8776,6 +8803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 224096711116187802}
   contents: []
   menuCanvasGroup: {fileID: 0}
@@ -8894,18 +8922,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47842bcb35b5514d8496e26a883f3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainContent: {fileID: 0}
-  contents:
-  - content: {fileID: 224204939720508848}
-    hidePosition: {x: 0, y: -1500}
-    showPosition: {x: 0, y: 0}
-    delay: 0
-    overrideDuration: 0
-    duration: 0
-    overrideEase: 0
-    ease: 30
-    showOnShow: 1
-    hideOnHide: 1
+  disableOnHide: 0
+  mainContent: {fileID: 224204939720508848}
+  contents: []
   menuCanvasGroup: {fileID: 0}
   backToMainMenu: 1
   backMenu: {fileID: 0}
@@ -9143,7 +9162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: c6981baf072d5b94bbb173671478c370, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9988,6 +10007,27 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Reset ALL
+--- !u!114 &114915944301414714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1271821267960002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
 --- !u!114 &114923703364860648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10673,6 +10713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a784c717b0abf345a23663d4b2a7e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableOnHide: 1
   mainContent: {fileID: 224168249796657764}
   contents: []
   menuCanvasGroup: {fileID: 0}
@@ -11623,7 +11664,27 @@ Canvas:
   m_GameObject: {fileID: 1434943135556082}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!223 &223778926356433970
+Canvas:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1271821267960002}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

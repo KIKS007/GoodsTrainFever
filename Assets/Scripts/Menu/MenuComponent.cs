@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class MenuComponent : MonoBehaviour 
 {
 	[Header ("MainContent")]
+	public bool disableOnHide = true;
 	public RectTransform mainContent;
 
 	[Header ("Contents")]
@@ -63,6 +64,7 @@ public class MenuComponent : MonoBehaviour
 public class MenuContent
 {
 	public RectTransform content;
+	public bool disableOnHide = true;
 
 	[Header ("Positions")]
 	public Vector2 hidePosition;
