@@ -143,8 +143,12 @@ public class LevelsManager : Singleton<LevelsManager>
 			return;
 		}
 
+		MenuManager.Instance.menulevels.SaveMenuPos ();
+
+		//TUTORIAL LAUNCH
 		if (index < Tutorials.Count ())
 			Tutorials [index].Invoke ();
+		
 		ClearLevel ();
 
 		if (transform.GetChild (index).GetComponent<LevelHandmade> () != null)

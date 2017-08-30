@@ -155,4 +155,9 @@ public class MenuLevels : MenuComponent
 	{
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
 	}
+
+	public void SaveMenuPos ()
+	{
+		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
+	}
 }
