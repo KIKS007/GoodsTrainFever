@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class RateMenu : MonoBehaviour
 {
 	public Color DefaultColor;
-	public Button[] RatingStars = new Button[5];
-	public Button[] DifficultyRatingStars = new Button[5];
+	public Image[] RatingStars = new Image[5];
+	public Image[] DifficultyRatingStars = new Image[5];
 
 	private int rate1 = 0;
 	private int rate2 = 0;
@@ -21,10 +21,10 @@ public class RateMenu : MonoBehaviour
 	public void SetRatingTo (int value)
 	{
 		for (int i = 0; i < value; i++) {
-			RatingStars [i].image.color = Color.white;
+			RatingStars [i].color = Color.white;
 		}
 		for (int i = value; i < 5; i++) {
-			RatingStars [i].image.color = DefaultColor;
+			RatingStars [i].color = DefaultColor;
 		}
 		rate1 = value;
 	}
@@ -32,11 +32,11 @@ public class RateMenu : MonoBehaviour
 	public void SetDifficultyRatingTo (int value)
 	{
 		for (int i = 0; i < value; i++) {
-			DifficultyRatingStars [i].image.color = Color.white;
+			DifficultyRatingStars [i].color = Color.white;
 		}
 
 		for (int i = value; i < 5; i++) {
-			DifficultyRatingStars [i].image.color = DefaultColor;
+			DifficultyRatingStars [i].color = DefaultColor;
 		}
 		rate2 = value;
 	}
