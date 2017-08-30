@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224763509629130782}
   - component: {fileID: 223662668503121180}
+  - component: {fileID: 225902475975238296}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -86,6 +87,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4027333465924642}
+  - component: {fileID: 114688433712339010}
   m_Layer: 0
   m_Name: Sm_Timer
   m_TagString: Untagged
@@ -100,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1978144966990264}
   m_LocalRotation: {x: -0.000000014901161, y: 1, z: -1.7053026e-13, w: 0.0000029504297}
-  m_LocalPosition: {x: 18, y: 0.5, z: -10.41}
+  m_LocalPosition: {x: 19.91, y: 0.5, z: -11.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4684372186024666}
@@ -247,6 +249,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 99
+--- !u!114 &114688433712339010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978144966990264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8fecf601ffbf14aba8e6bb7e9c6a05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222236647243397614
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -310,3 +323,14 @@ RectTransform:
   m_AnchoredPosition: {x: -0.0000038146973, y: 5}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225902475975238296
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1265108877616430}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0

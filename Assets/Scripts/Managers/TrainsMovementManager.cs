@@ -103,10 +103,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void Start ()
 	{
-		Train1Timer.GetComponent<CanvasGroup> ().alpha = 0;
-		Train2Timer.GetComponent<CanvasGroup> ().alpha = 0;
-		Train1Timer.SetActive (false);
-		Train2Timer.SetActive (false);
+		Train1Timer.GetComponentInChildren<CanvasGroup> ().alpha = 0;
+		Train2Timer.GetComponentInChildren<CanvasGroup> ().alpha = 0;
+		Train1Timer.GetComponent<Timer_UI> ().Hide (0);
+		Train2Timer.GetComponent<Timer_UI> ().Hide (0);
 
 		allTrains = FindObjectsOfType<Train> ().ToList ();
 		_trainsVelocity.Clear ();
@@ -582,15 +582,17 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		Text trainText = null;
 
 		if (rail == rail1) {
-			Train1Timer.SetActive (true);
-			Train1Timer.GetComponent<CanvasGroup> ().DOKill ();
-			Train1Timer.GetComponent<CanvasGroup> ().DOFade (1, 0.2f);
+			Train1Timer.GetComponent<Timer_UI> ().Show (0.6f);
+
+			Train1Timer.GetComponentInChildren<CanvasGroup> ().DOKill ();
+			Train1Timer.GetComponentInChildren<CanvasGroup> ().DOFade (1, 0.2f);
 			trainText = rail1Text;
 			
 		} else {
-			Train2Timer.SetActive (true);
-			Train2Timer.GetComponent<CanvasGroup> ().DOKill ();
-			Train2Timer.GetComponent<CanvasGroup> ().DOFade (1, 0.2f);
+			Train2Timer.GetComponent<Timer_UI> ().Show (0.6f);
+
+			Train2Timer.GetComponentInChildren<CanvasGroup> ().DOKill ();
+			Train2Timer.GetComponentInChildren<CanvasGroup> ().DOFade (1, 0.2f);
 			trainText = rail2Text;
 		}
 
@@ -619,19 +621,19 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public void SendTrain (Rail rail)
 	{
 		if (rail == rail1) {
-			Train1Timer.GetComponent<CanvasGroup> ().DOKill ();
+			Train1Timer.GetComponentInChildren<CanvasGroup> ().DOKill ();
 			DOVirtual.DelayedCall (1f, () => {
-				Train1Timer.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
-					Train1Timer.SetActive (false);
+				Train1Timer.GetComponentInChildren<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
+					Train1Timer.GetComponent<Timer_UI> ().Hide (1);
 				});
 			});
 
 
 		} else {
-			Train2Timer.GetComponent<CanvasGroup> ().DOKill ();
+			Train2Timer.GetComponentInChildren<CanvasGroup> ().DOKill ();
 			DOVirtual.DelayedCall (1f, () => {
-				Train2Timer.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
-					Train2Timer.SetActive (false);
+				Train2Timer.GetComponentInChildren<CanvasGroup> ().DOFade (0, 0.6f).SetEase (Ease.Linear).OnComplete (() => {
+					Train2Timer.GetComponent<Timer_UI> ().Hide (1);
 				});
 			});
 
@@ -701,10 +703,10 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 	public void ClearTrains ()
 	{
 		ClearTrainsDuration ();
-		Train1Timer.GetComponent<CanvasGroup> ().alpha = 0;
-		Train2Timer.GetComponent<CanvasGroup> ().alpha = 0;
-		Train1Timer.SetActive (false);
-		Train2Timer.SetActive (false);
+		Train1Timer.GetComponentInChildren<CanvasGroup> ().alpha = 0;
+		Train2Timer.GetComponentInChildren<CanvasGroup> ().alpha = 0;
+		Train2Timer.GetComponent<Timer_UI> ().Hide (0.2f);
+		Train1Timer.GetComponent<Timer_UI> ().Hide (0.2f);
 		if (rail1.train) {
 			GameObject t = rail1.train.gameObject;
 			RemoveTrain (rail1.train);
