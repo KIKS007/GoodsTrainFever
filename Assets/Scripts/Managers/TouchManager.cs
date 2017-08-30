@@ -19,8 +19,6 @@ public class TouchManager : Singleton<TouchManager>
 	private Vector3 _mousePosition;
 	private Camera _camera;
 
-	private Touchable _currentTouchable = null;
-
 	void Start ()
 	{
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ();
@@ -97,7 +95,9 @@ public class TouchManager : Singleton<TouchManager>
 						if (touchable != null)
 							touchable.OnTouchUpAsButton ();
 					}
-					
+
+					Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
+
 					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) 
 					{
 						OnTouchUpNoTarget ();

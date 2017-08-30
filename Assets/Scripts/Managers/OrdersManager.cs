@@ -194,7 +194,7 @@ public class OrdersManager : Singleton<OrdersManager>
 			if(i != notFadeIndex)
 				containerType [i].DOFade (containerTypeFadeOut, MenuManager.Instance.menuAnimationDuration);
 
-		newOrdersTouchable.enabled = false;
+		//newOrdersTouchable.enabled = false;
 	}
 
 	void NewUIContainerDeselected ()
@@ -202,7 +202,7 @@ public class OrdersManager : Singleton<OrdersManager>
 		for(int i = 0; i < containerType.Length; i++)
 			containerType [i].DOFade (1, MenuManager.Instance.menuAnimationDuration);
 
-		newOrdersTouchable.enabled = true;
+		//newOrdersTouchable.enabled = true;
 	}
 
 
