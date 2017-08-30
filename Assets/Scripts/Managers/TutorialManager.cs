@@ -52,7 +52,7 @@ public class TutorialManager : Singleton<TutorialManager>
 			isActive = true;
 			if (id < CurrentList.Length) {
 				CurrentTutorial = CurrentList [id];
-				CurrentTutorial.StartTutorial (id);
+				CurrentTutorial.StartTutorial (id, CurrentTutorialListID);
 			} else {
 				Debug.LogError ("The current tutorial list does not contain tutorial id: " + id);
 			}
@@ -71,6 +71,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void SwitchTutorialList (int id)
 	{
 		CurrentTutorialListID = id;
+
 		switch (id) {
 		case 1:
 			CurrentList = TutorialList;
@@ -248,18 +249,21 @@ public class Tutorial
 	public UnityEvent OrderSent;
 	public GameObject TutorialUI;
 	public int TutorialID;
-
+	public int TutorialListID;
 
 	private string TextOnUI;
 	private Text UIText;
 	public bool TextFinished;
 
-	public void StartTutorial (int id)
+	public void StartTutorial (int id, int listID)
 	{
 		TextFinished = false;
 		TutorialID = id;
+		TutorialListID = listID;
 		UIText = TutorialUI.GetComponentInChildren<Text> ();
-		TextOnUI = UIText.text;
+		//TextOnUI = UIText.text;
+		TextOnUI = LocalizationManager.Singleton.GetText ("TUTO-" + TutorialListID + "-" + TutorialID);
+		//Debug.Log ("TUTO-" + TutorialListID + "-" + TutorialID);
 		UIText.text = "";
 		TutorialManager.Instance.StopTextAnimation ();
 		TutorialManager.Instance.StartCoroutine (TutorialManager.Instance.AnimateText (this, UIText, TextOnUI));

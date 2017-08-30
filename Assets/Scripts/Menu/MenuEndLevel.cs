@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class MenuEndLevel : MenuComponent 
+public class MenuEndLevel : MenuComponent
 {
 	[Header ("Level Infos")]
 	public Text levelTitle;
@@ -34,6 +34,9 @@ public class MenuEndLevel : MenuComponent
 	public override void OnShow ()
 	{
 		base.OnShow ();
+		if (this.gameObject.activeInHierarchy == false) {
+			this.gameObject.SetActive (true);
+		}
 
 		StartCoroutine (LevelInfos ());
 	}
@@ -63,30 +66,27 @@ public class MenuEndLevel : MenuComponent
 		else
 			errorsParent.SetActive (true);*/
 
-		if(ScoreManager.Instance.success)
+		if (ScoreManager.Instance.success)
 			success.gameObject.SetActive (true);
 		else
 			defeat.gameObject.SetActive (true);
 
-		for(int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) {
 			RectTransform starOuter = starsOuter [i];
 			Image starInner = starsInner [i];
 
 			//Reset Color
 			starOuter.GetComponent<Image> ().color = GlobalVariables.Instance.normalStarColor;
 
-			switch (LevelsManager.Instance.currentLevel.starsStates [i])
-			{
+			switch (LevelsManager.Instance.currentLevel.starsStates [i]) {
 			case StarState.Locked:
 				starInner.DOFade (1, 0);
 				break;
 			case StarState.Unlocked:
 				starInner.DOFade (1, 0);
 
-				if(ScoreManager.Instance.success)
-				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
-					{
+				if (ScoreManager.Instance.success)
+					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
 						starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 						starOuter.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});
@@ -97,9 +97,8 @@ public class MenuEndLevel : MenuComponent
 
 				RectTransform star = starsOuter [i];
 
-				if(ScoreManager.Instance.success)
-				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
-					{
+				if (ScoreManager.Instance.success)
+					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
 						star.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});
 
@@ -108,12 +107,11 @@ public class MenuEndLevel : MenuComponent
 			case StarState.ErrorLocked:
 				starInner.DOFade (1, 0);
 
-				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, ()=>
-					{
-						//starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-						starOuter.GetComponent<Image> ().DOColor (GlobalVariables.Instance.errorLockedStarColor, MenuManager.Instance.menuAnimationDuration);
+				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
+					//starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
+					starOuter.GetComponent<Image> ().DOColor (GlobalVariables.Instance.errorLockedStarColor, MenuManager.Instance.menuAnimationDuration);
 
-					});
+				});
 				
 
 				break;

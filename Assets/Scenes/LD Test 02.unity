@@ -11915,6 +11915,7 @@ Transform:
   - {fileID: 774}
   - {fileID: 1889989049}
   - {fileID: 1139261883}
+  - {fileID: 513511112}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29166,6 +29167,53 @@ GameObject:
   m_PrefabParentObject: {fileID: 1114074158930198, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
     type: 2}
   m_PrefabInternal: {fileID: 710207980}
+--- !u!1 &513511111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 513511112}
+  - component: {fileID: 513511113}
+  m_Layer: 0
+  m_Name: LocalizationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &513511112
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 513511111}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 949}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &513511113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 513511111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907310eb19da9c4e8ab279d96f04867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SheetID: 1H0Z-qq098mlHlZ_8X1yzz5Y5RkL53uBtS4lWbmxVpAM
+  sync: 1
+  refresh: 0
+  fetch: 0
+  CurrentLang: French
+  LanguagesName:
+  - French
 --- !u!1 &520143635 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1169561748123332, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -29660,6 +29708,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1139261884}
+    - target: {fileID: 114466047181672062, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
+        type: 2}
+      propertyPath: m_Text
+      value: "!Bienvenue dans \nGOODS TRAIN FEVER!"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
   m_IsPrefabParent: 0
@@ -35634,6 +35687,30 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114623990671810616, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_Text
+      value: "Train \xE0 envoyer"
+      objectReference: {fileID: 0}
+    - target: {fileID: 224977403184940294, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -41.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224977403184940294, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114694328080963306, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: menuCanvasGroup
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825443539305592, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
   m_IsPrefabParent: 0
@@ -35889,6 +35966,16 @@ Prefab:
       propertyPath: backButton
       value: 
       objectReference: {fileID: 1738}
+    - target: {fileID: 114283354071569982, guid: 3d1403a80d22d054ca888deebc22f9e2,
+        type: 2}
+      propertyPath: inTransition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114283354071569982, guid: 3d1403a80d22d054ca888deebc22f9e2,
+        type: 2}
+      propertyPath: currentMenu
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d1403a80d22d054ca888deebc22f9e2, type: 2}
   m_IsPrefabParent: 0
@@ -36729,7 +36816,7 @@ Prefab:
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
       propertyPath: CurrentTutorial.OnStartTutorial.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: UnPause
+      value: Pause
       objectReference: {fileID: 0}
     - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
         type: 2}
@@ -36856,6 +36943,31 @@ Prefab:
       propertyPath: CurrentTutorial.OnStopTutorial.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
+        type: 2}
+      propertyPath: TutorialList2.Array.data[0].TutorialListID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
+        type: 2}
+      propertyPath: TutorialList2.Array.data[0].TextFinished
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
+        type: 2}
+      propertyPath: CurrentTutorial.OnStartTutorial.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
+        type: 2}
+      propertyPath: CurrentTutorial.TutorialListID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114473640721827522, guid: ac1d1868e44f3b247ad026058f773221,
+        type: 2}
+      propertyPath: isActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ac1d1868e44f3b247ad026058f773221, type: 2}
   m_IsPrefabParent: 0
@@ -36914,7 +37026,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: rail2Trains.Array.data[0].wagons.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -36924,7 +37036,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: orders.Array.data[0].levelContainers.Array.size
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37121,7 +37233,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerColor
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37146,7 +37258,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: orders.Array.data[0].levelContainers.Array.data[2].containerColor
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37156,7 +37268,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: orders.Array.data[0].levelContainers.Array.data[3].containerColor
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37331,7 +37443,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: rail2Trains.Array.data[0].trainDuration
-      value: 25
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37341,7 +37453,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: rail2Trains.Array.data[0].wagons.Array.data[0].wagonMaxWeight
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
@@ -37351,7 +37463,7 @@ Prefab:
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
       propertyPath: rail2Trains.Array.data[0].wagons.Array.data[1].wagonMaxWeight
-      value: 9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
