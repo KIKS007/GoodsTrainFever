@@ -34456,7 +34456,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.000000014901161
+      value: -0.000000014909741
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalRotation.y
@@ -34464,15 +34464,35 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -1.7053026e-13
+      value: -1.7062844e-13
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.0000029504297
+      value: 0.0000029521284
       objectReference: {fileID: 0}
     - target: {fileID: 4027333465924642, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_RootOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.g
+      value: 0.39705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.b
+      value: 0.39705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
@@ -34631,6 +34651,26 @@ Prefab:
     - target: {fileID: 1978144966990264, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
       propertyPath: m_Name
       value: Sm_Timer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.g
+      value: 0.39705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.b
+      value: 0.39705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: vibrateColor.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}

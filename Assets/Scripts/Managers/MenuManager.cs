@@ -400,32 +400,26 @@ public class MenuManager : Singleton<MenuManager>
 
 	void ShowContent (RectTransform content, Vector2 showPosition, Vector2 hidePosition, float duration, Ease ease, bool disable, float delay = 0, Action action = null)
 	{
+		if (disable && disableMenusOnHide)
+			content.gameObject.SetActive (true);
+
 		if (showPosition.x != hidePosition.x && showPosition.y != hidePosition.y)
 			content.DOAnchorPos (showPosition, duration).SetEase (ease).SetDelay (delay).SetUpdate (true).OnComplete (() => {
 
 				if (action != null)
 					action ();
-				
-				if (disable && disableMenusOnHide)
-					content.gameObject.SetActive (true);
 			});
 		else if (showPosition.x != hidePosition.x && showPosition.y == hidePosition.y)
 			content.DOAnchorPosX (showPosition.x, duration).SetEase (ease).SetDelay (delay).SetUpdate (true).OnComplete (() => {
 
 				if (action != null)
 					action ();
-
-				if (disable && disableMenusOnHide)
-					content.gameObject.SetActive (true);
 			});
 		else if (showPosition.x == hidePosition.x && showPosition.y != hidePosition.y)
 			content.DOAnchorPosY (showPosition.y, duration).SetEase (ease).SetDelay (delay).SetUpdate (true).OnComplete (() => {
 
 				if (action != null)
 					action ();
-
-				if (disable && disableMenusOnHide)
-					content.gameObject.SetActive (true);
 			});
 	}
 
