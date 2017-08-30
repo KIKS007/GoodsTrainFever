@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class TouchManager : Singleton<TouchManager>
 {
@@ -13,6 +14,8 @@ public class TouchManager : Singleton<TouchManager>
 
 	public bool isTouchingTouchable = false;
 	public bool isTouchingUI = false;
+	public LayerMask touchableLayer;
+	public float boxCastHalfExtent = 0.2f;
 
 	private bool _touchDown = false;
 	private Vector3 _deltaPosition;
@@ -132,6 +135,8 @@ public class TouchManager : Singleton<TouchManager>
 				Touchable touchable = RaycastTouchable (_mousePosition);
 				if (touchable != null)
 					touchable.OnTouchUpAsButton ();
+
+				//Debug.Log ("END touchable: " + touchable, touchable);
 			}
 
 			if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI)
@@ -172,7 +177,7 @@ public class TouchManager : Singleton<TouchManager>
 			return null;
 	}
 
-	Touchable RaycastTouchable (Vector3 position)
+	/*Touchable RaycastTouchable (Vector3 position)
 	{
 		RaycastHit hit;
 		Ray ray = _camera.ScreenPointToRay (position);
@@ -189,6 +194,39 @@ public class TouchManager : Singleton<TouchManager>
 				return null;
 		} else
 			return null;
+	}*/
+
+	Touchable RaycastTouchable (Vector3 position)
+	{
+		RaycastHit hit;
+		Ray ray = _camera.ScreenPointToRay (position);
+
+		Vector3 p = _camera.transform.position;
+
+		var colliders = Physics.BoxCastAll (ray.origin, new Vector3 (boxCastHalfExtent, boxCastHalfExtent, boxCastHalfExtent), ray.direction, Quaternion.identity, 50f, touchableLayer, QueryTriggerInteraction.Collide).ToList ();
+
+		if(colliders.Count == 0)
+			return null;
+
+		colliders = colliders.OrderBy (x=> Vector3.Distance (x.point, ray.origin)).ToList ();
+
+		foreach(var c in colliders)
+		{
+			Touchable touchable = c.collider.GetComponent<Touchable> ();
+
+			if (touchable == null)
+				continue;
+
+			if (touchable == null && c.collider.GetComponent<Rigidbody> ())
+				touchable = c.collider.GetComponent<Rigidbody> ().gameObject.GetComponent<Touchable> ();
+
+			if (touchable != null)
+				return touchable;
+			else
+				continue;
+		}
+
+		return null;
 	}
 
 	IEnumerator TouchHoldCoroutine ()
