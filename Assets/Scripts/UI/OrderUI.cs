@@ -129,6 +129,7 @@ public class OrderUI : MonoBehaviour
 			var representation = Instantiate (prefab, Vector3.zero, Quaternion.identity, holder);// we add the container GO to to holder
 			Container_UI tempCUI = representation.AddComponent (typeof(Container_UI)) as Container_UI;
 			tempCUI.Setup (c);
+			tempCUI.debugOrderUI = tmpThing;
 			tmpThingCont.Add (tempCUI);
 
 			//second verification to be sure that we're correct

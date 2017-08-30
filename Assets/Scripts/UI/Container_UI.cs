@@ -23,7 +23,7 @@ public class Container_UI : MonoBehaviour
 	public int preparedCount = 0;
 
 	public Order_UI myOrderUI;
-
+	public Order_UI debugOrderUI;
 	//private RectTransform _rectTransform;
 	private CanvasGroup _canvasGroup;
 
@@ -35,8 +35,9 @@ public class Container_UI : MonoBehaviour
 		 */
 		_canvasGroup = GetComponent<CanvasGroup> ();
 		containerImage = GetComponent<Image> ();
-		/*
+
 		preparedCount = 0;
+		/*
 		preparedCountText.enabled = false;*/
 
 		Container.OnContainerDeselected += ContainerDeselected;
@@ -60,7 +61,10 @@ public class Container_UI : MonoBehaviour
 	{
 		
 		myOrderUI = GetComponentInParent<Order_UI> ();
-		myOrderUI.ContainerDeselected ();
+		if (myOrderUI == null) {
+			myOrderUI = debugOrderUI;
+			myOrderUI.ContainerDeselected ();
+		}
 	}
 
 	void SetColor (Container_Level c)
