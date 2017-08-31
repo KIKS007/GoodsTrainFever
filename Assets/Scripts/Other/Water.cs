@@ -19,7 +19,6 @@ public class Water : MonoBehaviour
         _transform = GetComponent<Transform>();
         _initialScale = _transform.localScale;
         _initialPosition = _transform.position;
-
     }
 
     // Update is called once per frame
