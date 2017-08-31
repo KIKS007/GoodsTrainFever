@@ -34393,55 +34393,6 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1139261884}
-    - target: {fileID: 224368900900289422, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -226.80005
-      objectReference: {fileID: 0}
-    - target: {fileID: 1484816712765160, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1169561748123332, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1188639134795322, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1304997137592044, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1937537705645628, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280770355977722, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1725402731701444, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1844676835941950, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1690213780020230, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1844768225982872, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1431371897173424, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
   m_IsPrefabParent: 0
@@ -35339,6 +35290,11 @@ Prefab:
         type: 2}
       propertyPath: menuCanvasGroup
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114437252500598484, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_Text
+      value: <FACT MISSING>
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
