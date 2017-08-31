@@ -107,6 +107,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		container.TakeSpot (spot);
 
+		//targetPosition = container.transform.parent.InverseTransformPoint (targetPosition);
 		targetPosition = container.transform.parent.InverseTransformPoint (targetPosition);
 
 		container.isMoving = true;
@@ -139,7 +140,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 				container.transform.DOLocalMoveY (targetPosition.y, takeSpotDuration + 0.1f).SetEase (Ease.OutBounce, 40, 1);
 				container.transform.DOPunchRotation (direction * 10f, takeSpotDuration + 0.1f, 10).SetDelay (.1f).OnStart (() => 
 					{
-						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, targetPosition - (Vector3.up * container._collider.bounds.extents.y * .5f));
+						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, container.transform.position - (Vector3.up * container._collider.bounds.extents.y * 4), 0.1f);
 						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
 					}).OnComplete (()=> 

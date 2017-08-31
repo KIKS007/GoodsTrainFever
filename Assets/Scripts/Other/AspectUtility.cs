@@ -24,9 +24,6 @@ public class AspectUtility : MonoBehaviour {
 	{
 		float currentAspectRatio = (float)Screen.width / Screen.height;
 
-		Debug.Log (currentAspectRatio);
-		Debug.Log ((10f / 16f).ToString ());
-
 		if ( Mathf.Abs(currentAspectRatio - (10f / 16f)) < 0.01f)
 			return;
 
