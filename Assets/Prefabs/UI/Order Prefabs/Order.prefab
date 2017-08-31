@@ -172,6 +172,8 @@ GameObject:
   - component: {fileID: 224864532889065386}
   - component: {fileID: 223147225827761966}
   - component: {fileID: 225384846412819640}
+  - component: {fileID: 222744745257137262}
+  - component: {fileID: 114545074397022252}
   m_Layer: 5
   m_Name: Order
   m_TagString: Untagged
@@ -439,6 +441,20 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
+--- !u!114 &114545074397022252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1541479790247760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3862575da13a3cc408cee5ad6b0460d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
 --- !u!114 &114547591446992250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -665,6 +681,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1335037934840880}
+--- !u!222 &222744745257137262
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1541479790247760}
 --- !u!223 &223141298149325724
 Canvas:
   m_ObjectHideFlags: 1
