@@ -47,6 +47,7 @@ public class OrderUI : MonoBehaviour
 	{
 		//we instantiate the new order GameObject and we move the notification to the bottom
 		var orderGO = Instantiate (OrderPrefab, transform.position, Quaternion.identity, transform);
+		orderGO.transform.localRotation = Quaternion.identity;
 		_orderList.Add (order);
 		_notification.SetAsLastSibling ();
 
@@ -127,6 +128,8 @@ public class OrderUI : MonoBehaviour
                 holder = holders [(int)c.containerType].GetChild (1) as RectTransform;
 
 			var representation = Instantiate (prefab, Vector3.zero, Quaternion.identity, holder);// we add the container GO to to holder
+			representation.transform.localRotation = Quaternion.identity;
+
 			Container_UI tempCUI = representation.AddComponent (typeof(Container_UI)) as Container_UI;
 			tempCUI.Setup (c);
 			tempCUI.debugOrderUI = tmpThing;
