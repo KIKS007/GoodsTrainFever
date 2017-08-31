@@ -203,14 +203,14 @@ public class Order_UI : MonoBehaviour
 						this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
 							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
 							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders ();
+							parentOrderUI.HideOrders (false);
 						});
 					} else {
 						FastDownOrder = false;
 						this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
 							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
 							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders ();
+							parentOrderUI.HideOrders (false);
 						});
 					}
 
@@ -226,7 +226,7 @@ public class Order_UI : MonoBehaviour
 			if (hasBeenPrepared) {
 				parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), 0);
 				parentOrderUI.ShowOrders ();
-				parentOrderUI.HideOrders ();
+				parentOrderUI.HideOrders (false);
 			}
 		}
 	}
