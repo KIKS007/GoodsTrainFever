@@ -38,8 +38,6 @@ GameObject:
   - component: {fileID: 33475281112593158}
   - component: {fileID: 23393739410430670}
   - component: {fileID: 65695920083352166}
-  - component: {fileID: 114506581058777898}
-  - component: {fileID: 114132090650795420}
   m_Layer: 5
   m_Name: Container_Tank_40
   m_TagString: Untagged
@@ -53,10 +51,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1305679605979498}
-  m_LocalRotation: {x: -0.000000029802322, y: -0.35836798, z: -0.000000009970823,
-    w: 0.93358046}
-  m_LocalPosition: {x: -23.570679, y: -30, z: 20.840504}
-  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
+  m_LocalRotation: {x: -0.000000059604645, y: -0.35836798, z: 0.000000074505806, w: 0.93358046}
+  m_LocalPosition: {x: -26.141354, y: -26.514708, z: 23.00877}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_Children:
   - {fileID: 4913458134741498}
   m_Father: {fileID: 0}
@@ -141,47 +138,3 @@ MonoBehaviour:
   funFact: If someone commits suicide in Japan by jumping onto an oncoming train,
     the train company can/will sue his/her family for cleanup fees, loss of income
     and negative publicity brought on by the suicide
---- !u!114 &114132090650795420
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1948548489265530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d949d229aa8948f43b7e93613d3dca3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _container: {fileID: 0}
-  notNextToType: 0
---- !u!114 &114506581058777898
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1948548489265530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d16dc0d968755764f8bc19cebb15bcb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  containerType: 0
-  containerColor: 1
-  weight: 0
-  selected: 0
-  isPileUp: 0
-  isMoving: 0
-  allConstraintsRespected: 1
-  constraints: []
-  isDoubleSize: 0
-  train: {fileID: 0}
-  wagon: {fileID: 0}
-  spotOccupied: {fileID: 0}
-  shaderColorProperty: _Albedo1
-  weightText: {fileID: 0}
-  weightImage: {fileID: 0}
-  useContainerColorOnWeightUI: 0
-  errorsCanvasGroup: {fileID: 0}
-  _mesh: {fileID: 0}
-  _collider: {fileID: 65695920083352166}
-  _pileSpots: []

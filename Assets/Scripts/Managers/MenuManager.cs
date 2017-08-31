@@ -11,6 +11,8 @@ public class MenuManager : Singleton<MenuManager>
 	public Action OnMenuTransitionEnd;
 	public Action OnLevelStart;
 	public Action OnMainMenu;
+	public Action OnPause;
+	public Action OnResume;
 
 	public bool inTransition = false;
 
@@ -425,13 +427,17 @@ public class MenuManager : Singleton<MenuManager>
 
 	public void PauseAndShowMenu (MenuComponent menu)
 	{
-		if (GameManager.Instance.gameState == GameState.Playing) {
+		if (GameManager.Instance.gameState == GameState.Playing) 
+		{
 			_timeScaleOnPause = Time.timeScale;
 			Time.timeScale = 0;
 
 			GameManager.Instance.gameState = GameState.Pause;
 
 			UIFadeOut ();
+
+			if(OnPause != null)
+				OnPause ();
 		}
 
 		ShowMenu (menu, false);
@@ -473,6 +479,9 @@ public class MenuManager : Singleton<MenuManager>
 
 				UIFadeIn ();
 				GameManager.Instance.gameState = GameState.Playing;
+
+				if(OnResume != null)
+					OnResume ();
 			}
 
 		}).SetUpdate (true);
