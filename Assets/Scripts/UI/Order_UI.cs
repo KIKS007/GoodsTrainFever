@@ -16,7 +16,8 @@ public class Order_UI : MonoBehaviour
 
 	[Header ("Containers")]
 	public List<Container_UI> containers = new List<Container_UI> ();
-
+	[HideInInspector]
+	public bool MustBeSetup = false;
 	private GameObject SelectedContainer;
 
 	private bool FastDownOrder = false;
@@ -27,6 +28,7 @@ public class Order_UI : MonoBehaviour
 		foreach (var c in containers) {
 			c.myOrderUI = this;
 		}
+		MustBeSetup = true;
 	}
 
 	public void OrderSent ()
@@ -232,23 +234,25 @@ public class Order_UI : MonoBehaviour
 	public void ForceUpdateStates ()
 	{
 		FastDownOrder = true;
-
-		UpdateStates ();
+		if (MustBeSetup)
+			UpdateStates ();
 	}
 
 	void UpdateStates ()
 	{
 		bool prepared = true;
+		//Debug.Log (containers.Count);
 
-		foreach (var c in containers)
+		foreach (var c in containers) {
 			if (!c.isPrepared) {
 				prepared = false;
 				break;
 			}
+		}
 
 		isPrepared = prepared;
 
-		//Debug.Log (isPrepared);
+		//Debug.Log ("Is it prepared: " + isPrepared);
 
 		OrderPrepared (isPrepared);
 
