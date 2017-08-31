@@ -2766,12 +2766,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &211 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114202287023312266, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
-  m_Script: {fileID: 11500000, guid: 3862575da13a3cc408cee5ad6b0460d0, type: 3}
 --- !u!1 &214
 GameObject:
   m_ObjectHideFlags: 0
@@ -22484,11 +22478,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!225 &1895 stripped
-CanvasGroup:
-  m_PrefabParentObject: {fileID: 225349244719513610, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
 --- !u!225 &1896
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -22665,12 +22654,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 5
---- !u!114 &1916 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114912984653378972, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &1917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23726,12 +23709,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1813100089}
   m_Script: {fileID: 11500000, guid: b7405e4a8f899454da848f3f8eb7582f, type: 3}
---- !u!114 &2009 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114986316134766000, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &2013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24319,12 +24296,6 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 114009866880226800, guid: 2791c24f66192de4098af2699650c2ed,
     type: 2}
   m_PrefabInternal: {fileID: 1813100089}
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
---- !u!114 &2086 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114225701410695168, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &2089 stripped
 MonoBehaviour:
@@ -26407,12 +26378,6 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 114083301337980176, guid: 2791c24f66192de4098af2699650c2ed,
     type: 2}
   m_PrefabInternal: {fileID: 1813100089}
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
---- !u!114 &2304 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114876646917351686, guid: 37ca85740e1698f4ea6f0669dc929f69,
-    type: 2}
-  m_PrefabInternal: {fileID: 1264843921}
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &2307
 MonoBehaviour:
@@ -37110,6 +37075,11 @@ GameObject:
   m_PrefabParentObject: {fileID: 1688215842302954, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
     type: 2}
   m_PrefabInternal: {fileID: 710207980}
+--- !u!225 &1021649664 stripped
+CanvasGroup:
+  m_PrefabParentObject: {fileID: 225573206952368560, guid: 37ca85740e1698f4ea6f0669dc929f69,
+    type: 2}
+  m_PrefabInternal: {fileID: 1264843921}
 --- !u!1 &1040718366 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1951911787234992, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -38016,7 +37986,7 @@ Prefab:
         type: 2}
       propertyPath: ordersCanvasGroup
       value: 
-      objectReference: {fileID: 1895}
+      objectReference: {fileID: 1021649664}
     - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
         type: 2}
       propertyPath: ordersScrollView
@@ -38026,7 +37996,7 @@ Prefab:
         type: 2}
       propertyPath: newOrdersTouchable
       value: 
-      objectReference: {fileID: 211}
+      objectReference: {fileID: 0}
     - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
         type: 2}
       propertyPath: newOrderUI
@@ -38036,22 +38006,22 @@ Prefab:
         type: 2}
       propertyPath: containerType.Array.data[0]
       value: 
-      objectReference: {fileID: 1916}
+      objectReference: {fileID: 0}
     - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
         type: 2}
       propertyPath: containerType.Array.data[1]
       value: 
-      objectReference: {fileID: 2009}
+      objectReference: {fileID: 0}
     - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
         type: 2}
       propertyPath: containerType.Array.data[2]
       value: 
-      objectReference: {fileID: 2304}
+      objectReference: {fileID: 0}
     - target: {fileID: 114408972843815590, guid: 0ade4f8628b2f45499d28608e0d9873a,
         type: 2}
       propertyPath: containerType.Array.data[3]
       value: 
-      objectReference: {fileID: 2086}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ade4f8628b2f45499d28608e0d9873a, type: 2}
   m_IsPrefabParent: 0
