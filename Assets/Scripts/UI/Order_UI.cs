@@ -16,8 +16,11 @@ public class Order_UI : MonoBehaviour
 
 	[Header ("Containers")]
 	public List<Container_UI> containers = new List<Container_UI> ();
-
+	[HideInInspector]
+	public bool MustBeSetup = false;
 	private GameObject SelectedContainer;
+
+	private bool FastDownOrder = false;
 
 	public void Setup ()
 	{
@@ -25,6 +28,7 @@ public class Order_UI : MonoBehaviour
 		foreach (var c in containers) {
 			c.myOrderUI = this;
 		}
+		MustBeSetup = true;
 	}
 
 	public void OrderSent ()
@@ -195,11 +199,21 @@ public class Order_UI : MonoBehaviour
 			hasBeenPrepared = true;
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
-					this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-						parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-						parentOrderUI.ShowOrders ();
-						parentOrderUI.HideOrders ();
-					});
+					if (!FastDownOrder) {
+						this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+							parentOrderUI.ShowOrders ();
+							parentOrderUI.HideOrders (false);
+						});
+					} else {
+						FastDownOrder = false;
+						this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
+							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+							parentOrderUI.ShowOrders ();
+							parentOrderUI.HideOrders (false);
+						});
+					}
+
 				});
 			}
 
@@ -212,22 +226,33 @@ public class Order_UI : MonoBehaviour
 			if (hasBeenPrepared) {
 				parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), 0);
 				parentOrderUI.ShowOrders ();
-				parentOrderUI.HideOrders ();
+				parentOrderUI.HideOrders (false);
 			}
 		}
+	}
+
+	public void ForceUpdateStates ()
+	{
+		FastDownOrder = true;
+		if (MustBeSetup)
+			UpdateStates ();
 	}
 
 	void UpdateStates ()
 	{
 		bool prepared = true;
+		//Debug.Log (containers.Count);
 
-		foreach (var c in containers)
+		foreach (var c in containers) {
 			if (!c.isPrepared) {
 				prepared = false;
 				break;
 			}
+		}
 
 		isPrepared = prepared;
+
+		//Debug.Log ("Is it prepared: " + isPrepared);
 
 		OrderPrepared (isPrepared);
 

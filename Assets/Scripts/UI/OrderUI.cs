@@ -13,7 +13,7 @@ public class OrderUI : MonoBehaviour
 	public GameObject SmallContainerPrefab;
 	public GameObject LargeContainerPrefab;
 	public List<Color> ColorUi;
-
+	public Text OrderCount;
 
 	public List<Order_UI> OrderThing;
 	private Dictionary<Order_Level, GameObject> _orders = new Dictionary<Order_Level, GameObject> ();
@@ -78,22 +78,58 @@ public class OrderUI : MonoBehaviour
 
 
 		//if we have more than 3 orders we set the notification pos to change accordingly
-		if (_orderList.Count > 3)
+		if (_orderList.Count > 3) {
 			_notificationPos = 100;
-
+			OrderCount.text = (" + " + (_orderList.Count - 3).ToString ());
+		} else {
+			OrderCount.text = (" + 1");
+		}
 
 		//notification animation
-		if (!_notification.gameObject.activeInHierarchy) {
+
+
+	}
+
+
+	public void NotificationAnimation ()
+	{
+		if (_orderList.Count > 3) {
 			_notification.gameObject.SetActive (true);
 			(_notification.GetChild (0) as RectTransform).DOAnchorPosX (300, 0.4f).SetEase (Ease.OutBack).OnComplete (() => {
 				DOVirtual.DelayedCall (0.7f, () => {
 					(_notification.GetChild (0) as RectTransform).DOAnchorPosX (_notificationPos, 0.3f).SetEase (Ease.OutExpo).OnComplete (() => {
-						if (_notificationPos == 0)//we only need to desactivate the notification GO if don't see it anymore
-                            _notification.gameObject.SetActive (false);
+						if (_notificationPos == 0) {
+							_notification.gameObject.SetActive (false);
+							
+						}//we only need to desactivate the notification GO if don't see it anymore
+					});
+				});
+			});
+		} else {
+			_notification.gameObject.SetActive (true);
+			(_notification.GetChild (0) as RectTransform).DOAnchorPosX (100, 0.4f).SetEase (Ease.OutBack).OnComplete (() => {
+				DOVirtual.DelayedCall (0.7f, () => {
+					(_notification.GetChild (0) as RectTransform).DOAnchorPosX (0, 0.3f).SetEase (Ease.OutExpo).OnComplete (() => {
+						_notification.gameObject.SetActive (false);
 					});
 				});
 			});
 		}
+
+
+	}
+
+	public void NotificationSpawn ()
+	{
+		_notification.gameObject.SetActive (true);
+
+		(_notification.GetChild (0) as RectTransform).DOAnchorPosX (_notificationPos, 0.3f).SetEase (Ease.OutExpo).OnComplete (() => {
+			if (_notificationPos == 0) {
+				_notification.gameObject.SetActive (false);
+
+			}//we only need to desactivate the notification GO if don't see it anymore
+		});
+
 	}
 
 	/// <summary>
@@ -149,8 +185,10 @@ public class OrderUI : MonoBehaviour
 		tmpThing.containers = tmpThingCont;
 		tmpThing.Setup ();
 		ShowOrders ();
-		HideOrders ();
-
+		HideOrders (true);
+		foreach (Order_UI OUI in OrderThing) {
+			OUI.ForceUpdateStates ();
+		}
 	}
 
 	/// <summary>
@@ -168,7 +206,7 @@ public class OrderUI : MonoBehaviour
 			//we collapse it to the top
 			(target.transform as RectTransform).DOSizeDelta (new Vector2 ((target.transform as RectTransform).rect.width, -5), 0.2f).SetDelay (0.5f).OnComplete (() => {
 				if (!_showOrders)
-					HideOrders ();
+					HideOrders (false);
 				Destroy (target);
 			}).OnUpdate (() => {   //this is needed to update the vertical layout
 				_layout.CalculateLayoutInputHorizontal ();
@@ -266,18 +304,21 @@ public class OrderUI : MonoBehaviour
 		}
 		_notificationImg.DOKill ();
 		_notificationImg.DOFade (0, 0f);
+		OrderCount.gameObject.SetActive (false);
 	}
 
 	/// <summary>
 	/// Show only the first three orders
 	/// can also be used to recalculate the alpha of the orders
 	/// </summary>
-	public void HideOrders ()
+	public void HideOrders (bool neworder)
 	{
 		_showOrders = false;
 		int i = 0;
 		_notificationImg.DOKill ();
-		_notificationImg.DOFade (1, 0f).SetDelay (0.4f);
+		_notificationImg.DOFade (1, 0.1f).SetDelay (0.4f).OnComplete (() => {
+			OrderCount.gameObject.SetActive (true);
+		});
 		foreach (var order in _orderList) {
 			var go = _orders [order];
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
@@ -290,7 +331,12 @@ public class OrderUI : MonoBehaviour
 				go.SetActive (true);
 			i++;
 		}
-			
+		if (neworder) {
+			DOVirtual.DelayedCall (0.4f, () => NotificationAnimation ());
+		} else {
+			DOVirtual.DelayedCall (0.4f, () => NotificationSpawn ());
+		}
+
 	}
 
 	public void TutoHideOrders ()
@@ -298,7 +344,9 @@ public class OrderUI : MonoBehaviour
 		_showOrders = false;
 		int i = 0;
 		_notificationImg.DOKill ();
-		_notificationImg.DOFade (1, 0f).SetDelay (0.4f);
+		_notificationImg.DOFade (1, 0.1f).SetDelay (0.4f).OnComplete (() => {
+			OrderCount.gameObject.SetActive (true);
+		});
 		foreach (var order in _orderList) {
 			var go = _orders [order];
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
