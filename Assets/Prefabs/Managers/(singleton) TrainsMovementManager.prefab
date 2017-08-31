@@ -66,9 +66,9 @@ MonoBehaviour:
   touchMovementThreshold: 0
   trainMovementThreshold: 4
   deltaMousePositionFactor: 4
-  deltaTouchPositionFactor: 1.5
-  movementMaxVelocity: 80
-  movementDeceleration: 0.87
+  deltaTouchPositionFactor: 1.3
+  movementMaxVelocity: 100
+  movementDeceleration: 0.9
   resetingTrains: 0
   resetDuration: 0.5
   resetEase: 6
@@ -87,7 +87,7 @@ MonoBehaviour:
   wagonSixtyLength: 20
   wagonEightyLength: 26.3
   locomotiveLength: 22
-  offsetLength: 10
+  offsetLength: 1
   trainPrefab: {fileID: 1797708387134428, guid: a77cf87b205a5a44ea55ee76022f4ec3,
     type: 2}
   wagonFourtyPrefab: {fileID: 1455626880368656, guid: d1ebcb2b16925f446b81627e3512b92f,

@@ -1365,23 +1365,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!1 &82
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1887062625913382, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 762}
-  - component: {fileID: 2326}
-  m_Layer: 0
-  m_Name: (singleton) TrainsMovementManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &83
 GameObject:
   m_ObjectHideFlags: 0
@@ -9168,20 +9151,11 @@ Transform:
   m_Father: {fileID: 827}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &762
+--- !u!4 &762 stripped
 Transform:
-  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 82}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 949}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_PrefabInternal: {fileID: 493569182}
 --- !u!4 &763 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452,
@@ -27661,70 +27635,12 @@ MonoBehaviour:
   _mesh: {fileID: 0}
   _collider: {fileID: 1457}
   _pileSpots: []
---- !u!114 &2326
+--- !u!114 &2326 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 82}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
+  m_PrefabInternal: {fileID: 493569182}
   m_Script: {fileID: 11500000, guid: 79c5451d44ea64743a775146b7bded66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allTrains: []
-  selectedTrain: {fileID: 0}
-  selectedTrainHasMoved: 0
-  trainContainerInMotion: {fileID: 0}
-  rail1: {fileID: 1960}
-  rail2: {fileID: 2235}
-  rail1Text: {fileID: 1305886601}
-  rail2Text: {fileID: 1535244544}
-  Train1Timer: {fileID: 67979616}
-  Train2Timer: {fileID: 1542098049}
-  holdState: 0
-  holdDelay: 0.5
-  touchMovementThreshold: 0
-  trainMovementThreshold: 4
-  deltaMousePositionFactor: 4
-  deltaTouchPositionFactor: 1.5
-  movementMaxVelocity: 80
-  movementDeceleration: 0.87
-  resetingTrains: 0
-  resetDuration: 0.5
-  resetEase: 6
-  fastForwardButton: {fileID: 2309}
-  fastForwardEase: 6
-  fastForwardTransitionDuration: 0.25
-  fastForwardValue: 30
-  xArrivingPosition: -60
-  xDeparturePosition1: 10
-  xDeparturePosition2: 15.4
-  arrivingSpeed: 50
-  arrivingDelay: 0
-  trainSendingSpeed: 50
-  trainMovementEase: 6
-  wagonFourtyLength: 15
-  wagonSixtyLength: 20
-  wagonEightyLength: 26.3
-  locomotiveLength: 22
-  offsetLength: 1
-  trainPrefab: {fileID: 1797708387134428, guid: a77cf87b205a5a44ea55ee76022f4ec3,
-    type: 2}
-  wagonFourtyPrefab: {fileID: 1455626880368656, guid: d1ebcb2b16925f446b81627e3512b92f,
-    type: 2}
-  wagonSixtyPrefab: {fileID: 1587621673064988, guid: 9db100f6b652546959b36577d2a49d7a,
-    type: 2}
-  wagonEightyPrefab: {fileID: 1918598205701074, guid: 62b81448d74c14b3db116ea2c0e4751e,
-    type: 2}
-  touchMovementThresholdInput: {fileID: 2226}
-  deltaTouchPositionFactorInput: {fileID: 1985}
-  movementMaxVelocityInput: {fileID: 1923}
-  movementDecelerationInput: {fileID: 2089}
-  trainsVisibleXPosition: -45
-  train1Arrow: {fileID: 2303}
-  train2Arrow: {fileID: 2085}
 --- !u!114 &2328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33177,6 +33093,113 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 491598183}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &493569182
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 949}
+    m_Modifications:
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4451147356766220, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: rail1
+      value: 
+      objectReference: {fileID: 1960}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: rail2
+      value: 
+      objectReference: {fileID: 2235}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: rail1Text
+      value: 
+      objectReference: {fileID: 1305886601}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: rail2Text
+      value: 
+      objectReference: {fileID: 1535244544}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: Train1Timer
+      value: 
+      objectReference: {fileID: 67979616}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: Train2Timer
+      value: 
+      objectReference: {fileID: 1542098049}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: fastForwardButton
+      value: 
+      objectReference: {fileID: 2309}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: touchMovementThresholdInput
+      value: 
+      objectReference: {fileID: 2226}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: deltaTouchPositionFactorInput
+      value: 
+      objectReference: {fileID: 1985}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: movementMaxVelocityInput
+      value: 
+      objectReference: {fileID: 1923}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: movementDecelerationInput
+      value: 
+      objectReference: {fileID: 2089}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: train1Arrow
+      value: 
+      objectReference: {fileID: 2303}
+    - target: {fileID: 114053881042659404, guid: a5a72f9aa85af6242b4e4d9b91ba226a,
+        type: 2}
+      propertyPath: train2Arrow
+      value: 
+      objectReference: {fileID: 2085}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a5a72f9aa85af6242b4e4d9b91ba226a, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &511521994
 GameObject:
   m_ObjectHideFlags: 0
