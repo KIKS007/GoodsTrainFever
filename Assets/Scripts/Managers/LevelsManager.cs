@@ -382,7 +382,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
-			if (errorsLocked > errorsAllowed) {
+			if (errorsLocked > errorsAllowed) 
+			{
 				LevelEnd (LevelEndType.Errors);
 				yield break;
 			}
