@@ -26,6 +26,8 @@ public class TutorialManager : Singleton<TutorialManager>
 	public Tutorial[] TutorialList8;
 	[TabGroup ("Tutorial Level", "Level 9")]
 	public Tutorial[] TutorialList9;
+	[TabGroup ("Tutorial Level", "Level 10")]
+	public Tutorial[] TutorialList10;
 	[TabGroup ("Tutorial Level", "Level 13")]
 	public Tutorial[] TutorialList13;
 	[TabGroup ("Tutorial Level", "Level 26")]
@@ -96,6 +98,9 @@ public class TutorialManager : Singleton<TutorialManager>
 			break;
 		case 9:
 			CurrentList = TutorialList9;
+			break;
+		case 10:
+			CurrentList = TutorialList10;
 			break;
 		case 13:
 			CurrentList = TutorialList13;
