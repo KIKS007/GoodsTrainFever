@@ -45,6 +45,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 	{
 		TrainsMovementManager.Instance.OnTrainDeparture += TrainDeparture;
 		BoatsMovementManager.Instance.OnBoatDeparture += BoatDeparture;
+		GameManager.Instance.OnLevelEnd += DeselectContainer;
 	}
 
 	public void DeselectContainer ()
