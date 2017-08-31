@@ -19,6 +19,8 @@ public class Order_UI : MonoBehaviour
 
 	private GameObject SelectedContainer;
 
+	private bool FastDownOrder = false;
+
 	public void Setup ()
 	{
 		CheckContainers ();
@@ -195,11 +197,21 @@ public class Order_UI : MonoBehaviour
 			hasBeenPrepared = true;
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
-					this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-						parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-						parentOrderUI.ShowOrders ();
-						parentOrderUI.HideOrders ();
-					});
+					if (!FastDownOrder) {
+						this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+							parentOrderUI.ShowOrders ();
+							parentOrderUI.HideOrders ();
+						});
+					} else {
+						FastDownOrder = false;
+						this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
+							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+							parentOrderUI.ShowOrders ();
+							parentOrderUI.HideOrders ();
+						});
+					}
+
 				});
 			}
 
@@ -217,6 +229,13 @@ public class Order_UI : MonoBehaviour
 		}
 	}
 
+	public void ForceUpdateStates ()
+	{
+		FastDownOrder = true;
+
+		UpdateStates ();
+	}
+
 	void UpdateStates ()
 	{
 		bool prepared = true;
@@ -228,6 +247,8 @@ public class Order_UI : MonoBehaviour
 			}
 
 		isPrepared = prepared;
+
+		//Debug.Log (isPrepared);
 
 		OrderPrepared (isPrepared);
 

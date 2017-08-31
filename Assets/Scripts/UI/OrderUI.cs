@@ -93,6 +93,8 @@ public class OrderUI : MonoBehaviour
 				});
 			});
 		}
+
+
 	}
 
 	/// <summary>
@@ -147,7 +149,9 @@ public class OrderUI : MonoBehaviour
 		tmpThing.Setup ();
 		ShowOrders ();
 		HideOrders ();
-
+		foreach (Order_UI OUI in OrderThing) {
+			OUI.ForceUpdateStates ();
+		}
 	}
 
 	/// <summary>
