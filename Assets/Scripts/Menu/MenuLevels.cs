@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MenuLevels : MenuComponent
 {
@@ -19,6 +20,9 @@ public class MenuLevels : MenuComponent
 	[Header ("Stages")]
 	public GameObject levelStagePrefab;
 
+	[Header ("Reset")]
+	public float resetDuration = 0.5f;
+
 	private float _levelsPanelWidth;
 	[HideInInspector]
 	public List<Level_Menu> _levelsMenu = new List<Level_Menu> ();
@@ -31,11 +35,29 @@ public class MenuLevels : MenuComponent
 		//SetupLevels ();
 
 		_scrollRect = GetComponent<ScrollRect> ();
+
+		MenuManager.Instance.OnMainMenu += SetLevelPosition;
 	}
 
 	void OnEnable ()
 	{
 		UpdateLevels ();
+	}
+
+	void SetLevelPosition ()
+	{
+		//LevelsManager.Instance.levelIndex
+
+		int index = LevelsManager.Instance.levelIndex;
+		int stages = 0;
+
+		foreach (var s in ScoreManager.Instance.levelStages)
+			if (s.index <= index)
+				stages++;
+
+		index += stages;
+
+		levelsScrollView.anchoredPosition = new Vector2 (-index * (levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x + levelsSpacing) - 6, levelsScrollView.anchoredPosition.y);
 	}
 
 	public void UpdateLevels ()
