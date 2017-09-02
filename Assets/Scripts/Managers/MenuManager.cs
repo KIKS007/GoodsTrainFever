@@ -60,6 +60,9 @@ public class MenuManager : Singleton<MenuManager>
     public Vector2 menuHidePosition;
     public Vector2 menuShowPosition;
 
+	[Header ("Unlocked Stages")]
+	public List<Stage_Menu> unlockedStages = new List<Stage_Menu> ();
+
     [Header("Camera Movement")]
     public Ease movementEase = Ease.OutQuad;
     public float movementDuration;
@@ -98,6 +101,8 @@ public class MenuManager : Singleton<MenuManager>
         _backButtonShowPos = backButton.anchoredPosition;
 
         menulevels.SetupLevels();
+
+		Stage_Menu.OnStageUnlock += (Stage_Menu obj) => unlockedStages.Add (obj);
 
         GameManager.Instance.OnPlaying += () =>
         {
@@ -577,7 +582,6 @@ public class MenuManager : Singleton<MenuManager>
 
     void ShowPanel()
     {
-        Debug.Log("Show Panel");
         UIFadeOut();
 
         menuPanel.gameObject.SetActive(true);
@@ -624,12 +628,39 @@ public class MenuManager : Singleton<MenuManager>
     public void EndLevel()
     {
         DOVirtual.DelayedCall(endLevelDelay, () =>
-        {
-
-            UIFadeOut();
-            ToMenu(endLevelMenu, false);
-        }).SetUpdate(true);
+			{
+				UIFadeOut();
+				
+				if (unlockedStages.Count > 0)
+					ShowTrophyMenu ();
+				else
+					ToMenu(endLevelMenu, false);
+				
+			}).SetUpdate(true);
     }
+
+	void ShowTrophyMenu ()
+	{
+		menuTrophies.endLevel = true;
+
+		var stage = unlockedStages [0];
+
+		MenuManager.Instance.menuTrophies.stageMenu = stage;
+		MenuManager.Instance.ToMenu (MenuManager.Instance.menuTrophies);
+
+		unlockedStages.RemoveAt (0);
+	}
+
+	public void HideTrophyMenu ()
+	{
+		if (unlockedStages.Count > 0)
+			ShowTrophyMenu ();
+		else
+		{
+			menuTrophies.endLevel = false;
+			ToMenu(endLevelMenu, false);
+		}
+	}
 
     public void MainMenu()
     {

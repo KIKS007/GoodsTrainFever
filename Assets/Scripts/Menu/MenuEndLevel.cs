@@ -110,7 +110,6 @@ public class MenuEndLevel : MenuComponent
 
 				});
 				
-
 				break;
 			}
 		}

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Stage_Menu : MonoBehaviour 
 {
+	public static System.Action<Stage_Menu> OnStageUnlock;
+
 	public int starsRequired;
 	public bool isUnlocked = false;
 
@@ -28,8 +30,6 @@ public class Stage_Menu : MonoBehaviour
 		starsRequired = stars;
 		starsCount.text = starsRequired.ToString ();
 
-		isUnlocked = unlock;
-
 		innerStar.SetActive (!unlock);
 
 		lockImage.SetActive (!unlock);
@@ -37,5 +37,13 @@ public class Stage_Menu : MonoBehaviour
 		trophyButton.gameObject.SetActive (unlock);
 
 		starsCount.transform.parent.gameObject.SetActive (!unlock);
+
+		if (unlock && !isUnlocked)
+		{
+			if (OnStageUnlock != null)
+				OnStageUnlock (this);
+		}
+
+		isUnlocked = unlock;
 	}
 }

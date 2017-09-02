@@ -104,7 +104,6 @@ public class ScoreManager : Singleton<ScoreManager>
 			
 			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
 
-
 			//Debug.Log (level + " : " + level.starsEarned);
 		}
 
@@ -140,9 +139,10 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		starsEarned = 0;
 
-		foreach (Transform t in LevelsManager.Instance.transform) {
+		foreach (Transform t in LevelsManager.Instance.transform)
+		{
 			Level level = t.GetComponent<Level> ();
-			
+
 			starsEarned += level.starsEarned;
 		}
 
@@ -228,7 +228,8 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void OnApplicationQuit ()
 	{
-		if (saveOnStop) {
+		if (saveOnStop)
+		{
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
 			//StatsManager.Instance.StopLevelTrack (false);

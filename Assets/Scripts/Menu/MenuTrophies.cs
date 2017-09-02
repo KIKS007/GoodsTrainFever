@@ -25,6 +25,11 @@ public class MenuTrophies : MenuComponent
 	public float relativeMaxScale;
 	public float relativeMinScale;
 
+	[Header ("Quit Button")]
+	public bool endLevel = false;
+	public Transform newTrophy;
+	public Transform quitButton;
+
 	private GameObject _trophy;
 	private Vector3 _deltaPosition;
 	private Vector3 _mousePosition;
@@ -152,6 +157,19 @@ public class MenuTrophies : MenuComponent
 	{
 		base.OnShow ();
 
+		if (endLevel)
+		{
+			MenuManager.Instance.backButton.localScale = Vector3.zero;
+			quitButton.localScale = Vector3.one;
+			newTrophy.localScale = Vector3.one;
+		}
+		else
+		{
+			MenuManager.Instance.backButton.localScale = Vector3.one;
+			quitButton.localScale = Vector3.zero;
+			newTrophy.localScale = Vector3.zero;
+		}
+
 		if (_trophy)
 			Destroy (_trophy);
 
@@ -188,6 +206,8 @@ public class MenuTrophies : MenuComponent
 
 		if(_trophy != null)
 			_trophy.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration * 0.5f).SetEase (trophyEase).OnComplete (()=> Destroy (_trophy));
+
+		DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration, ()=> MenuManager.Instance.backButton.localScale = Vector3.one);
 	}
 
 	IEnumerator ShowTrophy (Vector3 scale)

@@ -160,7 +160,8 @@ public class MenuLevels : MenuComponent
 	{
 		int starsRequired = 0;
 
-		foreach (var s in ScoreManager.Instance.levelStages) {
+		foreach (var s in ScoreManager.Instance.levelStages) 
+		{
 			int stars = s.starsRequired;
 
 			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
