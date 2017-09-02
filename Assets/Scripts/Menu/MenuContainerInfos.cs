@@ -80,7 +80,7 @@ public class MenuContainerInfos : MenuComponent
 			Destroy (t.gameObject);
 
 		type.text = _selectedContainer.containerType.ToString ();
-		size.text = _selectedContainer.isDoubleSize ? "40 feet" : "20 feet";
+		size.text = _selectedContainer.isDoubleSize ? "40 pieds" : "20 pieds";
 
 		Vector2 position = constraintPosition;
 

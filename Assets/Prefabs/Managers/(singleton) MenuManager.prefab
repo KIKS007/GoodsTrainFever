@@ -53,12 +53,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inTransition: 0
   UICanvasGroup: {fileID: 0}
+  disableMenusOnHide: 1
   menuParent: {fileID: 0}
   menuOnStart: {fileID: 0}
   currentMenu: {fileID: 0}
   mainMenu: {fileID: 0}
   title: {fileID: 0}
   titleHiddenYPos: 260
+  MainMenuBackground: {fileID: 0}
+  MainMenuSun: {fileID: 0}
+  MainMenuCloud1: {fileID: 0}
+  MainMenuCloud2: {fileID: 0}
+  MainMenuLand: {fileID: 0}
+  MainMenuTrees: {fileID: 0}
+  MainMenuLocomotive: {fileID: 0}
+  MainMenuContainer1: {fileID: 0}
+  MainMenuContainer2: {fileID: 0}
   endLevelDelay: 1
   endLevelMenu: {fileID: 0}
   pauseButton: {fileID: 0}

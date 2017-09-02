@@ -8,11 +8,12 @@ using UnityEngine.UI;
 
 public enum ContainerType
 {
-	Basic,
-	Cooled,
-	Tank,
-	Dangerous}
-;
+	Basique,
+	Réfrigéré,
+	Citerne,
+	Dangereux
+}
+
 
 public enum ContainerColor
 {
@@ -32,7 +33,7 @@ public class Container : Touchable
 	public static Action OnContainerMoved;
 
 	[Header ("Container Type")]
-	public ContainerType containerType = ContainerType.Basic;
+	public ContainerType containerType = ContainerType.Basique;
 	public ContainerColor containerColor;
 
 	[Header ("States")]
