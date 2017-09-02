@@ -15,6 +15,12 @@ public class Stage_Menu : MonoBehaviour
 	public Text starsCount;
 	public GameObject lockImage;
 	public Button trophyButton;
+	public Text trophyTitle;
+
+	[HideInInspector]
+	public int trophyStageIndex = 0;
+	[HideInInspector]
+	public bool _allTrophiesMenu = false;
 
 	void Start ()
 	{
@@ -34,16 +40,20 @@ public class Stage_Menu : MonoBehaviour
 
 		lockImage.SetActive (!unlock);
 
+		trophyTitle.gameObject.SetActive (unlock);
+
 		trophyButton.gameObject.SetActive (unlock);
 
 		starsCount.transform.parent.gameObject.SetActive (!unlock);
 
-		if (unlock && !isUnlocked)
+		if (unlock && !isUnlocked && !_allTrophiesMenu)
 		{
 			if (OnStageUnlock != null)
 				OnStageUnlock (this);
 		}
 
 		isUnlocked = unlock;
+
+		trophyTitle.text = ScoreManager.Instance.levelStages [trophyStageIndex].trophy.GetComponent<Trophy_Menu> ().meshTitle;
 	}
 }

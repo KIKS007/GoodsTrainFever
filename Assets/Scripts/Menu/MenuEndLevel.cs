@@ -33,6 +33,7 @@ public class MenuEndLevel : MenuComponent
 	public override void OnShow ()
 	{
 		base.OnShow ();
+
 		if (this.gameObject.activeInHierarchy == false) {
 			this.gameObject.SetActive (true);
 		}
@@ -68,7 +69,8 @@ public class MenuEndLevel : MenuComponent
 		else
 			defeat.gameObject.SetActive (true);
 
-		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) {
+		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++)
+		{
 			RectTransform starOuter = starsOuter [i];
 			Image starInner = starsInner [i];
 

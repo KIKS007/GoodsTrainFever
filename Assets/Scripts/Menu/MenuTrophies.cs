@@ -175,26 +175,20 @@ public class MenuTrophies : MenuComponent
 
 		Vector3 scale = new Vector3 ();
 
-		foreach(var s in ScoreManager.Instance.levelStages)
-		{
-			if(s.stage == stageMenu)
-			{
-				_trophy = Instantiate (s.trophy, s.trophy.transform.position, s.trophy.transform.rotation, GlobalVariables.Instance.gameplayParent) as GameObject;
-				Trophy_Menu trophyMenu = _trophy.GetComponent<Trophy_Menu> ();
+		Stage s = ScoreManager.Instance.levelStages [stageMenu.trophyStageIndex];
+		_trophy = Instantiate (s.trophy, s.trophy.transform.position, s.trophy.transform.rotation, GlobalVariables.Instance.gameplayParent) as GameObject;
+		Trophy_Menu trophyMenu = _trophy.GetComponent<Trophy_Menu> ();
 
-				_trophy.transform.localPosition = s.trophy.transform.localPosition;
-				_trophy.transform.localRotation = s.trophy.transform.localRotation;
+		_trophy.transform.localPosition = s.trophy.transform.localPosition;
+		_trophy.transform.localRotation = s.trophy.transform.localRotation;
 
-				_initialXScale = _trophy.transform.localScale.x;
+		_initialXScale = _trophy.transform.localScale.x;
 
-				scale = _trophy.transform.localScale;
-				_trophy.transform.localScale = Vector3.zero;
+		scale = _trophy.transform.localScale;
+		_trophy.transform.localScale = Vector3.zero;
 
-				titleText.text = trophyMenu.meshTitle;
-				factText.text = trophyMenu.funFact;
-				break;
-			}
-		}
+		titleText.text = trophyMenu.meshTitle;
+		factText.text = trophyMenu.funFact;
 
 		if(_trophy != null)
 			StartCoroutine (ShowTrophy (scale));

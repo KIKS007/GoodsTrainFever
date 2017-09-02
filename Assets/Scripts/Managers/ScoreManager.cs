@@ -46,8 +46,8 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		PlayerPrefs.DeleteAll ();
 
-		if (Application.isPlaying)
-			saveOnStop = false;
+		/*if (Application.isPlaying)
+			saveOnStop = false;*/
 	}
 
 	public bool IsLevelUnlocked (int levelIndex)
@@ -73,9 +73,15 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void ResetAllLevelsStars ()
 	{
-		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
+		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) 
+		{
 			ResetLevelStars (i);
 		}
+
+		UpdateStars ();
+
+		MenuManager.Instance.menulevels.UpdateLevels ();
+		MenuManager.Instance.menuAllTrophies.UpdateLevels ();
 	}
 
 	public void UnlockAllLevels ()
@@ -133,6 +139,7 @@ public class ScoreManager : Singleton<ScoreManager>
 			level.starsStates [i] = StarState.Locked;
 
 		FindObjectOfType<MenuLevels> ().UpdateLevels ();
+		FindObjectOfType<MenuAllTrophies> ().UpdateLevels ();
 	}
 
 	public void UpdateStars ()
@@ -147,6 +154,7 @@ public class ScoreManager : Singleton<ScoreManager>
 		}
 
 		menuLevels.UpdateLevels ();
+		MenuManager.Instance.menuAllTrophies.UpdateLevels ();
 	}
 
 	public void UnlockStars (int ordersPrepared, int trainsCount, int levelIndex)
