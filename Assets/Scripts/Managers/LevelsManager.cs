@@ -777,12 +777,6 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			previousContainer = container;
 		}
-
-		//Wagons Overweight
-		foreach (var w in train.wagons) {
-			if (w.overweight)
-				currentErrors++;
-		}
 	}
 
 	public void OrderSent (Order_Level orderLevel)

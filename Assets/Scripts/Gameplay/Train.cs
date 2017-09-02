@@ -124,9 +124,6 @@ public class Train : Touchable
 
 		if(subordinateSpots.Count > 0)
 			SetupSubordinatesContainers (subordinateSpots);
-
-		foreach (var w in wagons)
-			w.UpdateWeight ();
 	}
 
 	void SetupSubordinatesContainers (List<Spot> subordinateSpots)
@@ -162,13 +159,11 @@ public class Train : Touchable
 		spot.OnSpotTaken += (arg) => 
 		{
 			spot._wagon.containers [wagonContainersIndex] = arg;
-			spot._wagon.UpdateWeight ();
 		};
 		
 		spot.OnSpotFreed += (arg) => 
 		{
 			spot._wagon.containers [wagonContainersIndex] = null;
-			spot._wagon.UpdateWeight ();
 		};
 
 		if(spot.container)
@@ -199,13 +194,11 @@ public class Train : Touchable
 		spot.OnSpotTaken += (arg) => 
 		{
 			spot._wagon.containers [wagonContainersIndex] = arg;
-			spot._wagon.UpdateWeight ();
 		};
 
 		spot.OnSpotFreed += (arg) => 
 		{
 			spot._wagon.containers [wagonContainersIndex] = null;
-			spot._wagon.UpdateWeight ();
 		};
 
 		if(spot.container)
