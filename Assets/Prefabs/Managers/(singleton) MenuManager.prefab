@@ -77,12 +77,14 @@ MonoBehaviour:
   menuTrophies: {fileID: 0}
   menuPanel: {fileID: 0}
   menulevels: {fileID: 0}
+  menuAllTrophies: {fileID: 0}
   backButton: {fileID: 0}
   backButtonHiddenPos: {x: 70, y: -80}
   menuEase: 6
   menuAnimationDuration: 0.15
   menuHidePosition: {x: 0, y: -1500}
   menuShowPosition: {x: 0, y: 0}
+  unlockedStages: []
   movementEase: 6
   movementDuration: 0.5
   menuPosition: {x: 5.9, y: 7.5, z: -3.29}

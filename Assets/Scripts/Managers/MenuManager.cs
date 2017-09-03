@@ -48,7 +48,8 @@ public class MenuManager : Singleton<MenuManager>
     public CanvasGroup menuPanel;
 
     [Header("Menu Levels")]
-    public MenuLevels menulevels;
+	public MenuLevels menulevels;
+	public MenuAllTrophies menuAllTrophies;
 
     [Header("Back Button")]
     public RectTransform backButton;
@@ -100,7 +101,8 @@ public class MenuManager : Singleton<MenuManager>
 
         _backButtonShowPos = backButton.anchoredPosition;
 
-        menulevels.SetupLevels();
+		menulevels.SetupLevels();
+		menuAllTrophies.SetupLevels();
 
 		Stage_Menu.OnStageUnlock += (Stage_Menu obj) => unlockedStages.Add (obj);
 
