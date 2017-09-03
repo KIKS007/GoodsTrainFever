@@ -33388,7 +33388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SheetID: 1H0Z-qq098mlHlZ_8X1yzz5Y5RkL53uBtS4lWbmxVpAM
-  sync: 1
+  sync: 0
   refresh: 0
   fetch: 0
   CurrentLang: French
@@ -40621,22 +40621,22 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 539.8582
+      value: 539.5237
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1079.7164
+      value: 1079.0474
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 223638314185781534, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -48931,6 +48931,10 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1824012341542940, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1147340559137986, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
