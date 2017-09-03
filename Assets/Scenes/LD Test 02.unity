@@ -40621,22 +40621,22 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 540.36096
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1080
+      value: 1080.7219
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 223638314185781534, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -41148,6 +41148,12 @@ Prefab:
       propertyPath: m_LocalRotation.z
       value: -0.000000047375185
       objectReference: {fileID: 0}
+    - target: {fileID: 114090349324089720, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
   m_IsPrefabParent: 0
@@ -42741,6 +42747,12 @@ Prefab:
       propertyPath: vibrateColor.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114090349324089720, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
   m_IsPrefabParent: 0
@@ -48845,6 +48857,14 @@ Prefab:
       value: 186
       objectReference: {fileID: 0}
     - target: {fileID: 1631320666611976, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896123337553810, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824012341542940, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
