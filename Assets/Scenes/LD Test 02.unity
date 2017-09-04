@@ -25022,25 +25022,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 171106684}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &173633650 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1633908757187790, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 2126233753}
---- !u!114 &173633654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 173633650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: 2}
-  m_UseGraphicAlpha: 1
 --- !u!1 &181782856
 GameObject:
   m_ObjectHideFlags: 0
@@ -31058,1145 +31039,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 818317361}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &821828199 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1857164817768490, guid: 2791c24f66192de4098af2699650c2ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 2126233753}
---- !u!114 &821828202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 821828199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d492d00279c38d04bbbd764b09166bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showGizmo: 0
-  soundSpawnMode: 2
-  disableSounds: 0
-  showPoolManager: 0
-  showNGUI: 0
-  unityUIMode: 1
-  logMissingEvents: 1
-  startSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  visibleSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  invisibleSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  collisionSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  collisionExitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  triggerSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  triggerExitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  mouseEnterSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  mouseExitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  mouseClickSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  mouseUpSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  mouseDragSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  spawnedSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  despawnedSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  enableSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  disableSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  collision2dSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  collisionExit2dSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  triggerEnter2dSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  triggerExit2dSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  particleCollisionSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  nguiOnClickSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  nguiMouseDownSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  nguiMouseUpSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  nguiMouseEnterSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  nguiMouseExitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unitySliderChangedSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityButtonClickedSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityPointerDownSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityDragSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityPointerUpSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityPointerEnterSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityPointerExitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityDropSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityScrollSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityUpdateSelectedSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unitySelectSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityDeselectSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityMoveSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityInitializePotentialDragSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityBeginDragSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityEndDragSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unitySubmitSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityCancelSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents: []
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  unityToggleSound:
-    isExpanded: 1
-    useLayerFilter: 0
-    useTagFilter: 0
-    matchingLayers: 00000000
-    matchingTags:
-    - Default
-    customSoundActive: 0
-    isCustomEvent: 0
-    customEventName: 
-    mechanimEventActive: 0
-    isMechanimStateCheckEvent: 0
-    mechanimStateName: 
-    mechEventPlayedForState: 0
-    SoundEvents:
-    - actionName: Your action name
-      isExpanded: 1
-      soundType: 
-      allPlaylistControllersForGroupCmd: 1
-      allSoundTypesForGroupCmd: 0
-      allSoundTypesForBusCmd: 0
-      volume: 1
-      useFixedPitch: 0
-      pitch: 1
-      delaySound: 0
-      currentSoundFunctionType: 3
-      currentPlaylistCommand: 11
-      currentSoundGroupCommand: 0
-      currentBusCommand: 0
-      currentCustomEventCommand: 0
-      currentGlobalCommand: 0
-      currentMixerCommand: 0
-      snapshotToTransitionTo: {fileID: 0}
-      snapshotTransitionTime: 1
-      snapshotsToBlend:
-      - snapshot: {fileID: 0}
-        weight: 1
-      currentPersistentSettingsCommand: 0
-      busName: 
-      playlistName: 
-      playlistControllerName: 
-      startPlaylist: 1
-      fadeVolume: 0
-      fadeTime: 1
-      targetVolMode: 0
-      clipName: '[None]'
-      variationType: 1
-      variationName: 
-      theCustomEventName: 
-    mouseDragStopMode: 0
-    mouseDragFadeOutTime: 1
-    retriggerLimitMode: 0
-    limitPerXFrm: 0
-    limitPerXSec: 0
-    triggeredLastFrame: -100
-    triggeredLastTime: -100
-    sliderValue: 0
-  userDefinedSounds: []
-  mechanimStateChangedSounds: []
-  useStartSound: 0
-  useVisibleSound: 0
-  useInvisibleSound: 0
-  useCollisionSound: 0
-  useCollisionExitSound: 0
-  useTriggerEnterSound: 0
-  useTriggerExitSound: 0
-  useMouseEnterSound: 0
-  useMouseExitSound: 0
-  useMouseClickSound: 0
-  useMouseUpSound: 0
-  useMouseDragSound: 0
-  useSpawnedSound: 0
-  useDespawnedSound: 0
-  useEnableSound: 0
-  useDisableSound: 0
-  useCollision2dSound: 0
-  useCollisionExit2dSound: 0
-  useTriggerEnter2dSound: 0
-  useTriggerExit2dSound: 0
-  useParticleCollisionSound: 0
-  useNguiOnClickSound: 0
-  useNguiMouseDownSound: 0
-  useNguiMouseUpSound: 0
-  useNguiMouseEnterSound: 0
-  useNguiMouseExitSound: 0
-  useUnitySliderChangedSound: 0
-  useUnityButtonClickedSound: 0
-  useUnityPointerDownSound: 0
-  useUnityDragSound: 0
-  useUnityPointerUpSound: 0
-  useUnityPointerEnterSound: 0
-  useUnityPointerExitSound: 0
-  useUnityDropSound: 0
-  useUnityScrollSound: 0
-  useUnityUpdateSelectedSound: 0
-  useUnitySelectSound: 0
-  useUnityDeselectSound: 0
-  useUnityMoveSound: 0
-  useUnityInitializePotentialDragSound: 0
-  useUnityBeginDragSound: 0
-  useUnityEndDragSound: 0
-  useUnitySubmitSound: 0
-  useUnityCancelSound: 0
-  useUnityToggleSound: 1
 --- !u!1 &827580671
 GameObject:
   m_ObjectHideFlags: 0
@@ -36912,22 +35754,22 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 540.2411
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1080.4822
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
@@ -46058,11 +44900,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 224163262203264584, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -46153,31 +44990,166 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114138148116721034, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2150}
-    - target: {fileID: 114138148116721034, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114780895699132964, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2137}
-    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 2347}
-    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 2219}
+      objectReference: {fileID: 1139261884}
+    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2150}
+    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2150}
+    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 1139261884}
+    - target: {fileID: 114972834311427292, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114806080179616018, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2178}
+    - target: {fileID: 114961626630381642, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114961626630381642, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114524815899836562, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1139261884}
+    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1139261884}
+    - target: {fileID: 114349693058228284, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2150}
+    - target: {fileID: 114349693058228284, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114229198874397806, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114229198874397806, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114552859469810998, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2321}
+    - target: {fileID: 114552859469810998, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114166478440119782, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114705840999178142, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114670326319010786, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1139261884}
+    - target: {fileID: 114844888052279282, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2347}
+    - target: {fileID: 114957392558883012, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114575345026014208, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2137}
+    - target: {fileID: 114575345026014208, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 2178}
+    - target: {fileID: 114296627665992184, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2326}
+    - target: {fileID: 114296627665992184, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2178}
     - target: {fileID: 114517270601148830, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -46193,166 +45165,31 @@ Prefab:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2326}
-    - target: {fileID: 114296627665992184, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2326}
-    - target: {fileID: 114296627665992184, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2178}
-    - target: {fileID: 114575345026014208, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2137}
-    - target: {fileID: 114575345026014208, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
-      value: 
-      objectReference: {fileID: 2178}
-    - target: {fileID: 114957392558883012, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114844888052279282, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114670326319010786, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1139261884}
-    - target: {fileID: 114705840999178142, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114166478440119782, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114552859469810998, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2321}
-    - target: {fileID: 114552859469810998, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114229198874397806, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114229198874397806, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114349693058228284, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2150}
-    - target: {fileID: 114349693058228284, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114597332027312058, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1139261884}
-    - target: {fileID: 114524815899836562, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1139261884}
-    - target: {fileID: 114961626630381642, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 2347}
-    - target: {fileID: 114961626630381642, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114806080179616018, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2178}
-    - target: {fileID: 114972834311427292, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2150}
-    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 2150}
-    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 114697117743271274, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 2347}
-    - target: {fileID: 114325271768141984, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
-      value: 
-      objectReference: {fileID: 1139261884}
-    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
+      objectReference: {fileID: 2219}
+    - target: {fileID: 114138148116721034, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2137}
-    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
+      objectReference: {fileID: 2150}
+    - target: {fileID: 114138148116721034, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2347}
-    - target: {fileID: 114259735400189752, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
-      value: 
-      objectReference: {fileID: 1139261884}
-    - target: {fileID: 114780895699132964, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2137}
     - target: {fileID: 223512979586029838, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_Camera
@@ -46368,226 +45205,19 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
       objectReference: {fileID: 2178}
-    - target: {fileID: 224714581784064504, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 224977403184940294, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 400.00006
+      value: 42.90001
       objectReference: {fileID: 0}
-    - target: {fileID: 224363318118457528, guid: 2791c24f66192de4098af2699650c2ed,
+    - target: {fileID: 224977403184940294, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 400.00006
+      propertyPath: m_AnchoredPosition.y
+      value: 1.0999999
       objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: contents.Array.data[0].showPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: contents.Array.data[1].showPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: contents.Array.data[2].showPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: contents.Array.data[2].showPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: contents.Array.data[3].showPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: menuCanvasGroup
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1825443539305592, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+    - target: {fileID: 1631320666611976, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114284839660205788, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 114056998882621350, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 114278596596157890, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 114870095638233486, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 224247747226254520, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -669.9991
-      objectReference: {fileID: 0}
-    - target: {fileID: 224795456673384824, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 734.99884
-      objectReference: {fileID: 0}
-    - target: {fileID: 224194202563498626, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 660.9991
-      objectReference: {fileID: 0}
-    - target: {fileID: 224184138954736250, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 198.99998
-      objectReference: {fileID: 0}
-    - target: {fileID: 224665899884907462, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -706.9991
-      objectReference: {fileID: 0}
-    - target: {fileID: 224714581784064504, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 711.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 114923703364860648, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 61
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 81
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 87
-      objectReference: {fileID: 0}
-    - target: {fileID: 114870095638233486, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_Text
-      value: "Commandes envoy\xE9es"
-      objectReference: {fileID: 0}
-    - target: {fileID: 224535119696385436, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224535119696385436, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -276
-      objectReference: {fileID: 0}
-    - target: {fileID: 224535119696385436, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 299
-      objectReference: {fileID: 0}
-    - target: {fileID: 224535119696385436, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114870095638233486, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 224535119696385436, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 72.501
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224142648325443902, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224823062565785238, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -387
-      objectReference: {fileID: 0}
-    - target: {fileID: 114481261504108614, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 114728219981435120, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
-    - target: {fileID: 114694328080963306, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: menuCanvasGroup
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1152439258}
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MuteAllPlaylists
-      objectReference: {fileID: 0}
-    - target: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
-        type: 2}
-      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
