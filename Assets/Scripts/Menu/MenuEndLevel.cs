@@ -9,7 +9,6 @@ public class MenuEndLevel : MenuComponent
 	[Header ("Level Infos")]
 	public Text levelTitle;
 	public Text ordersSent;
-	public Text trainsSent;
 	public Text duration;
 
 	[Header ("Stars")]
@@ -34,6 +33,7 @@ public class MenuEndLevel : MenuComponent
 	public override void OnShow ()
 	{
 		base.OnShow ();
+
 		if (this.gameObject.activeInHierarchy == false) {
 			this.gameObject.SetActive (true);
 		}
@@ -43,11 +43,9 @@ public class MenuEndLevel : MenuComponent
 
 	IEnumerator LevelInfos ()
 	{
-		levelTitle.text = "Level " + (LevelsManager.Instance.levelIndex + 1).ToString ();
+		levelTitle.text = "Niveau " + (LevelsManager.Instance.levelIndex + 1).ToString ();
 
 		ordersSent.text = OrdersManager.Instance.ordersSentCount.ToString () + "/" + LevelsManager.Instance.orders.Count;
-		trainsSent.text = LevelsManager.Instance.trainsUsed.ToString () + "/" + LevelsManager.Instance.currentLevel.leastTrainsCount.ToString ();
-		//trainsSent.text = LevelsManager.Instance.trainsUsed.ToString () + "/" + LevelsManager.Instance.currentLevel.leastTrainsCount.ToString ();
 		duration.text = LevelsManager.Instance.levelDuration.ToString ();
 
 		if (LevelsManager.Instance.levelIndex + 1 == LevelsManager.Instance.levelsCount || !ScoreManager.Instance.IsLevelUnlocked (LevelsManager.Instance.levelIndex + 1))
@@ -59,7 +57,7 @@ public class MenuEndLevel : MenuComponent
 		defeat.gameObject.SetActive (false);
 
 		errorsCount.text = LevelsManager.Instance.errorsLocked.ToString ();
-		errorsAllowedCount.text = "On " + LevelsManager.Instance.errorsAllowed.ToString () + " allowed";
+		errorsAllowedCount.text = "Sur " + LevelsManager.Instance.errorsAllowed.ToString () + " autorisées";
 
 		/*	if (LevelsManager.Instance.errorsLocked == 0)
 			errorsParent.SetActive (false);
@@ -71,7 +69,8 @@ public class MenuEndLevel : MenuComponent
 		else
 			defeat.gameObject.SetActive (true);
 
-		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) {
+		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++)
+		{
 			RectTransform starOuter = starsOuter [i];
 			Image starInner = starsInner [i];
 
@@ -113,7 +112,6 @@ public class MenuEndLevel : MenuComponent
 
 				});
 				
-
 				break;
 			}
 		}

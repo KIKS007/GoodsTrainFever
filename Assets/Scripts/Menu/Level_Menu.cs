@@ -26,7 +26,7 @@ public class Level_Menu : MonoBehaviour
 		if(stage != null)
 			levelStage = stage;
 
-		levelTitle.text = "Level " + (index + 1).ToString ();
+		levelTitle.text = "Niveau " + (index + 1).ToString ();
 
 		for (int i = 0; i < 3; i++)
 		{

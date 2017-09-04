@@ -44,6 +44,13 @@ public class MenuLevels : MenuComponent
 		UpdateLevels ();
 	}
 
+	public override void OnShow ()
+	{
+		base.OnShow ();
+
+		MenuManager.Instance.menuTrophies.backMenu = this;
+	}
+
 	void SetLevelPosition ()
 	{
 		//LevelsManager.Instance.levelIndex
@@ -56,6 +63,9 @@ public class MenuLevels : MenuComponent
 				stages++;
 
 		index += stages;
+
+		if(LevelsManager.Instance.currentLevel.starsEarned > 0)
+			index++;
 
 		levelsScrollView.anchoredPosition = new Vector2 (-index * (levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x + levelsSpacing) - 6, levelsScrollView.anchoredPosition.y);
 	}
@@ -111,7 +121,9 @@ public class MenuLevels : MenuComponent
 			panelsCount++;
 
 			Stage_Menu stageTemp = SetupLevelStage (i, panelsCount);
-			if (stageTemp != null) {
+
+			if (stageTemp != null) 
+			{
 				stageMenu = stageTemp;
 				panelsCount++;
 			}
@@ -133,8 +145,10 @@ public class MenuLevels : MenuComponent
 
 	Stage_Menu SetupLevelStage (int index, int panelsCount)
 	{
-		foreach (var s in ScoreManager.Instance.levelStages) {
-			if (s.index == index + 1) {
+		for(int i = 0; i < ScoreManager.Instance.levelStages.Count; i++)
+		{
+			if (ScoreManager.Instance.levelStages [i].index == index + 1) 
+			{
 				Vector2 stagePanelPosition = levelPosition;
 				stagePanelPosition.x += (_levelsPanelWidth + levelsSpacing) * panelsCount;
 
@@ -145,9 +159,12 @@ public class MenuLevels : MenuComponent
 				stagePanel.anchoredPosition = stagePanelPosition;
 
 				Stage_Menu stage = stagePanel.GetComponent<Stage_Menu> ();
-				s.stage = stage;
 
-				stage.Setup (false, s.starsRequired);
+				ScoreManager.Instance.levelStages [i].stage = stage;
+
+				stage.trophyStageIndex = i;
+
+				stage.Setup (false, ScoreManager.Instance.levelStages [i].starsRequired);
 
 				return stage;
 			}
@@ -160,7 +177,8 @@ public class MenuLevels : MenuComponent
 	{
 		int starsRequired = 0;
 
-		foreach (var s in ScoreManager.Instance.levelStages) {
+		foreach (var s in ScoreManager.Instance.levelStages) 
+		{
 			int stars = s.starsRequired;
 
 			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)

@@ -25,6 +25,11 @@ public class MenuTrophies : MenuComponent
 	public float relativeMaxScale;
 	public float relativeMinScale;
 
+	[Header ("Quit Button")]
+	public bool endLevel = false;
+	public Transform newTrophy;
+	public Transform quitButton;
+
 	private GameObject _trophy;
 	private Vector3 _deltaPosition;
 	private Vector3 _mousePosition;
@@ -152,31 +157,38 @@ public class MenuTrophies : MenuComponent
 	{
 		base.OnShow ();
 
+		if (endLevel)
+		{
+			MenuManager.Instance.backButton.localScale = Vector3.zero;
+			quitButton.localScale = Vector3.one;
+			newTrophy.localScale = Vector3.one;
+		}
+		else
+		{
+			MenuManager.Instance.backButton.localScale = Vector3.one;
+			quitButton.localScale = Vector3.zero;
+			newTrophy.localScale = Vector3.zero;
+		}
+
 		if (_trophy)
 			Destroy (_trophy);
 
 		Vector3 scale = new Vector3 ();
 
-		foreach(var s in ScoreManager.Instance.levelStages)
-		{
-			if(s.stage == stageMenu)
-			{
-				_trophy = Instantiate (s.trophy, s.trophy.transform.position, s.trophy.transform.rotation, GlobalVariables.Instance.gameplayParent) as GameObject;
-				Trophy_Menu trophyMenu = _trophy.GetComponent<Trophy_Menu> ();
+		Stage s = ScoreManager.Instance.levelStages [stageMenu.trophyStageIndex];
+		_trophy = Instantiate (s.trophy, s.trophy.transform.position, s.trophy.transform.rotation, GlobalVariables.Instance.gameplayParent) as GameObject;
+		Trophy_Menu trophyMenu = _trophy.GetComponent<Trophy_Menu> ();
 
-				_trophy.transform.localPosition = s.trophy.transform.localPosition;
-				_trophy.transform.localRotation = s.trophy.transform.localRotation;
+		_trophy.transform.localPosition = s.trophy.transform.localPosition;
+		_trophy.transform.localRotation = s.trophy.transform.localRotation;
 
-				_initialXScale = _trophy.transform.localScale.x;
+		_initialXScale = _trophy.transform.localScale.x;
 
-				scale = _trophy.transform.localScale;
-				_trophy.transform.localScale = Vector3.zero;
+		scale = _trophy.transform.localScale;
+		_trophy.transform.localScale = Vector3.zero;
 
-				titleText.text = trophyMenu.meshTitle;
-				factText.text = trophyMenu.funFact;
-				break;
-			}
-		}
+		titleText.text = trophyMenu.meshTitle;
+		factText.text = trophyMenu.funFact;
 
 		if(_trophy != null)
 			StartCoroutine (ShowTrophy (scale));
@@ -188,6 +200,8 @@ public class MenuTrophies : MenuComponent
 
 		if(_trophy != null)
 			_trophy.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration * 0.5f).SetEase (trophyEase).OnComplete (()=> Destroy (_trophy));
+
+		DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration, ()=> MenuManager.Instance.backButton.localScale = Vector3.one);
 	}
 
 	IEnumerator ShowTrophy (Vector3 scale)

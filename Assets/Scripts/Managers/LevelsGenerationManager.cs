@@ -464,8 +464,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		{
 			foreach(var w in t.wagons)
 			{
-				w.UpdateWeight ();
-
 				int maxWeight = w.currentWeight;
 
 				if (Random.Range (0, 100) < wagonInfiniteWeightChance)
@@ -523,12 +521,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 					containersCount++;
 
 			fillingPercentage = Mathf.RoundToInt (((float)containersCount / (float)train.containers.Count) * 100f);
-		}
-
-		foreach(var t in _trainsGenerated)
-		{
-			foreach(var w in t.wagons)
-				w.UpdateWeight ();
 		}
 	}
 

@@ -658,16 +658,16 @@ public class LevelsManager : Singleton<LevelsManager>
 		GameObject prefab = basicContainersPrefabs [0];
 
 		switch (container_Level.containerType) {
-		case ContainerType.Basic:
+		case ContainerType.Basique:
 			prefab = container_Level.isDoubleSize ? basicContainersPrefabs [1] : basicContainersPrefabs [0];
 			break;
-		case ContainerType.Cooled:
+		case ContainerType.Réfrigéré:
 			prefab = container_Level.isDoubleSize ? cooledContainersPrefabs [1] : cooledContainersPrefabs [0];
 			break;
-		case ContainerType.Tank:
+		case ContainerType.Citerne:
 			prefab = container_Level.isDoubleSize ? tankContainersPrefabs [1] : tankContainersPrefabs [0];
 			break;
-		case ContainerType.Dangerous:
+		case ContainerType.Dangereux:
 			prefab = container_Level.isDoubleSize ? dangerousContainersPrefabs [1] : dangerousContainersPrefabs [0];
 			break;
 		}
@@ -776,12 +776,6 @@ public class LevelsManager : Singleton<LevelsManager>
 			}
 
 			previousContainer = container;
-		}
-
-		//Wagons Overweight
-		foreach (var w in train.wagons) {
-			if (w.overweight)
-				currentErrors++;
 		}
 	}
 

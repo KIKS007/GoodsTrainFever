@@ -53,12 +53,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inTransition: 0
   UICanvasGroup: {fileID: 0}
+  disableMenusOnHide: 1
   menuParent: {fileID: 0}
   menuOnStart: {fileID: 0}
   currentMenu: {fileID: 0}
   mainMenu: {fileID: 0}
   title: {fileID: 0}
   titleHiddenYPos: 260
+  MainMenuBackground: {fileID: 0}
+  MainMenuSun: {fileID: 0}
+  MainMenuCloud1: {fileID: 0}
+  MainMenuCloud2: {fileID: 0}
+  MainMenuLand: {fileID: 0}
+  MainMenuTrees: {fileID: 0}
+  MainMenuLocomotive: {fileID: 0}
+  MainMenuContainer1: {fileID: 0}
+  MainMenuContainer2: {fileID: 0}
   endLevelDelay: 1
   endLevelMenu: {fileID: 0}
   pauseButton: {fileID: 0}
@@ -67,12 +77,14 @@ MonoBehaviour:
   menuTrophies: {fileID: 0}
   menuPanel: {fileID: 0}
   menulevels: {fileID: 0}
+  menuAllTrophies: {fileID: 0}
   backButton: {fileID: 0}
   backButtonHiddenPos: {x: 70, y: -80}
   menuEase: 6
   menuAnimationDuration: 0.15
   menuHidePosition: {x: 0, y: -1500}
   menuShowPosition: {x: 0, y: 0}
+  unlockedStages: []
   movementEase: 6
   movementDuration: 0.5
   menuPosition: {x: 5.9, y: 7.5, z: -3.29}

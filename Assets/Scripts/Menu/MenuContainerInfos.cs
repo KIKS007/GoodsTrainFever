@@ -26,7 +26,6 @@ public class MenuContainerInfos : MenuComponent
 	[Header ("Elements")]
 	public Text type;
 	public Text size;
-	public Text weight;
 
 	[Header ("Constraints")]
 	public RectTransform constraintsParent;
@@ -81,8 +80,7 @@ public class MenuContainerInfos : MenuComponent
 			Destroy (t.gameObject);
 
 		type.text = _selectedContainer.containerType.ToString ();
-		size.text = _selectedContainer.isDoubleSize ? "40 feet" : "20 feet";
-		weight.text = _selectedContainer.weight.ToString ();
+		size.text = _selectedContainer.isDoubleSize ? "40 pieds" : "20 pieds";
 
 		Vector2 position = constraintPosition;
 
