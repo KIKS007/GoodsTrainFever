@@ -45,18 +45,17 @@ public class Tutorial_UI_Setup : MonoBehaviour
 				DestroyImmediate (child.gameObject);
 			}
 		}
-
+		#if UNITY_EDITOR
 		if (CharacterPosSetup) {
 			var tmpGO = go.transform.Find ("Character");
 			tmpGO.SetSiblingIndex (0);
 			UnityEditorInternal.ComponentUtility.CopyComponent (CharacterPos);
 			UnityEditorInternal.ComponentUtility.PasteComponentValues (tmpGO);
-
 		}
 
 
 
-		#if UNITY_EDITOR
+
 
 		if (BubbleSetup) {
 			var tmpGO = go.transform.Find ("Panel");
