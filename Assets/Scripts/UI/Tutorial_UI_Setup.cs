@@ -10,8 +10,10 @@ public class Tutorial_UI_Setup : MonoBehaviour
 	public Sprite Bubble;
 	public Transform BubblePlace;
 	public Transform BubbleTextPlace;
+	public Transform CharacterPos;
 	public Font BubbleFont;
 	public bool CharacterSetup;
+	public bool CharacterPosSetup;
 	public bool BubbleSetup;
 
 	[Button]
@@ -33,6 +35,8 @@ public class Tutorial_UI_Setup : MonoBehaviour
 		} else {
 			Debug.Log ("Setting " + go.name);
 		}
+
+
 		if (CharacterSetup) {
 			var tmpGO = go.transform.Find ("Character");
 			tmpGO.GetComponent<Image> ().color = Color.white;
@@ -41,6 +45,16 @@ public class Tutorial_UI_Setup : MonoBehaviour
 				DestroyImmediate (child.gameObject);
 			}
 		}
+
+		if (CharacterPosSetup) {
+			var tmpGO = go.transform.Find ("Character");
+			tmpGO.SetSiblingIndex (0);
+			UnityEditorInternal.ComponentUtility.CopyComponent (CharacterPos);
+			UnityEditorInternal.ComponentUtility.PasteComponentValues (tmpGO);
+
+		}
+
+
 
 		#if UNITY_EDITOR
 
