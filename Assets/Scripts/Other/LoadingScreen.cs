@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class LoadingScreen : MonoBehaviour
 {
-    public Image IE_Square, IE_I, IE_E;
+    public Image IE_Square, IE_I, IE_E, Logos;
     public Text IE_Ron, IE_Qual;
     public CanvasGroup IE_Logo, IE_Letters;
 
@@ -30,7 +30,9 @@ public class LoadingScreen : MonoBehaviour
         IE_Ron.DOFade(0, 0.5f).From().SetDelay(1.5f);
         IE_Qual.DOFade(0, 0.5f).From().SetDelay(1.5f);
 
-        DOVirtual.DelayedCall(3f, () => _animEnd = true);
+        Logos.DOFade(0, 0.5f).SetDelay(2.0f).From();
+
+        DOVirtual.DelayedCall(5f, () => _animEnd = true);
         StartCoroutine(SplashScreen());
     }
 
