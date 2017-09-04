@@ -6,8 +6,11 @@ using Sirenix.OdinInspector;
 using DG.Tweening;
 
 
-public class WaterDotween : MonoBehaviour 
+public class WaterDotween : MonoBehaviour
 {
+	public bool UseBlockWatersOnStart;
+	[ShowIf ("UseBlockWatersOnStart")]
+	public float StartDelay;
 	public float waterHeight;
 	public float waterSpeed;
 	public float waterLineDelay;
@@ -19,11 +22,41 @@ public class WaterDotween : MonoBehaviour
 	private float _yPosInitial;
 
 	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
-		GetWaterBlocks ();
-		SetWaterTween ();
+		if (UseBlockWatersOnStart) {
+			ActivateWaterScriptOnBlocks ();
+			DOVirtual.DelayedCall (StartDelay, () => {
+				DeactivateWaterScriptOnBlocks ();
+				GetWaterBlocks ();
+				SetWaterTween ();
+			});
+		} else {
+			DeactivateWaterScriptOnBlocks ();
+			GetWaterBlocks ();
+			SetWaterTween ();
+		}
+
+
 	}
+
+	[ButtonAttribute]
+	void ActivateWaterScriptOnBlocks ()
+	{
+		foreach (Transform t in this.transform) {
+			t.gameObject.GetComponent<Water> ().enabled = true;
+		}
+	}
+
+	[ButtonAttribute]
+	void DeactivateWaterScriptOnBlocks ()
+	{
+		foreach (Transform t in this.transform) {
+			t.gameObject.GetComponent<Water> ().enabled = false;
+		}
+	}
+
+
 
 	[ButtonAttribute]
 	void GetWaterBlocks ()
@@ -40,12 +73,10 @@ public class WaterDotween : MonoBehaviour
 		int rowsCount = 0;
 		waterRows.Add (new ListAsset ());
 
-		foreach(var w in blocks)
-		{
+		foreach (var w in blocks) {
 			if (w.transform.position.x == xPos)
 				waterRows [rowsCount].waterBlocks.Add (w);
-			else
-			{
+			else {
 				xPos = w.transform.position.x;
 				rowsCount++;
 				waterRows.Add (new ListAsset ());
@@ -59,11 +90,9 @@ public class WaterDotween : MonoBehaviour
 			row.waterBlocks = row.waterBlocks.OrderByDescending (x => x.transform.position.z).ToList ();
 
 		int siblingIndex = 0;
-		for(int i = 0; i < waterRows.Count; i++)
-		{
-			for(int j = 0; j < waterRows[i].waterBlocks.Count; j++)
-			{
-				waterRows[i].waterBlocks [j].name = "Water Row " + i + " Block " + j; 
+		for (int i = 0; i < waterRows.Count; i++) {
+			for (int j = 0; j < waterRows [i].waterBlocks.Count; j++) {
+				waterRows [i].waterBlocks [j].name = "Water Row " + i + " Block " + j; 
 				waterRows [i].waterBlocks [j].SetSiblingIndex (siblingIndex);
 				siblingIndex++;
 			}
@@ -80,12 +109,10 @@ public class WaterDotween : MonoBehaviour
 
 		float delay = 0;
 
-		for(int i = 0; i < waterRows.Count; i++)
-		{
+		for (int i = 0; i < waterRows.Count; i++) {
 			delay = waterRowDelay * i;
 
-			for(int j = 0; j < waterRows[i].waterBlocks.Count; j++)
-			{
+			for (int j = 0; j < waterRows [i].waterBlocks.Count; j++) {
 				DOTween.Kill (waterRows [i].waterBlocks [j]);
 				waterRows [i].waterBlocks [j].transform.position = new Vector3 (waterRows [i].waterBlocks [j].transform.position.x, _yPos, waterRows [i].waterBlocks [j].transform.position.z);
 
