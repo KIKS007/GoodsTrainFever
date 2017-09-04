@@ -19913,7 +19913,7 @@ MonoBehaviour:
   m_FillOrigin: 0
 --- !u!114 &1941 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114005311904798466, guid: 2791c24f66192de4098af2699650c2ed,
+  m_PrefabParentObject: {fileID: 114157660543201602, guid: 2791c24f66192de4098af2699650c2ed,
     type: 2}
   m_PrefabInternal: {fileID: 934192497}
   m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
@@ -35982,6 +35982,12 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1249413406}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1251365154 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114005311904798466, guid: 2791c24f66192de4098af2699650c2ed,
+    type: 2}
+  m_PrefabInternal: {fileID: 2126233753}
+  m_Script: {fileID: 11500000, guid: 540b7a01cb0d7af4f9b759a5e03a50d0, type: 3}
 --- !u!1 &1261040122
 GameObject:
   m_ObjectHideFlags: 0
@@ -41142,6 +41148,11 @@ Prefab:
       propertyPath: endLevelMenu
       value: 
       objectReference: {fileID: 2008}
+    - target: {fileID: 114283354071569982, guid: 3d1403a80d22d054ca888deebc22f9e2,
+        type: 2}
+      propertyPath: quitMenu
+      value: 
+      objectReference: {fileID: 1251365154}
     - target: {fileID: 114283354071569982, guid: 3d1403a80d22d054ca888deebc22f9e2,
         type: 2}
       propertyPath: pauseButton
