@@ -62,8 +62,7 @@ public class MenuAllTrophies : MenuComponent
 
 		int panelsCount = 0;
 
-		foreach(var s in ScoreManager.Instance.levelStages)
-		{
+		foreach (var s in ScoreManager.Instance.levelStages) {
 			_stagesMenu.Add (SetupLevelStage (s, panelsCount));
 			panelsCount++;
 		}
@@ -71,9 +70,8 @@ public class MenuAllTrophies : MenuComponent
 		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (panelsCount) + levelPosition.x - levelsSpacing;
 		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
 
-		if (PlayerPrefs.HasKey ("LevelsScrollRect"))
-		{
-			float x = PlayerPrefs.GetFloat ("LevelsScrollRect");
+		if (PlayerPrefs.HasKey ("TrophiesScrollRect")) {
+			float x = PlayerPrefs.GetFloat ("TrophiesScrollRect");
 			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
 		}
 
@@ -108,8 +106,7 @@ public class MenuAllTrophies : MenuComponent
 
 		int starsRequired = 0;
 
-		for(int i = 0; i < ScoreManager.Instance.levelStages.Count; i++)
-		{
+		for (int i = 0; i < ScoreManager.Instance.levelStages.Count; i++) {
 			int stars = ScoreManager.Instance.levelStages [i].starsRequired;
 
 			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
@@ -123,11 +120,9 @@ public class MenuAllTrophies : MenuComponent
 
 	void OnDestroy ()
 	{
-		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
+		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 
-	public void SaveMenuPos ()
-	{
-		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
-	}
+
+
 }

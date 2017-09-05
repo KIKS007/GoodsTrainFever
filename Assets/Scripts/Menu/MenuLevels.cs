@@ -64,7 +64,7 @@ public class MenuLevels : MenuComponent
 
 		index += stages;
 
-		if(LevelsManager.Instance.currentLevel.starsEarned > 0)
+		if (LevelsManager.Instance.currentLevel.starsEarned > 0)
 			index++;
 
 		levelsScrollView.anchoredPosition = new Vector2 (-index * (levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x + levelsSpacing) - 6, levelsScrollView.anchoredPosition.y);
@@ -122,8 +122,7 @@ public class MenuLevels : MenuComponent
 
 			Stage_Menu stageTemp = SetupLevelStage (i, panelsCount);
 
-			if (stageTemp != null) 
-			{
+			if (stageTemp != null) {
 				stageMenu = stageTemp;
 				panelsCount++;
 			}
@@ -145,10 +144,8 @@ public class MenuLevels : MenuComponent
 
 	Stage_Menu SetupLevelStage (int index, int panelsCount)
 	{
-		for(int i = 0; i < ScoreManager.Instance.levelStages.Count; i++)
-		{
-			if (ScoreManager.Instance.levelStages [i].index == index + 1) 
-			{
+		for (int i = 0; i < ScoreManager.Instance.levelStages.Count; i++) {
+			if (ScoreManager.Instance.levelStages [i].index == index + 1) {
 				Vector2 stagePanelPosition = levelPosition;
 				stagePanelPosition.x += (_levelsPanelWidth + levelsSpacing) * panelsCount;
 
@@ -177,8 +174,7 @@ public class MenuLevels : MenuComponent
 	{
 		int starsRequired = 0;
 
-		foreach (var s in ScoreManager.Instance.levelStages) 
-		{
+		foreach (var s in ScoreManager.Instance.levelStages) {
 			int stars = s.starsRequired;
 
 			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
@@ -198,6 +194,7 @@ public class MenuLevels : MenuComponent
 
 	public void SaveMenuPos ()
 	{
+		Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 }
