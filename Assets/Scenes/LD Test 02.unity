@@ -36362,7 +36362,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -36372,7 +36372,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -36433,6 +36433,11 @@ Prefab:
         type: 2}
       propertyPath: ColorUi.Array.data[3].b
       value: 0.44705886
+      objectReference: {fileID: 0}
+    - target: {fileID: 114529429500961720, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
@@ -44788,6 +44793,11 @@ Prefab:
       propertyPath: trainsToSendIcon
       value: 
       objectReference: {fileID: 576471266}
+    - target: {fileID: 114878306438568396, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
   m_IsPrefabParent: 0
