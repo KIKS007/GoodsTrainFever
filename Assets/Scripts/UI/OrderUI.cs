@@ -81,6 +81,8 @@ public class OrderUI : MonoBehaviour
 		if (_orderList.Count > 3) {
 			_notificationPos = 100;
 			OrderCount.text = (" + " + (_orderList.Count - 3).ToString ());
+			ShowOrders ();
+			HideOrders (true);
 		} else {
 			OrderCount.text = (" + 1");
 		}
