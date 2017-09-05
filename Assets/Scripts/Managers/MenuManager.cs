@@ -36,6 +36,9 @@ public class MenuManager : Singleton<MenuManager>
 	public float endLevelDelay = 2f;
 	public MenuComponent endLevelMenu;
 
+	[Header ("Quit Menu")]
+	public MenuComponent quitMenu;
+
 	[Header ("Pause Menu")]
 	public Button pauseButton;
 	public MenuComponent pauseMenu;
@@ -153,6 +156,9 @@ public class MenuManager : Singleton<MenuManager>
 		MainMenuContainer2.transform.DOLocalRotate (new Vector3 (0, 0, 40 + 38.557f + 38.557f), 2f).From ().OnStart (() => MainMenuContainer2.gameObject.SetActive (true)).SetDelay (1.2f).SetEase (Ease.OutExpo);
 		MainMenuCloud1.transform.DOLocalMoveX (1000, 30).SetSpeedBased ().SetRelative ().SetDelay (1.5f).SetLoops (-1, LoopType.Yoyo);
 		MainMenuCloud2.transform.DOLocalMoveX (-1000, 30).SetSpeedBased ().SetRelative ().SetDelay (1.5f).SetLoops (-1, LoopType.Yoyo);
+
+		BackButton (mainMenu);
+
 		DOVirtual.DelayedCall (1.5f, () => {
 			if (menuOnStart != null)
 				ShowMenu (menuOnStart);
@@ -161,8 +167,6 @@ public class MenuManager : Singleton<MenuManager>
 		});
 
 		SetupMatrix ();
-
-
 	}
 
 	void Update ()
@@ -175,21 +179,31 @@ public class MenuManager : Singleton<MenuManager>
 				MenuPosition ();
 		}*/
 
-		if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape))
+		{
 			if (currentMenu && GameManager.Instance.gameState != GameState.Playing)
 				Back ();
 
 			if (GameManager.Instance.gameState == GameState.Playing)
 				PauseAndShowMenu (pauseMenu);
+
+			if (currentMenu == quitMenu)
+				QuitGame ();
+
+			if (currentMenu == mainMenu)
+				QuitMenu ();
 		}
 	}
 
 	void BackButton (MenuComponent menu)
 	{
-		if (menu && menu.backToMainMenu || menu && menu.backMenu != null) {
+		if (menu && menu.backToMainMenu || menu && menu.backMenu != null)
+		{
 			DOTween.Kill (backButton);
 			backButton.DOAnchorPos (_backButtonShowPos, menuAnimationDuration).SetEase (menuEase).SetUpdate (true);
-		} else {
+		} 
+		else 
+		{
 			DOTween.Kill (backButton);
 			backButton.DOAnchorPos (backButtonHiddenPos, menuAnimationDuration).SetEase (menuEase).SetUpdate (true);
 		}
@@ -725,5 +739,20 @@ public class MenuManager : Singleton<MenuManager>
 	void HideTitle ()
 	{
 		title.DOAnchorPosY (titleHiddenYPos, menuAnimationDuration).SetEase (menuEase).OnComplete (() => title.gameObject.SetActive (false)).SetUpdate (true);
+	}
+
+	public void QuitMenu ()
+	{
+		ToMenu (quitMenu);
+	}
+
+	public void HideQuitMenu ()
+	{
+		ToMenu (mainMenu);
+	}
+
+	public void QuitGame ()
+	{
+		Application.Quit ();
 	}
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
+using DarkTonic.MasterAudio;
 
 public class ScoreManager : Singleton<ScoreManager>
 {
@@ -27,6 +29,9 @@ public class ScoreManager : Singleton<ScoreManager>
 	[Header ("Stages")]
 	public MenuLevels menuLevels;
 	public List<Stage> levelStages = new List<Stage> ();
+
+	public Toggle Tuto;
+	public Toggle Sound;
 
 	// Use this for initialization
 	void Awake ()
@@ -55,6 +60,25 @@ public class ScoreManager : Singleton<ScoreManager>
 		return menuLevels._levelsMenu [levelIndex].isUnlocked;
 	}
 
+	void Start ()
+	{
+		if (PlayerPrefs.GetInt ("Option-Tutorial", 0) != 0) {
+			TutorialManager.Instance.BlockAllTutorial = true;
+			Tuto.isOn = false;
+		} else {
+			TutorialManager.Instance.BlockAllTutorial = false;
+			Tuto.isOn = true;
+		}
+
+		if (PlayerPrefs.GetInt ("Option-Sound", 0) != 0) {
+			Sound.isOn = false;
+			MasterAudio.MuteAllPlaylists ();
+		} else {
+			MasterAudio.UnmuteAllPlaylists ();
+			Sound.isOn = true;
+		}
+	}
+
 	void OnLevelStart ()
 	{
 		foreach (Transform t in LevelsManager.Instance.transform) {
@@ -73,8 +97,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void ResetAllLevelsStars ()
 	{
-		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) 
-		{
+		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
 			ResetLevelStars (i);
 		}
 
@@ -146,8 +169,7 @@ public class ScoreManager : Singleton<ScoreManager>
 	{
 		starsEarned = 0;
 
-		foreach (Transform t in LevelsManager.Instance.transform)
-		{
+		foreach (Transform t in LevelsManager.Instance.transform) {
 			Level level = t.GetComponent<Level> ();
 
 			starsEarned += level.starsEarned;
@@ -236,8 +258,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	void OnApplicationQuit ()
 	{
-		if (saveOnStop)
-		{
+		if (saveOnStop) {
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
 			//StatsManager.Instance.StopLevelTrack (false);
@@ -250,6 +271,27 @@ public class ScoreManager : Singleton<ScoreManager>
 			SaveLevelStars ();
 			PlayerPrefs.Save ();
 		}
+	}
+
+	public void SaveTutorialSetting (Toggle t)
+	{
+		if (t.isOn) {
+			PlayerPrefs.SetInt ("Option-Tutorial", 0);
+		} else {
+			PlayerPrefs.SetInt ("Option-Tutorial", 1);
+		}
+			
+		PlayerPrefs.Save ();
+	}
+
+	public void SaveSoundSetting (Toggle t)
+	{
+		if (t.isOn) {
+			PlayerPrefs.SetInt ("Option-Sound", 0);
+		} else {
+			PlayerPrefs.SetInt ("Option-Sound", 1);
+		}
+		PlayerPrefs.Save ();
 	}
 }
 
