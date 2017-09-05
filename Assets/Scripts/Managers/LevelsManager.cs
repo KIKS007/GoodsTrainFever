@@ -56,6 +56,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	public List<Train_Level> rail1Trains = new List<Train_Level> ();
 	public List<Train_Level> rail2Trains = new List<Train_Level> ();
 	public Text trainsToSendText;
+	//Replace with icon when made
+	public GameObject trainsToSendIcon;
 
 	[Header ("Boats")]
 	public float boatsDuration;
@@ -382,8 +384,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
-			if (errorsLocked > errorsAllowed) 
-			{
+			if (errorsLocked > errorsAllowed) {
 				LevelEnd (LevelEndType.Errors);
 				yield break;
 			}
@@ -819,8 +820,16 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	void UpdateTrainSendCount (int count)
 	{
-		trainsToSend = count;
-		trainsToSendText.text = trainsToSend.ToString ();
+		trainsToSend = count - 2;
+		if (trainsToSend <= 0) {
+			trainsToSendIcon.SetActive (false);
+			trainsToSendText.gameObject.SetActive (false);	
+		} else {
+			trainsToSendIcon.SetActive (true);
+			trainsToSendText.gameObject.SetActive (true);	
+			trainsToSendText.text = trainsToSend.ToString ();
+			
+		}
 	}
 
 	#region Level Start
