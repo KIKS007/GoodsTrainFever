@@ -9969,7 +9969,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -10
-  far clip plane: 150
+  far clip plane: 90
   field of view: 60
   orthographic: 1
   orthographic size: 28
@@ -36604,48 +36604,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
-        type: 2}
-      propertyPath: vibrateColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
-        type: 2}
-      propertyPath: vibrateColor.g
-      value: 0.39705884
-      objectReference: {fileID: 0}
-    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
-        type: 2}
-      propertyPath: vibrateColor.b
-      value: 0.39705884
-      objectReference: {fileID: 0}
-    - target: {fileID: 114688433712339010, guid: 0ad7351bf15536748b981c8743017e1c,
-        type: 2}
-      propertyPath: vibrateColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 2.0401255e-11
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 4.0720642e-11
-      objectReference: {fileID: 0}
-    - target: {fileID: 4684372186024666, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0.000000047375185
-      objectReference: {fileID: 0}
-    - target: {fileID: 114090349324089720, guid: 0ad7351bf15536748b981c8743017e1c,
-        type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
-        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
   m_IsPrefabParent: 0
@@ -36660,22 +36618,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1305886598}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
---- !u!1 &1305886602 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1265108877616430, guid: 0ad7351bf15536748b981c8743017e1c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1305886598}
---- !u!225 &1305886603
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1305886602}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &1310167107
 GameObject:
   m_ObjectHideFlags: 0
@@ -38245,6 +38187,11 @@ Prefab:
       value: 
       objectReference: {fileID: 12800000, guid: 9d055dce1d565754d82e73a69ddd9ca6,
         type: 3}
+    - target: {fileID: 114090349324089720, guid: 0ad7351bf15536748b981c8743017e1c,
+        type: 2}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ad7351bf15536748b981c8743017e1c, type: 2}
   m_IsPrefabParent: 0
@@ -44889,7 +44836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseBlockWatersOnStart: 1
-  StartDelay: 2
+  StartDelay: 5
   waterHeight: 0.5
   waterSpeed: 0.2
   waterLineDelay: 0.07
