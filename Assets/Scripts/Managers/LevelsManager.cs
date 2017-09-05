@@ -371,7 +371,7 @@ public class LevelsManager : Singleton<LevelsManager>
 		for (int i = 0; i < train_Level.Count; i++) {
 			Train train = TrainsMovementManager.Instance.SpawnTrain (rail, train_Level [i]);
 			yield return new WaitWhile (() => train.inTransition);
-			UpdateTrainSendCount (trainsToSend - 1);
+	
 
 			yield return new WaitWhile (() => train.waitingDeparture);
 
@@ -381,6 +381,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			trainsUsed++;
 
 
+			UpdateTrainSendCount (trainsToSend - 1);
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
@@ -441,8 +442,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			TrainsMovementManager.Instance.SpawnTrain (rail, train, trainsDuration);
 
 			yield return new WaitWhile (() => train.inTransition);
-			UpdateTrainSendCount (trainsToSend - 1);
 			CheckConstraints ();
+		
 
 			yield return new WaitWhile (() => train.waitingDeparture);
 
@@ -451,7 +452,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			trainsUsed++;
 
-
+			UpdateTrainSendCount (trainsToSend - 1);
 
 			OrdersManager.Instance.TrainDeparture (train.containers);
 
@@ -822,7 +823,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 
 		trainsToSend = count;
-		trainsToSendText.text = "+ " + trainsToSend.ToString ();
+		trainsToSendText.text = trainsToSend.ToString ();
 
 		if (trainsToSend <= 0) {
 			trainsToSendIcon.SetActive (false);
@@ -841,6 +842,8 @@ public class LevelsManager : Singleton<LevelsManager>
 			
 		}*/
 	}
+
+
 
 	#region Level Start
 
