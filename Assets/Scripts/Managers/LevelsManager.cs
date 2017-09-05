@@ -822,7 +822,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 
 		trainsToSend = count;
-		trainsToSendText.text = trainsToSend.ToString ();
+		trainsToSendText.text = "+ " + trainsToSend.ToString ();
 
 		if (trainsToSend <= 0) {
 			trainsToSendIcon.SetActive (false);
