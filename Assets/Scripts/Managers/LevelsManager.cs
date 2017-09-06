@@ -80,6 +80,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	private int _randomColorOffset;
 	private List<int> _previousRandomColorOffset = new List<int> ();
 
+	private Text CurrentBoatTimer;
+
 	//public	List<Spot> spots = new List<Spot> ();
 	//public List<Spot> spotsTemp = new List<Spot> ();
 
@@ -498,6 +500,11 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
+	public void SetCurrentBoatTimer (Text t)
+	{
+		CurrentBoatTimer = t;
+	}
+
 	IEnumerator SpawnBoats ()
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
@@ -514,7 +521,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
 			float boatDuration = b.overrideDuration & b.duration > 0 ? b.duration : boatsDuration;
-
+			DepartureCountDown (boatDuration);
 			yield return new WaitForSeconds (boatDuration);
 
 			BoatsMovementManager.Instance.BoatDeparture ();
@@ -522,6 +529,20 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
 			yield return new WaitForSeconds (waitDurationBetweenBoats);
+		}
+	}
+
+	private void DepartureCountDown (float value)
+	{
+		this.transform.DOKill ();
+		if (value > 0) {
+			CurrentBoatTimer.text = value.ToString ();
+			this.transform.DOMove (this.transform.position + new Vector3 (Random.Range (-5, 5), Random.Range (-5, 5), Random.Range (-5, 5)), 1).OnComplete (() => {
+				DepartureCountDown (value - 1);
+			});
+				
+		} else {
+			CurrentBoatTimer.text = "!";
 		}
 	}
 
@@ -536,7 +557,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			BoatsMovementManager.Instance.BoatStart (b);
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
-
+			CurrentBoatTimer.text = boatDuration.ToString ();
 			while (boatDuration > 0) {
 
 				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
@@ -546,8 +567,9 @@ public class LevelsManager : Singleton<LevelsManager>
 				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
 				boatDuration--;
+				CurrentBoatTimer.text = boatDuration.ToString ();
 			}
-
+			CurrentBoatTimer.text = "!";
 			BoatsMovementManager.Instance.BoatDeparture (b);
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
