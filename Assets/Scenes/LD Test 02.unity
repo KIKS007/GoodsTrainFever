@@ -24480,6 +24480,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: OrderThing.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224535657679224926, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -24578,17 +24583,17 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -24598,12 +24603,32 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1080
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114914417916272726, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: OrderThing.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: OrderThing.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: OrderThing.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
