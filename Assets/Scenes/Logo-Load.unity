@@ -652,6 +652,7 @@ GameObject:
   - component: {fileID: 1197598697}
   - component: {fileID: 1197598696}
   - component: {fileID: 1197598701}
+  - component: {fileID: 1197598702}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -748,6 +749,17 @@ MonoBehaviour:
   IE_Qual: {fileID: 292895367}
   IE_Logo: {fileID: 626666534}
   IE_Letters: {fileID: 830205826}
+--- !u!114 &1197598702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1197598695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6bb3188843aa6846b80577fb91e7ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1484889812
 GameObject:
   m_ObjectHideFlags: 0
