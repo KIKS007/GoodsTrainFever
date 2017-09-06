@@ -18921,7 +18921,7 @@ MonoBehaviour:
   redColor: {r: 0.8980393, g: 0.21568629, b: 0.21568629, a: 1}
   blueColor: {r: 0.21568629, g: 0.6, b: 0.80392164, a: 1}
   yellowColor: {r: 0.91372555, g: 0.61960787, b: 0.18823531, a: 1}
-  violetColor: {r: 0.27058825, g: 0.8078432, b: 0.44705886, a: 1}
+  violetColor: {r: 0.73793125, g: 0, b: 1, a: 1}
   wagonNormalWeightColor: {r: 0.6102941, g: 0.3675635, b: 0.22886029, a: 1}
   wagonOverweightColor: {r: 1, g: 0.17647058, b: 0.17647058, a: 1}
   infoButtonRespectedColor: {r: 0.4901961, g: 0.8588236, b: 0.93725497, a: 1}
@@ -24674,7 +24674,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -24684,7 +24684,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -24750,6 +24750,30 @@ Prefab:
         type: 2}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210471149039746, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114527081725382002, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 114807570575896910, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 114730622927053000, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 114793733686949346, guid: 37ca85740e1698f4ea6f0669dc929f69,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 0.39215687
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
