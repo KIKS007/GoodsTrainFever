@@ -136,6 +136,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void ForceStop ()
 	{
 		if (isActive) {
+			HideVisualFeedback ();
 			this.transform.DOKill ();
 			CurrentTutorial.ForceStopTutorial ();
 			isActive = false;
@@ -146,6 +147,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void ForceStopandSave ()
 	{
 		if (isActive) {
+			HideVisualFeedback ();
 			SaveTutorialProgression (CurrentTutorialListID);
 			this.transform.DOKill ();
 			CurrentTutorial.ForceStopTutorial ();
@@ -156,6 +158,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void StopTutorial ()
 	{
+		HideVisualFeedback ();
 		SaveTutorialProgression (CurrentTutorialListID);
 		CurrentTutorial.StopTutorial ();
 		isActive = false;
