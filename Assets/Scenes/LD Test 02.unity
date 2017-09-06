@@ -19,7 +19,7 @@ Material:
   m_Name: M_Container_Basic_20_LP
   m_Shader: {fileID: 4800000, guid: 075d0107520171c4f8273c7fcad6185b, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -95,7 +95,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Albedo: {r: 0, g: 0.7103448, b: 1, a: 1}
+    - _Albedo: {r: 0.403, g: 0.7103448, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!21 &3
@@ -107,7 +107,7 @@ Material:
   m_Name: M_Container_Basic_20_LP
   m_Shader: {fileID: 4800000, guid: 075d0107520171c4f8273c7fcad6185b, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -183,7 +183,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Albedo: {r: 0, g: 0.7103448, b: 1, a: 1}
+    - _Albedo: {r: 0.40299997, g: 0.7103448, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!196 &4
@@ -215,7 +215,7 @@ Material:
   m_Name: M_Container_Basic_20_LP
   m_Shader: {fileID: 4800000, guid: 075d0107520171c4f8273c7fcad6185b, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -291,7 +291,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Albedo: {r: 0.91764706, g: 0, b: 0.13333334, a: 1}
+    - _Albedo: {r: 0.9191176, g: 0.12164793, b: 0.23751944, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!21 &6
@@ -386,7 +386,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _Albedo: {r: 1, g: 0.16911763, b: 0.16911763, a: 1}
-    - _Albedo1: {r: 0.7176471, g: 0.19607843, b: 0.8, a: 1}
+    - _Albedo1: {r: 0.7759713, g: 0.28849483, b: 0.85294116, a: 1}
     - _Albedo2: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -482,7 +482,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _Albedo: {r: 1, g: 0.16911763, b: 0.16911763, a: 1}
-    - _Albedo1: {r: 0, g: 0.7103448, b: 1, a: 1}
+    - _Albedo1: {r: 0.40299997, g: 0.7103448, b: 1, a: 1}
     - _Albedo2: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -5769,6 +5769,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 409043177}
   - {fileID: 652}
   - {fileID: 711}
   - {fileID: 790}
@@ -6347,7 +6348,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 604}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &653
 Transform:
@@ -6867,7 +6868,7 @@ Transform:
   - {fileID: 827}
   - {fileID: 612}
   m_Father: {fileID: 604}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &712
 Transform:
@@ -16735,8 +16736,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.8036177, b: 0.6691177, a: 1}
-  m_Intensity: 0.8
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -18918,10 +18919,10 @@ MonoBehaviour:
   gameplayParent: {fileID: 604}
   extraContainersParent: {fileID: 652}
   cameraPosition: {fileID: 908}
-  redColor: {r: 0.8980393, g: 0.21568629, b: 0.21568629, a: 1}
-  blueColor: {r: 0.21568629, g: 0.6, b: 0.80392164, a: 1}
-  yellowColor: {r: 0.91372555, g: 0.61960787, b: 0.18823531, a: 1}
-  violetColor: {r: 0.73793125, g: 0, b: 1, a: 1}
+  redColor: {r: 0.9191176, g: 0.1216479, b: 0.23751941, a: 1}
+  blueColor: {r: 0.40299994, g: 0.7103448, b: 1, a: 1}
+  yellowColor: {r: 1, g: 0.672, b: 0.12199993, a: 1}
+  violetColor: {r: 0.7759713, g: 0.2884948, b: 0.85294116, a: 1}
   wagonNormalWeightColor: {r: 0.6102941, g: 0.3675635, b: 0.22886029, a: 1}
   wagonOverweightColor: {r: 1, g: 0.17647058, b: 0.17647058, a: 1}
   infoButtonRespectedColor: {r: 0.4901961, g: 0.8588236, b: 0.93725497, a: 1}
@@ -21151,7 +21152,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 518}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
@@ -22152,6 +22153,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6bb3188843aa6846b80577fb91e7ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &409043176
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 604}
+    m_Modifications:
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -5.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.4450002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 9.663509e-30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 6.6174197e-24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: a77cf87b205a5a44ea55ee76022f4ec3, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &409043177 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4671631462264620, guid: a77cf87b205a5a44ea55ee76022f4ec3,
+    type: 2}
+  m_PrefabInternal: {fileID: 409043176}
 --- !u!1 &479173488 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1114074158930198, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -24213,6 +24261,10 @@ Prefab:
       propertyPath: m_AnchoredPosition.x
       value: 734.9988
       objectReference: {fileID: 0}
+    - target: {fileID: 1434943135556082, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
   m_IsPrefabParent: 0
@@ -24535,7 +24587,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _Albedo: {r: 1, g: 0.16911763, b: 0.16911763, a: 1}
-    - _Albedo1: {r: 1, g: 0.7294118, b: 0, a: 1}
+    - _Albedo1: {r: 1, g: 0.672, b: 0.12199997, a: 1}
     - _Albedo2: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -24669,22 +24721,22 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 539.69867
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1079.3973
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -24774,6 +24826,10 @@ Prefab:
         type: 2}
       propertyPath: m_Color.a
       value: 0.39215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337991015899922, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
@@ -25255,7 +25311,7 @@ Material:
   m_Name: M_Container_Basic_40_LP
   m_Shader: {fileID: 4800000, guid: 075d0107520171c4f8273c7fcad6185b, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -25331,7 +25387,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _Albedo: {r: 0.7176471, g: 0.19607843, b: 0.8, a: 1}
+    - _Albedo: {r: 0.7759713, g: 0.28849483, b: 0.85294116, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1577863831 stripped
@@ -25376,7 +25432,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4498029323493592, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1574365411891260, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
@@ -27887,6 +27947,10 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: 960.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230023658615126, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb90f96be5b10948a0c6eabe3f9d7a9, type: 2}
