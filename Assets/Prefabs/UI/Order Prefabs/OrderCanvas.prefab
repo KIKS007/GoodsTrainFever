@@ -529,10 +529,10 @@ MonoBehaviour:
   LargeContainerPrefab: {fileID: 1698548807142646, guid: e24e2ae93f72c2f42895f33502629cc0,
     type: 2}
   ColorUi:
-  - {r: 0.91764706, g: 0, b: 0.13333334, a: 1}
-  - {r: 0.30588236, g: 0.6784314, b: 1, a: 1}
-  - {r: 1, g: 0.7294118, b: 0, a: 1}
-  - {r: 0.7176471, g: 0.19607843, b: 0.8, a: 1}
+  - {r: 0.9191176, g: 0.1216479, b: 0.23751941, a: 1}
+  - {r: 0.25490198, g: 0.6039216, b: 0.93333334, a: 1}
+  - {r: 1, g: 0.672, b: 0.12199993, a: 1}
+  - {r: 0.7921569, g: 0.36078432, b: 0.85882354, a: 1}
   OrderCount: {fileID: 114459121490123318}
   OrderThing: []
 --- !u!114 &114371982110382948
@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.028}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -713,7 +713,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 114337609765799588}
           m_MethodName: HideOrders
-          m_Mode: 1
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -818,7 +818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.028}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -845,7 +845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.028}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.028}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1233,7 +1233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.6, y: -0}
+  m_AnchoredPosition: {x: 5.5999985, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224404968178726358
