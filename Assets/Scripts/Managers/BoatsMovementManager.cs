@@ -31,7 +31,8 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 		inTransition = true;
 
-		boat.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
+		boat.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => inTransition = false);
+		LevelsManager.Instance.SetCurrentBoatTimer (boat.gameObject.GetComponent<Boat> ().TimerText);
 	}
 
 	public void BoatStart (Boat boat)
@@ -43,7 +44,8 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 		boat.transform.position = position;
 
-		boat.transform.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
+		boat.transform.DOMoveX (gameXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => inTransition = false);
+		LevelsManager.Instance.SetCurrentBoatTimer (boat.TimerText);
 	}
 
 	public void BoatDeparture ()
@@ -53,7 +55,7 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		if (OnBoatDeparture != null)
 			OnBoatDeparture ();
 
-		boat.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> inTransition = false);
+		boat.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => inTransition = false);
 	}
 
 	public void BoatDeparture (Boat boat)
@@ -63,7 +65,7 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		if (OnBoatDeparture != null)
 			OnBoatDeparture ();
 
-		boat.transform.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (()=> {
+		boat.transform.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => {
 			
 			inTransition = false;
 			Destroy (boat.gameObject);
@@ -78,7 +80,7 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 		boat.transform.position = position;
 
 		foreach (var b in spawnedBoats)
-			if(b != null)
+			if (b != null)
 				Destroy (b.gameObject);
 
 		spawnedBoats.Clear ();

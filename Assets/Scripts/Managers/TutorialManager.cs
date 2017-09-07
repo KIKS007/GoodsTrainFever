@@ -40,6 +40,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public float TextSpeed;
 	public bool BlockAllTutorial;
 	private int CurrentTutorialListID;
+	public GameObject TouchImage;
 
 	[Header ("Objects to Hide during Tutorials")]
 	public GameObject[] ObjectsToHide;
@@ -118,6 +119,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void NextTutorial (bool force)
 	{
 		HideObjects (false);
+		HideVisualFeedback ();
 		StopTextAnimation ();
 		if (CurrentTutorial.StopTutorial () || force) {
 			if (force) {
@@ -134,6 +136,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void ForceStop ()
 	{
 		if (isActive) {
+			HideVisualFeedback ();
 			this.transform.DOKill ();
 			CurrentTutorial.ForceStopTutorial ();
 			isActive = false;
@@ -144,6 +147,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public void ForceStopandSave ()
 	{
 		if (isActive) {
+			HideVisualFeedback ();
 			SaveTutorialProgression (CurrentTutorialListID);
 			this.transform.DOKill ();
 			CurrentTutorial.ForceStopTutorial ();
@@ -154,6 +158,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void StopTutorial ()
 	{
+		HideVisualFeedback ();
 		SaveTutorialProgression (CurrentTutorialListID);
 		CurrentTutorial.StopTutorial ();
 		isActive = false;
@@ -175,6 +180,7 @@ public class TutorialManager : Singleton<TutorialManager>
 			yield return new WaitForSecondsRealtime (TextSpeed);
 		}
 		TargetTutorial.TextFinished = true;
+		ShowVisualFeedback ();
 	}
 
 	public void Selected ()
@@ -239,6 +245,20 @@ public class TutorialManager : Singleton<TutorialManager>
 		for (int i = 0; i < 100; i++) {
 			PlayerPrefs.DeleteKey ("Tutorial-" + i);
 		}
+	}
+
+	public void ShowVisualFeedback ()
+	{
+		TouchImage.SetActive (true);
+		TouchImage.transform.DOScale (1.2f, 0.8f).SetLoops (-1, LoopType.Yoyo).SetUpdate (true);
+	}
+
+
+	public void HideVisualFeedback ()
+	{
+		TouchImage.transform.DOKill ();
+		TouchImage.transform.localScale = Vector3.one;
+		TouchImage.SetActive (false);
 	}
 }
 
