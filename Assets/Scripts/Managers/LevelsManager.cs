@@ -100,11 +100,10 @@ public class LevelsManager : Singleton<LevelsManager>
 			LoadLevel (levelToStart);
 
 		Container.OnContainerMoved += () => DOVirtual.DelayedCall (0.01f, () => CheckConstraints ());
-
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevel;
 		MenuManager.Instance.OnMainMenu += () => _previousRandomColorOffset.Clear ();
-
+		GameManager.Instance.OnLevelEnd += () => TutorialManager.Instance.ForceStop ();
 		errorsText.text = "0";
 		errorsTextParent.localScale = Vector3.zero;
 	}
