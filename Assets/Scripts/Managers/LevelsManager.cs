@@ -148,6 +148,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 		MenuManager.Instance.menulevels.SaveMenuPos ();
 
+		KillBoatCountdown ();
+
 		//TUTORIAL LAUNCH
 		if (index < Tutorials.Count ())
 			Tutorials [index].Invoke ();
@@ -531,6 +533,13 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
+	public void KillBoatCountdown ()
+	{
+		this.transform.DOKill ();
+		if (CurrentBoatTimer != null)
+			CurrentBoatTimer.text = "--";
+	}
+
 	private void DepartureCountDown (float value)
 	{
 		this.transform.DOKill ();
@@ -816,6 +825,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		if (GameManager.Instance.gameState == GameState.Menu)
 			return;
+
+		TutorialManager.Instance.HideVisualFeedback ();
 
 		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
 

@@ -73,6 +73,8 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void SwitchTutorialList (int id)
 	{
+
+		HideVisualFeedback ();
 		CurrentTutorialListID = id;
 
 		switch (id) {
@@ -135,8 +137,9 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void ForceStop ()
 	{
+		HideVisualFeedback ();
 		if (isActive) {
-			HideVisualFeedback ();
+			
 			this.transform.DOKill ();
 			CurrentTutorial.ForceStopTutorial ();
 			isActive = false;
@@ -249,8 +252,11 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public void ShowVisualFeedback ()
 	{
-		TouchImage.SetActive (true);
-		TouchImage.transform.DOScale (1.2f, 0.8f).SetLoops (-1, LoopType.Yoyo).SetUpdate (true);
+		if (isActive) {
+			
+			TouchImage.SetActive (true);
+			TouchImage.transform.DOScale (1.2f, 0.8f).SetLoops (-1, LoopType.Yoyo).SetUpdate (true);
+		}
 	}
 
 
