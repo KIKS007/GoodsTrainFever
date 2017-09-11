@@ -1359,7 +1359,7 @@ MonoBehaviour:
     isDoubleSize: 0
   rail1Trains: []
   rail2Trains:
-  - trainDuration: 18
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -3011,7 +3011,7 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 2
       isDoubleSize: 1
-  spawnAllOrderContainers: 0
+  spawnAllOrderContainers: 1
   storageContainers:
   - containerType: 0
     containerColor: 1

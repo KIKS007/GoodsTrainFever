@@ -100,11 +100,10 @@ public class LevelsManager : Singleton<LevelsManager>
 			LoadLevel (levelToStart);
 
 		Container.OnContainerMoved += () => DOVirtual.DelayedCall (0.01f, () => CheckConstraints ());
-
 		MenuManager.Instance.OnLevelStart += () => StartCoroutine (LevelDuration ());
 		MenuManager.Instance.OnMainMenu += ClearLevel;
 		MenuManager.Instance.OnMainMenu += () => _previousRandomColorOffset.Clear ();
-
+		GameManager.Instance.OnLevelEnd += () => TutorialManager.Instance.ForceStop ();
 		errorsText.text = "0";
 		errorsTextParent.localScale = Vector3.zero;
 	}
@@ -148,6 +147,8 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 
 		MenuManager.Instance.menulevels.SaveMenuPos ();
+
+		KillBoatCountdown ();
 
 		//TUTORIAL LAUNCH
 		if (index < Tutorials.Count ())
@@ -532,6 +533,13 @@ public class LevelsManager : Singleton<LevelsManager>
 		}
 	}
 
+	public void KillBoatCountdown ()
+	{
+		this.transform.DOKill ();
+		if (CurrentBoatTimer != null)
+			CurrentBoatTimer.text = "--";
+	}
+
 	private void DepartureCountDown (float value)
 	{
 		this.transform.DOKill ();
@@ -817,6 +825,8 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		if (GameManager.Instance.gameState == GameState.Menu)
 			return;
+
+		TutorialManager.Instance.HideVisualFeedback ();
 
 		ScoreManager.Instance.UnlockStars (OrdersManager.Instance.ordersSentCount, trainsUsed, levelIndex);
 

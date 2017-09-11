@@ -8,6 +8,7 @@ public class Tutorial_UI_Setup : MonoBehaviour
 {
 	public Sprite Character;
 	public Sprite Bubble;
+	public Sprite Arrow;
 	public Transform BubblePlace;
 	public Transform BubbleTextPlace;
 	public Transform CharacterPos;
@@ -15,6 +16,7 @@ public class Tutorial_UI_Setup : MonoBehaviour
 	public bool CharacterSetup;
 	public bool CharacterPosSetup;
 	public bool BubbleSetup;
+	public bool Rename;
 
 	[Button]
 	public void ApplySettings ()
@@ -56,6 +58,21 @@ public class Tutorial_UI_Setup : MonoBehaviour
 
 
 
+		if (Rename) {
+
+
+			foreach (GameObject got in GameObject.FindObjectsOfType(typeof(GameObject))) {
+				if (got.name == "Image") {
+					Debug.Log (got.GetComponent<Image> ().sprite.name);
+					if (got.GetComponent<Image> ().sprite.name == "next_level_arrow") {
+						Debug.Log ("E");
+						got.name = "TutoArrowImage";
+					}
+				}
+			}
+
+
+		}
 
 		if (BubbleSetup) {
 			var tmpGO = go.transform.Find ("Panel");

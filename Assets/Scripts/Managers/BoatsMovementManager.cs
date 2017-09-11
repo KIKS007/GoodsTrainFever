@@ -54,7 +54,6 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 		if (OnBoatDeparture != null)
 			OnBoatDeparture ();
-
 		boat.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => inTransition = false);
 	}
 
@@ -64,7 +63,6 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
 		if (OnBoatDeparture != null)
 			OnBoatDeparture ();
-
 		boat.transform.DOMoveX (departureXPosition, boatSpeed).SetSpeedBased ().SetEase (boatEase).OnComplete (() => {
 			
 			inTransition = false;
