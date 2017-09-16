@@ -56,6 +56,8 @@ public class MenuEndLevel : MenuComponent
 		success.gameObject.SetActive (false);
 		defeat.gameObject.SetActive (false);
 
+		errorsParent.gameObject.SetActive (LevelsManager.Instance.errorsLocked > 0);
+
 		errorsCount.text = LevelsManager.Instance.errorsLocked.ToString ();
 		errorsAllowedCount.text = "Sur " + LevelsManager.Instance.errorsAllowed.ToString () + " autorisées";
 
@@ -69,8 +71,7 @@ public class MenuEndLevel : MenuComponent
 		else
 			defeat.gameObject.SetActive (true);
 
-		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++)
-		{
+		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) {
 			RectTransform starOuter = starsOuter [i];
 			Image starInner = starsInner [i];
 
