@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class MenuTrophies : MenuComponent 
+public class MenuTrophies : MenuComponent
 {
 	public Text titleText;
 	public Text factText;
@@ -20,6 +20,7 @@ public class MenuTrophies : MenuComponent
 	public float deceleration = 0.9f;
 	public float mouseMovementFactor = 1;
 	public float touchMovementFactor = 1;
+	public bool automove = true;
 
 	[Header ("Trophy Zoom")]
 	public float relativeMaxScale;
@@ -48,14 +49,17 @@ public class MenuTrophies : MenuComponent
 	{
 		if (MenuManager.Instance.currentMenu != this)
 			return;
-
+		if (automove) {
+			_movement += new Vector3 (0, 0, 0.5f);
+		} else {
+			_movement += new Vector3 (_deltaPosition.y, 0, -_deltaPosition.x);
+		}
 		//_movement += new Vector3 (0, 0, -_deltaPosition.x);
-		_movement += new Vector3 (_deltaPosition.y, 0, -_deltaPosition.x);
 
 		MoveTrophy ();
 
 		#if UNITY_EDITOR
-		if(Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
+		if (Application.isEditor && !UnityEditor.EditorApplication.isRemoteConnected)
 			MouseHold ();
 		else
 			TouchHold ();
@@ -68,29 +72,30 @@ public class MenuTrophies : MenuComponent
 
 	void TouchHold ()
 	{
-		if (Input.touchCount > 0)
-		{
-			if (Input.touchCount == 1)
-			{
+		if (Input.touchCount > 0) {
+
+			if (Input.touchCount == 1) {
 				Touch touch = Input.GetTouch (0);
 				
-				if(touch.phase == TouchPhase.Moved)
+				if (touch.phase == TouchPhase.Moved) {
 					_deltaPosition = touch.deltaPosition;
+					automove = false;
+				}
 				
-				if(touch.phase == TouchPhase.Ended)
+				if (touch.phase == TouchPhase.Ended) {
 					_deltaPosition = Vector3.zero; 
+					automove = true;
+				}
 			}
 
 
 			//Pinch Zoom
-			if (Input.touchCount > 1)
-			{
+			if (Input.touchCount > 1) {
 				// Store both touches.
-				Touch touchZero = Input.GetTouch(0);
-				Touch touchOne = Input.GetTouch(1);
+				Touch touchZero = Input.GetTouch (0);
+				Touch touchOne = Input.GetTouch (1);
 				
-				if(touchZero.phase == TouchPhase.Moved || touchOne.phase == TouchPhase.Moved)
-				{
+				if (touchZero.phase == TouchPhase.Moved || touchOne.phase == TouchPhase.Moved) {
 					// Find the position in the previous frame of each touch.
 					Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
 					Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
@@ -112,11 +117,15 @@ public class MenuTrophies : MenuComponent
 
 	void MouseHold ()
 	{
-		if(Input.GetMouseButton (0))
+		if (Input.GetMouseButton (0)) {
 			_deltaPosition = Input.mousePosition - _mousePosition; 
-
-		if(Input.GetMouseButtonUp (0))
+			automove = false;
+		}
+		
+		if (Input.GetMouseButtonUp (0)) {
 			_deltaPosition = Vector3.zero; 
+			automove = true;
+		}
 		
 		_mousePosition = Input.mousePosition;
 	}
@@ -146,8 +155,7 @@ public class MenuTrophies : MenuComponent
 
 		if (newScale.x < _initialXScale * relativeMinScale)
 			newScale = Vector3.one * _initialXScale * relativeMinScale;
-
-		else if(newScale.x > _initialXScale * relativeMaxScale)
+		else if (newScale.x > _initialXScale * relativeMaxScale)
 			newScale = Vector3.one * _initialXScale * relativeMaxScale;
 
 		_trophy.transform.localScale = newScale;
@@ -156,15 +164,12 @@ public class MenuTrophies : MenuComponent
 	public override void OnShow ()
 	{
 		base.OnShow ();
-
-		if (endLevel)
-		{
+		automove = true;
+		if (endLevel) {
 			MenuManager.Instance.backButton.localScale = Vector3.zero;
 			quitButton.localScale = Vector3.one;
 			newTrophy.localScale = Vector3.one;
-		}
-		else
-		{
+		} else {
 			MenuManager.Instance.backButton.localScale = Vector3.one;
 			quitButton.localScale = Vector3.zero;
 			newTrophy.localScale = Vector3.zero;
@@ -178,7 +183,6 @@ public class MenuTrophies : MenuComponent
 		Stage s = ScoreManager.Instance.levelStages [stageMenu.trophyStageIndex];
 		_trophy = Instantiate (s.trophy, s.trophy.transform.position, s.trophy.transform.rotation, GlobalVariables.Instance.gameplayParent) as GameObject;
 		Trophy_Menu trophyMenu = _trophy.GetComponent<Trophy_Menu> ();
-
 		_trophy.transform.localPosition = s.trophy.transform.localPosition;
 		_trophy.transform.localRotation = s.trophy.transform.localRotation;
 
@@ -187,21 +191,24 @@ public class MenuTrophies : MenuComponent
 		scale = _trophy.transform.localScale;
 		_trophy.transform.localScale = Vector3.zero;
 
-		titleText.text = trophyMenu.meshTitle;
-		factText.text = trophyMenu.funFact;
+		//titleText.text = trophyMenu.meshTitle;
+		titleText.text = 
+			"PALIER " + (stageMenu.trophyStageIndex + 1).ToString () + "\n DEBLOQUé !";
 
-		if(_trophy != null)
+		factText.text = trophyMenu.funFact (stageMenu.trophyStageIndex + 1);
+
+		if (_trophy != null)
 			StartCoroutine (ShowTrophy (scale));
 	}
 
 	public override void OnHide ()
 	{
 		base.OnHide ();
+		automove = false;
+		if (_trophy != null)
+			_trophy.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration * 0.5f).SetEase (trophyEase).OnComplete (() => Destroy (_trophy));
 
-		if(_trophy != null)
-			_trophy.transform.DOScale (0, MenuManager.Instance.menuAnimationDuration * 0.5f).SetEase (trophyEase).OnComplete (()=> Destroy (_trophy));
-
-		DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration, ()=> MenuManager.Instance.backButton.localScale = Vector3.one);
+		DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration, () => MenuManager.Instance.backButton.localScale = Vector3.one);
 	}
 
 	IEnumerator ShowTrophy (Vector3 scale)

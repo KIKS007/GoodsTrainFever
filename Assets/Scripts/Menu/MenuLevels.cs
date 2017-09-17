@@ -185,6 +185,8 @@ public class MenuLevels : MenuComponent
 
 			starsRequired += s.starsRequired;
 		}
+
+
 	}
 
 	void OnDestroy ()

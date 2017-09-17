@@ -109,9 +109,24 @@ public class ScoreManager : Singleton<ScoreManager>
 
 	public void UnlockAllLevels ()
 	{
-		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
-			UnlockStars (100, 1, i);
+		foreach (Transform t in LevelsManager.Instance.transform) {
+			Level level = t.GetComponent<Level> ();
+
+			level.starsEarned = 3;
+
+
+			for (int i = 0; i < level.starsStates.Length; i++) {
+				level.starsStates [i] = StarState.Unlocked;
+			}
+
 		}
+
+		/*for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
+			UnlockStars (100, 1, i);
+		}*/
+
+		UpdateStars ();
+
 		//Comment if you don't want unlocking levels to have wierd stars state
 		//ResetAllLevelsStars ();
 	}

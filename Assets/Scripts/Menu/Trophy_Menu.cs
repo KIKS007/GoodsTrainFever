@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Trophy_Menu : MonoBehaviour
 {
+	[Multiline]
 	public string meshTitle;
 	public string key;
-	[Multiline]
-	public string funFact;
 
-	void Awake ()
+
+
+	public string funFact (int id)
 	{
-		funFact = LocalizationManager.Singleton.GetText (key);
+		if (id < 10) {
+			return LocalizationManager.Singleton.GetText ("FUNFACT-0" + id.ToString ());
+		} else {
+			return LocalizationManager.Singleton.GetText ("FUNFACT-" + id.ToString ());
+		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stage_Menu : MonoBehaviour 
+public class Stage_Menu : MonoBehaviour
 {
 	public static System.Action<Stage_Menu> OnStageUnlock;
 
@@ -24,11 +24,10 @@ public class Stage_Menu : MonoBehaviour
 
 	void Start ()
 	{
-		trophyButton.onClick.AddListener (()=> 
-			{
-				MenuManager.Instance.menuTrophies.stageMenu = this;
-				MenuManager.Instance.ToMenu (MenuManager.Instance.menuTrophies);
-			});
+		trophyButton.onClick.AddListener (() => {
+			MenuManager.Instance.menuTrophies.stageMenu = this;
+			MenuManager.Instance.ToMenu (MenuManager.Instance.menuTrophies);
+		});
 	}
 
 	public void Setup (bool unlock, int stars)
@@ -46,14 +45,16 @@ public class Stage_Menu : MonoBehaviour
 
 		starsCount.transform.parent.gameObject.SetActive (!unlock);
 
-		if (unlock && !isUnlocked && !_allTrophiesMenu)
-		{
+		if (unlock && !isUnlocked && !_allTrophiesMenu) {
 			if (OnStageUnlock != null)
 				OnStageUnlock (this);
 		}
 
 		isUnlocked = unlock;
 
-		trophyTitle.text = ScoreManager.Instance.levelStages [trophyStageIndex].trophy.GetComponent<Trophy_Menu> ().meshTitle;
+		//trophyTitle.text = ScoreManager.Instance.levelStages [trophyStageIndex].trophy.GetComponent<Trophy_Menu> ().meshTitle;
+
+		trophyTitle.text = 
+			"PALIER " + (trophyStageIndex + 1).ToString () + "\n DEBLOQUé !";
 	}
 }
