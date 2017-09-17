@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using DarkTonic.MasterAudio;
 
-public class ContainersMovementManager : Singleton<ContainersMovementManager> 
+public class ContainersMovementManager : Singleton<ContainersMovementManager>
 {
 	public Action OnContainerMovement;
 	public Action OnContainerMovementEnd;
@@ -73,15 +74,14 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		ScreenshakeManager.Instance.Shake (FeedbackType.StartHover);
 
-		container.transform.DOLocalMoveY (container.transform.localPosition.y + startHoverHeight, startHoverDuration).SetEase (hoverEase).OnComplete (()=> Hover (container));
+		container.transform.DOLocalMoveY (container.transform.localPosition.y + startHoverHeight, startHoverDuration).SetEase (hoverEase).OnComplete (() => Hover (container));
 	}
 
 	void Hover (Container container)
 	{
-		container.transform.DOLocalMoveY (container.transform.localPosition.y - hoverHeight, hoverDuration).SetEase (hoverEase).OnComplete (() => 
-			{
-				container.transform.DOLocalMoveY (container.transform.localPosition.y + hoverHeight, hoverDuration).SetEase (hoverEase).OnComplete (()=> Hover (container));
-			});
+		container.transform.DOLocalMoveY (container.transform.localPosition.y - hoverHeight, hoverDuration).SetEase (hoverEase).OnComplete (() => {
+			container.transform.DOLocalMoveY (container.transform.localPosition.y + hoverHeight, hoverDuration).SetEase (hoverEase).OnComplete (() => Hover (container));
+		});
 	}
 
 	public void StopHover (Container container)
@@ -100,8 +100,9 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 		Container container = selectedContainer;
 		Vector3 targetPosition = spot.transform.position;
 
-		if (spot.isPileSpot && spot._parentContainer.isMoving)
-		{
+
+
+		if (spot.isPileSpot && spot._parentContainer.isMoving) {
 			targetPosition = spot._parentContainer.spotOccupied.transform.position;
 			targetPosition.y += containerHeight;
 		}
@@ -123,7 +124,7 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		Vector3 direction = (targetPosition - container.transform.position).normalized;
 
-		if(VectorApproximatelyEqual (Vector3.right, direction) || VectorApproximatelyEqual (-Vector3.right, direction))
+		if (VectorApproximatelyEqual (Vector3.right, direction) || VectorApproximatelyEqual (-Vector3.right, direction))
 			direction = Vector3.forward * -Mathf.Sign (direction.x);
 		else
 			direction = Vector3.right * Mathf.Sign (direction.z);
@@ -136,24 +137,22 @@ public class ContainersMovementManager : Singleton<ContainersMovementManager>
 
 		container.transform.DOLocalMoveX (targetPosition.x, takeSpotDuration).SetEase (Ease.OutCubic);
 		container.transform.DOLocalMoveZ (targetPosition.z, takeSpotDuration).SetEase (Ease.OutCubic);
-		container.transform.DOLocalMoveY (targetPosition.y + 10f + UnityEngine.Random.Range (-2, 3), takeSpotDuration - 0.1f).SetEase (Ease.OutCubic).OnComplete (() => 
-			{
-				container.transform.DOLocalMoveY (targetPosition.y, takeSpotDuration + 0.1f).SetEase (Ease.OutBounce, 40, 1);
-				container.transform.DOPunchRotation (direction * 10f, takeSpotDuration + 0.1f, 10).SetDelay (.1f).OnStart (() => 
-					{
-						ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, container.transform.position - (Vector3.up * container._collider.bounds.extents.y * 4), 0.1f);
-						ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
+		container.transform.DOLocalMoveY (targetPosition.y + 10f + UnityEngine.Random.Range (-2, 3), takeSpotDuration - 0.1f).SetEase (Ease.OutCubic).OnComplete (() => {
+			container.transform.DOLocalMoveY (targetPosition.y, takeSpotDuration + 0.1f).SetEase (Ease.OutBounce, 40, 1);
+			container.transform.DOPunchRotation (direction * 10f, takeSpotDuration + 0.1f, 10).SetDelay (.1f).OnStart (() => {
+				MasterAudio.PlaySound ("SFX_ContainerUnselect");
+				ParticlesManager.Instance.CreateParticles (FeedbackType.EndTakeSpot, container.transform.position - (Vector3.up * container._collider.bounds.extents.y * 4), 0.1f);
+				ScreenshakeManager.Instance.Shake (FeedbackType.EndTakeSpot);
 
-					}).OnComplete (()=> 
-						{
-							containerInMotion = false;
+			}).OnComplete (() => {
+				containerInMotion = false;
 
-							container.isMoving = false;
+				container.isMoving = false;
 
-							if(OnContainerMovementEnd != null)
-								OnContainerMovementEnd ();
-						});
+				if (OnContainerMovementEnd != null)
+					OnContainerMovementEnd ();
 			});
+		});
 	}
 
 	bool VectorApproximatelyEqual (Vector3 a, Vector3 b)

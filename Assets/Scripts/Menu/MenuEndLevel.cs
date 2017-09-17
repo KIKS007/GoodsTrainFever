@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using DarkTonic.MasterAudio;
 
 public class MenuEndLevel : MenuComponent
 {
@@ -87,6 +88,7 @@ public class MenuEndLevel : MenuComponent
 
 				if (ScoreManager.Instance.success)
 					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
+						MasterAudio.PlaySound ("SFX_Pop");
 						starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 						starOuter.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});

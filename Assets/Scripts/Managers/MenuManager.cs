@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System;
 using UniRx;
+using DarkTonic.MasterAudio;
 
 public class MenuManager : Singleton<MenuManager>
 {
@@ -115,11 +116,15 @@ public class MenuManager : Singleton<MenuManager>
 				pauseButton.interactable = true;
 				fastforwardButton.gameObject.SetActive (true);
 			}
-
+			MasterAudio.ChangePlaylistByName ("InGame");
 		};
 
 		GameManager.Instance.OnLevelEnd += () => {
 			pauseButton.interactable = false;
+		};
+
+		GameManager.Instance.OnMenu += () => {
+			//MasterAudio.PlaySound ("SFX_Swap");
 		};
 
 		if (GameManager.Instance.gameState == GameState.Playing)
@@ -179,8 +184,7 @@ public class MenuManager : Singleton<MenuManager>
 				MenuPosition ();
 		}*/
 
-		if (Input.GetKeyDown (KeyCode.Escape))
-		{
+		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (currentMenu && GameManager.Instance.gameState != GameState.Playing)
 				Back ();
 
@@ -197,13 +201,10 @@ public class MenuManager : Singleton<MenuManager>
 
 	void BackButton (MenuComponent menu)
 	{
-		if (menu && menu.backToMainMenu || menu && menu.backMenu != null)
-		{
+		if (menu && menu.backToMainMenu || menu && menu.backMenu != null) {
 			DOTween.Kill (backButton);
 			backButton.DOAnchorPos (_backButtonShowPos, menuAnimationDuration).SetEase (menuEase).SetUpdate (true);
-		} 
-		else 
-		{
+		} else {
 			DOTween.Kill (backButton);
 			backButton.DOAnchorPos (backButtonHiddenPos, menuAnimationDuration).SetEase (menuEase).SetUpdate (true);
 		}
@@ -646,7 +647,7 @@ public class MenuManager : Singleton<MenuManager>
 	public void MainMenu ()
 	{
 		Time.timeScale = 1;
-
+		MasterAudio.ChangePlaylistByName ("MainMenu");
 		if (TutorialManager.Instance.isActive) {
 			TutorialManager.Instance.ForceStop ();
 		}
