@@ -148,6 +148,8 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 			FillForceContainer (randomTrain._allSpots, c, randomTrain, _containersGenerated);
 		}
 			
+		yield return new WaitForEndOfFrame ();
+
 		for(int i = 0; i < _trainsGenerated.Count; i++)
 			StartCoroutine (FillTrain (_trainsGenerated [i], selectedTrains [i]));
 
@@ -375,7 +377,7 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 				//Test Container Wich Each Spot
 				foreach(var s in spots)
 				{
-					if(s.IsSameSize (container) && container.CheckConstraints (s) && !s.isSubordinate)
+					if(s.IsSameSize (container) && !s.isOccupied && container.CheckConstraints (s) && !s.isSubordinate)
 					{
 						spot = s;
 						spot.SetInitialContainer (container);
@@ -442,6 +444,10 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 		if(spot != null)
 		{
 			containersList.Add (container);
+			
+			spots.Remove (spot);
+			foreach(var o in spot.overlappingSpots)
+				spots.Remove (o);
 
 			_forcedContainersGenerated.Add (container);
 		}
