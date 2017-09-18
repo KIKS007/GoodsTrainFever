@@ -129,33 +129,33 @@ public class Order_UI : MonoBehaviour
 		parentOrderUI.Selected ();
 		foreach (var c in containers) {
 			if (c.isSent) {
-				c.ContainerSelected (false);
+				c.ContainerSelected (false, container);
 				continue;
 			}
 
 			if (c.neededCount == 0) {
-				c.ContainerSelected (false);
+				c.ContainerSelected (false, container);
 				continue;
 			}
 
 			if (c.containerLevel.containerColor != container.containerColor) {
-				c.ContainerSelected (false);
+				c.ContainerSelected (false, container);
 				continue;
 			}
 
 			if (c.containerLevel.containerType != container.containerType) {
-				c.ContainerSelected (false);
+				c.ContainerSelected (false, container);
 				continue;
 			}
 
 			if (c.containerLevel.isDoubleSize != container.isDoubleSize) {
-				c.ContainerSelected (false);
+				c.ContainerSelected (false, container);
 				continue;
 			}
 
 			SelectedContainer = c.gameObject;
 			c.myContainer = container;
-			c.ContainerSelected (true);
+			c.ContainerSelected (true, container);
 
 			tmpBool = true;
 		}

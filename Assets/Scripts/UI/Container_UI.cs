@@ -139,11 +139,13 @@ public class Container_UI : MonoBehaviour
 		}
 	}
 
-	public void ContainerSelected (bool isMe)
+	public void ContainerSelected (bool isMe, Container c)
 	{
-		if (isMe) {
+		if (isMe && c.train == null || c == container) 
+		{
 			this.GetComponent<Image> ().DOFade (1, 0.2f);
-		} else {
+		} else 
+		{
 			this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
 		}
 	}
@@ -151,6 +153,7 @@ public class Container_UI : MonoBehaviour
 	public void ContainerDeselected (Container c)
 	{
 		myContainer = null;
+
 		if (myOrderUI != null) {
 			myOrderUI.ContainerDeselected ();
 		} else {

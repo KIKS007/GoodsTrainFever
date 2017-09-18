@@ -22392,6 +22392,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 949}
     m_Modifications:
+    - target: {fileID: 114015895012314692, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: rail1Trains.Array.data[0].wagons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114015895012314692, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: rail2Trains.Array.data[0].wagons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
