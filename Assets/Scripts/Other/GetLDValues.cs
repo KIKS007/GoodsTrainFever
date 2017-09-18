@@ -4,6 +4,11 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 public class GetLDValues : MonoBehaviour {
 
+public bool CopyToClipBoard = true;
+
+[Tooltip("The file is placed in the -Asset/-")]
+public bool WriteToFile = false;
+
 [Button]
 void GetValue(){
 	Transform parent = this.transform;
@@ -52,8 +57,19 @@ void GetValue(){
 		}
 	}
 	things = at1 + "\n" + at2 + "\n" + at3 + "\n" + at4 + "\n" + at5;
-	
-	System.IO.File.WriteAllText ("Assets/" + "LDValue" + ".txt", things);
+
+	if(CopyToClipBoard){
+		TextEditor te = new TextEditor();
+		te.text = things;
+		te.SelectAll();
+		te.Copy();
+		Debug.Log("Added to Clipboard");
+	}
+
+	if(WriteToFile){
+		System.IO.File.WriteAllText ("Assets/" + "LDValue" + ".txt", things);
+		Debug.Log("File Created: " + "Assets/" + "LDValue" + ".txt");
+	}
 }
 
 
