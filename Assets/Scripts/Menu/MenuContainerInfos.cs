@@ -76,6 +76,11 @@ public class MenuContainerInfos : MenuComponent
 
 		base.OnShow ();
 
+		StartCoroutine (OnShowCoroutine ());
+	}
+
+	IEnumerator OnShowCoroutine ()
+	{
 		foreach (Transform t in constraintsParent.transform)
 			Destroy (t.gameObject);
 
@@ -114,6 +119,8 @@ public class MenuContainerInfos : MenuComponent
 					break;
 				}
 			}
+
+			yield return new WaitForEndOfFrame ();
 
 			if (_selectedContainer.constraints [i].isRespected) {
 				constraint.GetChild (0).GetChild (0).gameObject.SetActive (true);
