@@ -22392,16 +22392,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 949}
     m_Modifications:
-    - target: {fileID: 114015895012314692, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail1Trains.Array.data[0].wagons.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114015895012314692, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.data[0].wagons.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -22564,6 +22554,31 @@ Prefab:
       propertyPath: trainsToSendIcon
       value: 
       objectReference: {fileID: 576471266}
+    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsEarned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: starsStates.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
+        type: 2}
+      propertyPath: ordersCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
   m_IsPrefabParent: 0
@@ -27547,10 +27562,6 @@ Prefab:
     - target: {fileID: 4498029323493592, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1574365411891260, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 46ef1662103de954ba27c98c1104a64f, type: 2}

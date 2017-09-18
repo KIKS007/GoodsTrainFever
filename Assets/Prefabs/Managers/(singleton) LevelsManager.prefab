@@ -1553,7 +1553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 1
+  errorsAllowed: 2
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -1734,7 +1734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 1
+  errorsAllowed: 2
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -2404,7 +2404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -2619,7 +2619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -2788,7 +2788,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 0
-  ordersFillingPercentage: 100
+  ordersFillingPercentage: 90
   storageFillingPercentage: 85
 --- !u!114 &114246213805128496
 MonoBehaviour:
@@ -2802,7 +2802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -2951,7 +2951,7 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
+  levelDuration: 90
   ordersCountMin: 2
   ordersCountMax: 3
   trainsCountMin: 5
@@ -2973,7 +2973,7 @@ MonoBehaviour:
   forcedContainers: []
   parasiteContainers: []
   extraContainersCount: 0
-  ordersFillingPercentage: 100
+  ordersFillingPercentage: 90
   storageFillingPercentage: 70
 --- !u!114 &114314615533424012
 MonoBehaviour:
@@ -2990,8 +2990,8 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
+  levelDuration: 70
+  ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
   trainsCountMax: 5
@@ -3156,7 +3156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -3594,7 +3594,7 @@ MonoBehaviour:
   starsStates: 000000000000000000000000
   ordersCount: 0
   levelDuration: 80
-  ordersCountMin: 2
+  ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
   trainsCountMax: 5
@@ -3825,7 +3825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -4129,7 +4129,7 @@ MonoBehaviour:
   forcedContainers: []
   parasiteContainers: []
   extraContainersCount: 0
-  ordersFillingPercentage: 100
+  ordersFillingPercentage: 90
   storageFillingPercentage: 100
 --- !u!114 &114561343716687288
 MonoBehaviour:
@@ -4655,8 +4655,8 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
+  levelDuration: 70
+  ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
   trainsCountMax: 5
@@ -4790,7 +4790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -4916,7 +4916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -4978,11 +4978,11 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
-  ordersCountMax: 4
-  trainsCountMin: 3
-  trainsCountMax: 5
+  levelDuration: 80
+  ordersCountMin: 3
+  ordersCountMax: 3
+  trainsCountMin: 1
+  trainsCountMax: 2
   trainsAvailable:
   - {fileID: 11400000, guid: 080ed71e8405b634bb4861d6c391308c, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -5020,7 +5020,7 @@ MonoBehaviour:
     isDoubleSize: 1
   parasiteContainers: []
   extraContainersCount: 0
-  ordersFillingPercentage: 95
+  ordersFillingPercentage: 80
   storageFillingPercentage: 80
 --- !u!114 &114785814305051758
 MonoBehaviour:
@@ -5034,7 +5034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -5660,7 +5660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 1
+  errorsAllowed: 2
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -5803,7 +5803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -5936,7 +5936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 1
+  errorsAllowed: 2
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -6036,7 +6036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -6294,8 +6294,8 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
-  ordersCountMin: 2
+  levelDuration: 70
+  ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
   trainsCountMax: 5

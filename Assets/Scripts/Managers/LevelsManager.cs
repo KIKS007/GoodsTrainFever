@@ -558,15 +558,20 @@ public class LevelsManager : Singleton<LevelsManager>
 	{
 		yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-		foreach (var b in boats) {
+		foreach (var b in boats) 
+		{
+			float duration = boatDuration;
+
 			if (delay > 0)
 				yield return new WaitForSeconds (delay);
 
 			BoatsMovementManager.Instance.BoatStart (b);
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
-			CurrentBoatTimer.text = boatDuration.ToString ();
-			while (boatDuration > 0) {
+
+			CurrentBoatTimer.text = duration.ToString ();
+
+			while (duration > 0) {
 
 				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
@@ -574,8 +579,8 @@ public class LevelsManager : Singleton<LevelsManager>
 
 				yield return new WaitWhile (() => GameManager.Instance.gameState != GameState.Playing);
 
-				boatDuration--;
-				CurrentBoatTimer.text = boatDuration.ToString ();
+				duration--;
+				CurrentBoatTimer.text = duration.ToString ();
 			}
 			CurrentBoatTimer.text = "!";
 			BoatsMovementManager.Instance.BoatDeparture (b);
