@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Spreadsheet;
+using Sirenix.OdinInspector;
 
 
 public delegate void MyDel ();
@@ -39,6 +40,7 @@ public class LocalizationManager : MonoBehaviour {
     public bool sync;
     public bool refresh;
     public bool fetch;
+    public bool AutoOffSync = false;
     public string CurrentLang = "English";
 
     public List<string> LanguagesName = new List<string> ();
@@ -67,6 +69,14 @@ public class LocalizationManager : MonoBehaviour {
             return "BAD KEY";
 
         return Languages[CurrentLang].Texts[key];
+    }
+
+    [ExecuteInEditMode]
+    [Button]
+    void SetAllTrue(){
+        sync = true;
+        fetch = true;
+        refresh = true;
     }
 
     [ExecuteInEditMode]
@@ -170,6 +180,9 @@ public class LocalizationManager : MonoBehaviour {
                 Debug.Log ("Localization synced");
                 AssetDatabase.Refresh ();
                 ChangeLanguage (CurrentLang);
+                if(AutoOffSync){
+                    sync = false;
+                }
             }
         }
 #endif

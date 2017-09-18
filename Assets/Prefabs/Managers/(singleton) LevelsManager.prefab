@@ -788,6 +788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4269197372705354}
   - component: {fileID: 114823883827764146}
+  - component: {fileID: 114792642097474476}
   m_Layer: 0
   m_Name: (singleton) LevelsManager
   m_TagString: Untagged
@@ -5182,6 +5183,19 @@ MonoBehaviour:
   boatsDuration: 0
   lastBoatStay: 1
   boats: []
+--- !u!114 &114792642097474476
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982943784258088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b95647778e72b94bb62ca4fa1d584e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CopyToClipBoard: 1
+  WriteToFile: 0
 --- !u!114 &114823883827764146
 MonoBehaviour:
   m_ObjectHideFlags: 1

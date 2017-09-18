@@ -9,21 +9,31 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Spreadsheet;
+using Sirenix.OdinInspector;
 
 
 
 [ExecuteInEditMode]
 public class SpreadsheetImporter : MonoBehaviour {
-    [Header ("Configuration")]
+    [HideInInspector]
     public string SheetID;
 
     public static SpreadsheetImporter Singleton;
-    [Header ("Other")]
+    [Header ("Status")]
     public bool sync;
+      [HideInInspector]
     public bool refresh;
+      [HideInInspector]
     public bool fetch;
+    [HideInInspector]
+    public bool InEditorupdate;
+    [HideInInspector]
+    public LevelSettings_Sync lsfe;
+    [HideInInspector]
+    public bool isFetched = false;
+    [HideInInspector]
     public string CurrentLang = "English";
-
+  [HideInInspector]
     public List<string> LanguagesName = new List<string> ();
     public Dictionary<string, Language> Languages = new Dictionary<string, Language> ();
 
@@ -37,6 +47,24 @@ public class SpreadsheetImporter : MonoBehaviour {
             SpreadsheetImporter.Singleton = this;
         } else {
             Destroy (gameObject);
+        }
+    }
+
+
+    [ExecuteInEditMode]
+   public void MakeInstance () {
+        if (SpreadsheetImporter.Singleton == null) {
+            SpreadsheetImporter.Singleton = this;
+        }else{
+            Debug.Log("Instance Already Created");
+        }
+    }
+
+
+    [ExecuteInEditMode]
+    void DestroyInstance () {
+        if (SpreadsheetImporter.Singleton != null) {
+            SpreadsheetImporter.Singleton = null;
         }
     }
 
@@ -99,7 +127,6 @@ public class SpreadsheetImporter : MonoBehaviour {
             }
 
             Languages.Add (lang.name, lang);
-
         }
     }
 
@@ -107,10 +134,10 @@ public class SpreadsheetImporter : MonoBehaviour {
     public IEnumerator Fetch () {
 #if UNITY_EDITOR
         if (sync) {
-
+            isFetched =false;
+           // Debug.Log("Fetching LD Datas");
             WWW www = new WWW ("https://spreadsheets.google.com/feeds/cells/" + SheetID + "/1/public/values?alt=json");
             yield return www;
-
             /*
              * Ensure url exsists (fetch all url)
              */
@@ -161,8 +188,11 @@ public class SpreadsheetImporter : MonoBehaviour {
                 foreach (KeyValuePair<string, Language> entry in Languages) {
                     System.IO.File.WriteAllText ("Assets/Resources/lang/" + entry.Value.name + ".json", JsonUtility.ToJson (Languages[entry.Key]));
                 }
-                Debug.Log ("Spreadsheet synced");
+                //Debug.Log ("Spreadsheet synced");
                 AssetDatabase.Refresh ();
+                isFetched = true;
+                lsfe.Wait = true;
+                InEditorupdate = false;
                 ChangeLanguage (CurrentLang);
             }
         }
@@ -217,7 +247,22 @@ public class SpreadsheetImporter : MonoBehaviour {
             fetch = false;
         }
     }
+
+
+[ExecuteInEditMode]
+public void FetchLD(LevelSettings_Sync lsfis){
+    lsfe = lsfis;   
+    InEditorupdate = true;
+    refresh = true;
+    fetch = true;
+    StartCoroutine (Fetch ());
+}
+
+public void RefreshLD(){
+ChangeLanguage (CurrentLang);
+}
 #endif
+
 }
 
 //{"appid":730,"name":"Counter-Strike: Global Offensive","developer":"Valve","publisher":"Valve","score_rank":84,"owners":22796584,"owners_variance":118099,"players_forever":22079017,"players_forever_variance":116367,"players_2weeks":8212915,"players_2weeks_variance":72623,"average_forever":15526,"average_2weeks":882,"median_forever":4300,"median_2weeks":398,"ccu":593940}
