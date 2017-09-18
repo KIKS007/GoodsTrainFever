@@ -321,7 +321,8 @@ public class OrderUI : MonoBehaviour
 		_notificationImg.DOFade (1, 0.1f).SetDelay (0.4f).OnComplete (() => {
 			OrderCount.gameObject.SetActive (true);
 		});
-		foreach (var order in _orderList) {
+		foreach (var order in _orderList) 
+		{
 			var go = _orders [order];
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
 			float alphaTarget = 1f - i / 3f;
@@ -384,7 +385,8 @@ public class OrderUI : MonoBehaviour
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
 			float alphaTarget = 1f - i / 3f;
 			canvasGrp.DOKill ();
-			if (go.activeSelf) {
+			if (go.activeSelf)
+			{
 				canvasGrp.DOFade (alphaTarget, 1f - go.transform.GetSiblingIndex () / 3f);
 			}
 			i++;
