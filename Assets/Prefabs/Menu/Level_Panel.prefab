@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 224538760167284224}
   - component: {fileID: 222093928116352898}
   - component: {fileID: 114690818297756152}
+  - component: {fileID: 114600558437000740}
   m_Layer: 5
   m_Name: Star_MostOrders
   m_TagString: Untagged
@@ -207,6 +208,7 @@ GameObject:
   - component: {fileID: 224846615774345606}
   - component: {fileID: 222708194115661712}
   - component: {fileID: 114631271433669128}
+  - component: {fileID: 114559116330745472}
   m_Layer: 5
   m_Name: Star_AllOrders
   m_TagString: Untagged
@@ -224,6 +226,7 @@ GameObject:
   - component: {fileID: 224600229238819664}
   - component: {fileID: 222794750014824298}
   - component: {fileID: 114930211240601964}
+  - component: {fileID: 114075379379278580}
   m_Layer: 5
   m_Name: Star_LeastTrains
   m_TagString: Untagged
@@ -241,6 +244,7 @@ GameObject:
   - component: {fileID: 224122489373744650}
   - component: {fileID: 222572666854927508}
   - component: {fileID: 114617427409610758}
+  - component: {fileID: 114707155974918904}
   m_Layer: 5
   m_Name: Lock
   m_TagString: Untagged
@@ -259,6 +263,7 @@ GameObject:
   - component: {fileID: 222454173964339214}
   - component: {fileID: 114851823822043084}
   - component: {fileID: 114882994328714788}
+  - component: {fileID: 114946732183209686}
   m_Layer: 5
   m_Name: Count
   m_TagString: Untagged
@@ -330,6 +335,7 @@ GameObject:
   - component: {fileID: 224136196257255072}
   - component: {fileID: 222759479297907784}
   - component: {fileID: 114267331921058606}
+  - component: {fileID: 114361346054824334}
   m_Layer: 5
   m_Name: Level Title
   m_TagString: Untagged
@@ -348,6 +354,7 @@ GameObject:
   - component: {fileID: 222890242745144118}
   - component: {fileID: 114446388993032832}
   - component: {fileID: 114084296419547132}
+  - component: {fileID: 114915512649488022}
   m_Layer: 5
   m_Name: Errors
   m_TagString: Untagged
@@ -421,6 +428,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Trains count :    '
+--- !u!114 &114075379379278580
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1502049455983582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114084296419547132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -634,6 +655,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114361346054824334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1923262479380504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114381091183715366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -779,6 +814,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114559116330745472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1494554054818162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114566946559759690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -812,6 +861,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Jouer
+--- !u!114 &114600558437000740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1216154862339132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114617427409610758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -893,6 +956,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114707155974918904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1641160046353470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114755478969409584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1013,6 +1090,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &114915512649488022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1972546472574822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114923917704889230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1094,6 +1185,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114946732183209686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1654253381809790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114972269619830052
 MonoBehaviour:
   m_ObjectHideFlags: 1
