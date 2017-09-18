@@ -263,8 +263,6 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 
 		currentLevelGenerated = newLevel.AddComponent<LevelGenerated> ();
 
-		currentLevelGenerated.mostOrdersCount = _currentLevelSettings.mostOrdersCount;
-		currentLevelGenerated.leastTrainsCount = _currentLevelSettings.leastTrainsCount;
 		currentLevelGenerated.errorsAllowed = _currentLevelSettings.errorsAllowed;
 
 		currentLevelGenerated.starsEarned = _currentLevelSettings.starsEarned;
