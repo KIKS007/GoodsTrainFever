@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 public class GetLDValues : MonoBehaviour {
+	public Transform parent;
 
 public bool CopyToClipBoard = true;
 
@@ -11,7 +12,6 @@ public bool WriteToFile = false;
 
 [Button]
 void GetValue(){
-	Transform parent = this.transform;
 
 	string things;
 	string at1 = "";

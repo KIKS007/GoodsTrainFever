@@ -22554,31 +22554,6 @@ Prefab:
       propertyPath: trainsToSendIcon
       value: 
       objectReference: {fileID: 576471266}
-    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsEarned
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[1]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: starsStates.Array.data[2]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114753527711139184, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: ordersCount
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
   m_IsPrefabParent: 0
@@ -22642,26 +22617,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 114103682607168934, guid: 7cece7473ee61d946942754ac26150fd,
+        type: 2}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 763}
     - target: {fileID: 114064528210780404, guid: 7cece7473ee61d946942754ac26150fd,
         type: 2}
       propertyPath: lvlparent
       value: 
       objectReference: {fileID: 763}
-    - target: {fileID: 114096724353036166, guid: 7cece7473ee61d946942754ac26150fd,
-        type: 2}
-      propertyPath: sync
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114096724353036166, guid: 7cece7473ee61d946942754ac26150fd,
-        type: 2}
-      propertyPath: refresh
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114096724353036166, guid: 7cece7473ee61d946942754ac26150fd,
-        type: 2}
-      propertyPath: fetch
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114294550160489590, guid: 7cece7473ee61d946942754ac26150fd,
         type: 2}
       propertyPath: sync
@@ -26552,7 +26517,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -26562,7 +26527,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1046798105582788, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
       propertyPath: m_IsActive
