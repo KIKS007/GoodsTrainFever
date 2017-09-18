@@ -9,8 +9,6 @@ public class Level : MonoBehaviour
 {
 	[Header ("Stars")]
 	public int starsEarned = 0;
-	public int mostOrdersCount = 0;
-	public int leastTrainsCount = 1;
 
 	[Header ("Errors")]
 	public int errorsAllowed = 10;

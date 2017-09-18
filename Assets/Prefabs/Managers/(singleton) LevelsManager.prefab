@@ -1552,8 +1552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -1815,8 +1813,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -1958,8 +1954,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2033,8 +2027,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2096,8 +2088,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2159,8 +2149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2215,8 +2203,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2281,8 +2267,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2351,7 +2335,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 2
     parasiteContainers: []
-  - trainDuration: 20
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -2361,7 +2345,7 @@ MonoBehaviour:
       wagonMaxWeight: 10
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2385,8 +2369,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2454,7 +2436,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 26
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2465,7 +2447,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 2
     parasiteContainers: []
-  - trainDuration: 18
+  - trainDuration: 30
     wagons:
     - wagonType: 1
       wagonMaxWeight: 3
@@ -2475,7 +2457,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 26
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2499,8 +2481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2580,7 +2560,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 20
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2589,7 +2569,7 @@ MonoBehaviour:
     - wagonType: 1
       wagonMaxWeight: 2
     parasiteContainers: []
-  - trainDuration: 18
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -2599,7 +2579,7 @@ MonoBehaviour:
       wagonMaxWeight: 10
     parasiteContainers: []
   rail2Trains: []
-  boatsDuration: 20
+  boatsDuration: 40
   lastBoatStay: 1
   boats:
   - delay: 10
@@ -2633,8 +2613,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2718,8 +2696,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2781,7 +2757,7 @@ MonoBehaviour:
     containerColor: 2
     isDoubleSize: 1
   rail1Trains:
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2791,7 +2767,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
     - wagonType: 1
       wagonMaxWeight: 10
@@ -2858,8 +2834,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2905,8 +2879,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -2941,7 +2913,7 @@ MonoBehaviour:
     containerColor: 1
     isDoubleSize: 1
   rail1Trains:
-  - trainDuration: 18
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -2982,8 +2954,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3055,8 +3025,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3096,8 +3064,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3142,8 +3108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3208,8 +3172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3271,8 +3233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3337,7 +3297,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 30
+  - trainDuration: 60
     wagons:
     - wagonType: 0
       wagonMaxWeight: 6
@@ -3349,7 +3309,7 @@ MonoBehaviour:
       wagonMaxWeight: 6
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 40
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 6
@@ -3357,6 +3317,8 @@ MonoBehaviour:
       wagonMaxWeight: 6
     - wagonType: 0
       wagonMaxWeight: 6
+    - wagonType: 0
+      wagonMaxWeight: 0
     parasiteContainers: []
   boatsDuration: 0
   lastBoatStay: 1
@@ -3373,8 +3335,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3439,7 +3399,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 40
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -3458,7 +3418,7 @@ MonoBehaviour:
       wagonMaxWeight: 3
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 35
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -3482,8 +3442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3545,8 +3503,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3617,8 +3573,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3633,7 +3587,7 @@ MonoBehaviour:
       containerColor: 1
       isDoubleSize: 1
   - isPrepared: 0
-    delay: 10
+    delay: 5
     levelContainers:
     - containerType: 0
       containerColor: 4
@@ -3677,7 +3631,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 40
+  - trainDuration: 50
     wagons:
     - wagonType: 1
       wagonMaxWeight: 3
@@ -3689,7 +3643,7 @@ MonoBehaviour:
       wagonMaxWeight: 4
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 50
+  - trainDuration: 60
     wagons:
     - wagonType: 1
       wagonMaxWeight: 3
@@ -3713,8 +3667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3765,8 +3717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3831,8 +3781,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -3954,8 +3902,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4005,7 +3951,7 @@ MonoBehaviour:
     containerColor: 1
     isDoubleSize: 1
   rail1Trains:
-  - trainDuration: 25
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -4015,7 +3961,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 20
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -4024,7 +3970,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 10
     parasiteContainers: []
-  boatsDuration: 18
+  boatsDuration: 20
   lastBoatStay: 1
   boats:
   - delay: 0
@@ -4038,19 +3984,10 @@ MonoBehaviour:
       containerColor: 0
       isDoubleSize: 0
     - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
-      isDoubleSize: 0
-    - containerType: 0
-      containerColor: 0
+      containerColor: 1
+      isDoubleSize: 1
+    - containerType: 2
+      containerColor: 3
       isDoubleSize: 0
     - containerType: 0
       containerColor: 0
@@ -4067,8 +4004,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4184,7 +4119,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 20
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -4193,20 +4128,20 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 10
     parasiteContainers: []
-  - trainDuration: 15
+  - trainDuration: 30
     wagons:
     - wagonType: 2
       wagonMaxWeight: 10
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 15
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
     - wagonType: 0
       wagonMaxWeight: 10
     parasiteContainers: []
-  - trainDuration: 15
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -4215,7 +4150,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 10
     parasiteContainers: []
-  boatsDuration: 20
+  boatsDuration: 60
   lastBoatStay: 1
   boats:
   - delay: 5
@@ -4246,8 +4181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4287,8 +4220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4375,8 +4306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4438,9 +4367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
-  errorsAllowed: 0
+  errorsAllowed: 1
   starsStates: 000000000000000000000000
   ordersCount: 0
   orders:
@@ -4537,7 +4464,7 @@ MonoBehaviour:
     containerColor: 3
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 35
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -4554,7 +4481,7 @@ MonoBehaviour:
     - wagonType: 1
       wagonMaxWeight: 10
     parasiteContainers: []
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -4563,7 +4490,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 10
     parasiteContainers: []
-  boatsDuration: 20
+  boatsDuration: 50
   lastBoatStay: 1
   boats:
   - delay: 5
@@ -4588,6 +4515,12 @@ MonoBehaviour:
     - containerType: 2
       containerColor: 2
       isDoubleSize: 1
+    - containerType: 0
+      containerColor: 3
+      isDoubleSize: 1
+    - containerType: 0
+      containerColor: 3
+      isDoubleSize: 1
 --- !u!114 &114644534935299706
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4600,8 +4533,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4660,8 +4591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4800,8 +4729,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4852,8 +4779,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -4906,7 +4831,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 40
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -4918,7 +4843,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 50
+  - trainDuration: 60
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -4942,8 +4867,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -5020,14 +4943,14 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 18
+  - trainDuration: 20
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
     - wagonType: 0
       wagonMaxWeight: 2
     parasiteContainers: []
-  - trainDuration: 20
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -5037,7 +4960,7 @@ MonoBehaviour:
       wagonMaxWeight: 10
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -5046,7 +4969,7 @@ MonoBehaviour:
     - wagonType: 0
       wagonMaxWeight: 2
     parasiteContainers: []
-  - trainDuration: 20
+  - trainDuration: 30
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -5070,8 +4993,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -5106,7 +5027,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 20
+  - trainDuration: 25
     wagons:
     - wagonType: 0
       wagonMaxWeight: 5
@@ -5131,8 +5052,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -5192,8 +5111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -5243,7 +5160,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -5253,7 +5170,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -5807,8 +5724,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -5950,8 +5865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6037,14 +5950,14 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 28
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 6
     - wagonType: 0
       wagonMaxWeight: 6
     parasiteContainers: []
-  - trainDuration: 28
+  - trainDuration: 40
     wagons:
     - wagonType: 1
       wagonMaxWeight: 9
@@ -6052,7 +5965,7 @@ MonoBehaviour:
       wagonMaxWeight: 12
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 60
     wagons:
     - wagonType: 1
       wagonMaxWeight: 9
@@ -6061,11 +5974,11 @@ MonoBehaviour:
     - wagonType: 1
       wagonMaxWeight: 9
     parasiteContainers: []
-  - trainDuration: 25
+  - trainDuration: 40
     wagons:
-    - wagonType: 1
-      wagonMaxWeight: 9
     - wagonType: 0
+      wagonMaxWeight: 9
+    - wagonType: 2
       wagonMaxWeight: 6
     - wagonType: 0
       wagonMaxWeight: 6
@@ -6085,8 +5998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6185,8 +6096,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6245,7 +6154,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 32
+  - trainDuration: 50
     wagons:
     - wagonType: 1
       wagonMaxWeight: 9
@@ -6255,7 +6164,7 @@ MonoBehaviour:
       wagonMaxWeight: 6
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 35
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -6279,8 +6188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6333,7 +6240,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 0
   rail1Trains:
-  - trainDuration: 40
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -6343,7 +6250,7 @@ MonoBehaviour:
       wagonMaxWeight: 2
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 50
+  - trainDuration: 60
     wagons:
     - wagonType: 0
       wagonMaxWeight: 2
@@ -6367,8 +6274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6379,9 +6284,6 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 0
       isDoubleSize: 1
-    - containerType: 2
-      containerColor: 0
-      isDoubleSize: 0
     - containerType: 3
       containerColor: 0
       isDoubleSize: 0
@@ -6391,16 +6293,19 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 0
       isDoubleSize: 0
+    - containerType: 2
+      containerColor: 0
+      isDoubleSize: 1
   - isPrepared: 0
     delay: 0
     levelContainers:
     - containerType: 0
       containerColor: 0
       isDoubleSize: 1
-    - containerType: 2
-      containerColor: 0
-      isDoubleSize: 1
     - containerType: 3
+      containerColor: 0
+      isDoubleSize: 0
+    - containerType: 0
       containerColor: 0
       isDoubleSize: 0
     - containerType: 0
@@ -6412,7 +6317,7 @@ MonoBehaviour:
   spawnAllOrderContainers: 1
   storageContainers: []
   rail1Trains:
-  - trainDuration: 20
+  - trainDuration: 40
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -6422,7 +6327,7 @@ MonoBehaviour:
       wagonMaxWeight: 10
     parasiteContainers: []
   rail2Trains:
-  - trainDuration: 25
+  - trainDuration: 50
     wagons:
     - wagonType: 0
       wagonMaxWeight: 10
@@ -6446,8 +6351,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6507,8 +6410,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 0
   starsStates: 000000000000000000000000
   ordersCount: 0
@@ -6571,8 +6472,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starsEarned: 0
-  mostOrdersCount: 0
-  leastTrainsCount: 1
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0

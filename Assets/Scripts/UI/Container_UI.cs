@@ -29,6 +29,9 @@ public class Container_UI : MonoBehaviour
 
 	private Color concolor;
 
+	private float _containerSentFade = 0.2f;
+	private float _containerAddedFade = 0.6f;
+
 	public void Start ()
 	{
 		/*_rectTransform = GetComponent<RectTransform> ();
@@ -105,8 +108,9 @@ public class Container_UI : MonoBehaviour
 		neededCountText.enabled = false;*/
 		/*Debug.Log ("WAT");
 		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);*/
+
 		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
-		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
+		this.GetComponent<Image> ().DOFade (_containerSentFade, 0.2f);
 	}
 
 	public void ContainerAdded (Container c)
@@ -121,14 +125,16 @@ public class Container_UI : MonoBehaviour
 		//containerImage.color = Color.green;
 
 		transform.GetChild (0).gameObject.SetActive (true);
-		_canvasGroup.DOFade (0.5f, MenuManager.Instance.menuAnimationDuration);
+
+		_canvasGroup.DOFade (_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
 
 		if (TutorialManager.Instance.isActive) {
 
 			TutorialManager.Instance.OnTrain ();
 		}
 		//Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
-		if (this.gameObject.activeInHierarchy) {
+		if (this.gameObject.activeInHierarchy)
+		{
 			StartCoroutine (ContainerAddedFeedback ());	
 		}
 	}

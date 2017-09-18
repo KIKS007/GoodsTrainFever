@@ -1012,6 +1012,7 @@ GameObject:
   - component: {fileID: 222124364958944752}
   - component: {fileID: 114025392422662284}
   - component: {fileID: 114077027443857712}
+  - component: {fileID: 114393488689037444}
   m_Layer: 5
   m_Name: ContainerType
   m_TagString: Untagged
@@ -1911,6 +1912,7 @@ GameObject:
   - component: {fileID: 222155968358769706}
   - component: {fileID: 114904272851389178}
   - component: {fileID: 114047093406834276}
+  - component: {fileID: 114140323825376484}
   m_Layer: 5
   m_Name: Size
   m_TagString: Untagged
@@ -2105,6 +2107,7 @@ GameObject:
   - component: {fileID: 114124760524742070}
   - component: {fileID: 114705840999178142}
   - component: {fileID: 114670054958193728}
+  - component: {fileID: 114732610038168888}
   m_Layer: 5
   m_Name: Resume
   m_TagString: Untagged
@@ -2314,6 +2317,7 @@ GameObject:
   - component: {fileID: 222520265956499176}
   - component: {fileID: 114489115372710134}
   - component: {fileID: 114516993971318098}
+  - component: {fileID: 114377290223991754}
   m_Layer: 5
   m_Name: ContainerSize
   m_TagString: Untagged
@@ -2865,6 +2869,7 @@ GameObject:
   - component: {fileID: 224181724307553662}
   - component: {fileID: 222150211775763294}
   - component: {fileID: 114825956569012126}
+  - component: {fileID: 114755841350567106}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -3513,6 +3518,7 @@ GameObject:
   - component: {fileID: 222909515722961782}
   - component: {fileID: 114500454943362018}
   - component: {fileID: 114417672102599308}
+  - component: {fileID: 114225258262732432}
   m_Layer: 5
   m_Name: Type
   m_TagString: Untagged
@@ -5987,6 +5993,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114140323825376484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520706994445188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114144203510939354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7641,7 +7661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e45620f722607634983a6571636fc6ab, type: 2}
-  m_Color: {r: 1, g: 0.72458315, b: 0.47794116, a: 1}
+  m_Color: {r: 0.5254902, g: 0.48627454, b: 0.40784317, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -8069,6 +8089,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Movement Deceleration
+--- !u!114 &114225258262732432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1974431214861196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114229198874397806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9732,6 +9766,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 4, y: -4}
   m_UseGraphicAlpha: 1
+--- !u!114 &114377290223991754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1635442275171230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114378223236734478
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10921,6 +10969,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114393488689037444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1284581863888050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114395853822708944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11974,7 +12036,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cooled
+  m_Text: Basique
 --- !u!114 &114503493715409872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13290,8 +13352,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114189229546595786}
   m_HandleRect: {fileID: 224281529520440396}
   m_Direction: 2
-  m_Value: 0.97352445
-  m_Size: 0.8743589
+  m_Value: 0
+  m_Size: 0.44615385
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14305,6 +14367,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Troph\xE9e #1:"
+--- !u!114 &114732610038168888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1580462710337990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114734773997097672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14493,6 +14569,20 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1834988069716416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
+--- !u!114 &114755841350567106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1809284244931282}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -17004,7 +17094,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1963913530783920}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -18716,34 +18806,34 @@ MonoBehaviour:
   constraintsParent: {fileID: 224016992611143462}
   constraintPrefab: {fileID: 1012384367355386, guid: fde89923bfaf47d478ff88ca1ea44f31,
     type: 2}
-  constraintPosition: {x: 6, y: -45}
-  rowSpacing: 110
+  constraintPosition: {x: -3, y: -45}
+  rowSpacing: 45
   descriptions:
   - constraintType: 0
-    title: "Nombre limit\xE9 par train"
+    title: "Limit\xE9 par train"
     description: "Il ne peut y avoir qu'un seul conteneur de ce type sur le m\xEAme
       train"
     replaceDollar: 0
     propertyName: limitedTo
   - constraintType: 1
-    title: "Nombre limit\xE9 par wagon"
+    title: "Limit\xE9 par wagon"
     description: "Il ne peut y avoir qu'un seul conteneur de ce type sur le m\xEAme
       wagon"
     replaceDollar: 0
     propertyName: limitedTo
   - constraintType: 2
-    title: Eviter les conteneurs $
+    title: Evite le type $
     description: "Ne peut pas \xEAtre \xE0 c\xF4t\xE9 d'un conteneur de type $"
     replaceDollar: 1
     propertyName: notNextToType
   - constraintType: 3
-    title: "Seulement sur les extr\xE9mit\xE9s"
+    title: "Aux extr\xE9mit\xE9s"
     description: "Ne peut \xEAtre plac\xE9 que sur le premier ou le dernier wagon
       du train"
     replaceDollar: 0
     propertyName: 
   - constraintType: 4
-    title: Seulement au centre du train
+    title: Au centre du train
     description: "Ne peut pas \xEAtre plac\xE9 sur le premier ou le dernier wagon
       du train"
     replaceDollar: 0
@@ -20023,7 +20113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1.297272}
+  m_AnchoredPosition: {x: 0, y: 46.000015}
   m_SizeDelta: {x: 492, y: 390}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224020911960685342
@@ -20812,8 +20902,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1, y: -1}
-  m_SizeDelta: {x: 472, y: 341}
+  m_AnchoredPosition: {x: -1, y: -2}
+  m_SizeDelta: {x: 464, y: 344}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224219936038448462
 RectTransform:
@@ -21098,10 +21188,10 @@ RectTransform:
   m_Father: {fileID: 224308474390603480}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.12231477}
-  m_AnchorMax: {x: 1, y: 0.9966736}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.88205135}
+  m_AnchoredPosition: {x: 0, y: -27.464996}
+  m_SizeDelta: {x: 20, y: 383.53003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224285799507514016
 RectTransform:
@@ -21462,7 +21552,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -124, y: -171}
+  m_AnchoredPosition: {x: -147.70001, y: -171}
   m_SizeDelta: {x: 220, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224381123745586084
@@ -22945,7 +23035,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 12.07, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &224765517120925390
 RectTransform:
@@ -23016,7 +23106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 126}
+  m_AnchoredPosition: {x: 0, y: 137.54}
   m_SizeDelta: {x: 107, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224771892836872350
@@ -23080,7 +23170,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1635442275171230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0000019558}
   m_LocalScale: {x: 1, y: 1, z: 0.99999994}
   m_Children:
   - {fileID: 224959051892272232}
@@ -23089,7 +23179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -127, y: -231}
+  m_AnchoredPosition: {x: -147.69998, y: -231}
   m_SizeDelta: {x: 220, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224795456673384824
@@ -23107,7 +23197,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -72.00006, y: 61.5}
+  m_AnchoredPosition: {x: -72, y: 61.5}
   m_SizeDelta: {x: 100, y: 70.833}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224799981695600480
@@ -23394,7 +23484,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: -9.07, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224885676917043416
 RectTransform:
