@@ -129,6 +129,14 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 				FastForward (false);
 		};
 
+		GameManager.Instance.OnLevelEnd += () => {
+			fastForwardButton.interactable = false;
+
+			if (Time.timeScale != 1)
+				FastForward (false);
+		};
+
+
 		train1Arrow.gameObject.SetActive (true);
 		train2Arrow.gameObject.SetActive (true);
 
@@ -656,10 +664,11 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 		TrainArrow (rail.train);
 
-		if (Time.timeScale != 1) {
+		/*if (Time.timeScale != 1) 
+		{
 			StopFastForward ();
 			yield return new WaitWhile (() => DOTween.IsTweening ("FastForward"));
-		}
+		}*/
 
 		if (OnTrainDeparture != null)
 			OnTrainDeparture (rail.train);
@@ -685,13 +694,16 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	public void FastForward (bool fastForward)
 	{
-		if (!fastForwardButton.interactable)
+		if (!fastForwardButton.interactable && fastForward)
 			return;
 
-		if (fastForward) {
+		if (fastForward) 
+		{
 			DOTween.Kill ("FastForward");
 			DOTween.To (() => Time.timeScale, x => Time.timeScale = x, fastForwardValue, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
-		} else {
+		} 
+		else 
+		{
 			DOTween.Kill ("FastForward");
 			DOTween.To (() => Time.timeScale, x => Time.timeScale = x, 1, fastForwardTransitionDuration).SetEase (fastForwardEase).SetId ("FastForward").SetUpdate (true);
 		}
