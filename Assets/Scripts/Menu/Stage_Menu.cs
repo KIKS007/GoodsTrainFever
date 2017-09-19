@@ -35,7 +35,7 @@ public class Stage_Menu : MonoBehaviour
 		starsRequired = stars;
 		starsCount.text = starsRequired.ToString ();
 
-		innerStar.SetActive (!unlock);
+		innerStar.SetActive (unlock);
 
 		lockImage.SetActive (!unlock);
 

@@ -31,9 +31,9 @@ public class Level_Menu : MonoBehaviour
 		for (int i = 0; i < 3; i++)
 		{
 			if (i < level.starsEarned)
-				stars [i].gameObject.SetActive (false);
-			else
 				stars [i].gameObject.SetActive (true);
+			else
+				stars [i].gameObject.SetActive (false);
 		}
 
 		if (levelStage != null && !levelStage.isUnlocked)
