@@ -16,6 +16,7 @@ public class Stage_Menu : MonoBehaviour
 	public GameObject lockImage;
 	public Button trophyButton;
 	public Text trophyTitle;
+	public Text stageTitle;
 
 	[HideInInspector]
 	public int trophyStageIndex = 0;
@@ -34,6 +35,8 @@ public class Stage_Menu : MonoBehaviour
 	{
 		starsRequired = stars;
 		starsCount.text = starsRequired.ToString ();
+
+		stageTitle.text = "Pallier " + (trophyStageIndex + 1).ToString ();
 
 		innerStar.SetActive (unlock);
 

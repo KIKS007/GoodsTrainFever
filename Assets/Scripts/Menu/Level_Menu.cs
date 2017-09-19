@@ -19,6 +19,9 @@ public class Level_Menu : MonoBehaviour
 	[Header ("Stars")]
 	public Image[] stars = new Image[3];
 
+	[Header ("Fade")]
+	public float lockFade = 0.8f;
+
 	public void Setup (int index, Level level, Stage_Menu stage = null)
 	{
 		levelIndex = index;
@@ -40,11 +43,13 @@ public class Level_Menu : MonoBehaviour
 		{
 			playButton.SetActive (false);
 			lockImage.SetActive (true);
+			GetComponent<CanvasGroup> ().alpha = lockFade;
 		}
 		else
 		{
 			playButton.SetActive (true);
 			lockImage.SetActive (false);
+			GetComponent<CanvasGroup> ().alpha = 1;
 		}
 
 		if (levelStage == null || levelStage.isUnlocked)
