@@ -13,8 +13,9 @@ public class MenuEndLevel : MenuComponent
 	public Text duration;
 
 	[Header ("Stars")]
-	public RectTransform[] starsOuter = new RectTransform[3];
-	public Image[] starsInner = new Image[3];
+	public List<Image> starsEmpty = new List<Image> ();
+	public List<Image> starsFilled = new List<Image> ();
+
 	public float starsUnlockScalePunch = 0.5f;
 	public float starsDelay = 0.1f;
 	public float starsBetweenDelay = 0.1f;
@@ -72,46 +73,61 @@ public class MenuEndLevel : MenuComponent
 		else
 			defeat.gameObject.SetActive (true);
 
-		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) {
-			RectTransform starOuter = starsOuter [i];
-			Image starInner = starsInner [i];
+		for (int i = 0; i < LevelsManager.Instance.currentLevel.starsStates.Length; i++) 
+		{
+			//RectTransform starOuter = starsOuter [i];
+			//Image starInner = starsInner [i];
+
+			Image sFilled = starsFilled [i];
+			Image sEmpty = starsEmpty [i];
 
 			//Reset Color
-			starOuter.GetComponent<Image> ().color = GlobalVariables.Instance.normalStarColor;
+			sEmpty.color = GlobalVariables.Instance.normalStarColor;
 
-			switch (LevelsManager.Instance.currentLevel.starsStates [i]) {
+			switch (LevelsManager.Instance.currentLevel.starsStates [i]) 
+			{
 			case StarState.Locked:
-				starInner.DOFade (1, 0);
+				sFilled.DOFade (0, 0);
+
+				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
+					sEmpty.rectTransform.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
+				});
+
 				break;
+
 			case StarState.Unlocked:
-				starInner.DOFade (1, 0);
+				sFilled.DOFade (0, 0);
 
 				if (ScoreManager.Instance.success)
-					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
+					
+					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => 
+					{
 						MasterAudio.PlaySound ("SFX_Pop");
-						starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-						starOuter.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
+							sFilled.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+							sFilled.rectTransform.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});
 
 				break;
-			case StarState.Saved:
-				starInner.DOFade (0, 0);
 
-				RectTransform star = starsOuter [i];
+			case StarState.Saved:
+				
+				sFilled.DOFade (1, 0);
 
 				if (ScoreManager.Instance.success)
 					DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
-						star.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
+						sFilled.rectTransform.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 					});
 
 				break;
 
 			case StarState.ErrorLocked:
-				starInner.DOFade (1, 0);
+				
+				sFilled.DOFade (0, 0);
 
 				DOVirtual.DelayedCall (MenuManager.Instance.menuAnimationDuration + starsDelay + starsBetweenDelay * i, () => {
 					//starInner.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-					starOuter.GetComponent<Image> ().DOColor (GlobalVariables.Instance.errorLockedStarColor, MenuManager.Instance.menuAnimationDuration);
+					sEmpty.DOColor (GlobalVariables.Instance.errorLockedStarColor, MenuManager.Instance.menuAnimationDuration);
+					sEmpty.rectTransform.DOPunchScale (Vector3.one * starsUnlockScalePunch, MenuManager.Instance.menuAnimationDuration);
 
 				});
 				
