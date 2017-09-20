@@ -11,7 +11,8 @@ namespace FenalyticsScripts
 	public class Core : MonoBehaviour
 	{
 		private const string PROTOCOL = "http";
-		private const string HOSTNAME = "89.234.148.158";
+		//Replace this IP with Server IP
+		private const string HOSTNAME = "00.00.00.00";
 		private const int PORT = 3001;
 
 		public static Core _instance;
