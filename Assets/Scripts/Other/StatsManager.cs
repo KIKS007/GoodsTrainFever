@@ -280,12 +280,20 @@ public class StatsManager : Singleton<StatsManager>
 		if (UseFenalytics) {
 			Fenalytics.Ev ("RatingLevelStatus", status);
 		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:SetRatingStatus:True");
+		}
 	}
 
 	public void ResetAll ()
 	{
 		if (UseFenalytics) {
 			Fenalytics.Ev ("ResetPlayerPrefs", true);
+		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:ResetAll:True");
 		}
 	}
 
@@ -294,6 +302,10 @@ public class StatsManager : Singleton<StatsManager>
 		if (UseFenalytics) {
 			Fenalytics.Ev ("UnlockAllLevels", true);
 		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:UnlockLevels:True");
+		}
 	}
 
 	public void ResetStars ()
@@ -301,12 +313,20 @@ public class StatsManager : Singleton<StatsManager>
 		if (UseFenalytics) {
 			Fenalytics.Ev ("ResetStars", true);
 		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:ResetStars:True");
+		}
 	}
 
 	public void ResetAutoScaling ()
 	{
 		if (UseFenalytics) {
 			Fenalytics.Ev ("ResetAutoScaling", true);
+		}
+
+		if (UseGameAnalytics) {
+			GameAnalytics.NewDesignEvent ("Other:Device:ResetAutoScaling:True");
 		}
 	}
 
