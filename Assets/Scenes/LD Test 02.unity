@@ -23505,6 +23505,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].snapshotsToBlend.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224163262203264584, guid: 2791c24f66192de4098af2699650c2ed,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -23833,6 +23843,92 @@ Prefab:
     - target: {fileID: 1612864939798202, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1557322274949644, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224750866370184, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469743954605030, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825443539305592, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114694328080963306, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: menuCanvasGroup
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114517270601148830, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[0].isExpanded
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].actionName
+      value: Your action name
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].isExpanded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].snapshotTransitionTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].snapshotsToBlend.Array.data[0].weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].startPlaylist
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].fadeTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].clipName
+      value: '[None]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].variationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114797535859601794, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: unityButtonClickedSound.SoundEvents.Array.data[1].currentSoundFunctionType
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
@@ -25827,7 +25923,7 @@ MonoBehaviour:
   bulkLocationMode: 0
   groupTemplateName: Default Single
   audioSourceTemplateName: Max Distance 100
-  showGroupCreation: 1
+  showGroupCreation: 0
   useGroupTemplates: 1
   curDragGroupMode: 0
   groupTemplates:
@@ -25887,7 +25983,7 @@ MonoBehaviour:
   newGroupSpatialType: 1
   newGroupSpatialBlend: 1
   musicPlaylists:
-  - isExpanded: 1
+  - isExpanded: 0
     playlistName: MainMenu
     songTransitionType: 1
     MusicSettings:
@@ -25898,7 +25994,7 @@ MonoBehaviour:
       resourceFileName: 
       volume: 1
       pitch: 1
-      isExpanded: 1
+      isExpanded: 0
       isLoop: 1
       customStartTime: 0
       lastKnownTimePoint: 0
@@ -25913,7 +26009,7 @@ MonoBehaviour:
     fadeInFirstSong: 0
     fadeOutLastSong: 0
     resourceClipsAllLoadAsync: 1
-  - isExpanded: 1
+  - isExpanded: 0
     playlistName: InGame
     songTransitionType: 1
     MusicSettings:
@@ -26596,22 +26692,22 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 540.1881
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1080
+      value: 1080.3762
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1046798105582788, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
       propertyPath: m_IsActive
@@ -28362,7 +28458,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 21066
+  frames: 24062
 --- !u!1 &1788756724 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1968835060782436, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -28471,7 +28567,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 5216
+  frames: 7188
 --- !u!1001 &1825911846
 Prefab:
   m_ObjectHideFlags: 0

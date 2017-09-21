@@ -4,218 +4,233 @@ using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
+using DarkTonic.MasterAudio;
 
 public class OrdersManager : Singleton<OrdersManager>
 {
-	public RectTransform removeOrderTest;
-	public Order_Level levelOrderTest;
+    public RectTransform removeOrderTest;
+    public Order_Level levelOrderTest;
 
-	[Header ("Orders")]
-	public bool allOrdersSent = false;
-	public int ordersSentCount = 0;
-	public int ordersCount = 0;
-	//public List<Order_UI> orders = new List<Order_UI> ();
-	public List<Order_Level> orders = new List<Order_Level> ();
-	public List<Container> containersFromNoOrder;
+    [Header("Orders")]
+    public bool allOrdersSent = false;
+    public int ordersSentCount = 0;
+    public int ordersCount = 0;
+    //public List<Order_UI> orders = new List<Order_UI> ();
+    public List<Order_Level> orders = new List<Order_Level>();
+    public List<Container> containersFromNoOrder;
 
-	[Header ("UI")]
-	public bool ordersHidden = false;
-	public Ease ordersLayoutEase = Ease.OutQuad;
-	public Canvas UICanvas;
-	public CanvasGroup ordersCanvasGroup;
-	public RectTransform ordersScrollView;
-	public ScrollRect ordersScrollRect;
-
-
-	[Header ("NEW UI")]
-	public Touchable_UI newOrdersTouchable;
-	public OrderUI newOrderUI;
-	public Image[] containerType = new Image[4];
-	public float containerTypeFadeOut = 0.3f;
-
-	[Header ("Orders Feedback")]
-	public float containerFeedbackPunchScale = 0.3f;
-	public float containerAddedDuration = 0.2f;
-	public float containerRemovedHeight = 0.5f;
-	public float containerRemovedDuration = 0.2f;
-	public float containerSentAlpha = 0.3f;
-
-	[Header ("Orders Prefabs")]
-	public GameObject orderPanel;
-	public GameObject container20;
-	public GameObject container40;
-
-	[Header ("Arrow")]
-	public Image moreOrdersArrow;
-	public float moreOrdersOutOfScreenSize;
-	[Range (0, 100)]
-	public int moreOrdersEndPercentage;
-
-	[Header ("Orders Layout")]
-	public float ordersPanelWidth = 165f;
-	public float ordersPanelHeightOffset = 40f;
-	public float containersTopPadding;
-	public float containersLineSpacing;
-	public float containersRowSpacing;
-	public int maxLinesCount = 4;
-
-	[Header ("Overall Layout")]
-	public float ordersSpacing;
-	public float ordersLayoutDuration = 0.2f;
-	public float ordersLayoutDelay;
-	public float topPadding = 15f;
-	public float leftPadding = 20f;
-
-	[Header ("Remove Order")]
-	public Vector2 removeOrderLocalPosition;
-	public float removeOrderDuration = 0.2f;
-	public float removeOrderLayoutDelay = 0.5f;
-
-	[Header ("Fade")]
-	public float fadeOutValue = 0.5f;
-	public float fadeDuration = 0.2f;
-	public float fadeOutDelay = 0.1f;
-	public float fadeInDelay = 0.1f;
-
-	//private float _fadeInValue;
-	//private bool _arrowVisible = false;
-
-	// Use this for initialization
-	void Start ()
-	{
-		//_fadeInValue = ordersCanvasGroup.alpha;
-		ordersCanvasGroup.alpha = 0;
-		Container.OnContainerSelected += (c) => FadeOutGroup ();
-		Container.OnContainerDeselected += (c) => FadeInGroup ();
-		GameManager.Instance.OnPlaying += Appear;
-		GameManager.Instance.OnMenu += Disappear;
-
-		Container.OnContainerSelected += ContainerSelected;
-		Container.OnContainerSelected += NewUIContainerSelected;
-
-		Container.OnContainerDeselected += (c) => NewUIContainerDeselected ();
-
-		Train.OnContainerAdded += ContainerAdded;
-		Train.OnContainerRemoved += ContainerRemoved;
-		moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
-
-		UpdateOrdersLayout ();
-	}
-
-	public void TrainDeparture (List<Container> trainContainers)
-	{
-		var containers = new List<Container> (trainContainers);
-		var currentOrders = new List<Order_UI> (newOrderUI.OrderThing);
-
-		foreach (var c in containers) {
-			if (c == null)
-				continue;
-
-			currentOrders.Clear ();
-			currentOrders = new List<Order_UI> (newOrderUI.OrderThing);
-
-			foreach (var o in currentOrders) {
-				if (o.ContainerSent (c)) {
-					//Debug.Log ("Container Valid");
-				}
-				if (o.isSent) {
-					ordersSentCount++;
-					//o.OrderSent ();
-					LevelsManager.Instance.OrderSent (o.orderLevel);
-
-					RemoveOrder (o.orderLevel);
-
-					if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
-						allOrdersSent = true;
-					}
-				}
-			}
-		}
-
-		if (ordersSentCount == ordersCount || currentOrders.Count == 0) {
-			allOrdersSent = true;
-		}
-
-	}
-
-	void ContainerAdded (Container container)
-	{
-		if (newOrderUI.OrderThing.Count == 0)
-			return;
-
-		foreach (var o in newOrderUI.OrderThing) {
-			if (o.ContainerAdded (container)) {
-				//Debug.Log ("Container Valid");
-				return;
-			}
-		}
-
-		containersFromNoOrder.Add (container);
-
-		//Debug.Log ("No Container");
-	}
-
-	void ContainerRemoved (Container container)
-	{
-		if (newOrderUI.OrderThing.Count == 0)
-			return;
-
-		if (containersFromNoOrder.Contains (container))
-			containersFromNoOrder.Remove (container);
-
-		foreach (var o in newOrderUI.OrderThing) {
-			if (o.ContainerRemoved (container)) {
-				//Debug.Log ("Container Valid");
-				return;
-			}
-		}
-
-		//Debug.Log ("No Container");
-	}
-
-	void ContainerSelected (Container container)
-	{
-		if (orders.Count == 0)
-			return;
-
-		foreach (var o in newOrderUI.OrderThing) {
-			if (o.ContainerSelected (container)) {
-				
-				//return;
-			}
-		}
-	}
-
-	void NewUIContainerSelected (Container container)
-	{
-		int notFadeIndex = (int)container.containerType;
-
-		for(int i = 0; i < containerType.Length; i++)
-			if(i != notFadeIndex)
-				containerType [i].DOFade (containerTypeFadeOut, MenuManager.Instance.menuAnimationDuration);
-
-		//newOrdersTouchable.enabled = false;
-	}
-
-	void NewUIContainerDeselected ()
-	{
-		for(int i = 0; i < containerType.Length; i++)
-			containerType [i].DOFade (1, MenuManager.Instance.menuAnimationDuration);
-
-		//newOrdersTouchable.enabled = true;
-	}
+    [Header("UI")]
+    public bool ordersHidden = false;
+    public Ease ordersLayoutEase = Ease.OutQuad;
+    public Canvas UICanvas;
+    public CanvasGroup ordersCanvasGroup;
+    public RectTransform ordersScrollView;
+    public ScrollRect ordersScrollRect;
 
 
-	[PropertyOrder (-1)]
-	[Button ("Update Orders Layout")]
-	void UpdateOrdersLayoutTest ()
-	{
-		UpdateOrdersLayout (Application.isPlaying);
-	}
+    [Header("NEW UI")]
+    public Touchable_UI newOrdersTouchable;
+    public OrderUI newOrderUI;
+    public Image[] containerType = new Image[4];
+    public float containerTypeFadeOut = 0.3f;
 
-	public void UpdateOrdersLayout (bool animated = true, RectTransform orderToIgnore = null)
-	{
-		/*Vector2 previousPosition = new Vector2 ();
+    [Header("Orders Feedback")]
+    public float containerFeedbackPunchScale = 0.3f;
+    public float containerAddedDuration = 0.2f;
+    public float containerRemovedHeight = 0.5f;
+    public float containerRemovedDuration = 0.2f;
+    public float containerSentAlpha = 0.3f;
+
+    [Header("Orders Prefabs")]
+    public GameObject orderPanel;
+    public GameObject container20;
+    public GameObject container40;
+
+    [Header("Arrow")]
+    public Image moreOrdersArrow;
+    public float moreOrdersOutOfScreenSize;
+    [Range(0, 100)]
+    public int moreOrdersEndPercentage;
+
+    [Header("Orders Layout")]
+    public float ordersPanelWidth = 165f;
+    public float ordersPanelHeightOffset = 40f;
+    public float containersTopPadding;
+    public float containersLineSpacing;
+    public float containersRowSpacing;
+    public int maxLinesCount = 4;
+
+    [Header("Overall Layout")]
+    public float ordersSpacing;
+    public float ordersLayoutDuration = 0.2f;
+    public float ordersLayoutDelay;
+    public float topPadding = 15f;
+    public float leftPadding = 20f;
+
+    [Header("Remove Order")]
+    public Vector2 removeOrderLocalPosition;
+    public float removeOrderDuration = 0.2f;
+    public float removeOrderLayoutDelay = 0.5f;
+
+    [Header("Fade")]
+    public float fadeOutValue = 0.5f;
+    public float fadeDuration = 0.2f;
+    public float fadeOutDelay = 0.1f;
+    public float fadeInDelay = 0.1f;
+
+    //private float _fadeInValue;
+    //private bool _arrowVisible = false;
+
+    // Use this for initialization
+    void Start()
+    {
+        //_fadeInValue = ordersCanvasGroup.alpha;
+        ordersCanvasGroup.alpha = 0;
+        Container.OnContainerSelected += (c) => FadeOutGroup();
+        Container.OnContainerDeselected += (c) => FadeInGroup();
+        GameManager.Instance.OnPlaying += Appear;
+        GameManager.Instance.OnMenu += Disappear;
+
+        Container.OnContainerSelected += ContainerSelected;
+        Container.OnContainerSelected += NewUIContainerSelected;
+
+        Container.OnContainerDeselected += (c) => NewUIContainerDeselected();
+
+        Train.OnContainerAdded += ContainerAdded;
+        Train.OnContainerRemoved += ContainerRemoved;
+        moreOrdersArrow.DOFade(0, MenuManager.Instance.menuAnimationDuration);
+
+        UpdateOrdersLayout();
+    }
+
+    public void TrainDeparture(List<Container> trainContainers)
+    {
+        var containers = new List<Container>(trainContainers);
+        var currentOrders = new List<Order_UI>(newOrderUI.OrderThing);
+
+        foreach (var c in containers)
+        {
+            if (c == null)
+                continue;
+
+            currentOrders.Clear();
+            currentOrders = new List<Order_UI>(newOrderUI.OrderThing);
+
+            foreach (var o in currentOrders)
+            {
+                if (o.ContainerSent(c))
+                {
+                    //Debug.Log ("Container Valid");
+                }
+                if (o.isSent)
+                {
+                    ordersSentCount++;
+                    //o.OrderSent ();
+                    LevelsManager.Instance.OrderSent(o.orderLevel);
+
+                    RemoveOrder(o.orderLevel);
+
+                    if (ordersSentCount == ordersCount || currentOrders.Count == 0)
+                    {
+                        allOrdersSent = true;
+                    }
+                }
+            }
+        }
+
+        if (ordersSentCount == ordersCount || currentOrders.Count == 0)
+        {
+            allOrdersSent = true;
+        }
+
+        MasterAudio.PlaySoundAndForget("SFX_TrainOut");
+
+    }
+
+    void ContainerAdded(Container container)
+    {
+        if (newOrderUI.OrderThing.Count == 0)
+            return;
+
+        foreach (var o in newOrderUI.OrderThing)
+        {
+            if (o.ContainerAdded(container))
+            {
+                //Debug.Log ("Container Valid");
+                return;
+            }
+        }
+
+        containersFromNoOrder.Add(container);
+
+        //Debug.Log ("No Container");
+    }
+
+    void ContainerRemoved(Container container)
+    {
+        if (newOrderUI.OrderThing.Count == 0)
+            return;
+
+        if (containersFromNoOrder.Contains(container))
+            containersFromNoOrder.Remove(container);
+
+        foreach (var o in newOrderUI.OrderThing)
+        {
+            if (o.ContainerRemoved(container))
+            {
+                //Debug.Log ("Container Valid");
+                return;
+            }
+        }
+
+        //Debug.Log ("No Container");
+    }
+
+    void ContainerSelected(Container container)
+    {
+        if (orders.Count == 0)
+            return;
+
+        foreach (var o in newOrderUI.OrderThing)
+        {
+            if (o.ContainerSelected(container))
+            {
+
+                //return;
+            }
+        }
+    }
+
+    void NewUIContainerSelected(Container container)
+    {
+        int notFadeIndex = (int)container.containerType;
+
+        for (int i = 0; i < containerType.Length; i++)
+            if (i != notFadeIndex)
+                containerType[i].DOFade(containerTypeFadeOut, MenuManager.Instance.menuAnimationDuration);
+
+        //newOrdersTouchable.enabled = false;
+    }
+
+    void NewUIContainerDeselected()
+    {
+        for (int i = 0; i < containerType.Length; i++)
+            containerType[i].DOFade(1, MenuManager.Instance.menuAnimationDuration);
+
+        //newOrdersTouchable.enabled = true;
+    }
+
+
+    [PropertyOrder(-1)]
+    [Button("Update Orders Layout")]
+    void UpdateOrdersLayoutTest()
+    {
+        UpdateOrdersLayout(Application.isPlaying);
+    }
+
+    public void UpdateOrdersLayout(bool animated = true, RectTransform orderToIgnore = null)
+    {
+        /*Vector2 previousPosition = new Vector2 ();
 		float previousWidth = 0f;
 
 		for (int i = 0; i < ordersScrollView.transform.childCount; i++) {
@@ -242,30 +257,30 @@ public class OrdersManager : Singleton<OrdersManager>
 			else
 				rect.anchoredPosition = position;
 
-			
+
 			previousWidth = rect.sizeDelta.x;
 			previousPosition = position;
 		}
 
 		ordersScrollView.sizeDelta = new Vector2 (previousPosition.x + previousWidth * 0.5f + ordersSpacing, ordersScrollView.sizeDelta.y);*/
 
-		//MoreOrdersArrow ();
-	}
+        //MoreOrdersArrow ();
+    }
 
-	public void RemoveOrder (Order_Level order)
+    public void RemoveOrder(Order_Level order)
+    {
+
+        newOrderUI.RemoveOrder(order);
+        //StartCoroutine (RemoveOrderCoroutine (order, delay, animated));
+    }
+
+    /*IEnumerator RemoveOrderCoroutine (Order_Level order, float delay = 0, bool animated = true)
 	{
 
-		newOrderUI.RemoveOrder (order);
-		//StartCoroutine (RemoveOrderCoroutine (order, delay, animated));
-	}
-
-	/*IEnumerator RemoveOrderCoroutine (Order_Level order, float delay = 0, bool animated = true)
-	{
-		
 
 		if (order == null)
 			yield break;
-		
+
 		orders.Remove (order);
 
 		if (delay > 0)
@@ -283,20 +298,22 @@ public class OrdersManager : Singleton<OrdersManager>
 		}
 	}*/
 
-	[PropertyOrder (-1)]
-	[Button ("Add Order")]
-	void AddOrderTest ()
-	{
-		AddOrder (levelOrderTest);
-	}
+    [PropertyOrder(-1)]
+    [Button("Add Order")]
+    void AddOrderTest()
+    {
+        AddOrder(levelOrderTest);
+    }
 
-	public void AddOrder (Order_Level levelOrder)
-	{
-		orders.Add (levelOrder);
-		newOrderUI.AddOrder (levelOrder);
-		ordersCount++;
-		allOrdersSent = false;
-		/*if (levelOrder == null) {
+    public void AddOrder(Order_Level levelOrder)
+    {
+
+        orders.Add(levelOrder);
+        newOrderUI.AddOrder(levelOrder);
+        ordersCount++;
+        allOrdersSent = false;
+        MasterAudio.PlaySoundAndForget("SFX_OrderIn");
+        /*if (levelOrder == null) {
 			Debug.LogError ("Invalid LevelOrder!", this);
 			return;
 		}
@@ -355,21 +372,21 @@ public class OrdersManager : Singleton<OrdersManager>
 		SetContainersPositions (panel);
 
 		UpdateOrdersLayout ();*/
-	}
+    }
 
-	void SetPanelSize (RectTransform panel, int rowsCount)
-	{
-		/*float width = ordersPanelWidth * rowsCount;
+    void SetPanelSize(RectTransform panel, int rowsCount)
+    {
+        /*float width = ordersPanelWidth * rowsCount;
 		width += containersRowSpacing * (rowsCount + 1);
 
 		float height = containersLineSpacing * maxLinesCount + ordersPanelHeightOffset;
 
 		panel.sizeDelta = new Vector2 (width, height);*/
-	}
+    }
 
-	void SetContainersPositions (RectTransform panel)
-	{
-		/*int linesCount = 0;
+    void SetContainersPositions(RectTransform panel)
+    {
+        /*int linesCount = 0;
 		int rowsCount = 1;
 
 		for (int i = 1; i < panel.childCount; i++) {
@@ -387,60 +404,60 @@ public class OrdersManager : Singleton<OrdersManager>
 
 			linesCount++;
 		}*/
-	}
+    }
 
-	void ResetRectTransform (RectTransform rect)
-	{
-		/*rect.localRotation = Quaternion.Euler (Vector3.zero);
+    void ResetRectTransform(RectTransform rect)
+    {
+        /*rect.localRotation = Quaternion.Euler (Vector3.zero);
 		rect.localPosition = Vector3.zero;*/
-	}
+    }
 
-	void FadeOutGroup ()
-	{
-		//DOTween.Kill (ordersCanvasGroup);
+    void FadeOutGroup()
+    {
+        //DOTween.Kill (ordersCanvasGroup);
 
-		ordersHidden = true;
+        ordersHidden = true;
 
-		//ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
-	}
+        //ordersCanvasGroup.DOFade (fadeOutValue, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
+    }
 
-	void FadeInGroup ()
-	{
-		//DOTween.Kill (ordersCanvasGroup);
+    void FadeInGroup()
+    {
+        //DOTween.Kill (ordersCanvasGroup);
 
-		//ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
-	}
+        //ordersCanvasGroup.DOFade (_fadeInValue, fadeDuration).SetDelay (fadeInDelay).SetEase (ordersLayoutEase).SetUpdate (true).OnComplete (() => ordersHidden = false);
+    }
 
-	void Appear ()
-	{
-		DOTween.Kill (ordersCanvasGroup);
+    void Appear()
+    {
+        DOTween.Kill(ordersCanvasGroup);
 
-		ordersHidden = true;
+        ordersHidden = true;
 
-		ordersCanvasGroup.DOFade (1, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
-	}
+        ordersCanvasGroup.DOFade(1, fadeDuration).SetDelay(fadeOutDelay).SetEase(ordersLayoutEase).SetUpdate(true);
+    }
 
-	public void Disappear ()
-	{
-		DOTween.Kill (ordersCanvasGroup);
+    public void Disappear()
+    {
+        DOTween.Kill(ordersCanvasGroup);
 
-		ordersHidden = true;
+        ordersHidden = true;
 
-		ordersCanvasGroup.DOFade (0, fadeDuration).SetDelay (fadeOutDelay).SetEase (ordersLayoutEase).SetUpdate (true);
-	}
+        ordersCanvasGroup.DOFade(0, fadeDuration).SetDelay(fadeOutDelay).SetEase(ordersLayoutEase).SetUpdate(true);
+    }
 
-	public void ClearOrders (bool animated)
-	{
-		//Use this to have a derparture animation when clearing all orders
-		/*foreach (var o in orders)
+    public void ClearOrders(bool animated)
+    {
+        //Use this to have a derparture animation when clearing all orders
+        /*foreach (var o in orders)
 			RemoveOrder (o);*/
-		newOrderUI.ClearAllOrder ();
-		orders.Clear ();
-		containersFromNoOrder.Clear ();
+        newOrderUI.ClearAllOrder();
+        orders.Clear();
+        containersFromNoOrder.Clear();
 
-		ordersSentCount = 0;
-		ordersCount = 0;
-		/*
+        ordersSentCount = 0;
+        ordersCount = 0;
+        /*
 
 		containersFromNoOrder.Clear ();
 
@@ -449,13 +466,13 @@ public class OrdersManager : Singleton<OrdersManager>
 		foreach (var o in orders)
 			RemoveOrder (o);*/
 
-		/*foreach (Transform t in ordersScrollView)
+        /*foreach (Transform t in ordersScrollView)
 			Destroy (t.gameObject);*/
-	}
+    }
 
-	public void MoreOrdersArrow ()
-	{
-		/*if (ordersScrollView.sizeDelta.x <= moreOrdersOutOfScreenSize) {
+    public void MoreOrdersArrow()
+    {
+        /*if (ordersScrollView.sizeDelta.x <= moreOrdersOutOfScreenSize) {
 			if (_arrowVisible) {
 				_arrowVisible = false;
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
@@ -471,7 +488,7 @@ public class OrdersManager : Singleton<OrdersManager>
 
 
 
-		/*if (ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage) {
+        /*if (ordersScrollRect.normalizedPosition.x * 100 < moreOrdersEndPercentage) {
 			if (!_arrowVisible) {
 				_arrowVisible = true;
 				moreOrdersArrow.DOFade (1, MenuManager.Instance.menuAnimationDuration);
@@ -483,5 +500,5 @@ public class OrdersManager : Singleton<OrdersManager>
 				moreOrdersArrow.DOFade (0, MenuManager.Instance.menuAnimationDuration);
 			}
 		}*/
-	}
+    }
 }

@@ -7,318 +7,351 @@ using DarkTonic.MasterAudio;
 
 public class ScoreManager : Singleton<ScoreManager>
 {
-	[Header ("Stars")]
-	public int starsEarned;
+    [Header("Stars")]
+    public int starsEarned;
 
-	[Header ("Orders Percentages")]
-	[Range (0, 100)]
-	public int stars1OrdersPercentage = 20;
-	[Range (0, 100)]
-	public int stars2OrdersPercentage = 50;
-	[Range (0, 100)]
-	public int stars3OrdersPercentage = 100;
+    [Header("Orders Percentages")]
+    [Range(0, 100)]
+    public int stars1OrdersPercentage = 20;
+    [Range(0, 100)]
+    public int stars2OrdersPercentage = 50;
+    [Range(0, 100)]
+    public int stars3OrdersPercentage = 100;
 
-	[Header ("Success")]
-	public bool success;
+    [Header("Success")]
+    public bool success;
 
-	[Header ("Settings")]
-	public bool clearOnStart = false;
-	public bool loadOnStart = true;
-	public bool saveOnStop = true;
+    [Header("Settings")]
+    public bool clearOnStart = false;
+    public bool loadOnStart = true;
+    public bool saveOnStop = true;
 
-	[Header ("Stages")]
-	public MenuLevels menuLevels;
-	public List<Stage> levelStages = new List<Stage> ();
+    [Header("Stages")]
+    public MenuLevels menuLevels;
+    public List<Stage> levelStages = new List<Stage>();
 
-	public Toggle Tuto;
-	public Toggle Sound;
+    public Toggle Tuto;
+    public Toggle Sound;
 
-	// Use this for initialization
-	void Awake ()
-	{
-		MenuManager.Instance.OnLevelStart += OnLevelStart;
+    // Use this for initialization
+    void Awake()
+    {
+        MenuManager.Instance.OnLevelStart += OnLevelStart;
 
-		if (loadOnStart)
-			LoadLevelStars ();
+        if (loadOnStart)
+            LoadLevelStars();
 
-		if (clearOnStart)
-			DeletePlayerPrefs ();
-	}
+        if (clearOnStart)
+            DeletePlayerPrefs();
+    }
 
-	[PropertyOrder (-1)]
-	[ButtonAttribute]
-	public void DeletePlayerPrefs ()
-	{
-		PlayerPrefs.DeleteAll ();
+    [PropertyOrder(-1)]
+    [ButtonAttribute]
+    public void DeletePlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll();
 
-		/*if (Application.isPlaying)
+        /*if (Application.isPlaying)
 			saveOnStop = false;*/
-	}
+    }
 
-	public bool IsLevelUnlocked (int levelIndex)
-	{
-		return menuLevels._levelsMenu [levelIndex].isUnlocked;
-	}
+    public bool IsLevelUnlocked(int levelIndex)
+    {
+        return menuLevels._levelsMenu[levelIndex].isUnlocked;
+    }
 
-	void Start ()
-	{
-		if (PlayerPrefs.GetInt ("Option-Tutorial", 0) != 0) {
-			TutorialManager.Instance.BlockAllTutorial = true;
-			Tuto.isOn = false;
-		} else {
-			TutorialManager.Instance.BlockAllTutorial = false;
-			Tuto.isOn = true;
-		}
+    void Start()
+    {
+        if (PlayerPrefs.GetInt("Option-Tutorial", 0) != 0)
+        {
+            TutorialManager.Instance.BlockAllTutorial = true;
+            Tuto.isOn = false;
+        }
+        else
+        {
+            TutorialManager.Instance.BlockAllTutorial = false;
+            Tuto.isOn = true;
+        }
 
-		if (PlayerPrefs.GetInt ("Option-Sound", 0) != 0) {
-			Sound.isOn = false;
-			MasterAudio.MuteAllPlaylists ();
-		} else {
-			MasterAudio.UnmuteAllPlaylists ();
-			Sound.isOn = true;
-		}
-	}
+        if (PlayerPrefs.GetInt("Option-Sound", 0) != 0)
+        {
+            Sound.isOn = false;
+            MasterAudio.MuteAllPlaylists();
+        }
+        else
+        {
+            MasterAudio.UnmuteAllPlaylists();
+            Sound.isOn = true;
+        }
+    }
 
-	void OnLevelStart ()
-	{
-		foreach (Transform t in LevelsManager.Instance.transform) {
-			Level level = t.GetComponent<Level> ();
-
-
-			for (int i = 0; i < 3; i++) {
-				if (level.starsStates [i] == StarState.Unlocked)
-					level.starsStates [i] = StarState.Saved;
-				
-				if (level.starsStates [i] == StarState.ErrorLocked)
-					level.starsStates [i] = StarState.Locked;
-			}
-		}
-	}
-
-	public void ResetAllLevelsStars ()
-	{
-		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
-			ResetLevelStars (i);
-		}
-
-		UpdateStars ();
-
-		MenuManager.Instance.menulevels.UpdateLevels ();
-		MenuManager.Instance.menuAllTrophies.UpdateLevels ();
-	}
-
-	public void UnlockAllLevels ()
-	{
-		foreach (Transform t in LevelsManager.Instance.transform) {
-			Level level = t.GetComponent<Level> ();
-
-			level.starsEarned = 3;
+    void OnLevelStart()
+    {
+        foreach (Transform t in LevelsManager.Instance.transform)
+        {
+            Level level = t.GetComponent<Level>();
 
 
-			for (int i = 0; i < level.starsStates.Length; i++) {
-				level.starsStates [i] = StarState.Unlocked;
-			}
+            for (int i = 0; i < 3; i++)
+            {
+                if (level.starsStates[i] == StarState.Unlocked)
+                    level.starsStates[i] = StarState.Saved;
 
-		}
+                if (level.starsStates[i] == StarState.ErrorLocked)
+                    level.starsStates[i] = StarState.Locked;
+            }
+        }
+    }
 
-		/*for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
+    public void ResetAllLevelsStars()
+    {
+        for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
+        {
+            ResetLevelStars(i);
+        }
+
+        UpdateStars();
+
+        MenuManager.Instance.menulevels.UpdateLevels();
+        MenuManager.Instance.menuAllTrophies.UpdateLevels();
+    }
+
+    public void UnlockAllLevels()
+    {
+        foreach (Transform t in LevelsManager.Instance.transform)
+        {
+            Level level = t.GetComponent<Level>();
+
+            level.starsEarned = 3;
+
+
+            for (int i = 0; i < level.starsStates.Length; i++)
+            {
+                level.starsStates[i] = StarState.Unlocked;
+            }
+
+        }
+
+        /*for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
 			UnlockStars (100, 1, i);
 		}*/
 
-		UpdateStars ();
+        UpdateStars();
 
-		//Comment if you don't want unlocking levels to have wierd stars state
-		//ResetAllLevelsStars ();
-	}
+        //Comment if you don't want unlocking levels to have wierd stars state
+        //ResetAllLevelsStars ();
+    }
 
-	public void LoadLevelStars ()
-	{
-		for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++) {
-			Level level = LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ();
+    public void LoadLevelStars()
+    {
+        for (int i = 0; i < LevelsManager.Instance.transform.childCount; i++)
+        {
+            Level level = LevelsManager.Instance.transform.GetChild(i).GetComponent<Level>();
 
-			if (PlayerPrefs.HasKey ("Stars" + i))
-				level.starsEarned = PlayerPrefs.GetInt ("Stars" + i);
-			
-			for (int j = 0; j < 3; j++) {
-				if (j < level.starsEarned)
-					level.starsStates [j] = StarState.Saved;
-				else
-					level.starsStates [j] = StarState.Locked;
-			}
-			
-			//Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
+            if (PlayerPrefs.HasKey("Stars" + i))
+                level.starsEarned = PlayerPrefs.GetInt("Stars" + i);
 
-			//Debug.Log (level + " : " + level.starsEarned);
-		}
+            for (int j = 0; j < 3; j++)
+            {
+                if (j < level.starsEarned)
+                    level.starsStates[j] = StarState.Saved;
+                else
+                    level.starsStates[j] = StarState.Locked;
+            }
 
-		UpdateStars ();
-	}
+            //Debug.Log ("HasKey: " + PlayerPrefs.HasKey ("Stars" + i) + " value:" + PlayerPrefs.GetInt ("Stars" + i));
 
-	public void SaveLevelStars ()
-	{
-		for (int i = 0; i < LevelsManager.Instance.levelsCount; i++) {
-			PlayerPrefs.SetInt ("Stars" + i, LevelsManager.Instance.transform.GetChild (i).GetComponent<Level> ().starsEarned);	
-		}
-	}
+            //Debug.Log (level + " : " + level.starsEarned);
+        }
 
-	public void ResetLevelStars (int levelIndex)
-	{
-		PlayerPrefs.DeleteKey ("Stars" + levelIndex);
+        UpdateStars();
+    }
 
-		PlayerPrefs.DeleteKey ("FirstStar" + levelIndex);
-		PlayerPrefs.DeleteKey ("SecondStar" + levelIndex);
-		PlayerPrefs.DeleteKey ("ThirdStar" + levelIndex);
+    public void SaveLevelStars()
+    {
+        for (int i = 0; i < LevelsManager.Instance.levelsCount; i++)
+        {
+            PlayerPrefs.SetInt("Stars" + i, LevelsManager.Instance.transform.GetChild(i).GetComponent<Level>().starsEarned);
+        }
+    }
 
-		Level level = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<Level> ();
+    public void ResetLevelStars(int levelIndex)
+    {
+        PlayerPrefs.DeleteKey("Stars" + levelIndex);
 
-		level.starsEarned = 0;
+        PlayerPrefs.DeleteKey("FirstStar" + levelIndex);
+        PlayerPrefs.DeleteKey("SecondStar" + levelIndex);
+        PlayerPrefs.DeleteKey("ThirdStar" + levelIndex);
 
-		for (int i = 0; i < level.starsStates.Length; i++)
-			level.starsStates [i] = StarState.Locked;
+        Level level = LevelsManager.Instance.transform.GetChild(levelIndex).GetComponent<Level>();
 
-		FindObjectOfType<MenuLevels> ().UpdateLevels ();
-		FindObjectOfType<MenuAllTrophies> ().UpdateLevels ();
-	}
+        level.starsEarned = 0;
 
-	public void UpdateStars ()
-	{
-		starsEarned = 0;
+        for (int i = 0; i < level.starsStates.Length; i++)
+            level.starsStates[i] = StarState.Locked;
 
-		foreach (Transform t in LevelsManager.Instance.transform) {
-			Level level = t.GetComponent<Level> ();
+        FindObjectOfType<MenuLevels>().UpdateLevels();
+        FindObjectOfType<MenuAllTrophies>().UpdateLevels();
+    }
 
-			starsEarned += level.starsEarned;
-		}
+    public void UpdateStars()
+    {
+        starsEarned = 0;
 
-		menuLevels.UpdateLevels ();
-		MenuManager.Instance.menuAllTrophies.UpdateLevels ();
-	}
+        foreach (Transform t in LevelsManager.Instance.transform)
+        {
+            Level level = t.GetComponent<Level>();
 
-	public void UnlockStars (int ordersPrepared, int trainsCount, int levelIndex)
-	{
-		Level level = LevelsManager.Instance.transform.GetChild (levelIndex).GetComponent<Level> ();
-		
-		int ordersPreparedPercentage = Mathf.RoundToInt (((float)ordersPrepared / (float)level.ordersCount) * 100f);
+            starsEarned += level.starsEarned;
+        }
 
-		//Debug.Log (ordersPreparedPercentage + "% orders done");
+        menuLevels.UpdateLevels();
+        MenuManager.Instance.menuAllTrophies.UpdateLevels();
+    }
 
-		FirstStar (ordersPreparedPercentage, level, levelIndex);
-		SecondStar (ordersPreparedPercentage, level, levelIndex);
-		ThirdStar (ordersPreparedPercentage, level, levelIndex);
+    public void UnlockStars(int ordersPrepared, int trainsCount, int levelIndex)
+    {
+        Level level = LevelsManager.Instance.transform.GetChild(levelIndex).GetComponent<Level>();
 
-		UpdateStars ();
+        int ordersPreparedPercentage = Mathf.RoundToInt(((float)ordersPrepared / (float)level.ordersCount) * 100f);
 
-		//Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
-	}
+        //Debug.Log (ordersPreparedPercentage + "% orders done");
 
-	void FirstStar (int ordersPercentage, Level level, int levelIndex)
-	{
-		if (!PlayerPrefs.HasKey ("FirstStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed) {
-			level.starsStates [0] = StarState.ErrorLocked;
-			success = false;
-			return;
-		}
+        FirstStar(ordersPreparedPercentage, level, levelIndex);
+        SecondStar(ordersPreparedPercentage, level, levelIndex);
+        ThirdStar(ordersPreparedPercentage, level, levelIndex);
 
-		if (ordersPercentage >= stars1OrdersPercentage) {
-			success = true;
+        UpdateStars();
 
-			if (PlayerPrefs.HasKey ("FirstStar" + levelIndex))
-				return;
+        //Debug.Log ("LEVEL#" + (levelIndex + 1).ToString () + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
+    }
 
-			level.starsEarned++;
-			PlayerPrefs.SetInt ("FirstStar" + levelIndex, 1);
+    void FirstStar(int ordersPercentage, Level level, int levelIndex)
+    {
+        if (!PlayerPrefs.HasKey("FirstStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsAllowed)
+        {
+            level.starsStates[0] = StarState.ErrorLocked;
+            success = false;
+            return;
+        }
 
-			level.starsStates [0] = StarState.Unlocked;
-		} else
-			success = false;
-	}
+        if (ordersPercentage >= stars1OrdersPercentage)
+        {
+            success = true;
 
-	void SecondStar (int ordersPercentage, Level level, int levelIndex)
-	{
-		if (!PlayerPrefs.HasKey ("SecondStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed) {
-			level.starsStates [1] = StarState.ErrorLocked;
-			level.starsStates [2] = StarState.ErrorLocked;
-			return;
-		}
+            if (PlayerPrefs.HasKey("FirstStar" + levelIndex))
+                return;
 
-		if (ordersPercentage >= stars2OrdersPercentage) {
-			//LeastTrainsStar (trainsCount, level, levelIndex);
+            level.starsEarned++;
+            PlayerPrefs.SetInt("FirstStar" + levelIndex, 1);
 
-			if (!PlayerPrefs.HasKey ("SecondStar" + levelIndex)) {
-				level.starsEarned++;
-				PlayerPrefs.SetInt ("SecondStar" + levelIndex, 1);
+            level.starsStates[0] = StarState.Unlocked;
 
-				level.starsStates [1] = StarState.Unlocked;
-			}
-		}
-	}
 
-	void ThirdStar (int ordersPercentage, Level level, int levelIndex)
-	{
-		if (PlayerPrefs.HasKey ("ThirdStar" + levelIndex))
-			return;
+        }
+        else
+            success = false;
+    }
 
-		if (LevelsManager.Instance.errorsLocked > 0) {
-			level.starsStates [2] = StarState.ErrorLocked;
-			return;
-		}
+    void SecondStar(int ordersPercentage, Level level, int levelIndex)
+    {
+        if (!PlayerPrefs.HasKey("SecondStar" + levelIndex) && LevelsManager.Instance.errorsLocked > LevelsManager.Instance.errorsSecondStarAllowed)
+        {
+            level.starsStates[1] = StarState.ErrorLocked;
+            level.starsStates[2] = StarState.ErrorLocked;
+            return;
+        }
 
-		if (ordersPercentage >= stars3OrdersPercentage) {
-			level.starsEarned++;
-			PlayerPrefs.SetInt ("ThirdStar" + levelIndex, 1);
+        if (ordersPercentage >= stars2OrdersPercentage)
+        {
+            //LeastTrainsStar (trainsCount, level, levelIndex);
 
-			level.starsStates [2] = StarState.Unlocked;
-		}
-	}
+            if (!PlayerPrefs.HasKey("SecondStar" + levelIndex))
+            {
+                level.starsEarned++;
+                PlayerPrefs.SetInt("SecondStar" + levelIndex, 1);
 
-	void OnApplicationQuit ()
-	{
-		if (saveOnStop) {
-			SaveLevelStars ();
-			PlayerPrefs.Save ();
-			//StatsManager.Instance.StopLevelTrack (false);
-		}
-	}
+                level.starsStates[1] = StarState.Unlocked;
+            }
+        }
+    }
 
-	void OnApplicationFocus (bool hasFocus)
-	{
-		if (saveOnStop && !hasFocus) {
-			SaveLevelStars ();
-			PlayerPrefs.Save ();
-		}
-	}
+    void ThirdStar(int ordersPercentage, Level level, int levelIndex)
+    {
+        if (PlayerPrefs.HasKey("ThirdStar" + levelIndex))
+            return;
 
-	public void SaveTutorialSetting (Toggle t)
-	{
-		if (t.isOn) {
-			PlayerPrefs.SetInt ("Option-Tutorial", 0);
-		} else {
-			PlayerPrefs.SetInt ("Option-Tutorial", 1);
-		}
-			
-		PlayerPrefs.Save ();
-	}
+        if (LevelsManager.Instance.errorsLocked > 0)
+        {
+            level.starsStates[2] = StarState.ErrorLocked;
+            return;
+        }
 
-	public void SaveSoundSetting (Toggle t)
-	{
-		if (t.isOn) {
-			PlayerPrefs.SetInt ("Option-Sound", 0);
-		} else {
-			PlayerPrefs.SetInt ("Option-Sound", 1);
-		}
-		PlayerPrefs.Save ();
-	}
+        if (ordersPercentage >= stars3OrdersPercentage)
+        {
+            level.starsEarned++;
+            PlayerPrefs.SetInt("ThirdStar" + levelIndex, 1);
+
+            level.starsStates[2] = StarState.Unlocked;
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        if (saveOnStop)
+        {
+            SaveLevelStars();
+            PlayerPrefs.Save();
+            //StatsManager.Instance.StopLevelTrack (false);
+        }
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (saveOnStop && !hasFocus)
+        {
+            SaveLevelStars();
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void SaveTutorialSetting(Toggle t)
+    {
+        if (t.isOn)
+        {
+            PlayerPrefs.SetInt("Option-Tutorial", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Option-Tutorial", 1);
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    public void SaveSoundSetting(Toggle t)
+    {
+        if (t.isOn)
+        {
+            PlayerPrefs.SetInt("Option-Sound", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Option-Sound", 1);
+        }
+        PlayerPrefs.Save();
+    }
 }
 
 [System.Serializable]
 public class Stage
 {
-	[Header ("Stars")]
-	public int index;
-	public int starsRequired;
-	public Stage_Menu stage;
+    [Header("Stars")]
+    public int index;
+    public int starsRequired;
+    public Stage_Menu stage;
 
-	[Header ("Trophy")]
-	public GameObject trophy;
+    [Header("Trophy")]
+    public GameObject trophy;
 
 }
