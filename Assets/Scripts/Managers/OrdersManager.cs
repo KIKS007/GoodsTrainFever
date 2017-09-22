@@ -144,6 +144,7 @@ public class OrdersManager : Singleton<OrdersManager>
         }
 
         MasterAudio.PlaySoundAndForget("SFX_TrainOut");
+        Debug.Log("Train Out");
 
     }
 

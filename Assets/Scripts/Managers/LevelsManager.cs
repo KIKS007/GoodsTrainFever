@@ -385,7 +385,7 @@ public class LevelsManager : Singleton<LevelsManager>
         {
             Train train = TrainsMovementManager.Instance.SpawnTrain(rail, train_Level[i]);
 
-            MasterAudio.PlaySoundAndForget("SFX_TrainOut");
+            MasterAudio.PlaySoundAndForget("SFX_TrainIn");
 
             yield return new WaitWhile(() => train.inTransition);
 
