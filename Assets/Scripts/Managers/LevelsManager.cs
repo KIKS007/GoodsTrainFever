@@ -530,7 +530,7 @@ public class LevelsManager : Singleton<LevelsManager>
 			yield return new WaitForSeconds (boatDuration + 5);
 
 			BoatsMovementManager.Instance.BoatDeparture ();
-
+			MasterAudio.PlaySound ("SFX_BoatOut");
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
 			yield return new WaitForSeconds (waitDurationBetweenBoats);
@@ -598,6 +598,7 @@ public class LevelsManager : Singleton<LevelsManager>
 
 			yield return new WaitForSeconds (5);
 			BoatsMovementManager.Instance.BoatDeparture (b);
+			MasterAudio.PlaySound ("SFX_BoatOut");
 
 			yield return new WaitWhile (() => BoatsMovementManager.Instance.inTransition);
 
