@@ -9,19 +9,19 @@ public class Fenalytics : MonoBehaviour
 {
 	public static void To (string name)
 	{
-		Core._instance.StartCoroutine (Core.Session.GetId (name));
+		//	Core._instance.StartCoroutine (Core.Session.GetId (name));
 	}
 
 	public static void Ev (string name, object data)
 	{
-		Ev (name, new Dictionary<string, object> () {
+		/*Ev (name, new Dictionary<string, object> () {
 			{ name, data }
-		});
+		});*/
 	}
 
 	public static void Ev (string name, Dictionary<string, object> data)
 	{
-		Core._instance.StartCoroutine (Core.Event.Send (name, data));
+		//Core._instance.StartCoroutine (Core.Event.Send (name, data));
 	}
 }
 
