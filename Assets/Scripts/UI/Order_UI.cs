@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using DarkTonic.MasterAudio;
 
 public class Order_UI : MonoBehaviour
 {
@@ -197,6 +198,7 @@ public class Order_UI : MonoBehaviour
 			//May be usefull if we want to put an order back to initial place if it's "unprepared" after being prepared
 			//OrderPos = parentOrderUI.GetChildPosition (this.gameObject);
 			hasBeenPrepared = true;
+			MasterAudio.PlaySound ("SFX_OrderComplete");
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
 					if (!FastDownOrder) {

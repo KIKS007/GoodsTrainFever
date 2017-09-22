@@ -64,8 +64,11 @@ public class MenuLevels : MenuComponent
 
 		index += stages;
 
-		if (LevelsManager.Instance.currentLevel.starsEarned > 0)
-			index++;
+		if (LevelsManager.Instance.currentLevel != null) {
+			if (LevelsManager.Instance.currentLevel.starsEarned > 0)
+				index++;
+			
+		}
 
 		levelsScrollView.anchoredPosition = new Vector2 (-index * (levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x + levelsSpacing) - 6, levelsScrollView.anchoredPosition.y);
 	}

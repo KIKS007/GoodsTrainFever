@@ -20,34 +20,35 @@ namespace FenalyticsScripts
 
 		void Awake ()
 		{
-			if (enable)
-				Core.Init (projectId, refreshRate, gameObject.AddComponent<Core> ());
+			/*if (enable)*/
+			//	Core.Init (projectId, refreshRate, gameObject.AddComponent<Core> ());
 
-			if (noId) {
+			/*if (noId) {
 				StartCoroutine (SetAnonAccount ());
-			}
+			}*/
 		}
 
 		#if UNITY_EDITOR
 		void Update ()
 		{
-			count = QueueManager.Requests.Count;
+			/*count = QueueManager.Requests.Count;
 			if (count > 0) {
 				nextEndpoint = QueueManager.Requests [0].endpoint;
 				nextData = Newtonsoft.Json.JsonConvert.SerializeObject (QueueManager.Requests [0].json);
-			}
+			}*/
 		}
 		#endif
 
-		IEnumerator SetAnonAccount ()
+		/*IEnumerator SetAnonAccount ()
 		{
-			yield return new WaitUntil (() => QueueManager.DeviceId != null);
+			/*yield return new WaitUntil (() => QueueManager.DeviceId != null);
 			Core.Account.GetId ("device_id", QueueManager.DeviceId);
 		}
+		*/
 
 		void OnApplicationQuit ()
 		{
-			QueueManager.Stop ();
+			//QueueManager.Stop ();
 			//		FenalyticsRequest.Stop ();
 		}
 	}
