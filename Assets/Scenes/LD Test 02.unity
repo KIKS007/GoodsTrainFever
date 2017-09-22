@@ -21185,7 +21185,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8d6d4613a749d3840b6da3bcebc0ba28, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 87f5e0c2354a88440910334f901ef37b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -22166,7 +22166,7 @@ MonoBehaviour:
   spatialBlend: 1
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 0.03846154
+  groupMasterVolume: 0.1
   retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -22202,7 +22202,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 14828
+  frames: 15690
 --- !u!1 &247982849
 GameObject:
   m_ObjectHideFlags: 0
@@ -23492,7 +23492,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 11790
+  frames: 11810
 --- !u!1 &460729506
 GameObject:
   m_ObjectHideFlags: 0
@@ -24305,7 +24305,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -24709,7 +24708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 1
   useLocalization: 0
-  useRandomPitch: 1
+  useRandomPitch: 0
   randomPitchMode: 0
   randomPitchMin: -0.2
   randomPitchMax: 0.2
@@ -24748,7 +24747,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8d6d4613a749d3840b6da3bcebc0ba28, type: 3}
+  m_audioClip: {fileID: 8300000, guid: abdec7f56bb6a54418af0415b8c79571, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -25170,7 +25169,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -25588,7 +25586,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -25867,7 +25864,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 11172
+  frames: 11180
 --- !u!1 &714754703
 GameObject:
   m_ObjectHideFlags: 0
@@ -25950,7 +25947,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 25116
+  frames: 25140
 --- !u!1 &730721853
 GameObject:
   m_ObjectHideFlags: 0
@@ -26130,7 +26127,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -26618,7 +26614,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 12250
+  frames: 12312
 --- !u!114 &821828201 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114486652054712132, guid: 2791c24f66192de4098af2699650c2ed,
@@ -26647,7 +26643,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -26778,7 +26773,7 @@ MonoBehaviour:
   spatialBlend: 1
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 0.03846154
+  groupMasterVolume: 0.04
   retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -26814,7 +26809,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 15876
+  frames: 18186
 --- !u!1 &922492418
 GameObject:
   m_ObjectHideFlags: 0
@@ -27038,7 +27033,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 12758
+  frames: 12774
 --- !u!1 &956752938
 GameObject:
   m_ObjectHideFlags: 0
@@ -27267,7 +27262,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 13832
+  frames: 13850
 --- !u!114 &999645910 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114115034584266896, guid: 2791c24f66192de4098af2699650c2ed,
@@ -27300,7 +27295,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -28953,7 +28947,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 540
+      value: 768.8449
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -28963,7 +28957,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 1080
+      value: 1537.6898
       objectReference: {fileID: 0}
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -29047,7 +29041,6 @@ Material:
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -29212,7 +29205,7 @@ MonoBehaviour:
   spatialBlend: 1
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 1
+  groupMasterVolume: 0.1
   retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -29248,7 +29241,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 16366
+  frames: 20024
 --- !u!1001 &1305886598
 Prefab:
   m_ObjectHideFlags: 0
@@ -29411,7 +29404,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 15720
+  frames: 15726
 --- !u!1 &1391009482
 GameObject:
   m_ObjectHideFlags: 0
@@ -29568,7 +29561,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 14004
+  frames: 14026
 --- !u!1 &1411708626
 GameObject:
   m_ObjectHideFlags: 0
@@ -29651,7 +29644,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 12510
+  frames: 12518
 --- !u!1 &1414296308 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1893212220266030, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -29772,7 +29765,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8d6d4613a749d3840b6da3bcebc0ba28, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a7a9ef543a4e18947a34f8c93f912adb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -30111,7 +30104,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 26170
+  frames: 26176
 --- !u!1 &1509521454 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1129518084248246, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -30664,7 +30657,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 15506
+  frames: 15512
 --- !u!1 &1567793891 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1937537705645628, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -31629,7 +31622,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 25066
+  frames: 25072
 --- !u!1 &1788756724 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1968835060782436, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -31738,7 +31731,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 10266
+  frames: 10282
 --- !u!1001 &1825911846
 Prefab:
   m_ObjectHideFlags: 0
@@ -32079,7 +32072,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 17790
+  frames: 17796
 --- !u!1 &1873558478 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1048349733595962, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -32680,7 +32673,7 @@ MonoBehaviour:
   spatialBlend: 1
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 1
+  groupMasterVolume: 0.1
   retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -32716,7 +32709,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 9704
+  frames: 11724
 --- !u!1 &1952652039 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1335202038942406, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -33844,7 +33837,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 11718
+  frames: 11726
 --- !u!1001 &2009957666
 Prefab:
   m_ObjectHideFlags: 0
@@ -33948,7 +33941,7 @@ MonoBehaviour:
   spatialBlend: 1
   isSelected: 0
   isExpanded: 1
-  groupMasterVolume: 0.1923077
+  groupMasterVolume: 0.04
   retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
@@ -33984,7 +33977,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 16478
+  frames: 18238
 --- !u!1 &2020448037 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1001027747538826, guid: ceb90f96be5b10948a0c6eabe3f9d7a9,
@@ -34447,7 +34440,7 @@ MonoBehaviour:
   useRandomPitch: 0
   randomPitchMode: 0
   randomPitchMin: -0.5
-  randomPitchMax: 0.5
+  randomPitchMax: -0.5
   useRandomVolume: 0
   randomVolumeMode: 0
   randomVolumeMin: 0
@@ -34483,7 +34476,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8d6d4613a749d3840b6da3bcebc0ba28, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 33fa8626e9bab85409a71905505cccd9, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
