@@ -8,6 +8,8 @@ public class Trophy_Split : MonoBehaviour
 
 	public Stage_Menu sm;
 
+	public GameObject LastTrophy;
+
 	void Start ()
 	{
 		if (Locomotive.childCount != 16) {
@@ -27,13 +29,22 @@ public class Trophy_Split : MonoBehaviour
 			sm = MenuManager.Instance.menuTrophies.stageMenu;
 		}
 
-		for (int i = 0; i < sm.trophyStageIndex + 1; i++) {
-			Locomotive.GetChild (i).gameObject.SetActive (true);
+		if (sm.trophyStageIndex == 16) {
+			LastTrophy.SetActive (true);
+			for (int i = 0; i < Locomotive.childCount; i++) {
+				Locomotive.GetChild (i).gameObject.SetActive (false);
+			}
+		} else {
+			LastTrophy.SetActive (false);
+			for (int i = 0; i < sm.trophyStageIndex + 1; i++) {
+				Locomotive.GetChild (i).gameObject.SetActive (true);
+			}
+			
+			for (int i = sm.trophyStageIndex + 1; i < Locomotive.childCount; i++) {
+				Locomotive.GetChild (i).gameObject.SetActive (false);
+			}
 		}
 
-		for (int i = sm.trophyStageIndex + 1; i < Locomotive.childCount; i++) {
-			Locomotive.GetChild (i).gameObject.SetActive (false);
-		}
 	}
 	
 
