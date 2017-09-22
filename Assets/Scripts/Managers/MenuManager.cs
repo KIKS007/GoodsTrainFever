@@ -119,6 +119,7 @@ public class MenuManager : Singleton<MenuManager>
                 fastforwardButton.gameObject.SetActive(true);
             }
             MasterAudio.ChangePlaylistByName("InGame");
+            MasterAudio.PlaySoundAndForget("SFX_Water");
         };
 
         GameManager.Instance.OnLevelEnd += () =>
