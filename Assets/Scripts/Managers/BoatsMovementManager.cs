@@ -32,6 +32,9 @@ public class BoatsMovementManager : Singleton<BoatsMovementManager>
 
         inTransition = true;
 
+        MasterAudio.PlaySoundAndForget("SFX_BoatIn");
+        Debug.Log("BOAT");
+
         boat.DOMoveX(gameXPosition, boatSpeed).SetSpeedBased().SetEase(boatEase).OnComplete(() => inTransition = false);
         LevelsManager.Instance.SetCurrentBoatTimer(boat.gameObject.GetComponent<Boat>().TimerText);
     }

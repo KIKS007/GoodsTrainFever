@@ -119,7 +119,7 @@ public class MenuManager : Singleton<MenuManager>
                 fastforwardButton.gameObject.SetActive(true);
             }
             MasterAudio.ChangePlaylistByName("InGame");
-            MasterAudio.StartPlaylist("SFX_Water");
+            MasterAudio.PlaySoundAndForget("SFX_Water");
         };
 
         GameManager.Instance.OnLevelEnd += () =>
@@ -686,7 +686,6 @@ public class MenuManager : Singleton<MenuManager>
     {
         Time.timeScale = 1;
         MasterAudio.ChangePlaylistByName("MainMenu");
-        MasterAudio.StopPlaylist("SFX_Water");
         if (TutorialManager.Instance.isActive)
         {
             TutorialManager.Instance.ForceStop();
