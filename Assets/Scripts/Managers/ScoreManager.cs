@@ -239,7 +239,7 @@ public class ScoreManager : Singleton<ScoreManager>
         {
             success = true;
 
-            if (PlayerPrefs.HasKey("FirstStar" + levelIndex))
+			if (PlayerPrefs.HasKey("FirstStar" + levelIndex) || level.starsStates[0] != StarState.Locked)
                 return;
 
             level.starsEarned++;
@@ -266,7 +266,7 @@ public class ScoreManager : Singleton<ScoreManager>
         {
             //LeastTrainsStar (trainsCount, level, levelIndex);
 
-            if (!PlayerPrefs.HasKey("SecondStar" + levelIndex))
+			if (!PlayerPrefs.HasKey("SecondStar" + levelIndex) && level.starsStates[1] == StarState.Locked)
             {
                 level.starsEarned++;
                 PlayerPrefs.SetInt("SecondStar" + levelIndex, 1);
@@ -278,7 +278,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
     void ThirdStar(int ordersPercentage, Level level, int levelIndex)
     {
-        if (PlayerPrefs.HasKey("ThirdStar" + levelIndex))
+		if (PlayerPrefs.HasKey("ThirdStar" + levelIndex) || level.starsStates[2] != StarState.Locked)
             return;
 
         if (LevelsManager.Instance.errorsLocked > 0)
