@@ -23135,31 +23135,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 949}
     m_Modifications:
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: orders.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: storageContainers.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.data[0].wagons.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: orders.Array.data[0].levelContainers.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 4269197372705354, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -23322,90 +23297,30 @@ Prefab:
       propertyPath: trainsToSendIcon
       value: 
       objectReference: {fileID: 576471266}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    - target: {fileID: 114069780197089442, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
-      propertyPath: levelsCount
+      propertyPath: starsEarned
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    - target: {fileID: 114069780197089442, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
-      propertyPath: currentLevel
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: currentHandmadeLevel
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: errorsLocked
+      propertyPath: starsStates.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    - target: {fileID: 114069780197089442, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
-      propertyPath: orders.Array.data[0].levelContainers.Array.data[0].containerColor
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: orders.Array.data[0].levelContainers.Array.data[1].containerColor
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: orders.Array.data[0].levelContainers.Array.data[2].containerColor
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: orders.Array.data[0].levelContainers.Array.data[3].containerColor
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: storageContainers.Array.data[0].containerColor
+      propertyPath: starsStates.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    - target: {fileID: 114069780197089442, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
-      propertyPath: storageContainers.Array.data[1].containerColor
+      propertyPath: starsStates.Array.data[2]
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
+    - target: {fileID: 114069780197089442, guid: b19a4ceaa52630e4c8e2e6171b752452,
         type: 2}
-      propertyPath: storageContainers.Array.data[2].containerColor
+      propertyPath: ordersCount
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: trainsUsed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.data[0].trainDuration
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.data[0].wagons.Array.data[0].wagonMaxWeight
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: rail2Trains.Array.data[0].wagons.Array.data[1].wagonMaxWeight
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: _storage
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114823883827764146, guid: b19a4ceaa52630e4c8e2e6171b752452,
-        type: 2}
-      propertyPath: _boat
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b19a4ceaa52630e4c8e2e6171b752452, type: 2}

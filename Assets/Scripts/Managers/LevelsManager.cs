@@ -926,7 +926,7 @@ public class LevelsManager : Singleton<LevelsManager>
 	void RenameLevels ()
 	{
 		for (int i = 0; i < transform.childCount; i++)
-			if (transform.GetChild (i).GetComponent<Level> () != null)
+			if (transform.GetChild (i).GetComponent<LevelHandmade> () != null)
 				transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
 			else
 				transform.GetChild (i).name = "Level Settings #" + (i + 1).ToString ();

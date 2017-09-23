@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 4033515304003872}
   - component: {fileID: 114677026904124494}
   m_Layer: 0
-  m_Name: 'Level Settings #37'
+  m_Name: 'Level Settings #36'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 4550241622078644}
   - component: {fileID: 114314615533424012}
   m_Layer: 0
-  m_Name: 'Level Settings #36'
+  m_Name: 'Level Settings #37'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -838,7 +838,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4269197372705354}
-  m_RootOrder: 36
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4061573641093274
 Transform:
@@ -1002,8 +1002,8 @@ Transform:
   - {fileID: 4738313620447642}
   - {fileID: 4292474493794786}
   - {fileID: 4203068626683160}
-  - {fileID: 4550241622078644}
   - {fileID: 4033515304003872}
+  - {fileID: 4550241622078644}
   - {fileID: 4086505791959076}
   - {fileID: 4061573641093274}
   - {fileID: 4726281968615802}
@@ -1161,7 +1161,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4269197372705354}
-  m_RootOrder: 35
+  m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4551530994359014
 Transform:
@@ -1952,13 +1952,12 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 60
+  levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMin: 3
+  trainsCountMax: 5
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -2019,7 +2018,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -2134,7 +2132,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -3039,7 +3036,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -3103,7 +3099,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -3373,7 +3368,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -3434,7 +3428,6 @@ MonoBehaviour:
   trainsCountMin: 6
   trainsCountMax: 8
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -3648,7 +3641,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -4237,7 +4229,6 @@ MonoBehaviour:
   trainsCountMin: 3
   trainsCountMax: 8
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -4464,7 +4455,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
@@ -4977,14 +4967,12 @@ MonoBehaviour:
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 80
+  levelDuration: 70
   ordersCountMin: 3
   ordersCountMax: 3
   trainsCountMin: 1
-  trainsCountMax: 2
+  trainsCountMax: 1
   trainsAvailable:
-  - {fileID: 11400000, guid: 080ed71e8405b634bb4861d6c391308c, type: 2}
-  - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   firstTrainDelay: {x: 8.671009, y: 18.309523}
   boatsDelay: 4
@@ -5018,9 +5006,9 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   parasiteContainers: []
-  extraContainersCount: 0
-  ordersFillingPercentage: 80
-  storageFillingPercentage: 80
+  extraContainersCount: 4
+  ordersFillingPercentage: 100
+  storageFillingPercentage: 100
 --- !u!114 &114785814305051758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6407,7 +6395,6 @@ MonoBehaviour:
   trainsCountMin: 4
   trainsCountMax: 6
   trainsAvailable:
-  - {fileID: 11400000, guid: 3e32550b17ffc4345abc418463af030f, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: fd8c57afde3c4d245b83e2f0718aacf9, type: 2}
