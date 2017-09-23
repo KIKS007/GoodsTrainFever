@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 23134976601391428}
   - component: {fileID: 65340053806412866}
   - component: {fileID: 114930206986436738}
-  - component: {fileID: 114858495759130808}
+  - component: {fileID: 114241281227038720}
   m_Layer: 8
   m_Name: Container_Tank_40
   m_TagString: Untagged
@@ -419,6 +419,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.0942893, y: 2.5910003, z: 2.4369135}
   m_Center: {x: 0.018270493, y: 1.2961806, z: 0.00000011920929}
+--- !u!114 &114241281227038720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1841959657375952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d949d229aa8948f43b7e93613d3dca3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _container: {fileID: 0}
+  notNextToType: 2
 --- !u!114 &114242996266469554
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -591,18 +604,6 @@ MonoBehaviour:
   _isSpawned: 0
   _spotTrainIndex: 0
   _spotWagonIndex: 0
---- !u!114 &114858495759130808
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1841959657375952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53a822ff983c9c6499a20be20d7cf414, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _container: {fileID: 0}
 --- !u!114 &114871668372270318
 MonoBehaviour:
   m_ObjectHideFlags: 1
