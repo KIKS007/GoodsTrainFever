@@ -1,24 +1,26 @@
 fileFormatVersion: 2
-guid: eb437d7e28f3d33418814f54003e8bd5
-timeCreated: 1495298054
+guid: 79294a0c412034ee3a791dd56709ec4e
+timeCreated: 1506248624
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Cube
-    100002: Cube_001
-    100004: //RootNode
-    400000: Cube
-    400002: Cube_001
-    400004: //RootNode
+    100000: Camera
+    100002: Cube
+    100004: Cube.001
+    100006: Lamp
+    100008: //RootNode
+    400000: Camera
+    400002: Cube
+    400004: Cube.001
+    400006: Lamp
+    400008: //RootNode
     2300000: Cube
-    2300002: Cube_001
+    2300002: Cube.001
     3300000: Cube
-    3300002: Cube_001
-    4300000: Cube_001
+    3300002: Cube.001
+    4300000: Cube.001
     4300002: Cube
-    7400000: Default Take
-    9500000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
@@ -49,8 +51,8 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
-    swapUVChannels: 1
-    generateSecondaryUV: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -83,7 +85,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
