@@ -923,13 +923,90 @@ public class LevelsManager : Singleton<LevelsManager>
 
 	[PropertyOrder (-1)]
 	[ButtonAttribute]
-	void RenameLevels ()
+	public void RenameLevels ()
 	{
 		for (int i = 0; i < transform.childCount; i++)
+		{
+			string containers = "B.";
+
+			bool tank = false;
+			bool fire = false;
+			bool cooled = false;
+
 			if (transform.GetChild (i).GetComponent<LevelHandmade> () != null)
-				transform.GetChild (i).name = "Level #" + (i + 1).ToString ();
+			{
+				var scriptHandmade = transform.GetChild (i).GetComponent<LevelHandmade> ();
+				
+				foreach(var o in scriptHandmade.orders)
+				{
+					foreach(var c in o.levelContainers)
+					{
+						switch(c.containerType)
+						{
+						case ContainerType.Citerne:
+							tank = true;
+							break;
+						case ContainerType.Dangereux:
+							fire = true;
+							break;
+						case ContainerType.Réfrigéré:
+							cooled = true;
+							break;
+						}
+						
+					}
+					
+					if (tank && fire && cooled)
+						break;
+				}
+				
+				if(tank)
+					containers += "C.";
+				
+				if(fire)
+					containers += "D.";
+				
+				if(cooled)
+					containers += "R.";
+				
+				transform.GetChild (i).name = scriptHandmade.difficulty + " - " + (i + 1).ToString () + "# - " + containers + " - Level Hand";
+			}
 			else
-				transform.GetChild (i).name = "Level Settings #" + (i + 1).ToString ();
+			{
+				var scriptGenerated = transform.GetChild (i).GetComponent<LevelSettings_LD> ();
+				
+				foreach(var c in scriptGenerated.containersAvailable)
+				{
+					switch(c.containerType)
+					{
+					case ContainerType.Citerne:
+						tank = true;
+						break;
+					case ContainerType.Dangereux:
+						fire = true;
+						break;
+					case ContainerType.Réfrigéré:
+						cooled = true;
+						break;
+					}
+					
+					if (tank && fire && cooled)
+						break;
+				}
+				
+				if(tank)
+					containers += "C.";
+				
+				if(fire)
+					containers += "D.";
+				
+				if(cooled)
+					containers += "R.";
+				
+				transform.GetChild (i).name = scriptGenerated.difficulty + " - " + (i + 1).ToString () + "# - " + containers + " - Level Generated";
+			}
+			
+		}
 	}
 
 	#endregion

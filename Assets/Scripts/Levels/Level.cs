@@ -7,6 +7,15 @@ public enum StarState { Locked, Unlocked, Saved, ErrorLocked }
 
 public class Level : MonoBehaviour 
 {
+	void DifficultyChanged ()
+	{
+		FindObjectOfType<LevelsManager> ().RenameLevels ();
+	}
+
+	[Range (1, 20)]
+	[OnValueChanged ("DifficultyChanged")]
+	public int difficulty = 1;
+
 	[Header ("Stars")]
 	public int starsEarned = 0;
 

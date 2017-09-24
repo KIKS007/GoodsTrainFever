@@ -171,7 +171,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 
 	void Update ()
 	{
-		if (rail1.train && rail1.train.inTransition || rail2.train && rail2.train.inTransition || GameManager.Instance.gameState != GameState.Playing) {
+		if (GameManager.Instance.gameState != GameState.Playing) {
 			if (fastForwardButton.interactable)
 				fastForwardButton.interactable = false;
 		} else {
@@ -660,7 +660,7 @@ public class TrainsMovementManager : Singleton<TrainsMovementManager>
 		rail.train.inTransition = true;
 		rail.train.waitingDeparture = false;
 
-		fastForwardButton.interactable = false;
+		//fastForwardButton.interactable = false;
 
 		TrainArrow (rail.train);
 
