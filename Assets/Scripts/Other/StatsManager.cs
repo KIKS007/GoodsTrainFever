@@ -224,9 +224,8 @@ public class StatsManager : Singleton<StatsManager>
 
 	public int GetStringLevelID ()
 	{
-
-		return int.Parse (LevelsManager.Instance.currentLevel.name.Split ('#') [LevelsManager.Instance.currentLevel.name.Split ('#').Length - 1]);
-
+		return LevelsManager.Instance.currentLevel.transform.GetSiblingIndex () + 1;
+	//	return int.Parse (LevelsManager.Instance.currentLevel.name.Split ('#') [LevelsManager.Instance.currentLevel.name.Split ('#').Length - 1]);
 	}
 
 	public void StopLevelTrack (bool Completed)

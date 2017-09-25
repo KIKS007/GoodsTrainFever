@@ -101,7 +101,7 @@ public class TouchManager : Singleton<TouchManager>
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
 
-					if (OnTouchUpNoTarget != null && touchable && !isTouchingUI) {
+					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
 						OnTouchUpNoTarget ();
 					}
 					
