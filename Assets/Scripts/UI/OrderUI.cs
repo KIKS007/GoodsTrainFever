@@ -246,6 +246,8 @@ public class OrderUI : MonoBehaviour
 				_orderList.Remove (_orderList [order.GetSiblingIndex ()]);
 				_orderList.Insert (pos, tempOL);
 				order.transform.SetSiblingIndex (pos);
+			} else {
+				Debug.Log ("OrderUI - ORDER LEVEL IS NULL");
 			}
 		} else {
 			Debug.Log ("OrderUI - OUT OF RANGE ORDER INDEX");
