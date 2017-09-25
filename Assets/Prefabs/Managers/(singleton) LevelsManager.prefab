@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4075928705974022}
   - component: {fileID: 114533570209120616}
   m_Layer: 0
-  m_Name: 1 - 78# - B.C.D.R. - Level Generated
+  m_Name: 8 - 78# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 4959945200595630}
   - component: {fileID: 114466411266863178}
   m_Layer: 0
-  m_Name: 1 - 81# - B.C.D.R. - Level Generated
+  m_Name: 8 - 81# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 4091357239729634}
   - component: {fileID: 114069360186633794}
   m_Layer: 0
-  m_Name: 1 - 77# - B.C.D.R. - Level Generated
+  m_Name: 7 - 77# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 4776563071181480}
   - component: {fileID: 114136879294187570}
   m_Layer: 0
-  m_Name: 1 - 75# - B.C.D.R. - Level Generated
+  m_Name: 6 - 75# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 4212208363228520}
   - component: {fileID: 114961679667794624}
   m_Layer: 0
-  m_Name: 1 - 76# - B.C.D.R. - Level Generated
+  m_Name: 7 - 76# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1253,7 +1253,7 @@ GameObject:
   - component: {fileID: 4479793637691384}
   - component: {fileID: 114926185672562208}
   m_Layer: 0
-  m_Name: 1 - 79# - B.C.D.R. - Level Generated
+  m_Name: 8 - 79# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1541,7 +1541,7 @@ GameObject:
   - component: {fileID: 4706218692384048}
   - component: {fileID: 114255177065990812}
   m_Layer: 0
-  m_Name: 1 - 80# - B.C.D.R. - Level Generated
+  m_Name: 8 - 80# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3151,16 +3151,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 7
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 80
+  levelDuration: 70
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 4
-  trainsCountMax: 5
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -3452,7 +3452,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 4
   ordersCountMax: 5
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -3650,12 +3650,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 6
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 80
+  levelDuration: 70
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 4
@@ -3834,7 +3834,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -3893,7 +3893,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -3979,7 +3979,7 @@ MonoBehaviour:
   ordersCountMin: 2
   ordersCountMax: 3
   trainsCountMin: 3
-  trainsCountMax: 5
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: ffc0f6efde420dd419a05c47b558b733, type: 2}
@@ -4008,7 +4008,7 @@ MonoBehaviour:
   forcedContainers: []
   parasiteContainers: []
   extraContainersCount: 3
-  ordersFillingPercentage: 80
+  ordersFillingPercentage: 95
   storageFillingPercentage: 70
 --- !u!114 &114241353440555548
 MonoBehaviour:
@@ -4209,7 +4209,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -4314,7 +4314,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -4398,7 +4398,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114255177065990812
 MonoBehaviour:
@@ -4411,7 +4411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 8
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -4419,7 +4419,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -4467,7 +4467,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 8
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 90
   storageFillingPercentage: 99
 --- !u!114 &114271063396951830
 MonoBehaviour:
@@ -4539,7 +4539,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -4587,7 +4587,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 8
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 99
 --- !u!114 &114293035730545580
 MonoBehaviour:
@@ -4608,7 +4608,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -4692,7 +4692,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114303715456007922
 MonoBehaviour:
@@ -4864,8 +4864,8 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMin: 5
+  trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -5546,7 +5546,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -5612,7 +5612,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114380875486591258
 MonoBehaviour:
@@ -5633,7 +5633,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 4
   ordersCountMax: 5
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -5903,7 +5903,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -5987,7 +5987,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114438882508019126
 MonoBehaviour:
@@ -6009,7 +6009,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
-  trainsCountMax: 5
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -6068,7 +6068,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -6337,7 +6337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 8
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -6345,7 +6345,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -6393,7 +6393,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 8
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 99
 --- !u!114 &114502173403902996
 MonoBehaviour:
@@ -6433,7 +6433,7 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 2
       isDoubleSize: 0
-  spawnAllOrderContainers: 0
+  spawnAllOrderContainers: 1
   storageContainers:
   - containerType: 0
     containerColor: 1
@@ -6477,7 +6477,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -6543,7 +6543,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114515500226852244
 MonoBehaviour:
@@ -6564,7 +6564,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -6630,7 +6630,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114515667216896322
 MonoBehaviour:
@@ -6698,7 +6698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 8
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -6706,7 +6706,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -6776,7 +6776,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -6993,7 +6993,7 @@ MonoBehaviour:
     - containerType: 0
       containerColor: 3
       isDoubleSize: 0
-  spawnAllOrderContainers: 0
+  spawnAllOrderContainers: 1
   storageContainers:
   - containerType: 0
     containerColor: 1
@@ -7216,7 +7216,7 @@ MonoBehaviour:
     isDoubleSize: 1
   parasiteContainers: []
   extraContainersCount: 2
-  ordersFillingPercentage: 87
+  ordersFillingPercentage: 90
   storageFillingPercentage: 69
 --- !u!114 &114610649808383542
 MonoBehaviour:
@@ -7340,7 +7340,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -7406,7 +7406,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114634535585483748
 MonoBehaviour:
@@ -7670,7 +7670,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -7736,7 +7736,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114690405217715782
 MonoBehaviour:
@@ -7757,7 +7757,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 2
   ordersCountMax: 3
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -7808,8 +7808,8 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 5
-  trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMin: 5
+  trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -8053,7 +8053,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 4
-  trainsCountMax: 6
+  trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -8538,7 +8538,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
-  trainsCountMax: 5
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -9121,7 +9121,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -9226,7 +9226,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 4
   ordersCountMax: 5
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -9343,7 +9343,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 6
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -9400,7 +9400,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -9466,7 +9466,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114821509733311540
 MonoBehaviour:
@@ -10608,7 +10608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 8
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -10616,7 +10616,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 4
+  trainsCountMin: 5
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -10664,7 +10664,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 8
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 90
   storageFillingPercentage: 99
 --- !u!114 &114939477546742038
 MonoBehaviour:
@@ -10876,7 +10876,7 @@ MonoBehaviour:
   levelDuration: 80
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -10960,7 +10960,7 @@ MonoBehaviour:
     containerColor: 0
     isDoubleSize: 1
   extraContainersCount: 2
-  ordersFillingPercentage: 86
+  ordersFillingPercentage: 95
   storageFillingPercentage: 45
 --- !u!114 &114949577299605798
 MonoBehaviour:
@@ -10982,7 +10982,7 @@ MonoBehaviour:
   ordersCountMin: 3
   ordersCountMax: 4
   trainsCountMin: 3
-  trainsCountMax: 5
+  trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
@@ -11092,7 +11092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 7
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -11148,7 +11148,7 @@ MonoBehaviour:
     isDoubleSize: 0
   parasiteContainers: []
   extraContainersCount: 5
-  ordersFillingPercentage: 90
+  ordersFillingPercentage: 95
   storageFillingPercentage: 64
 --- !u!114 &114968600214322164
 MonoBehaviour:
@@ -11412,7 +11412,7 @@ MonoBehaviour:
   levelDuration: 60
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 4
   trainsAvailable:
   - {fileID: 11400000, guid: 2162c0c9deb26224587729e44dd8c3f0, type: 2}
