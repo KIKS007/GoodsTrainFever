@@ -233,12 +233,25 @@ public class OrderUI : MonoBehaviour
 
 	public void SetOrderAtPosition (RectTransform order, int pos)
 	{
-		if (_orderList [GetChildPosition (order)] != null) {
+		/*if (_orderList [GetChildPosition (order)] != null) {
 			Order_Level tempOL = _orderList [GetChildPosition (order)];
 			_orderList.Remove (_orderList [GetChildPosition (order)]);
 			_orderList.Insert (pos, tempOL);
 			order.transform.SetSiblingIndex (pos);
+		}*/
+
+		if (_orderList.Count > order.GetSiblingIndex ()) {
+			if (_orderList [order.GetSiblingIndex ()] != null) {
+				Order_Level tempOL = _orderList [order.GetSiblingIndex ()];
+				_orderList.Remove (_orderList [order.GetSiblingIndex ()]);
+				_orderList.Insert (pos, tempOL);
+				order.transform.SetSiblingIndex (pos);
+			}
+		} else {
+			Debug.Log ("OrderUI - OUT OF RANGE ORDER INDEX");
 		}
+
+
 
 
 	}
@@ -259,13 +272,14 @@ public class OrderUI : MonoBehaviour
 	/// <returns>Child position</returns>
 	public int GetChildPosition (RectTransform order)
 	{
-		for (int i = 0; i < transform.childCount; i++) {
+		/*for (int i = 0; i < transform.childCount; i++) {
 			if (transform.GetChild (i) == order) {
 				return i;
 			}
 		}
 		Debug.Log ("Should Not Happen -- Contact Feno that will contact Enol");
-		return 0;
+		return 0;*/
+		return order.GetSiblingIndex ();
 	}
 
 	/// <summary>
@@ -321,8 +335,7 @@ public class OrderUI : MonoBehaviour
 		_notificationImg.DOFade (1, 0.1f).SetDelay (0.4f).OnComplete (() => {
 			OrderCount.gameObject.SetActive (true);
 		});
-		foreach (var order in _orderList) 
-		{
+		foreach (var order in _orderList) {
 			var go = _orders [order];
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
 			float alphaTarget = 1f - i / 3f;
@@ -385,8 +398,7 @@ public class OrderUI : MonoBehaviour
 			var canvasGrp = go.GetComponent<CanvasGroup> ();
 			float alphaTarget = 1f - i / 3f;
 			canvasGrp.DOKill ();
-			if (go.activeSelf)
-			{
+			if (go.activeSelf) {
 				canvasGrp.DOFade (alphaTarget, 1f - go.transform.GetSiblingIndex () / 3f);
 			}
 			i++;
