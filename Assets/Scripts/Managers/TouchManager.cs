@@ -11,6 +11,7 @@ public class TouchManager : Singleton<TouchManager>
 	public Action<Vector3> OnTouchHold;
 	public Action OnTouchUp;
 	public Action OnTouchUpNoTarget;
+	public Action OnTouchUpNoContainerTarget;
 
 	public bool isTouchingTouchable = false;
 	public bool isTouchingUI = false;
@@ -97,7 +98,10 @@ public class TouchManager : Singleton<TouchManager>
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
 
-					if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI) {
+					if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+						OnTouchUpNoContainerTarget ();
+
+					if (OnTouchUpNoTarget != null && touchable && !isTouchingUI) {
 						OnTouchUpNoTarget ();
 					}
 					
@@ -137,7 +141,11 @@ public class TouchManager : Singleton<TouchManager>
 					touchable.OnTouchUpAsButton ();
 
 				//Debug.Log ("END touchable: " + touchable, touchable);
+
+				if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+					OnTouchUpNoContainerTarget ();
 			}
+
 
 			if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI)
 				OnTouchUpNoTarget ();
