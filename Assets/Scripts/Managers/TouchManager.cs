@@ -94,12 +94,12 @@ public class TouchManager : Singleton<TouchManager>
 
 						if (touchable != null)
 							touchable.OnTouchUpAsButton ();
+						
+						if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+							OnTouchUpNoContainerTarget ();
 					}
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
-
-					if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
-						OnTouchUpNoContainerTarget ();
 
 					if (OnTouchUpNoTarget != null && touchable && !isTouchingUI) {
 						OnTouchUpNoTarget ();

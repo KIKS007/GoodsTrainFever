@@ -25512,6 +25512,35 @@ Prefab:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2178}
+    - target: {fileID: 1671824031015750, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114486945380982708, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_Text
+      value: Musique
+      objectReference: {fileID: 0}
+    - target: {fileID: 224085107914551328, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 320.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 224505066535127902, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 224168249796657764, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 224834718568301644, guid: 2791c24f66192de4098af2699650c2ed,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
   m_IsPrefabParent: 0
