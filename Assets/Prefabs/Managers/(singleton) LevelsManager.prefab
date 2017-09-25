@@ -869,7 +869,7 @@ GameObject:
   - component: {fileID: 4550241622078644}
   - component: {fileID: 114314615533424012}
   m_Layer: 0
-  m_Name: 1 - 73# - B.C.D.R. - Level Generated
+  m_Name: 6 - 73# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 4061573641093274}
   - component: {fileID: 114753527711139184}
   m_Layer: 0
-  m_Name: 1 - 74# - B.C.D.R. - Level Generated
+  m_Name: 7 - 74# - B.C.D.R. - Level Generated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4009,7 +4009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 6
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
@@ -4017,7 +4017,7 @@ MonoBehaviour:
   levelDuration: 70
   ordersCountMin: 3
   ordersCountMax: 4
-  trainsCountMin: 3
+  trainsCountMin: 4
   trainsCountMax: 5
   trainsAvailable:
   - {fileID: 11400000, guid: 559683b73c2733e4b819feeefec3633b, type: 2}
@@ -6750,12 +6750,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d103d6b81b95a44ebf462e44bd6811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 7
   starsEarned: 0
   errorsAllowed: 3
   starsStates: 000000000000000000000000
   ordersCount: 0
-  levelDuration: 70
+  levelDuration: 50
   ordersCountMin: 3
   ordersCountMax: 3
   trainsCountMin: 1
