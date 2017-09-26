@@ -202,18 +202,22 @@ public class Order_UI : MonoBehaviour
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
 					if (!FastDownOrder) {
-						this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders (false);
-						});
+						if (this.GetComponent<CanvasGroup> ()) {
+							this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+								parentOrderUI.ShowOrders ();
+								parentOrderUI.HideOrders (false);
+							});
+						}
 					} else {
 						FastDownOrder = false;
-						this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
-							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders (false);
-						});
+						if (this.GetComponent<CanvasGroup> ()) {
+							this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
+								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+								parentOrderUI.ShowOrders ();
+								parentOrderUI.HideOrders (false);
+							});
+						}
 					}
 
 				});
