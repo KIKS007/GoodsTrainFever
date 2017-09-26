@@ -861,10 +861,24 @@ public class LevelsGenerationManager : Singleton<LevelsGenerationManager>
 	Container_Level RandomContainerLevel ()
 	{
 		Container_Level containerLevel = new Container_Level (); 
+		bool validContainer = false;
 
-		containerLevel = RandomColor (containerLevel);
-		containerLevel.containerType = (ContainerType)Random.Range (0, System.Enum.GetValues (typeof(ContainerType)).Length);
-		containerLevel.isDoubleSize = Random.Range (1, 3) == 1 ? false : true;
+		do
+		{
+			validContainer = false;
+
+			containerLevel = RandomColor (containerLevel);
+			containerLevel.containerType = (ContainerType)Random.Range (0, System.Enum.GetValues (typeof(ContainerType)).Length);
+			containerLevel.isDoubleSize = Random.Range (1, 3) == 1 ? false : true;
+
+			foreach(var c in _containersAvailable)
+				if(c.containerType == containerLevel.containerType)
+				{
+					validContainer = true;
+					break;
+				}
+		}
+		while (!validContainer);
 
 		return containerLevel;
 	}
