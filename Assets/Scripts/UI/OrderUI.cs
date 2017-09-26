@@ -27,7 +27,11 @@ public class OrderUI : MonoBehaviour
 	private Transform _notification;
 	//the notification transform
 	private Image _notificationImg;
+
+	private RectTransform LastNewOrderRectTransform;
 	//the notification image
+	private bool AllPreparedOnNew = false;
+
 	private int _notificationPos = 0;
 	//the position target of the notification (0 when there are less than 3 orders, 100 otherwise)
 	// Use this for initialization
@@ -45,12 +49,17 @@ public class OrderUI : MonoBehaviour
 	/// <param name="order">the order to add</param>
 	public void AddOrder (Order_Level order)
 	{
+		if (CheckAllOrdersPrepared ()) {
+			AllPreparedOnNew = true;
+		} else {
+			AllPreparedOnNew = false;
+		}
 		//we instantiate the new order GameObject and we move the notification to the bottom
 		var orderGO = Instantiate (OrderPrefab, transform.position, Quaternion.identity, transform);
 		orderGO.transform.localRotation = Quaternion.identity;
 		_orderList.Add (order);
 		_notification.SetAsLastSibling ();
-
+		LastNewOrderRectTransform = orderGO.GetComponent<RectTransform> ();
 		Order_UI tmpThing = orderGO.AddComponent (typeof(Order_UI)) as Order_UI;
 		tmpThing.orderLevel = order;
 		tmpThing.parentOrderUI = this;
@@ -89,7 +98,6 @@ public class OrderUI : MonoBehaviour
 
 		//notification animation
 	}
-
 
 	void OnDestroy ()
 	{
@@ -157,13 +165,11 @@ public class OrderUI : MonoBehaviour
 		List<Container_UI> tmpThingCont = new List<Container_UI> ();
 		tmpThingCont.Clear ();
 	
-
 		foreach (var c in containers) {
 			var prefab = c.isDoubleSize ? LargeContainerPrefab : SmallContainerPrefab;//we select the right prefab according to its type
 			var layoutElement = prefab.GetComponent<LayoutElement> ();
 
 			var holder = holders [(int)c.containerType].GetChild (0) as RectTransform;
-
 			yield return new WaitForEndOfFrame ();// we need to wait one frame so the content size fitter of the row has been updated
 			yield return new WaitUntil (() => holder != null && holder.gameObject.activeInHierarchy);//if the row isn't active it can't be updated
 
@@ -196,6 +202,28 @@ public class OrderUI : MonoBehaviour
 		foreach (Order_UI OUI in OrderThing) {
 			OUI.ForceUpdateStates ();
 		}
+		if (AllPreparedOnNew) {
+			AllPreparedOnNew = false;
+			SetOrderAtPosition (LastNewOrderRectTransform, 0);
+		} else {
+			SetPositionBeforePreparedOrders ();
+		}
+	}
+
+
+	private void SetPositionBeforePreparedOrders ()
+	{
+		int i = 0;
+		bool somethingPrepared = false;
+		foreach (Order_UI oui in OrderThing) {
+			i++;
+			if (oui.isPrepared) {
+				somethingPrepared = true;
+				break;
+			}
+		}
+		if (somethingPrepared)
+			SetOrderAtPosition (LastNewOrderRectTransform, i);
 	}
 
 	/// <summary>

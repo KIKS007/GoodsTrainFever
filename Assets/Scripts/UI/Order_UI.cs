@@ -201,25 +201,27 @@ public class Order_UI : MonoBehaviour
 			MasterAudio.PlaySound ("SFX_OrderComplete");
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
-					if (!FastDownOrder) {
-						if (this.GetComponent<CanvasGroup> ()) {
+					if (this != null) {
+						
+				
+						if (!FastDownOrder) {
 							this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
 								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
 								parentOrderUI.ShowOrders ();
 								parentOrderUI.HideOrders (false);
 							});
-						}
-					} else {
-						FastDownOrder = false;
-						if (this.GetComponent<CanvasGroup> ()) {
+
+						} else {
+							FastDownOrder = false;
+					
 							this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
 								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
 								parentOrderUI.ShowOrders ();
 								parentOrderUI.HideOrders (false);
 							});
 						}
-					}
 
+					}
 				});
 			}
 
