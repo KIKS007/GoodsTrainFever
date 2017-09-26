@@ -206,7 +206,6 @@ public class TouchManager : Singleton<TouchManager>
 
 	Touchable RaycastTouchable (Vector3 position)
 	{
-		RaycastHit hit;
 		Ray ray = _camera.ScreenPointToRay (position);
 
 		Vector3 p = _camera.transform.position;

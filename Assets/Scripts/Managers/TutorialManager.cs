@@ -41,6 +41,7 @@ public class TutorialManager : Singleton<TutorialManager>
 	public bool BlockAllTutorial;
 	private int CurrentTutorialListID;
 	public GameObject TouchImage;
+	public Text tempText;
 
 	[Header ("Objects to Hide during Tutorials")]
 	public GameObject[] ObjectsToHide;
@@ -175,9 +176,17 @@ public class TutorialManager : Singleton<TutorialManager>
 
 	public IEnumerator AnimateText (Tutorial TargetTutorial, Text targetUIText, string strComplete)
 	{
+		tempText.text = strComplete;
+		tempText.rectTransform.sizeDelta = targetUIText.rectTransform.sizeDelta;
+
+		yield return new WaitForEndOfFrame ();
+
+		targetUIText.resizeTextMaxSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + 8;
+
 		int i = 0;
 		string str = "";
-		while (i < strComplete.Length) {
+		while (i < strComplete.Length) 
+		{
 			str += strComplete [i++];
 			targetUIText.text = str;
 			yield return new WaitForSecondsRealtime (TextSpeed);

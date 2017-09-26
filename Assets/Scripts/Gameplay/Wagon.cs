@@ -20,13 +20,8 @@ public class Wagon : Touchable
 	[Header ("Containers")]
 	public List<Container> containers = new List<Container> ();
 
-	private Text _weightText;
-	private Image _weightImage;
-
 	void Awake ()
 	{
 		train = transform.GetComponentInParent<Train> ();
-		_weightText = transform.GetComponentInChildren <Text> ();
-		_weightImage = transform.GetComponentInChildren <Image> ();
 	}
 }

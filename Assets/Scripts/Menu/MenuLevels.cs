@@ -27,14 +27,10 @@ public class MenuLevels : MenuComponent
 	[HideInInspector]
 	public List<Level_Menu> _levelsMenu = new List<Level_Menu> ();
 
-	private ScrollRect _scrollRect;
-
 	// Use this for initialization
 	void Start ()
 	{
 		//SetupLevels ();
-
-		_scrollRect = GetComponent<ScrollRect> ();
 
 		MenuManager.Instance.OnMainMenu += SetLevelPosition;
 	}
@@ -91,8 +87,6 @@ public class MenuLevels : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
-		_scrollRect = GetComponent<ScrollRect> ();
-
 		_levelsPanelWidth = levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x;
 
 		foreach (Transform t in levelsScrollView.transform)

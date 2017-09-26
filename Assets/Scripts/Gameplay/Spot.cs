@@ -54,7 +54,6 @@ public class Spot : Touchable
     private Material _material;
     private float _fadeDuration = 0.2f;
     private Spot _doubleSizeSpotSpawned;
-    private float _hologramOpacity;
     private float _opacity;
 
     void Awake()
@@ -64,10 +63,8 @@ public class Spot : Touchable
         _material = _meshRenderer.material;
         _meshFilter = GetComponent<MeshFilter>();
 
-        // _hologramOpacity = _material.GetFloat("_HologramOpacity");
         _opacity = _material.GetFloat("_Opacity");
 
-        // _material.SetFloat("_HologramOpacity", 0f);
         _material.SetFloat("_Opacity", 0f);
 
         Container.OnContainerSelected += OnContainerSelected;
@@ -395,7 +392,6 @@ public class Spot : Touchable
 		if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
 			delay = 0;
 
-        _material.DOFloat(_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay(delay);
         _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
 
