@@ -22,15 +22,12 @@ public class MenuAllTrophies : MenuComponent
 
 	private float _levelsPanelWidth;
 
-	private ScrollRect _scrollRect;
 	private List<Stage_Menu> _stagesMenu = new List<Stage_Menu> ();
 
 	// Use this for initialization
 	void Start ()
 	{
 		//SetupLevels ();
-
-		_scrollRect = GetComponent<ScrollRect> ();
 	}
 
 	void OnEnable ()
@@ -53,8 +50,6 @@ public class MenuAllTrophies : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
-		_scrollRect = GetComponent<ScrollRect> ();
-
 		_levelsPanelWidth = levelStagePrefab.GetComponent<RectTransform> ().sizeDelta.x;
 
 		foreach (Transform t in levelsScrollView.transform)

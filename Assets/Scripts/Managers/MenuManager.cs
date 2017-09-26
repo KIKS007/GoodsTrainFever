@@ -113,8 +113,10 @@ public class MenuManager : Singleton<MenuManager>
 
 		Stage_Menu.OnStageUnlock += (Stage_Menu obj) => unlockedStages.Add (obj);
 
-		GameManager.Instance.OnPlaying += () => {
-			if (!TutorialManager.Instance.isActive) {
+		GameManager.Instance.OnPlaying += () =>
+		{
+			if (!TutorialManager.Instance.isActive) 
+			{
 				pauseButton.gameObject.SetActive (true);
 				pauseButton.interactable = true;
 				fastforwardButton.gameObject.SetActive (true);
