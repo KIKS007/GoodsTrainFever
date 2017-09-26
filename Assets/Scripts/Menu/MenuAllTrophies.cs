@@ -40,6 +40,11 @@ public class MenuAllTrophies : MenuComponent
 		base.OnShow ();
 
 		MenuManager.Instance.menuTrophies.backMenu = this;
+
+		if (PlayerPrefs.HasKey ("TrophiesScrollRect")) {
+			float x = PlayerPrefs.GetFloat ("TrophiesScrollRect");
+			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
+		}
 	}
 
 	public void UpdateLevels ()
@@ -118,6 +123,22 @@ public class MenuAllTrophies : MenuComponent
 		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 
+	public override void OnHide ()
+	{
+		base.OnHide ();
 
+		SaveMenuPos ();
+	}
+
+	public void SaveMenuPos ()
+	{
+		//Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
+		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
+	}
+
+	public void Reset ()
+	{
+		levelsScrollView.anchoredPosition = new Vector2 (0, levelsScrollView.anchoredPosition.y);
+	}
 
 }

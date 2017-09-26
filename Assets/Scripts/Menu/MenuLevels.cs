@@ -31,7 +31,7 @@ public class MenuLevels : MenuComponent
 	void Start ()
 	{
 		//SetupLevels ();
-
+		GameManager.Instance.OnLevelEnd += SetLevelPosition;
 		MenuManager.Instance.OnMainMenu += SetLevelPosition;
 	}
 
@@ -45,6 +45,14 @@ public class MenuLevels : MenuComponent
 		base.OnShow ();
 
 		MenuManager.Instance.menuTrophies.backMenu = this;
+
+		if (PlayerPrefs.HasKey ("LevelsScrollRect")) {
+			//Debug.Log ("Bite");
+
+			float x = PlayerPrefs.GetFloat ("LevelsScrollRect");
+			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
+			//_scrollRect.horizontalNormalizedPosition = x;
+		}
 	}
 
 	void SetLevelPosition ()
@@ -191,9 +199,21 @@ public class MenuLevels : MenuComponent
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 
+	public override void OnHide ()
+	{
+		base.OnHide ();
+
+		SaveMenuPos ();
+	}
+
 	public void SaveMenuPos ()
 	{
 		//Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
+	}
+
+	public void Reset ()
+	{
+		levelsScrollView.anchoredPosition = new Vector2 (0, levelsScrollView.anchoredPosition.y);
 	}
 }
