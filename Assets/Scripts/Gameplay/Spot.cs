@@ -392,6 +392,9 @@ public class Spot : Touchable
 
         float delay = Vector3.Distance(container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
+		if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
+			delay = 0;
+
         _material.DOFloat(_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay(delay);
         _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
