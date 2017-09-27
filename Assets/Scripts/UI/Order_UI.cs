@@ -22,6 +22,15 @@ public class Order_UI : MonoBehaviour
 	private GameObject SelectedContainer;
 
 	private bool FastDownOrder = false;
+	private float _orderCompleteAlpha = 0.5f;
+	private float _orderUncompleteAlpha;
+	private Image _backgroundPanel;
+
+	void Start ()
+	{
+		_backgroundPanel = transform.GetChild (0).GetChild (0).GetComponent<Image> ();
+		_orderUncompleteAlpha = _backgroundPanel.color.a;
+	}
 
 	public void Setup ()
 	{
@@ -260,6 +269,11 @@ public class Order_UI : MonoBehaviour
 		}
 
 		isPrepared = prepared;
+
+		if(isPrepared)
+			_backgroundPanel.DOFade (_orderCompleteAlpha, MenuManager.Instance.menuAnimationDuration);
+		else
+			_backgroundPanel.DOFade (_orderUncompleteAlpha, MenuManager.Instance.menuAnimationDuration);
 
 		//Debug.Log ("Is it prepared: " + isPrepared);
 

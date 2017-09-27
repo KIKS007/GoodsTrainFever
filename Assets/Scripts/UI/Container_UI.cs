@@ -32,8 +32,6 @@ public class Container_UI : MonoBehaviour
 	private float _containerSentFade = 0.2f;
 	private float _containerAddedFade = 0.6f;
 
-	private float _alphaOnSelected;
-
 	public void Start ()
 	{
 		/*_rectTransform = GetComponent<RectTransform> ();
@@ -136,9 +134,7 @@ public class Container_UI : MonoBehaviour
 		}
 		//Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
 		if (this.gameObject.activeInHierarchy)
-		{
-			StartCoroutine (ContainerAddedFeedback ());	
-		}
+			ContainerAddedFeedback ();	
 	}
 
 	public void ContainerSelected (bool isMe, Container c)
@@ -146,22 +142,20 @@ public class Container_UI : MonoBehaviour
 		if (isMe && c.train == null || c == container) 
 		{
 			this.GetComponent<Image> ().DOFade (1, 0.2f);
-			_alphaOnSelected = _canvasGroup.alpha;
-			//_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+			_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
 		} 
 		else 
-		{
-			_alphaOnSelected = -1;
 			this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
-		}
 	}
 
 	public void ContainerDeselected (Container c)
 	{
 		myContainer = null;
 
-		/*if(_alphaOnSelected != -1)
-			_canvasGroup.DOFade (_alphaOnSelected, MenuManager.Instance.menuAnimationDuration);*/
+		if(container != null)
+			_canvasGroup.DOFade (_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
+		else
+			_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
 
 		if (myOrderUI != null) 
 		{
@@ -178,15 +172,10 @@ public class Container_UI : MonoBehaviour
 
 	}
 
-	IEnumerator ContainerAddedFeedback ()
+	void ContainerAddedFeedback ()
 	{
-		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
-
 		DOTween.Kill (transform);
-
 		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerAddedDuration);
-
-
 	}
 
 	public void ContainerRemoved ()
@@ -204,20 +193,17 @@ public class Container_UI : MonoBehaviour
 		_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
 
 		if (this.gameObject.activeInHierarchy)
-			StartCoroutine (ContainerRemovedFeedback ());
+			ContainerRemovedFeedback ();
 	}
 
-	IEnumerator ContainerRemovedFeedback ()
+	void ContainerRemovedFeedback ()
 	{
-		yield return new WaitWhile (() => OrdersManager.Instance.ordersHidden);
-
 		/*DOTween.Kill (_rectTransform);
 
 		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);*/
 
+		DOTween.Kill (transform);
 		transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
-
-
 	}
 
 	void UpdateTexts ()
