@@ -89,6 +89,8 @@ public class Spot : Touchable
 
     void Start()
     {
+		 _meshRenderer.enabled = true;
+
         SetSpotType();
 
         if (!_isSpawned)
@@ -380,7 +382,7 @@ public class Spot : Touchable
         if (isPileSpot && _parentContainer.selected)
             return;
 
-        _meshRenderer.enabled = true;
+       //  _meshRenderer.enabled = true;
 
         _meshFilter.mesh = container._mesh;
         _collider.enabled = true;
@@ -404,8 +406,8 @@ public class Spot : Touchable
         _material.DOFloat(0f, "_HologramOpacity", _fadeDuration);
         _material.DOFloat(0f, "_Opacity", _fadeDuration).OnComplete(() =>
       {
-          if (_meshRenderer)
-              _meshRenderer.enabled = false;
+          /*if (_meshRenderer)
+              _meshRenderer.enabled = false;*/
       });
     }
 

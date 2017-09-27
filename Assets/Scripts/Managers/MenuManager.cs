@@ -119,7 +119,8 @@ public class MenuManager : Singleton<MenuManager>
 				pauseButton.interactable = true;
 				fastforwardButton.gameObject.SetActive (true);
 			}
-			if (MUSIC_Ingame = false) {
+			if (MUSIC_Ingame == false) 
+			{
 				MasterAudio.ChangePlaylistByName ("InGame");
 				MUSIC_Ingame = true;
 				MUSIC_MainMenu = false;
@@ -663,7 +664,7 @@ public class MenuManager : Singleton<MenuManager>
 	public void MainMenu ()
 	{
 		Time.timeScale = 1;
-		if (MUSIC_MainMenu = false) {
+		if (MUSIC_MainMenu == false) {
 			MasterAudio.ChangePlaylistByName ("MainMenu");
 			MUSIC_Ingame = false;
 			MUSIC_MainMenu = true;
