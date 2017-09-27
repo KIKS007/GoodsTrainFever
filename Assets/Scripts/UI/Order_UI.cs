@@ -118,7 +118,8 @@ public class Order_UI : MonoBehaviour
 	{
 		SelectedContainer = null;
 		parentOrderUI.UnSelected ();
-		foreach (var c in containers) {
+		foreach (var c in containers) 
+		{
 			if (!c.isSent)
 				c.GetComponent<Image> ().DOFade (1f, 0.2f);
 		}

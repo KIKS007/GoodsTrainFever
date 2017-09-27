@@ -32,6 +32,8 @@ public class Container_UI : MonoBehaviour
 	private float _containerSentFade = 0.2f;
 	private float _containerAddedFade = 0.6f;
 
+	private float _alphaOnSelected;
+
 	public void Start ()
 	{
 		/*_rectTransform = GetComponent<RectTransform> ();
@@ -144,8 +146,12 @@ public class Container_UI : MonoBehaviour
 		if (isMe && c.train == null || c == container) 
 		{
 			this.GetComponent<Image> ().DOFade (1, 0.2f);
-		} else 
+			_alphaOnSelected = _canvasGroup.alpha;
+			//_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+		} 
+		else 
 		{
+			_alphaOnSelected = -1;
 			this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
 		}
 	}
@@ -154,7 +160,11 @@ public class Container_UI : MonoBehaviour
 	{
 		myContainer = null;
 
-		if (myOrderUI != null) {
+		/*if(_alphaOnSelected != -1)
+			_canvasGroup.DOFade (_alphaOnSelected, MenuManager.Instance.menuAnimationDuration);*/
+
+		if (myOrderUI != null) 
+		{
 			myOrderUI.ContainerDeselected ();
 		} else {
 			ForceGetmyOrderUI ();
