@@ -499,7 +499,7 @@ public class OrderUI : MonoBehaviour
         {
             var go = _orders[order];
             var canvasGrp = go.GetComponent<CanvasGroup>();
-            float alphaTarget = 1f - i / 3f;
+            float alphaTarget = (i >= 3) ? 0f : 1f;
             canvasGrp.DOKill();
             if (go.activeSelf)
             {
