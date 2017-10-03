@@ -11,6 +11,7 @@ public class TouchManager : Singleton<TouchManager>
 	public Action<Vector3> OnTouchHold;
 	public Action OnTouchUp;
 	public Action OnTouchUpNoTarget;
+	public Action OnTouchUpNoContainerTarget;
 
 	public bool isTouchingTouchable = false;
 	public bool isTouchingUI = false;
@@ -93,6 +94,9 @@ public class TouchManager : Singleton<TouchManager>
 
 						if (touchable != null)
 							touchable.OnTouchUpAsButton ();
+						
+						if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+							OnTouchUpNoContainerTarget ();
 					}
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
@@ -137,7 +141,11 @@ public class TouchManager : Singleton<TouchManager>
 					touchable.OnTouchUpAsButton ();
 
 				//Debug.Log ("END touchable: " + touchable, touchable);
+
+				if (touchable && touchable.GetType () != typeof(Container) && touchable.GetType () != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+					OnTouchUpNoContainerTarget ();
 			}
+
 
 			if (OnTouchUpNoTarget != null && !isTouchingTouchable && !isTouchingUI)
 				OnTouchUpNoTarget ();
@@ -198,7 +206,6 @@ public class TouchManager : Singleton<TouchManager>
 
 	Touchable RaycastTouchable (Vector3 position)
 	{
-		RaycastHit hit;
 		Ray ray = _camera.ScreenPointToRay (position);
 
 		Vector3 p = _camera.transform.position;

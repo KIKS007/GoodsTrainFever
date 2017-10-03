@@ -30,7 +30,9 @@ public class LoadingScreen : MonoBehaviour
 		IE_Ron.DOFade (0, 0.5f).From ().SetDelay (1.5f);
 		IE_Qual.DOFade (0, 0.5f).From ().SetDelay (1.5f);
 
-		Logos.DOFade (0, 0.5f).SetDelay (3.0f).From ();
+		Logos.DOFade (0, 0.5f).SetDelay (2.5f).From ();
+		Logos.transform.GetChild (0).GetComponent<Image> ().DOFade (0, 0.5f).SetDelay (3.0f).From ();
+
 		StartCoroutine (SplashScreen ());
 		DOVirtual.DelayedCall (5f, () => _animEnd = true);
 

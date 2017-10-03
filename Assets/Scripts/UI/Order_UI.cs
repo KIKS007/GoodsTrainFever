@@ -22,6 +22,15 @@ public class Order_UI : MonoBehaviour
 	private GameObject SelectedContainer;
 
 	private bool FastDownOrder = false;
+	private float _orderCompleteAlpha = 0.5f;
+	private float _orderUncompleteAlpha;
+	private Image _backgroundPanel;
+
+	void Start ()
+	{
+		_backgroundPanel = transform.GetChild (0).GetChild (0).GetComponent<Image> ();
+		_orderUncompleteAlpha = _backgroundPanel.color.a;
+	}
 
 	public void Setup ()
 	{
@@ -118,7 +127,8 @@ public class Order_UI : MonoBehaviour
 	{
 		SelectedContainer = null;
 		parentOrderUI.UnSelected ();
-		foreach (var c in containers) {
+		foreach (var c in containers) 
+		{
 			if (!c.isSent)
 				c.GetComponent<Image> ().DOFade (1f, 0.2f);
 		}
@@ -201,21 +211,27 @@ public class Order_UI : MonoBehaviour
 			MasterAudio.PlaySound ("SFX_OrderComplete");
 			if (parentOrderUI.GetChildPosition (this.gameObject.GetComponent<RectTransform> ()) != parentOrderUI.GetChildCount () - 1 && !parentOrderUI.CheckAllOrdersPrepared ()) {
 				DOVirtual.DelayedCall (0.2f, () => {
-					if (!FastDownOrder) {
-						this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
-							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders (false);
-						});
-					} else {
-						FastDownOrder = false;
-						this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
-							parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
-							parentOrderUI.ShowOrders ();
-							parentOrderUI.HideOrders (false);
-						});
-					}
+					if (this != null) {
+						
+				
+						if (!FastDownOrder) {
+							this.GetComponent<CanvasGroup> ().DOFade (0, 1.5f).OnComplete (() => {
+								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+								parentOrderUI.ShowOrders ();
+								parentOrderUI.HideOrders (false);
+							});
 
+						} else {
+							FastDownOrder = false;
+					
+							this.GetComponent<CanvasGroup> ().DOFade (0, 0.6f).OnComplete (() => {
+								parentOrderUI.SetOrderAtPosition (this.gameObject.GetComponent<RectTransform> (), parentOrderUI.GetChildCount () - 1);
+								parentOrderUI.ShowOrders ();
+								parentOrderUI.HideOrders (false);
+							});
+						}
+
+					}
 				});
 			}
 
@@ -253,6 +269,11 @@ public class Order_UI : MonoBehaviour
 		}
 
 		isPrepared = prepared;
+
+		if(isPrepared)
+			_backgroundPanel.DOFade (_orderCompleteAlpha, MenuManager.Instance.menuAnimationDuration);
+		else
+			_backgroundPanel.DOFade (_orderUncompleteAlpha, MenuManager.Instance.menuAnimationDuration);
 
 		//Debug.Log ("Is it prepared: " + isPrepared);
 

@@ -54,7 +54,6 @@ public class Spot : Touchable
     private Material _material;
     private float _fadeDuration = 0.2f;
     private Spot _doubleSizeSpotSpawned;
-    private float _hologramOpacity;
     private float _opacity;
 
     void Awake()
@@ -64,10 +63,8 @@ public class Spot : Touchable
         _material = _meshRenderer.material;
         _meshFilter = GetComponent<MeshFilter>();
 
-        // _hologramOpacity = _material.GetFloat("_HologramOpacity");
         _opacity = _material.GetFloat("_Opacity");
 
-        // _material.SetFloat("_HologramOpacity", 0f);
         _material.SetFloat("_Opacity", 0f);
 
         Container.OnContainerSelected += OnContainerSelected;
@@ -92,6 +89,8 @@ public class Spot : Touchable
 
     void Start()
     {
+		 _meshRenderer.enabled = true;
+
         SetSpotType();
 
         if (!_isSpawned)
@@ -344,8 +343,8 @@ public class Spot : Touchable
     {
         base.OnTouchUpAsButton();
 
-        /*if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
-			return;*/
+        if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
+			return;
 
         if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
             return;
@@ -383,7 +382,7 @@ public class Spot : Touchable
         if (isPileSpot && _parentContainer.selected)
             return;
 
-        _meshRenderer.enabled = true;
+       //  _meshRenderer.enabled = true;
 
         _meshFilter.mesh = container._mesh;
         _collider.enabled = true;
@@ -392,7 +391,9 @@ public class Spot : Touchable
 
         float delay = Vector3.Distance(container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
-        _material.DOFloat(_hologramOpacity, "_HologramOpacity", _fadeDuration).SetDelay(delay);
+		if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
+			delay = 0;
+
         _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
 
@@ -405,8 +406,8 @@ public class Spot : Touchable
         _material.DOFloat(0f, "_HologramOpacity", _fadeDuration);
         _material.DOFloat(0f, "_Opacity", _fadeDuration).OnComplete(() =>
       {
-          if (_meshRenderer)
-              _meshRenderer.enabled = false;
+          /*if (_meshRenderer)
+              _meshRenderer.enabled = false;*/
       });
     }
 

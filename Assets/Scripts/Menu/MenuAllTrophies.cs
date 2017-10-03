@@ -22,15 +22,12 @@ public class MenuAllTrophies : MenuComponent
 
 	private float _levelsPanelWidth;
 
-	private ScrollRect _scrollRect;
 	private List<Stage_Menu> _stagesMenu = new List<Stage_Menu> ();
 
 	// Use this for initialization
 	void Start ()
 	{
 		//SetupLevels ();
-
-		_scrollRect = GetComponent<ScrollRect> ();
 	}
 
 	void OnEnable ()
@@ -43,6 +40,11 @@ public class MenuAllTrophies : MenuComponent
 		base.OnShow ();
 
 		MenuManager.Instance.menuTrophies.backMenu = this;
+
+		if (PlayerPrefs.HasKey ("TrophiesScrollRect")) {
+			float x = PlayerPrefs.GetFloat ("TrophiesScrollRect");
+			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
+		}
 	}
 
 	public void UpdateLevels ()
@@ -53,8 +55,6 @@ public class MenuAllTrophies : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
-		_scrollRect = GetComponent<ScrollRect> ();
-
 		_levelsPanelWidth = levelStagePrefab.GetComponent<RectTransform> ().sizeDelta.x;
 
 		foreach (Transform t in levelsScrollView.transform)
@@ -123,6 +123,22 @@ public class MenuAllTrophies : MenuComponent
 		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 
+	public override void OnHide ()
+	{
+		base.OnHide ();
 
+		SaveMenuPos ();
+	}
+
+	public void SaveMenuPos ()
+	{
+		//Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
+		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
+	}
+
+	public void Reset ()
+	{
+		levelsScrollView.anchoredPosition = new Vector2 (0, levelsScrollView.anchoredPosition.y);
+	}
 
 }

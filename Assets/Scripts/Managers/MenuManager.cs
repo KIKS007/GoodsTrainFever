@@ -95,6 +95,9 @@ public class MenuManager : Singleton<MenuManager>
 	private bool _orthoOn = true;
 	private float _timeScaleOnPause;
 
+	private bool MUSIC_Ingame = false;
+	private bool MUSIC_MainMenu = false;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -116,7 +119,13 @@ public class MenuManager : Singleton<MenuManager>
 				pauseButton.interactable = true;
 				fastforwardButton.gameObject.SetActive (true);
 			}
-			MasterAudio.ChangePlaylistByName ("InGame");
+			if (MUSIC_Ingame == false) 
+			{
+				MasterAudio.ChangePlaylistByName ("InGame");
+				MUSIC_Ingame = true;
+				MUSIC_MainMenu = false;
+			}
+
 			MasterAudio.PlaySoundAndForget ("SFX_Water");
 		};
 
@@ -354,11 +363,12 @@ public class MenuManager : Singleton<MenuManager>
 		if (menu.mainContent) {
 			DOTween.Kill (menu.mainContent);
 
-			HideContent (menu.mainContent, menuShowPosition, menuHidePosition, menuAnimationDuration, menuEase, menu.disableOnHide, 0, () => menu.mainContent.gameObject.SetActive (false));
+			HideContent (menu.mainContent, menuShowPosition, menuHidePosition, menuAnimationDuration, menuEase, menu.disableOnHide, 0);
 			//menu.mainContent.DOAnchorPos (menuHidePosition, menuAnimationDuration).SetEase (menuEase).OnComplete (()=> menu.mainContent.gameObject.SetActive (false));
 		}
 
-		foreach (var c in menu.contents) {
+		foreach (var c in menu.contents) 
+		{
 			if (c.content == null)
 				continue;
 
@@ -371,6 +381,7 @@ public class MenuManager : Singleton<MenuManager>
 			Ease ease = c.overrideEase ? c.ease : menuEase;
 
 			HideContent (c.content, c.showPosition, c.hidePosition, duration, ease, menu.disableOnHide, c.delay);
+
 			//HideContent (c.content, c.showPosition, c.hidePosition, duration, ease, c.delay, ()=> c.content.gameObject.SetActive (false));
 			/*if(c.delay > 0)
 				c.content.DOAnchorPos (c.hidePosition, duration).SetEase (ease).SetDelay (c.delay).OnComplete (()=> c.content.gameObject.SetActive (false));
@@ -653,7 +664,12 @@ public class MenuManager : Singleton<MenuManager>
 	public void MainMenu ()
 	{
 		Time.timeScale = 1;
-		MasterAudio.ChangePlaylistByName ("MainMenu");
+		if (MUSIC_MainMenu == false) {
+			MasterAudio.ChangePlaylistByName ("MainMenu");
+			MUSIC_Ingame = false;
+			MUSIC_MainMenu = true;
+		}
+
 		if (TutorialManager.Instance.isActive) {
 			TutorialManager.Instance.ForceStop ();
 		}

@@ -86,7 +86,8 @@ public class Container : Touchable
 
         OnContainerMoved += IsPileUp;
         OnContainerMoved += CheckConstraints;
-        TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
+		TouchManager.Instance.OnTouchUpNoContainerTarget += OnTouchUpNoTarget;
+		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 
         constraints.Clear();
 
@@ -395,7 +396,8 @@ public class Container : Touchable
 
         OnContainerMoved -= IsPileUp;
         OnContainerMoved -= CheckConstraints;
-        TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
+		TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
+		TouchManager.Instance.OnTouchUpNoContainerTarget -= OnTouchUpNoTarget;
     }
 
     public void SetupColor()

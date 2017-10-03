@@ -27,15 +27,11 @@ public class MenuLevels : MenuComponent
 	[HideInInspector]
 	public List<Level_Menu> _levelsMenu = new List<Level_Menu> ();
 
-	private ScrollRect _scrollRect;
-
 	// Use this for initialization
 	void Start ()
 	{
 		//SetupLevels ();
-
-		_scrollRect = GetComponent<ScrollRect> ();
-
+		GameManager.Instance.OnLevelEnd += SetLevelPosition;
 		MenuManager.Instance.OnMainMenu += SetLevelPosition;
 	}
 
@@ -49,6 +45,14 @@ public class MenuLevels : MenuComponent
 		base.OnShow ();
 
 		MenuManager.Instance.menuTrophies.backMenu = this;
+
+		if (PlayerPrefs.HasKey ("LevelsScrollRect")) {
+			//Debug.Log ("Bite");
+
+			float x = PlayerPrefs.GetFloat ("LevelsScrollRect");
+			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
+			//_scrollRect.horizontalNormalizedPosition = x;
+		}
 	}
 
 	void SetLevelPosition ()
@@ -91,8 +95,6 @@ public class MenuLevels : MenuComponent
 	[ButtonAttribute]
 	public void SetupLevels ()
 	{
-		_scrollRect = GetComponent<ScrollRect> ();
-
 		_levelsPanelWidth = levelPanelPrefab.GetComponent<RectTransform> ().sizeDelta.x;
 
 		foreach (Transform t in levelsScrollView.transform)
@@ -197,9 +199,21 @@ public class MenuLevels : MenuComponent
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
 	}
 
+	public override void OnHide ()
+	{
+		base.OnHide ();
+
+		SaveMenuPos ();
+	}
+
 	public void SaveMenuPos ()
 	{
 		//Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
 		PlayerPrefs.SetFloat ("LevelsScrollRect", levelsScrollView.anchoredPosition.x);
+	}
+
+	public void Reset ()
+	{
+		levelsScrollView.anchoredPosition = new Vector2 (0, levelsScrollView.anchoredPosition.y);
 	}
 }
