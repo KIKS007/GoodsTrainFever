@@ -8,145 +8,133 @@ using DG.Tweening;
 
 public enum ConstraintType
 {
-	LimitedPerTrain_Constraint,
-	LimitedPerWagon_Constraint,
-	NotNextTo_Constraint,
-	NotOnTrainCenter_Constraint,
-	NotOnTrainExtremities_Constraint
+    LimitedPerTrain_Constraint,
+    LimitedPerWagon_Constraint,
+    NotNextTo_Constraint,
+    NotOnTrainCenter_Constraint,
+    NotOnTrainExtremities_Constraint
 
 }
 
 public class MenuContainerInfos : MenuComponent
 {
-	[Header ("Infos Button")]
-	public Button infosButton;
-	public Image infosButtonImage;
-	public float infosButtonPunchForce = 0.4f;
+    [Header("Elements")]
+    public Text type;
+    public Text size;
 
-	[Header ("Elements")]
-	public Text type;
-	public Text size;
+    [Header("Constraints")]
+    public RectTransform constraintsParent;
+    public GameObject constraintPrefab;
+    public Vector2 constraintPosition;
+    public float rowSpacing;
 
-	[Header ("Constraints")]
-	public RectTransform constraintsParent;
-	public GameObject constraintPrefab;
-	public Vector2 constraintPosition;
-	public float rowSpacing;
+    [Header("Constraints Descriptions")]
+    public List<ConstraintsDescriptions> descriptions = new List<ConstraintsDescriptions>();
 
-	[Header ("Constraints Descriptions")]
-	public List<ConstraintsDescriptions> descriptions = new List<ConstraintsDescriptions> ();
+    private Container _selectedContainer;
 
-	private Container _selectedContainer;
+    void Start()
+    {
+        Container.OnContainerSelected += (c) => _selectedContainer = c;
+        Container.OnContainerErrorSelected += (c) => _selectedContainer = c;
 
-	void Start ()
-	{
-		Container.OnContainerSelected += (c) => _selectedContainer = c;
-		Container.OnContainerErrorSelected += (c) => _selectedContainer = c;
-		Container.OnContainerSelected += ChangeButtonColor;
-		Container.OnContainerMoved += () => ChangeButtonColor (_selectedContainer);
+        GlobalVariables.Instance.containerInfos = this;
 
-		GlobalVariables.Instance.containerInfos = this;
+        TrainsMovementManager.Instance.OnTrainDeparture += (arg) =>
+        {
+            if (arg.containers.Contains(_selectedContainer))
+            {
+                _selectedContainer = null;
+            }
+        };
+    }
 
-		infosButton.interactable = false;
-		Container.OnContainerSelected += (c) => infosButton.interactable = true;
+    public override void OnShow()
+    {
+        if (_selectedContainer == null)
+            return;
 
-		TrainsMovementManager.Instance.OnTrainDeparture += (arg) => {
-			if (arg.containers.Contains (_selectedContainer)) {
-				_selectedContainer = null;
-				infosButton.interactable = false;
-				infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
-			}
-		};
-	}
+        base.OnShow();
 
-	void ChangeButtonColor (Container container)
-	{
-		if (container.allConstraintsRespected)
-			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonRespectedColor, MenuManager.Instance.menuAnimationDuration);
-		else {
-			infosButtonImage.transform.DOPunchScale (Vector3.one * infosButtonPunchForce, MenuManager.Instance.menuAnimationDuration);
-			infosButtonImage.DOColor (GlobalVariables.Instance.infoButtonNotRespectedColor, MenuManager.Instance.menuAnimationDuration);
-		}
-	}
+        StartCoroutine(OnShowCoroutine());
+    }
 
-	public override void OnShow ()
-	{
-		if (_selectedContainer == null)
-			return;
+    IEnumerator OnShowCoroutine()
+    {
+        foreach (Transform t in constraintsParent.transform)
+            Destroy(t.gameObject);
 
-		base.OnShow ();
+        type.text = _selectedContainer.containerType.ToString();
+        size.text = _selectedContainer.isDoubleSize ? "40 pieds" : "20 pieds";
 
-		StartCoroutine (OnShowCoroutine ());
-	}
+        Vector2 position = constraintPosition;
 
-	IEnumerator OnShowCoroutine ()
-	{
-		foreach (Transform t in constraintsParent.transform)
-			Destroy (t.gameObject);
+        for (int i = 0; i < _selectedContainer.constraints.Count; i++)
+        {
+            Constraint constraintScript = _selectedContainer.constraints[i].constraint;
 
-		type.text = _selectedContainer.containerType.ToString ();
-		size.text = _selectedContainer.isDoubleSize ? "40 pieds" : "20 pieds";
+            RectTransform constraint = (Instantiate(constraintPrefab, Vector3.zero, Quaternion.identity, constraintsParent.transform).GetComponent<RectTransform>());
+            constraint.localPosition = Vector3.zero;
+            constraint.localRotation = Quaternion.Euler(Vector3.zero);
+            constraint.anchoredPosition = position;
 
-		Vector2 position = constraintPosition;
+            //Change Description
+            foreach (var d in descriptions)
+            {
+                if (d.constraintType.ToString() == constraintScript.GetType().ToString())
+                {
+                    constraint.GetComponent<Text>().text = d.title;
+                    constraint.GetChild(0).GetComponent<Text>().text = d.description;
 
-		for (int i = 0; i < _selectedContainer.constraints.Count; i++) {
-			Constraint constraintScript = _selectedContainer.constraints [i].constraint;
+                    //Replace Dollar
+                    if (d.replaceDollar)
+                    {
+                        if (constraintScript.GetType().GetField(d.propertyName) == null)
+                        {
+                            Debug.LogError("Wrong Field Name!", this);
+                            break;
+                        }
 
-			RectTransform constraint = (Instantiate (constraintPrefab, Vector3.zero, Quaternion.identity, constraintsParent.transform).GetComponent<RectTransform> ());
-			constraint.localPosition = Vector3.zero;
-			constraint.localRotation = Quaternion.Euler (Vector3.zero);
-			constraint.anchoredPosition = position;
+                        string value = constraintScript.GetType().GetField(d.propertyName).GetValue(constraintScript).ToString();
 
-			//Change Description
-			foreach (var d in descriptions) {
-				if (d.constraintType.ToString () == constraintScript.GetType ().ToString ()) {
-					constraint.GetComponent<Text> ().text = d.title;
-					constraint.GetChild (0).GetComponent<Text> ().text = d.description;
+                        constraint.GetComponent<Text>().text = constraint.GetComponent<Text>().text.Replace("$", value);
+                        constraint.GetChild(0).GetComponent<Text>().text = constraint.GetChild(0).GetComponent<Text>().text.Replace("$", value);
+                    }
 
-					//Replace Dollar
-					if (d.replaceDollar) {
-						if (constraintScript.GetType ().GetField (d.propertyName) == null) {
-							Debug.LogError ("Wrong Field Name!", this);
-							break;
-						}
+                    break;
+                }
+            }
 
-						string value = constraintScript.GetType ().GetField (d.propertyName).GetValue (constraintScript).ToString ();
+            yield return new WaitForEndOfFrame();
 
-						constraint.GetComponent<Text> ().text = constraint.GetComponent<Text> ().text.Replace ("$", value);
-						constraint.GetChild (0).GetComponent<Text> ().text = constraint.GetChild (0).GetComponent<Text> ().text.Replace ("$", value);
-					}
+            if (_selectedContainer.constraints[i].isRespected)
+            {
+                constraint.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                constraint.GetChild(0).GetChild(1).gameObject.SetActive(false);
+            }
+            else
+            {
+                constraint.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                constraint.GetChild(0).GetChild(1).gameObject.SetActive(true);
+            }
 
-					break;
-				}
-			}
+            position.y -= constraint.GetComponent<RectTransform>().sizeDelta.y + constraint.GetChild(0).GetComponent<RectTransform>().sizeDelta.y;
+            position.y -= constraint.GetChild(0).GetChild(0).GetComponent<RectTransform>().sizeDelta.y;
+            position.y -= rowSpacing;
+        }
 
-			yield return new WaitForEndOfFrame ();
+        constraintsParent.sizeDelta = new Vector2(constraintsParent.sizeDelta.x, -position.y);
+    }
 
-			if (_selectedContainer.constraints [i].isRespected) {
-				constraint.GetChild (0).GetChild (0).gameObject.SetActive (true);
-				constraint.GetChild (0).GetChild (1).gameObject.SetActive (false);
-			} else {
-				constraint.GetChild (0).GetChild (0).gameObject.SetActive (false);
-				constraint.GetChild (0).GetChild (1).gameObject.SetActive (true);
-			}
-
-			position.y -= constraint.GetComponent<RectTransform> ().sizeDelta.y + constraint.GetChild (0).GetComponent<RectTransform> ().sizeDelta.y;
-			position.y -= constraint.GetChild (0).GetChild (0).GetComponent<RectTransform> ().sizeDelta.y;
-			position.y -= rowSpacing;
-		}
-
-		constraintsParent.sizeDelta = new Vector2 (constraintsParent.sizeDelta.x, -position.y);
-	}
-
-	[System.Serializable]
-	public class ConstraintsDescriptions
-	{
-		public ConstraintType constraintType;
-		public string title;
-		[Multiline]
-		public string description;
-		public bool replaceDollar = false;
-		[ShowIfAttribute ("replaceDollar")]
-		public string propertyName;
-	}
+    [System.Serializable]
+    public class ConstraintsDescriptions
+    {
+        public ConstraintType constraintType;
+        public string title;
+        [Multiline]
+        public string description;
+        public bool replaceDollar = false;
+        [ShowIfAttribute("replaceDollar")]
+        public string propertyName;
+    }
 }

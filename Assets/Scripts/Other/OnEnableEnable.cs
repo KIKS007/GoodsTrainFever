@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnEnableEnable : MonoBehaviour 
+public class OnEnableEnable : MonoBehaviour
 {
-	public GameObject gameObjectToEnable;
+    public GameObject gameObjectToEnable;
 
-	// Use this for initialization
-	void Start () 
-	{
-		gameObjectToEnable.SetActive (true);
-	}
+    // Use this for initialization
+    void Start()
+    {
+        gameObjectToEnable.SetActive(true);
+    }
 
-	void OnDisable ()
-	{
-		gameObjectToEnable.SetActive (false);
-	}
+    void OnDisable()
+    {
+        if (!GlobalVariables.applicationIsQuitting)
+            gameObjectToEnable.SetActive(false);
+    }
 }
