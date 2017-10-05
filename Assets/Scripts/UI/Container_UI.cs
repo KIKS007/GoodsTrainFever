@@ -6,225 +6,208 @@ using DG.Tweening;
 
 public class Container_UI : MonoBehaviour
 {
-	public bool isPrepared = false;
-	public bool isSent = false;
-	public Container_Level containerLevel;
-	public Container container;
-	public Container myContainer;
+    public bool isPrepared = false;
+    public bool isSent = false;
+    public Container_Level containerLevel;
+    public Container container;
+    public Container myContainer;
 
-	[Header ("UI")]
-	public Image containerImage;
-	public Text containerTypeText;
-	public Text neededCountText;
-	public Text preparedCountText;
+    [Header("UI")]
+    public Image containerImage;
+    public Text containerTypeText;
+    public Text neededCountText;
+    public Text preparedCountText;
 
-	[Header ("Counts")]
-	public int neededCount;
-	public int preparedCount = 0;
+    [Header("Counts")]
+    public int neededCount;
+    public int preparedCount = 0;
 
-	public Order_UI myOrderUI;
-	public Order_UI debugOrderUI;
-	//private RectTransform _rectTransform;
-	private CanvasGroup _canvasGroup;
+    public Order_UI myOrderUI;
+    public Order_UI debugOrderUI;
+    //private RectTransform _rectTransform;
+    private CanvasGroup _canvasGroup;
 
-	private Color concolor;
+    private float _containerSentFade = 0.2f;
+    private float _containerAddedFade = 0.6f;
 
-	private float _containerSentFade = 0.2f;
-	private float _containerAddedFade = 0.6f;
-
-	public void Start ()
-	{
-		/*_rectTransform = GetComponent<RectTransform> ();
+    public void Start()
+    {
+        /*_rectTransform = GetComponent<RectTransform> ();
 		 */
-		_canvasGroup = GetComponent<CanvasGroup> ();
-		containerImage = GetComponent<Image> ();
+        _canvasGroup = GetComponent<CanvasGroup>();
+        containerImage = GetComponent<Image>();
 
-		preparedCount = 0;
-		/*
+        preparedCount = 0;
+        /*
 		preparedCountText.enabled = false;*/
 
-		Container.OnContainerDeselected += ContainerDeselected;
+        Container.OnContainerDeselected += ContainerDeselected;
 
-		transform.GetChild (0).gameObject.SetActive (false);
-	}
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
-	public void Setup (Container_Level c)
-	{
-		containerLevel = c;
+    public void Setup(Container_Level c)
+    {
+        containerLevel = c;
 
-		SetColor (c);
-
-		neededCount = 1;
-		/*neededCountText.text = neededCount.ToString ();
+        neededCount = 1;
+        /*neededCountText.text = neededCount.ToString ();
 
 		containerTypeText.text = c.containerType.ToString ();*/
-	}
+    }
 
-	private void ForceGetmyOrderUI ()
-	{
+    private void ForceGetmyOrderUI()
+    {
 		
-		myOrderUI = GetComponentInParent<Order_UI> ();
-		if (myOrderUI == null) {
-			myOrderUI = debugOrderUI;
-			myOrderUI.ContainerDeselected ();
-		}
-	}
+        myOrderUI = GetComponentInParent<Order_UI>();
+        if (myOrderUI == null)
+        {
+            myOrderUI = debugOrderUI;
+            myOrderUI.ContainerDeselected();
+        }
+    }
 
-	void SetColor (Container_Level c)
-	{
+    public void ContainerSent()
+    {
+        isSent = true;
 
-		switch (c.containerColor) {
-		case ContainerColor.Red:
-			concolor = GlobalVariables.Instance.redColor;
-			break;
-		case ContainerColor.Blue:
-			concolor = GlobalVariables.Instance.blueColor;
-			break;
-		case ContainerColor.Yellow:
-			concolor = GlobalVariables.Instance.yellowColor;
-			break;
-		case ContainerColor.Violet:
-			concolor = GlobalVariables.Instance.violetColor;
-			break;
-		}
+        if (this.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(ContainerSentFeedback());
+        }
+    }
 
-		//containerImage.color = color;
-	}
+    IEnumerator ContainerSentFeedback()
+    {
+        yield return new WaitForSeconds(0.2f);
 
-	public void ContainerSent ()
-	{
-		isSent = true;
-
-		if (this.gameObject.activeInHierarchy) {
-			StartCoroutine (ContainerSentFeedback ());
-		}
-	}
-
-	IEnumerator ContainerSentFeedback ()
-	{
-		yield return new WaitForSeconds (0.2f);
-
-		/*preparedCountText.enabled = false;
+        /*preparedCountText.enabled = false;
 		neededCountText.enabled = false;*/
-		/*Debug.Log ("WAT");
+        /*Debug.Log ("WAT");
 		this.GetComponent<Image> ().DOFade (0.2f, 0.2f);*/
 
-		_canvasGroup.DOFade (OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
-		this.GetComponent<Image> ().DOFade (_containerSentFade, 0.2f);
-	}
+        _canvasGroup.DOFade(OrdersManager.Instance.containerSentAlpha, OrdersManager.Instance.fadeDuration);
+        this.GetComponent<Image>().DOFade(_containerSentFade, 0.2f);
+    }
 
-	public void ContainerAdded (Container c)
-	{
-		container = c;
+    public void ContainerAdded(Container c)
+    {
+        container = c;
 
-		neededCount--;
-		preparedCount++;
+        neededCount--;
+        preparedCount++;
 
-		UpdateTexts ();
+        UpdateTexts();
 
-		//containerImage.color = Color.green;
+        //containerImage.color = Color.green;
 
-		transform.GetChild (0).gameObject.SetActive (true);
+        transform.GetChild(0).gameObject.SetActive(true);
 
-		_canvasGroup.DOFade (_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
+        _canvasGroup.DOFade(_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
 
-		if (TutorialManager.Instance.isActive) {
+        if (TutorialManager.Instance.isActive)
+        {
 
-			TutorialManager.Instance.OnTrain ();
-		}
-		//Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
-		if (this.gameObject.activeInHierarchy)
-			ContainerAddedFeedback ();	
-	}
+            TutorialManager.Instance.OnTrain();
+        }
+        //Debug.Log ("Container: " + c.containerType + " | " + c.containerColor);
+        if (this.gameObject.activeInHierarchy)
+            ContainerAddedFeedback();	
+    }
 
-	public void ContainerSelected (bool isMe, Container c)
-	{
-		if (isMe && c.train == null || c == container) 
-		{
-			this.GetComponent<Image> ().DOFade (1, 0.2f);
-			_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
-		} 
-		else 
-			this.GetComponent<Image> ().DOFade (0.2f, 0.2f);
-	}
+    public void ContainerSelected(bool isMe, Container c)
+    {
+        if (isMe && c.train == null || c == container)
+        {
+            this.GetComponent<Image>().DOFade(1, 0.2f);
+            _canvasGroup.DOFade(1, MenuManager.Instance.menuAnimationDuration);
+        }
+        else
+            this.GetComponent<Image>().DOFade(0.2f, 0.2f);
+    }
 
-	public void ContainerDeselected (Container c)
-	{
-		myContainer = null;
+    public void ContainerDeselected(Container c)
+    {
+        myContainer = null;
 
-		if(container != null)
-			_canvasGroup.DOFade (_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
-		else
-			_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+        if (container != null)
+            _canvasGroup.DOFade(_containerAddedFade, MenuManager.Instance.menuAnimationDuration);
+        else
+            _canvasGroup.DOFade(1, MenuManager.Instance.menuAnimationDuration);
 
-		if (myOrderUI != null) 
-		{
-			myOrderUI.ContainerDeselected ();
-		} else {
-			ForceGetmyOrderUI ();
+        if (myOrderUI != null)
+        {
+            myOrderUI.ContainerDeselected();
+        }
+        else
+        {
+            ForceGetmyOrderUI();
 
-		}
+        }
 
-		/*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
+        /*DOVirtual.DelayedCall (OrdersManager.Instance.fadeDuration + OrdersManager.Instance.fadeInDelay, () => {
 			
 			_canvasGroup.ignoreParentGroups = false;
 		});*/
 
-	}
+    }
 
-	void ContainerAddedFeedback ()
-	{
-		DOTween.Kill (transform);
-		transform.DOPunchScale (Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerAddedDuration);
-	}
+    void ContainerAddedFeedback()
+    {
+        DOTween.Kill(transform);
+        transform.DOPunchScale(Vector3.one * OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerAddedDuration);
+    }
 
-	public void ContainerRemoved ()
-	{
-		container = null;
+    public void ContainerRemoved()
+    {
+        container = null;
 
-		neededCount++;
-		preparedCount--;
+        neededCount++;
+        preparedCount--;
 
-		UpdateTexts ();
+        UpdateTexts();
 
-		//containerImage.color = concolor;
+        //containerImage.color = concolor;
 
-		transform.GetChild (0).gameObject.SetActive (false);
-		_canvasGroup.DOFade (1, MenuManager.Instance.menuAnimationDuration);
+        transform.GetChild(0).gameObject.SetActive(false);
+        _canvasGroup.DOFade(1, MenuManager.Instance.menuAnimationDuration);
 
-		if (this.gameObject.activeInHierarchy)
-			ContainerRemovedFeedback ();
-	}
+        if (this.gameObject.activeInHierarchy)
+            ContainerRemovedFeedback();
+    }
 
-	void ContainerRemovedFeedback ()
-	{
-		/*DOTween.Kill (_rectTransform);
+    void ContainerRemovedFeedback()
+    {
+        /*DOTween.Kill (_rectTransform);
 
 		_rectTransform.DOPunchAnchorPos (Vector2.down * OrdersManager.Instance.containerRemovedHeight, OrdersManager.Instance.containerRemovedDuration);*/
 
-		DOTween.Kill (transform);
-		transform.DOPunchScale (Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
-	}
+        DOTween.Kill(transform);
+        transform.DOPunchScale(Vector3.one * -OrdersManager.Instance.containerFeedbackPunchScale * 2, OrdersManager.Instance.containerRemovedDuration);
+    }
 
-	void UpdateTexts ()
-	{
-		if (neededCount > 0) {
-			isPrepared = false;
-			/*neededCountText.enabled = true;
+    void UpdateTexts()
+    {
+        if (neededCount > 0)
+        {
+            isPrepared = false;
+            /*neededCountText.enabled = true;
 			neededCountText.text = neededCount.ToString ();*/
-		} else {
-			/*neededCountText.enabled = false;*/
-			isPrepared = true;
-		}
+        }
+        else
+        {
+            /*neededCountText.enabled = false;*/
+            isPrepared = true;
+        }
 
 /*		if (preparedCount > 0) {
 			/*	preparedCountText.enabled = true;
 			preparedCountText.text = preparedCount.ToString ();
 		}*/
-	}
+    }
 
-	void OnDestroy ()
-	{
-		Container.OnContainerDeselected -= ContainerDeselected;
-	}
+    void OnDestroy()
+    {
+        Container.OnContainerDeselected -= ContainerDeselected;
+    }
 }

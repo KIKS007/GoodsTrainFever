@@ -6,7 +6,14 @@ using System;
 using System.Linq;
 using Sirenix.OdinInspector;
 
-public enum SpotType { Train, Storage, Boat, Road }
+public enum SpotType
+{
+    Train,
+    Storage,
+    Boat,
+    Road
+
+}
 
 public class Spot : Touchable
 {
@@ -34,8 +41,8 @@ public class Spot : Touchable
     [Header("Subordinate Spot")]
     public bool isSubordinate = false;
     [ShowIf("isSubordinate")]
-	public List<Spot> chiefSpots = new List<Spot>();
-	public List<Spot> subordinatesSpots = new List<Spot>();
+    public List<Spot> chiefSpots = new List<Spot>();
+    public List<Spot> subordinatesSpots = new List<Spot>();
 
     [HideInInspector]
     public Wagon _wagon;
@@ -45,7 +52,7 @@ public class Spot : Touchable
     public Container _parentContainer;
     [HideInInspector]
     public bool _isSpawned = false;
-	public int _spotTrainIndex;
+    public int _spotTrainIndex;
     public int _spotWagonIndex;
 
     private Collider _collider;
@@ -89,7 +96,7 @@ public class Spot : Touchable
 
     void Start()
     {
-		 _meshRenderer.enabled = true;
+        _meshRenderer.enabled = true;
 
         SetSpotType();
 
@@ -134,10 +141,10 @@ public class Spot : Touchable
         {
             Spot spot = c.GetComponent<Spot>();
 
-			if (isSubordinate && spot.isDoubleSize)
-				continue;
+            if (isSubordinate && spot.isDoubleSize)
+                continue;
 
-			if (c != _collider && spot != null && !spot.isSubordinate)
+            if (c != _collider && spot != null && !spot.isSubordinate)
             {
                 if (!isDoubleSize && spot.isDoubleSize || isDoubleSize)
                     overlappingSpots.Add(spot);
@@ -146,13 +153,13 @@ public class Spot : Touchable
 
         overlappingSpots = overlappingSpots.OrderByDescending(x => x.transform.position.x).ToList();
 
-		if (_isSpawned || isSubordinate)
+        if (_isSpawned || isSubordinate)
             foreach (var o in overlappingSpots)
                 o.overlappingSpots.Add(this);
 
-		if (isSubordinate)
-			foreach (var c in chiefSpots)
-				c.subordinatesSpots.Add (this);
+        if (isSubordinate)
+            foreach (var c in chiefSpots)
+                c.subordinatesSpots.Add(this);
     }
 
     public void OverlappingSpotsOccupied()
@@ -162,7 +169,7 @@ public class Spot : Touchable
 
         foreach (var s in overlappingSpots)
         {
-			if (s.container && s.container != null)
+            if (s.container && s.container != null)
 			//if (s.container && s.container != null && !isSubordinate)
             {
                 if (!isDoubleSize && s.isDoubleSize)
@@ -172,7 +179,7 @@ public class Spot : Touchable
                     isOccupied = true;
             }
 
-			/*if(s.isOccupied && isSubordinate)
+            /*if(s.isOccupied && isSubordinate)
 			{
 				if (!isDoubleSize && s.isDoubleSize)
 					isOccupied = true;
@@ -182,11 +189,11 @@ public class Spot : Touchable
 			}*/
         }
 
-		foreach (var s in subordinatesSpots)
-		{
-			if(s.container && s.container != ContainersMovementManager.Instance.selectedContainer)
-				isOccupied = true;
-		}
+        foreach (var s in subordinatesSpots)
+        {
+            if (s.container && s.container != ContainersMovementManager.Instance.selectedContainer)
+                isOccupied = true;
+        }
     }
 
     void SetSpotType(bool onlyType = false)
@@ -302,7 +309,6 @@ public class Spot : Touchable
             else
                 return false;
         }
-
         else
         {
             int pileCount = spotType == SpotType.Storage ? ContainersMovementManager.Instance.storagePileCount : ContainersMovementManager.Instance.boatPileCount;
@@ -344,7 +350,7 @@ public class Spot : Touchable
         base.OnTouchUpAsButton();
 
         if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
-			return;
+            return;
 
         if (_wagon && _wagon.train.inTransition && !_wagon.train.waitingDeparture)
             return;
@@ -382,7 +388,7 @@ public class Spot : Touchable
         if (isPileSpot && _parentContainer.selected)
             return;
 
-       //  _meshRenderer.enabled = true;
+        _meshRenderer.enabled = true;
 
         _meshFilter.mesh = container._mesh;
         _collider.enabled = true;
@@ -391,8 +397,8 @@ public class Spot : Touchable
 
         float delay = Vector3.Distance(container.transform.position, transform.position) * ContainersMovementManager.Instance.spotDistanceFactor;
 
-		if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
-			delay = 0;
+        if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
+            delay = 0;
 
         _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
@@ -403,12 +409,11 @@ public class Spot : Touchable
 
         DOTween.Kill(_material);
 
-        _material.DOFloat(0f, "_HologramOpacity", _fadeDuration);
         _material.DOFloat(0f, "_Opacity", _fadeDuration).OnComplete(() =>
-      {
-          /*if (_meshRenderer)
-              _meshRenderer.enabled = false;*/
-      });
+            {
+                if (_meshRenderer)
+                    _meshRenderer.enabled = false;
+            });
     }
 
     public bool AreConstraintsRespected(Container container)
@@ -447,19 +452,19 @@ public class Spot : Touchable
 
     public bool AreChiefSpotOccupied()
     {
-		if (!isSubordinate || chiefSpots.Count == 0)
+        if (!isSubordinate || chiefSpots.Count == 0)
             return false;
 
-		int occupiedCount = 0;
+        int occupiedCount = 0;
 
-		foreach (var c in chiefSpots)
-			if (c.isOccupied && c.container == null || c.isOccupied && c.container == ContainersMovementManager.Instance.selectedContainer)
-				occupiedCount++;
+        foreach (var c in chiefSpots)
+            if (c.isOccupied && c.container == null || c.isOccupied && c.container == ContainersMovementManager.Instance.selectedContainer)
+                occupiedCount++;
 
-		if(occupiedCount == chiefSpots.Count)
-			return true;
-		else
-			return false;
+        if (occupiedCount == chiefSpots.Count)
+            return true;
+        else
+            return false;
     }
 
     public Spot SpawnDoubleSizeSpot(Container c, bool selectOnStart = true)
