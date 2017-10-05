@@ -63,8 +63,8 @@ MonoBehaviour:
   Train2Timer: {fileID: 0}
   holdState: 0
   holdDelay: 0.5
-  touchMovementThreshold: 0
-  trainMovementThreshold: 4
+  touchMovementThreshold: 3
+  trainMovementThreshold: 1
   deltaMousePositionFactor: 4
   deltaTouchPositionFactor: 1.3
   movementMaxVelocity: 100
