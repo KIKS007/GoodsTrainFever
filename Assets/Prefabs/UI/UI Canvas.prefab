@@ -2065,7 +2065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1561656515744838
 GameObject:
   m_ObjectHideFlags: 1
@@ -2185,6 +2185,7 @@ GameObject:
   - component: {fileID: 222231391483010056}
   - component: {fileID: 114699811032283610}
   - component: {fileID: 114780895699132964}
+  - component: {fileID: 225606346774383480}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -3128,6 +3129,7 @@ GameObject:
   - component: {fileID: 222379115651929924}
   - component: {fileID: 114282574892903832}
   - component: {fileID: 114303911669789240}
+  - component: {fileID: 225852014422505492}
   m_Layer: 5
   m_Name: FPS
   m_TagString: Untagged
@@ -24253,6 +24255,7 @@ MonoBehaviour:
   levelStagePrefab: {fileID: 1731401629193294, guid: f2f3d937551713d4c96d0f18b25aba3f,
     type: 2}
   resetDuration: 0.5
+  positionBound: 800
   _levelsMenu: []
 --- !u!114 &114721204633489048
 MonoBehaviour:
@@ -32363,7 +32366,7 @@ Canvas:
   m_GameObject: {fileID: 1434943135556082}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 90
   m_PixelPerfect: 0
@@ -36255,6 +36258,17 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!225 &225606346774383480
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612864939798202}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 1
 --- !u!225 &225610482728574860
 CanvasGroup:
   m_ObjectHideFlags: 1
@@ -36310,6 +36324,17 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!225 &225852014422505492
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1896123337553810}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 1
 --- !u!225 &225887936690690836
 CanvasGroup:
   m_ObjectHideFlags: 1
