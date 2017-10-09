@@ -22,6 +22,7 @@ public class MenuManager : Singleton<MenuManager>
     public CanvasGroup UICanvasGroup;
 
     [Header("Menu")]
+    public CanvasGroup menuCanvasGroup;
     public bool disableMenusOnHide = true;
     public Transform menuParent;
     public MenuComponent menuOnStart;
