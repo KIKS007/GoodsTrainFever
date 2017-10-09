@@ -96,7 +96,7 @@ public class Spot : Touchable
 
     void Start()
     {
-        //_meshRenderer.enabled = true;
+        _meshRenderer.enabled = true;
 
         SetSpotType();
 
@@ -388,7 +388,7 @@ public class Spot : Touchable
         if (isPileSpot && _parentContainer.selected)
             return;
 
-        //_meshRenderer.enabled = true;
+        _meshRenderer.enabled = true;
 
         _meshFilter.mesh = container._mesh;
         _collider.enabled = true;
@@ -400,20 +400,20 @@ public class Spot : Touchable
         if (_wagon && _wagon.train.inTransition && _wagon.train.waitingDeparture)
             delay = 0;
 
-        //_material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
+        _material.DOFloat(_opacity, "_Opacity", _fadeDuration).SetDelay(delay);
     }
 
     void OnContainerDeselected(Container container = null)
     {
         _collider.enabled = false;
 
-        /* DOTween.Kill(_material);
+        DOTween.Kill(_material);
 
         _material.DOFloat(0f, "_Opacity", _fadeDuration).OnComplete(() =>
             {
                 if (_meshRenderer)
                     _meshRenderer.enabled = false;
-            });*/
+            });
     }
 
     public bool AreConstraintsRespected(Container container)
