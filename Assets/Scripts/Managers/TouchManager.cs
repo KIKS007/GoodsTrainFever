@@ -7,7 +7,6 @@ using System.Linq;
 public class TouchManager : Singleton<TouchManager>
 {
     public Action OnTouchDown;
-    public Action<Vector3> OnTouchMoved;
     public Action<Vector3> OnTouchHold;
     public Action OnTouchUp;
     public Action OnTouchUpNoTarget;
@@ -80,14 +79,7 @@ public class TouchManager : Singleton<TouchManager>
                     StartCoroutine(TouchHoldCoroutine());
 					
                     break;
-					
-                case TouchPhase.Moved:
-					
-                    if (OnTouchMoved != null)
-                        OnTouchMoved(_deltaPosition);
-					
-                    break;
-					
+						
                 case TouchPhase.Ended:
 					
                     _touchDown = false;
@@ -99,10 +91,16 @@ public class TouchManager : Singleton<TouchManager>
                         touchable = RaycastTouchable(touch.position);
 
                         if (touchable != null)
+                        {
                             touchable.OnTouchUpAsButton();
+                            Debug.Log("OnTouchUpAsButton: " + touchable.name, touchable);
+                        }
 						
                         if (touchable && touchable.GetType() != typeof(Container) && touchable.GetType() != typeof(Spot) && OnTouchUpNoContainerTarget != null)
+                        {
                             OnTouchUpNoContainerTarget();
+                            Debug.Log("OnTouchUpNoContainerTarget");
+                        }
                     }
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);
@@ -222,8 +220,6 @@ public class TouchManager : Singleton<TouchManager>
     {
         Ray ray = _camera.ScreenPointToRay(position);
 
-        Vector3 p = _camera.transform.position;
-
         var colliders = Physics.BoxCastAll(ray.origin, new Vector3(boxCastHalfExtent, boxCastHalfExtent, boxCastHalfExtent), ray.direction, Quaternion.identity, 50f, touchableLayer, QueryTriggerInteraction.Collide).ToList();
 
         if (colliders.Count == 0)
@@ -238,8 +234,8 @@ public class TouchManager : Singleton<TouchManager>
             if (touchable == null)
                 continue;
 
-            if (touchable == null && c.collider.GetComponent<Rigidbody>())
-                touchable = c.collider.GetComponent<Rigidbody>().gameObject.GetComponent<Touchable>();
+            if (touchable == null && c.collider.attachedRigidbody != null)
+                touchable = c.collider.attachedRigidbody.gameObject.GetComponent<Touchable>();
 
             if (touchable != null)
                 return touchable;

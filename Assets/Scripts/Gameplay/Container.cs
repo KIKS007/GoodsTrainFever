@@ -86,8 +86,8 @@ public class Container : Touchable
 
         OnContainerMoved += IsPileUp;
         OnContainerMoved += CheckConstraints;
-		TouchManager.Instance.OnTouchUpNoContainerTarget += OnTouchUpNoTarget;
-		TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
+        TouchManager.Instance.OnTouchUpNoContainerTarget += OnTouchUpNoTarget;
+        TouchManager.Instance.OnTouchUpNoTarget += OnTouchUpNoTarget;
 
         constraints.Clear();
 
@@ -180,46 +180,64 @@ public class Container : Touchable
         base.OnTouchUpAsButton();
 
         if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
+        {
+            Debug.Log("selectedTrainHasMoved: " + TrainsMovementManager.Instance.selectedTrainHasMoved);
+            Debug.Log("resetingTrains: " + TrainsMovementManager.Instance.resetingTrains);
             return;
+        }
 
         if (train && train.inTransition)
+        {
+            Debug.Log("TrainInTransition: " + TrainsMovementManager.Instance.resetingTrains);
             return;
+        }
 
         if (spotOccupied.spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
+        {
+            Debug.Log("BoatInTransition");
             return;
+        }
 
         IsPileUp();
 
         if (isPileUp)
+        {
+            Debug.Log("isPileUp");
             return;
+        }
 
         if (!selected)
             Select();
         else
             Deselect();
+
+        Debug.Log("Touch Valid: " + name, this);
     }
 
     public void Select()
     {
         _errorDisplayed = false;
+
         if (ContainersMovementManager.Instance.selectedContainer != null)
             ContainersMovementManager.Instance.selectedContainer.Deselect();
 
         ContainersMovementManager.Instance.selectedContainer = this;
 
         ContainersMovementManager.Instance.StartHover(this);
+
         _hasmoved = true;
         selected = true;
+
         if (TutorialManager.Instance.isActive)
         {
-
             TutorialManager.Instance.Selected();
         }
+
         errorsCanvasGroup.transform.DOKill(true);
         errorsCanvasGroup.transform.DOScale(0, 0.4f).SetEase(Ease.InBounce).OnComplete(() =>
-        {
-            errorsCanvasGroup.gameObject.SetActive(false);
-        });
+            {
+                errorsCanvasGroup.gameObject.SetActive(false);
+            });
 
         if (OnContainerSelected != null)
             OnContainerSelected(this);
@@ -396,8 +414,8 @@ public class Container : Touchable
 
         OnContainerMoved -= IsPileUp;
         OnContainerMoved -= CheckConstraints;
-		TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
-		TouchManager.Instance.OnTouchUpNoContainerTarget -= OnTouchUpNoTarget;
+        TouchManager.Instance.OnTouchUpNoTarget -= OnTouchUpNoTarget;
+        TouchManager.Instance.OnTouchUpNoContainerTarget -= OnTouchUpNoTarget;
     }
 
     public void SetupColor()
@@ -479,9 +497,9 @@ public class Container : Touchable
         {
             errorsCanvasGroup.transform.DOKill(true);
             errorsCanvasGroup.transform.DOScale(0, MenuManager.Instance.menuAnimationDuration).SetEase(MenuManager.Instance.menuEase).OnComplete(() =>
-            {
-                errorsCanvasGroup.gameObject.SetActive(false);
-            });
+                {
+                    errorsCanvasGroup.gameObject.SetActive(false);
+                });
         }
         else
         {
@@ -495,15 +513,15 @@ public class Container : Touchable
                 MasterAudio.PlaySoundAndForget("SFX_Error");
 
                 DOVirtual.DelayedCall(0.3f, () =>
-                {
-                    errorsCanvasGroup.transform.DOScale(_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        errorsCanvasGroup.transform.DOPunchScale(Vector3.one / 6, 0.2f, 3).OnComplete(() =>
-                        {
-                            ErrorBreathing();
-                        });
+                        errorsCanvasGroup.transform.DOScale(_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase(Ease.Linear).OnComplete(() =>
+                            {
+                                errorsCanvasGroup.transform.DOPunchScale(Vector3.one / 6, 0.2f, 3).OnComplete(() =>
+                                    {
+                                        ErrorBreathing();
+                                    });
+                            });
                     });
-                });
 
             }
         }
@@ -514,27 +532,27 @@ public class Container : Touchable
         if (_errorDisplayed)
         {
             errorsCanvasGroup.transform.DOScale(_errorsInitialScale + 0.05f, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
-            {
-                if (_errorDisplayed)
                 {
-                    errorsCanvasGroup.transform.DOScale(_errorsInitialScale, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
+                    if (_errorDisplayed)
                     {
-                        if (_errorDisplayed)
-                        {
-                            ErrorBreathing();
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    });
-                }
-                else
-                {
-                    return;
-                }
+                        errorsCanvasGroup.transform.DOScale(_errorsInitialScale, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
+                            {
+                                if (_errorDisplayed)
+                                {
+                                    ErrorBreathing();
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            });
+                    }
+                    else
+                    {
+                        return;
+                    }
 
-            });
+                });
         }
         else
         {

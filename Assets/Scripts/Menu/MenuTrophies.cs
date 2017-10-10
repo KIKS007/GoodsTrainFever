@@ -7,6 +7,10 @@ using DG.Tweening;
 
 public class MenuTrophies : MenuComponent
 {
+    [Header("UI Camera")]
+    public GameObject cameraUI;
+
+    [Header("UI")]
     public Text titleText;
     public Text factText;
     public Stage_Menu stageMenu;
@@ -43,6 +47,7 @@ public class MenuTrophies : MenuComponent
     void Start()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        cameraUI.SetActive(false);
     }
 
     void Update()
@@ -174,6 +179,8 @@ public class MenuTrophies : MenuComponent
 
     public override void OnShow()
     {
+        cameraUI.SetActive(true);
+
         MenuManager.Instance.menuCanvasGroup.interactable = false;
         MenuManager.Instance.menuCanvasGroup.blocksRaycasts = false;
         MenuManager.Instance.menuCanvasGroup.DOFade(0, MenuManager.Instance.menuAnimationDuration * 0.5f);
@@ -226,11 +233,16 @@ public class MenuTrophies : MenuComponent
         MenuManager.Instance.menuCanvasGroup.DOFade(1, MenuManager.Instance.menuAnimationDuration * 0.5f);
 
         base.OnHide();
+
         automove = false;
         if (_trophy != null)
             _trophy.transform.DOScale(0, MenuManager.Instance.menuAnimationDuration * 0.5f).SetEase(trophyEase).OnComplete(() => Destroy(_trophy));
 
-        DOVirtual.DelayedCall(MenuManager.Instance.menuAnimationDuration, () => MenuManager.Instance.backButton.localScale = Vector3.one);
+        DOVirtual.DelayedCall(MenuManager.Instance.menuAnimationDuration, () =>
+            {
+                MenuManager.Instance.backButton.localScale = Vector3.one;
+                cameraUI.SetActive(false);
+            });
     }
 
     IEnumerator ShowTrophy(Vector3 scale)
