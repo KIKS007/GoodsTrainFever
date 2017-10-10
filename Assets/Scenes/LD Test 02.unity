@@ -2305,7 +2305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &302
 GameObject:
   m_ObjectHideFlags: 0
@@ -21616,6 +21616,10 @@ Prefab:
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2150}
+    - target: {fileID: 1896123337553810, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2791c24f66192de4098af2699650c2ed, type: 2}
   m_IsPrefabParent: 0
@@ -28208,7 +28212,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -28218,7 +28222,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1337991015899922, guid: 37ca85740e1698f4ea6f0669dc929f69, type: 2}
       propertyPath: m_IsActive
