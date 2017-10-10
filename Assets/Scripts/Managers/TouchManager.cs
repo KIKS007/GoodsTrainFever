@@ -91,16 +91,10 @@ public class TouchManager : Singleton<TouchManager>
                         touchable = RaycastTouchable(touch.position);
 
                         if (touchable != null)
-                        {
                             touchable.OnTouchUpAsButton();
-                            Debug.Log("OnTouchUpAsButton: " + touchable.name, touchable);
-                        }
 						
                         if (touchable && touchable.GetType() != typeof(Container) && touchable.GetType() != typeof(Spot) && OnTouchUpNoContainerTarget != null)
-                        {
                             OnTouchUpNoContainerTarget();
-                            Debug.Log("OnTouchUpNoContainerTarget");
-                        }
                     }
 
 					//Debug.Log ("END - isTouchingUI: " + isTouchingUI + " touchable: " + touchable);

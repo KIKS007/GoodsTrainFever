@@ -47,7 +47,6 @@ public class MenuTrophies : MenuComponent
     void Start()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        cameraUI.SetActive(false);
     }
 
     void Update()

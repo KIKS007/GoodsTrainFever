@@ -180,38 +180,23 @@ public class Container : Touchable
         base.OnTouchUpAsButton();
 
         if (TrainsMovementManager.Instance.selectedTrainHasMoved || TrainsMovementManager.Instance.resetingTrains)
-        {
-            Debug.Log("selectedTrainHasMoved: " + TrainsMovementManager.Instance.selectedTrainHasMoved);
-            Debug.Log("resetingTrains: " + TrainsMovementManager.Instance.resetingTrains);
             return;
-        }
 
         if (train && train.inTransition)
-        {
-            Debug.Log("TrainInTransition: " + TrainsMovementManager.Instance.resetingTrains);
             return;
-        }
 
         if (spotOccupied.spotType == SpotType.Boat && BoatsMovementManager.Instance.inTransition)
-        {
-            Debug.Log("BoatInTransition");
             return;
-        }
 
         IsPileUp();
 
         if (isPileUp)
-        {
-            Debug.Log("isPileUp");
             return;
-        }
 
         if (!selected)
             Select();
         else
             Deselect();
-
-        Debug.Log("Touch Valid: " + name, this);
     }
 
     public void Select()
