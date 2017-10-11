@@ -188,13 +188,28 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public IEnumerator AnimateText(Tutorial TargetTutorial, Text targetUIText, string strComplete)
     {
+        /* int offset = 0;
+
         tempText.text = strComplete;
         tempText.rectTransform.sizeDelta = targetUIText.rectTransform.sizeDelta;
 
+        targetUIText.fontSize = 0;
+        yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
 
-        targetUIText.fontSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + 8;
-        targetUIText.resizeTextMaxSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + 8;
+        Debug.Log("Size: " + tempText.cachedTextGenerator.fontSizeUsedForBestFit);
+
+        targetUIText.resizeTextForBestFit = true;
+        targetUIText.resizeTextMaxSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + offset;
+
+        targetUIText.fontSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + offset;
+        targetUIText.resizeTextMaxSize = tempText.cachedTextGenerator.fontSizeUsedForBestFit + offset;
+
+
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        targetUIText.fontSize = tempText.fontSize;
 
         int i = 0;
         string str = "";
@@ -203,9 +218,14 @@ public class TutorialManager : Singleton<TutorialManager>
             str += strComplete[i++];
             targetUIText.text = str;
             yield return new WaitForSecondsRealtime(TextSpeed);
-        }
+        }*/
+
+        targetUIText.text = strComplete;
+
         TargetTutorial.TextFinished = true;
         ShowVisualFeedback();
+
+        yield return 0;
     }
 
     public void Selected()

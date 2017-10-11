@@ -510,6 +510,35 @@ public class MenuManager : Singleton<MenuManager>
                 });
     }
 
+    public void Pause(float delay)
+    {
+        this.transform.DOMove(this.transform.position + new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(-5, 5)), delay).OnComplete(() =>
+            {
+                if (GameManager.Instance.gameState == GameState.Playing)
+                {
+                    _timeScaleOnPause = Time.timeScale;
+                    Time.timeScale = 0;
+
+                    GameManager.Instance.gameState = GameState.Pause;
+                }
+            });
+
+    }
+
+    public void UnPause(float delay)
+    {
+        this.transform.DOKill();
+        DOVirtual.DelayedCall(delay, () =>
+            {
+                if (GameManager.Instance.gameState == GameState.Pause)
+                {
+                    Time.timeScale = _timeScaleOnPause;
+                    GameManager.Instance.gameState = GameState.Playing;
+                }
+            });
+
+    }
+
     public void PauseAndShowMenu(MenuComponent menu)
     {
         menuParent.gameObject.SetActive(true);
