@@ -102,6 +102,7 @@ public class MenuLevels : MenuComponent
         levelsScrollView.anchoredPosition = new Vector2(-index * (levelPanelPrefab.GetComponent<RectTransform>().sizeDelta.x + levelsSpacing) - 6, levelsScrollView.anchoredPosition.y);
     }
 
+    [ButtonAttribute]
     public void UpdateLevels()
     {
         UpdateLevelStages();
@@ -173,7 +174,7 @@ public class MenuLevels : MenuComponent
             //_scrollRect.horizontalNormalizedPosition = x;
         }
 
-        UpdateLevelStages();
+        UpdateLevels();
     }
 
     Stage_Menu SetupLevelStage(int index, int panelsCount)

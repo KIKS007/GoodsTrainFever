@@ -7,38 +7,57 @@ using UnityEngine.UI;
 
 public class MenuButtonComponent : MonoBehaviour, ISubmitHandler, IPointerClickHandler
 {
-	[Header ("To Menu")]
-	public bool toMenu = true;
-	[ShowIfAttribute ("toMenu")]
-	public MenuComponent menu;
+    [Header("To Menu")]
+    public bool toMenu = true;
+    [ShowIfAttribute("toMenu")]
+    public MenuComponent menu;
 
-	private Button _button;
+    private Button _button;
 
-	// Use this for initialization
-	void Awake () 
-	{
-		_button = GetComponent<Button> ();
+    // Use this for initialization
+    void Awake()
+    {
+        _button = GetComponent<Button>();
 
-		MenuManager.Instance.OnMenuTransitionStart += () => _button.interactable = false;
-		MenuManager.Instance.OnMenuTransitionEnd += () => _button.interactable = true;
-	}
+        MenuManager.Instance.OnMenuTransitionStart += OnTransitionStart;
+        MenuManager.Instance.OnMenuTransitionEnd += OnTransitionEnd;
+    }
 
-	public void OnSubmit (BaseEventData eventData)
-	{
-		Submit ();
-	}
+    public void OnSubmit(BaseEventData eventData)
+    {
+        Submit();
+    }
 
-	public void OnPointerClick (PointerEventData eventData)
-	{
-		Submit ();
-	}
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Submit();
+    }
 
-	void Submit ()
-	{
-		if (!_button.interactable)
-			return;
+    void Submit()
+    {
+        if (!_button.interactable)
+            return;
 
-		if (toMenu && menu)
-			MenuManager.Instance.ToMenu (menu);
-	}
+        if (toMenu && menu)
+            MenuManager.Instance.ToMenu(menu);
+    }
+
+    void OnTransitionStart()
+    {
+        _button.interactable = false;
+    }
+
+    void OnTransitionEnd()
+    {
+        _button.interactable = true;
+    }
+
+    void OnDestroy()
+    {
+        if (!MenuManager.applicationIsQuitting)
+        {
+            MenuManager.Instance.OnMenuTransitionStart -= OnTransitionStart;
+            MenuManager.Instance.OnMenuTransitionEnd -= OnTransitionEnd; 
+        }
+    }
 }

@@ -109,9 +109,6 @@ public class MenuManager : Singleton<MenuManager>
 
         _backButtonShowPos = backButton.anchoredPosition;
 
-        menulevels.SetupLevels();
-        menuAllTrophies.SetupLevels();
-
         Stage_Menu.OnStageUnlock += (Stage_Menu obj) => unlockedStages.Add(obj);
 
         GameManager.Instance.OnPlaying += () =>
@@ -183,6 +180,9 @@ public class MenuManager : Singleton<MenuManager>
         MainMenuCloud2.transform.DOLocalMoveX(-1000, 30).SetSpeedBased().SetRelative().SetDelay(1.5f).SetLoops(-1, LoopType.Yoyo);
 
         BackButton(mainMenu);
+
+        menulevels.SetupLevels();
+        menuAllTrophies.SetupLevels();
 
         DOVirtual.DelayedCall(1.5f, () =>
             {
