@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OptiScript : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class OptiScript : MonoBehaviour
     [Tooltip("Minimum Resize Downsclae Allowed (0.5f is half the resolution)")]
     public float downscaleLimit = 0.5f;
 
+    public Text textDebug;
 
     private float aspectRatio;
     private List<float> framerateSamples = new List<float>();
@@ -27,6 +29,8 @@ public class OptiScript : MonoBehaviour
 
     void Start()
     {
+        textDebug.text = "DownScaleRatio: " + (f * 100).ToString() + "%";
+
         aspectRatio = Screen.currentResolution.width / (Screen.currentResolution.height * 1f);
         if (PlayerPrefs.GetInt("FramerateDeviceHeight", 0) != 0)
         {
@@ -50,6 +54,8 @@ public class OptiScript : MonoBehaviour
             Screen.SetResolution((int)(framerateDeviceHeight * aspectRatio), framerateDeviceHeight, true);
             framerateSamples.Clear();
             Invoke("ActivateFramerateAnalyser", 1);
+
+            textDebug.text = "DownScaleRatio: " + (f * 100).ToString() + "%";
         }
         else
         {
@@ -85,6 +91,8 @@ public class OptiScript : MonoBehaviour
         Screen.SetResolution((int)(PlayerPrefs.GetInt("DefaultDeviceHeight", Screen.height) * aspectRatio), PlayerPrefs.GetInt("DefaultDeviceHeight", Screen.height), true);
         deviceHeight = PlayerPrefs.GetInt("DefaultDeviceHeight", Screen.height);
         Invoke("ActivateFramerateAnalyser", 2f);
+
+        textDebug.text = "DownScaleRatio: " + (f * 100).ToString() + "%";
     }
 
 
