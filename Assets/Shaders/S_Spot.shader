@@ -5,8 +5,8 @@ Shader "Spot"
 	Properties
 	{
 		[HideInInspector] __dirty( "", Int ) = 1
-		_Emission("Emission", Color) = (0,0,0,0)
 		_MainColor("MainColor", Color) = (0,0,0,0)
+		_Emission("Emission", Color) = (0,0,0,0)
 		_Opacity("Opacity", Float) = 0.2
 	}
 
@@ -39,13 +39,13 @@ Shader "Spot"
 }
 /*ASEBEGIN
 Version=10001
-727;92;809;771;698.1055;490.548;1.3;True;False
-Node;AmplifyShaderEditor.ColorNode;3;-282.4003,-137.7999;Fixed;False;Property;_Emission;Emission;0;0;0,0,0,0;0;5;COLOR;FLOAT;FLOAT;FLOAT;FLOAT
-Node;AmplifyShaderEditor.RangedFloatNode;2;-265.3,176.7999;Fixed;False;Property;_Opacity;Opacity;1;0;0.2;0;0;0;1;FLOAT
+2851;335;1791;1020;1163.105;669.8478;1.9;True;True
 Node;AmplifyShaderEditor.ColorNode;1;-385.3,-393.2001;Fixed;False;Property;_MainColor;MainColor;0;0;0,0,0,0;0;5;COLOR;FLOAT;FLOAT;FLOAT;FLOAT
-Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;88,-157;Half;False;True;0;Half;ASEMaterialInspector;0;Lambert;Spot;False;False;False;False;False;False;True;True;True;True;True;True;Back;0;0;False;0;0;Transparent;0.5;True;False;0;False;Transparent;Transparent;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;False;0;255;255;0;0;0;0;False;0;4;10;25;False;0.5;True;0;Zero;Zero;0;Zero;Zero;Add;Add;0;False;0;0,0,0,0;VertexOffset;False;Cylindrical;Relative;0;;-1;-1;-1;-1;15;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0.0;False;4;FLOAT;0.0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0.0;False;9;FLOAT;0.0;False;10;OBJECT;0.0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;13;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+Node;AmplifyShaderEditor.RangedFloatNode;2;-265.3,176.7999;Fixed;False;Property;_Opacity;Opacity;2;0;0.2;0;0;0;1;FLOAT
+Node;AmplifyShaderEditor.ColorNode;3;-282.4003,-137.7999;Fixed;False;Property;_Emission;Emission;1;0;0,0,0,0;0;5;COLOR;FLOAT;FLOAT;FLOAT;FLOAT
+Node;AmplifyShaderEditor.StandardSurfaceOutputNode;0;88,-157;Half;False;True;0;Half;ASEMaterialInspector;0;Lambert;Spot;False;False;False;False;False;False;True;True;True;True;True;True;Back;0;0;False;0;0;Transparent;0.5;True;False;0;False;Transparent;Transparent;All;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;False;0;255;255;0;0;0;0;False;0;4;10;25;False;0.5;True;0;Zero;Zero;0;Zero;Zero;Add;Add;0;False;0;0,0,0,0;VertexOffset;False;Cylindrical;Relative;0;;0;-1;-1;-1;15;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0.0;False;4;FLOAT;0.0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0.0;False;9;FLOAT;0.0;False;10;OBJECT;0.0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;13;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
 WireConnection;0;0;1;0
 WireConnection;0;2;3;0
 WireConnection;0;9;2;0
 ASEEND*/
-//CHKSM=14328CB009FD13D8C85E601462A9975CDC769C09
+//CHKSM=833AA02B1096DFC69DAC50D4E476B9F1DB108F41
