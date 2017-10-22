@@ -832,4 +832,9 @@ public class MenuManager : Singleton<MenuManager>
     {
         Application.Quit();
     }
+
+    public void Reset()
+    {
+        unlockedStages.Clear();
+    }
 }

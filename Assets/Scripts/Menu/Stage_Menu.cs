@@ -5,59 +5,63 @@ using UnityEngine.UI;
 
 public class Stage_Menu : MonoBehaviour
 {
-	public static System.Action<Stage_Menu> OnStageUnlock;
+    public static System.Action<Stage_Menu> OnStageUnlock;
 
-	public int starsRequired;
-	public bool isUnlocked = false;
+    public int starsRequired;
+    public bool isUnlocked = false;
 
-	[Header ("Elements")]
-	public GameObject innerStar;
-	public Text starsCount;
-	public GameObject lockImage;
-	public Button trophyButton;
-	public Text trophyTitle;
-	public Text stageTitle;
+    [Header("Elements")]
+    public GameObject innerStar;
+    public Text starsCount;
+    public GameObject lockImage;
+    public Button trophyButton;
+    public Text trophyTitle;
+    public Text stageTitle;
 
-	[HideInInspector]
-	public int trophyStageIndex = 0;
-	[HideInInspector]
-	public bool _allTrophiesMenu = false;
+    [HideInInspector]
+    public int trophyStageIndex = 0;
+    [HideInInspector]
+    public bool _allTrophiesMenu = false;
 
-	void Start ()
-	{
-		trophyButton.onClick.AddListener (() => {
-			MenuManager.Instance.menuTrophies.stageMenu = this;
-			MenuManager.Instance.ToMenu (MenuManager.Instance.menuTrophies);
-		});
-	}
+    void Start()
+    {
+        trophyButton.onClick.AddListener(() =>
+            {
+                MenuManager.Instance.menuTrophies.stageMenu = this;
+                MenuManager.Instance.ToMenu(MenuManager.Instance.menuTrophies);
+            });
+    }
 
-	public void Setup (bool unlock, int stars)
-	{
-		starsRequired = stars;
-		starsCount.text = starsRequired.ToString ();
+    public void Setup(bool unlock, int stars)
+    {
+        starsRequired = stars;
+        starsCount.text = starsRequired.ToString();
 
-		stageTitle.text = "Pallier " + (trophyStageIndex + 1).ToString ();
+        stageTitle.text = "Pallier " + (trophyStageIndex + 1).ToString();
 
-		innerStar.SetActive (unlock);
+        innerStar.SetActive(unlock);
 
-		lockImage.SetActive (!unlock);
+        lockImage.SetActive(!unlock);
 
-		trophyTitle.gameObject.SetActive (unlock);
+        trophyTitle.gameObject.SetActive(unlock);
 
-		trophyButton.gameObject.SetActive (unlock);
+        trophyButton.gameObject.SetActive(unlock);
 
-		starsCount.transform.parent.gameObject.SetActive (!unlock);
+        starsCount.transform.parent.gameObject.SetActive(!unlock);
 
-		if (unlock && !isUnlocked && !_allTrophiesMenu) {
-			if (OnStageUnlock != null)
-				OnStageUnlock (this);
-		}
+        if (unlock && !isUnlocked && !_allTrophiesMenu && !PlayerPrefs.HasKey("TrohpyStageUnlock" + trophyStageIndex.ToString()))
+        {
+            PlayerPrefs.SetInt("TrohpyStageUnlock" + trophyStageIndex.ToString(), 1);
 
-		isUnlocked = unlock;
+            if (OnStageUnlock != null)
+                OnStageUnlock(this);
+        }
 
-		//trophyTitle.text = ScoreManager.Instance.levelStages [trophyStageIndex].trophy.GetComponent<Trophy_Menu> ().meshTitle;
+        isUnlocked = unlock;
 
-		trophyTitle.text = 
-			"PALIER " + (trophyStageIndex + 1).ToString () + "\n DEBLOQUé !";
-	}
+        //trophyTitle.text = ScoreManager.Instance.levelStages [trophyStageIndex].trophy.GetComponent<Trophy_Menu> ().meshTitle;
+
+        trophyTitle.text = 
+			"PALIER " + (trophyStageIndex + 1).ToString() + "\n DEBLOQUé !";
+    }
 }
