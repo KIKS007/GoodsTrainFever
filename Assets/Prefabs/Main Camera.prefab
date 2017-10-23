@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a0eadc6b9fe4b468a95bff897558e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRateAvarageTarget: 45
+  frameRateAvarageTarget: 25
   frameRateSamples: 9
   frameRateSamplesTime: 0.2
   downscaleLimit: 0.7
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a0eadc6b9fe4b468a95bff897558e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameRateAvarageTarget: 45
+  frameRateAvarageTarget: 25
   frameRateSamples: 9
   frameRateSamplesTime: 0.2
   downscaleLimit: 0.7

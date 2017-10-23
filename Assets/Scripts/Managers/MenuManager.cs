@@ -170,8 +170,9 @@ public class MenuManager : Singleton<MenuManager>
         MainMenuCloud1.DOFade(0, 1f).From().SetDelay(0.7f);
         MainMenuCloud2.transform.DOLocalMoveX(400, 0.5f).From().SetDelay(0.75f).OnStart(() => MainMenuCloud2.gameObject.SetActive(true));
         MainMenuCloud2.DOFade(0, 1f).From().SetDelay(0.75f);
-        MainMenuLocomotive.transform.DOLocalRotate(new Vector3(0, 0, 40), 2f).From().OnStart(() => MainMenuLocomotive.gameObject.SetActive(true)).SetDelay(1.2f).SetEase(Ease.OutExpo).OnStart(() =>
+        MainMenuLocomotive.transform.DOLocalRotate(new Vector3(0, 0, 40), 2f).From().SetDelay(1.2f).SetEase(Ease.OutExpo).OnStart(() =>
             {
+                MainMenuLocomotive.gameObject.SetActive(true);
                 MasterAudio.PlaySoundAndForget("SFX_TrainMenu");
             });
         MainMenuContainer1.transform.DOLocalRotate(new Vector3(0, 0, 40 + 38.557f), 2f).From().OnStart(() => MainMenuContainer1.gameObject.SetActive(true)).SetDelay(1.2f).SetEase(Ease.OutExpo);

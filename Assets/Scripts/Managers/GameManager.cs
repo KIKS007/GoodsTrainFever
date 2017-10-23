@@ -32,7 +32,7 @@ public class GameManager : Singleton<GameManager>
     // Use this for initialization
     void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 30;
     }
 
     public void StartLevel()
