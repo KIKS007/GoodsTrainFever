@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 81633062643397518}
   - component: {fileID: 114000108900063340}
   - component: {fileID: 114456938002801192}
+  - component: {fileID: 114061932881991612}
+  - component: {fileID: 114436715189724582}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -185,6 +187,54 @@ MonoBehaviour:
   frameRateSamplesTime: 0.2
   downscaleLimit: 0.7
   textDebug: {fileID: 0}
+--- !u!114 &114061932881991612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1084010321035736}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9e31fdf962e3e4ca3b62ec3ecc2f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tonemapper: 0
+  Exposure: 1
+  LinearWhitePoint: 11.2
+  ApplyDithering: 0
+  QualityLevel: 0
+  BlendAmount: 0
+  LutTexture: {fileID: 2800000, guid: eb553264843d1ff4da6e47b29113f169, type: 3}
+  LutBlendTexture: {fileID: 0}
+  MaskTexture: {fileID: 0}
+  UseDepthMask: 0
+  DepthMaskCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  UseVolumes: 0
+  ExitVolumeBlendTime: 1
+  TriggerVolumeProxy: {fileID: 0}
+  VolumeCollisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  EffectFlags:
+    components: []
+  sharedInstanceID: 89e61933-6f39-4f47-9505-069652e36211
 --- !u!114 &114091328704073466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -201,13 +251,26 @@ MonoBehaviour:
   frameRateSamplesTime: 0.2
   downscaleLimit: 0.7
   textDebug: {fileID: 0}
---- !u!114 &114456938002801192
+--- !u!114 &114436715189724582
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1084010321035736}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc527deb1327b494aa24466c2df13aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PPB: {fileID: 114456938002801192}
+  ACE: {fileID: 114061932881991612}
+--- !u!114 &114456938002801192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1084010321035736}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
