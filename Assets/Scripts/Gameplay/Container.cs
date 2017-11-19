@@ -499,6 +499,9 @@ public class Container : Touchable
 
                 DOVirtual.DelayedCall(0.3f, () =>
                     {
+                        if (errorsCanvasGroup == null)
+                            return;
+
                         errorsCanvasGroup.transform.DOScale(_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase(Ease.Linear).OnComplete(() =>
                             {
                                 errorsCanvasGroup.transform.DOPunchScale(Vector3.one / 6, 0.2f, 3).OnComplete(() =>

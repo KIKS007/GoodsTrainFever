@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 4381857227198510}
   - component: {fileID: 20201604513767050}
   - component: {fileID: 92388096619382706}
-  - component: {fileID: 114091328704073466}
   m_Layer: 0
   m_Name: UI Camera
   m_TagString: MainCamera
@@ -235,22 +234,6 @@ MonoBehaviour:
   EffectFlags:
     components: []
   sharedInstanceID: 89e61933-6f39-4f47-9505-069652e36211
---- !u!114 &114091328704073466
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1654328223493312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0a0eadc6b9fe4b468a95bff897558e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frameRateAvarageTarget: 25
-  frameRateSamples: 9
-  frameRateSamplesTime: 0.2
-  downscaleLimit: 0.7
-  textDebug: {fileID: 0}
 --- !u!114 &114436715189724582
 MonoBehaviour:
   m_ObjectHideFlags: 1

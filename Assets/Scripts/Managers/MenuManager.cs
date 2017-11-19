@@ -197,6 +197,8 @@ public class MenuManager : Singleton<MenuManager>
                     ShowMenu(mainMenu, false);
             });
 
+        menuTrophies.gameObject.SetActive(false);
+
         SetupMatrix();
     }
 
@@ -689,6 +691,8 @@ public class MenuManager : Singleton<MenuManager>
 
     void ShowTrophyMenu()
     {
+        menuTrophies.gameObject.SetActive(true);
+
         menuTrophies.endLevel = true;
 
         var stage = unlockedStages[0];
@@ -707,6 +711,11 @@ public class MenuManager : Singleton<MenuManager>
         {
             menuTrophies.endLevel = false;
             ToMenu(endLevelMenu, false);
+
+            DOVirtual.DelayedCall(menuAnimationDuration, () =>
+                {
+                    menuTrophies.gameObject.SetActive(false);
+                });
         }
     }
 

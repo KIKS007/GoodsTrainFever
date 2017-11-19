@@ -18,7 +18,7 @@ public class OrderUI : MonoBehaviour
     public List<Order_UI> OrderThing;
     private Dictionary<Order_Level, GameObject> _orders = new Dictionary<Order_Level, GameObject>();
     // stock order gameObject representation
-    private List<Order_Level> _orderList = new List<Order_Level>();
+    public List<Order_Level> _orderList = new List<Order_Level>();
     //stock container representation
     private bool _showOrders = false;
     //if true, all the orders are shown, when false only the first three
@@ -147,8 +147,6 @@ public class OrderUI : MonoBehaviour
                         });
                 });
         }
-
-
     }
 
     public void NotificationSpawn()
@@ -298,25 +296,22 @@ public class OrderUI : MonoBehaviour
     }
 
 
-    public void SetOrderAtPosition(RectTransform order, int pos)
+    public void SetOrderAtPosition(RectTransform order, int pos, bool orderPrepared = false)
     {
-        /*if (_orderList [GetChildPosition (order)] != null) {
-			Order_Level tempOL = _orderList [GetChildPosition (order)];
-			_orderList.Remove (_orderList [GetChildPosition (order)]);
-			_orderList.Insert (pos, tempOL);
-			order.transform.SetSiblingIndex (pos);
-		}*/
+        if (!orderPrepared)
+            order.transform.SetSiblingIndex(pos);
+        else
+            order.transform.SetSiblingIndex(order.transform.childCount - 1);
 
-        if (pos < 0)
-            pos = 0;
-
-        if (_orderList.Count > order.GetSiblingIndex())
+        /* if (_orderList.Count > order.GetSiblingIndex())
         {
             if (_orderList[order.GetSiblingIndex()] != null)
             {
                 Order_Level tempOL = _orderList[order.GetSiblingIndex()];
+
                 _orderList.Remove(tempOL);
                 _orderList.Insert(pos, tempOL);
+
                 order.transform.SetSiblingIndex(pos);
             }
             else
@@ -328,10 +323,11 @@ public class OrderUI : MonoBehaviour
         {
             Debug.Log("OrderUI - OUT OF RANGE ORDER INDEX - Removing 1st order");
             Destroy(order.transform.parent.GetChild(0).gameObject);
+
             if (_orderList[order.GetSiblingIndex()] != null)
             {
                 Order_Level tempOL = _orderList[order.GetSiblingIndex()];
-                _orderList.Remove(tempOL);
+               _orderList.Remove(tempOL);
                 _orderList.Insert(pos, tempOL);
                 order.transform.SetSiblingIndex(pos);
             }
@@ -339,9 +335,8 @@ public class OrderUI : MonoBehaviour
             {
                 Debug.Log("OrderUI - OUT OF RANGE ORDER INDEX - Removing 1st order did not work :(");
             }
-        }
+        }*/
     }
-
 
     /// <summary>
     /// Return child count without notification (last index)
@@ -381,15 +376,21 @@ public class OrderUI : MonoBehaviour
             Destroy(target);
             _orders.Remove(order);
         }
+
         _orderList.Clear();
         OrderThing.Clear();
         _orders.Clear();
         _notificationPos = 0;
+
         if (_notification == null)
         {
             _notification = transform.GetChild(0);
         }
         (_notification.GetChild(0) as RectTransform).DOAnchorPosX(_notificationPos, 0.5f).OnComplete(() => _notification.gameObject.SetActive(false));
+
+        foreach (Transform t in transform)
+            if (t.GetComponent<Order_UI>() != null)
+                Destroy(t.gameObject);
     }
 
     /// <summary>
@@ -421,7 +422,6 @@ public class OrderUI : MonoBehaviour
     public void HideOrders(bool neworder)
     {
         _showOrders = false;
-        int i = 0;
         _notificationImg.DOKill();
         _notificationImg.DOFade(1, 0.1f).SetDelay(0.4f).OnComplete(() =>
             {
@@ -432,14 +432,19 @@ public class OrderUI : MonoBehaviour
             var go = _orders[order];
             var canvasGrp = go.GetComponent<CanvasGroup>();
             //float alphaTarget = 1f - i / 3f;
-            float alphaTarget = (i >= 3) ? 0f : 1f;
-            canvasGrp.DOKill();
-            canvasGrp.DOFade(alphaTarget, 0.2f);
+
+            float alphaTarget = (go.transform.GetSiblingIndex() >= 3) ? 0f : 1f;
+
+            if (canvasGrp != null)
+            {
+                canvasGrp.DOKill();
+                canvasGrp.DOFade(alphaTarget, 0.2f);
+            }
+            
             if (alphaTarget <= 0)
                 DOVirtual.DelayedCall(0.2f, () => go.SetActive(false));
             if (alphaTarget > 0 && !go.activeSelf)
                 go.SetActive(true);
-            i++;
         }
         if (neworder)
         {
@@ -483,10 +488,14 @@ public class OrderUI : MonoBehaviour
             var go = _orders[order];
             var canvasGrp = go.GetComponent<CanvasGroup>();
             float alphaTarget = 1;
-            canvasGrp.DOKill();
-            if (go.activeSelf)
+
+            if (canvasGrp != null)
             {
-                canvasGrp.DOFade(alphaTarget, 0.2f);
+                canvasGrp.DOKill();
+                if (go.activeSelf)
+                {
+                    canvasGrp.DOFade(alphaTarget, 0.2f);
+                }
             }
         }
     }
@@ -498,13 +507,18 @@ public class OrderUI : MonoBehaviour
         {
             var go = _orders[order];
             var canvasGrp = go.GetComponent<CanvasGroup>();
-            float alphaTarget = (i >= 3) ? 0f : 1f;
-            canvasGrp.DOKill();
-            if (go.activeSelf)
+            //  float alphaTarget = (i >= 3) ? 0f : 1f;
+            float alphaTarget = (go.transform.GetSiblingIndex() >= 3) ? 0f : 1f;
+
+            if (canvasGrp != null)
             {
-                canvasGrp.DOFade(alphaTarget, 1f - go.transform.GetSiblingIndex() / 3f);
+                canvasGrp.DOKill();
+                if (go.activeSelf)
+                {
+                    canvasGrp.DOFade(alphaTarget, 1f - go.transform.GetSiblingIndex() / 3f);
+                }
+                i++;
             }
-            i++;
         }
     }
 
