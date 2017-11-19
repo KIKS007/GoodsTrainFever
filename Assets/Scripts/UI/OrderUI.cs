@@ -80,12 +80,13 @@ public class OrderUI : MonoBehaviour
         //we set the container holder
         //we then populate the container Holder
         _orders.Add(order, orderGO);
-        Transform[] holders = {
-            orderGO.transform.GetChild (0).GetChild (1),
-            orderGO.transform.GetChild (0).GetChild (2),
-            orderGO.transform.GetChild (0).GetChild (3),
-            orderGO.transform.GetChild (0).GetChild (4)
-        };
+        Transform[] holders =
+            {
+                orderGO.transform.GetChild(0).GetChild(1),
+                orderGO.transform.GetChild(0).GetChild(2),
+                orderGO.transform.GetChild(0).GetChild(3),
+                orderGO.transform.GetChild(0).GetChild(4)
+            };
         StartCoroutine(populateUi(order.levelContainers, holders, tmpThing));
 
 
@@ -118,33 +119,33 @@ public class OrderUI : MonoBehaviour
         {
             _notification.gameObject.SetActive(true);
             (_notification.GetChild(0) as RectTransform).DOAnchorPosX(300, 0.4f).SetEase(Ease.OutBack).OnComplete(() =>
-            {
-                DOVirtual.DelayedCall(0.7f, () =>
                 {
-                    (_notification.GetChild(0) as RectTransform).DOAnchorPosX(_notificationPos, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
-                    {
-                        if (_notificationPos == 0)
+                    DOVirtual.DelayedCall(0.7f, () =>
                         {
-                            _notification.gameObject.SetActive(false);
+                            (_notification.GetChild(0) as RectTransform).DOAnchorPosX(_notificationPos, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
+                                {
+                                    if (_notificationPos == 0)
+                                    {
+                                        _notification.gameObject.SetActive(false);
 
-                        }//we only need to desactivate the notification GO if don't see it anymore
-                    });
+                                    }//we only need to desactivate the notification GO if don't see it anymore
+                                });
+                        });
                 });
-            });
         }
         else
         {
             _notification.gameObject.SetActive(true);
             (_notification.GetChild(0) as RectTransform).DOAnchorPosX(100, 0.4f).SetEase(Ease.OutBack).OnComplete(() =>
-            {
-                DOVirtual.DelayedCall(0.7f, () =>
                 {
-                    (_notification.GetChild(0) as RectTransform).DOAnchorPosX(0, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
-                    {
-                        _notification.gameObject.SetActive(false);
-                    });
+                    DOVirtual.DelayedCall(0.7f, () =>
+                        {
+                            (_notification.GetChild(0) as RectTransform).DOAnchorPosX(0, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
+                                {
+                                    _notification.gameObject.SetActive(false);
+                                });
+                        });
                 });
-            });
         }
 
 
@@ -155,13 +156,13 @@ public class OrderUI : MonoBehaviour
         _notification.gameObject.SetActive(true);
 
         (_notification.GetChild(0) as RectTransform).DOAnchorPosX(_notificationPos, 0.3f).SetEase(Ease.OutExpo).OnComplete(() =>
-        {
-            if (_notificationPos == 0)
             {
-                _notification.gameObject.SetActive(false);
+                if (_notificationPos == 0)
+                {
+                    _notification.gameObject.SetActive(false);
 
-            }//we only need to desactivate the notification GO if don't see it anymore
-        });
+                }//we only need to desactivate the notification GO if don't see it anymore
+            });
 
     }
 
@@ -266,17 +267,17 @@ public class OrderUI : MonoBehaviour
             OrderThing.Remove(target.GetComponent<Order_UI>());
             //we collapse it to the top
             (target.transform as RectTransform).DOSizeDelta(new Vector2((target.transform as RectTransform).rect.width, -5), 0.2f).SetDelay(0.5f).OnComplete(() =>
-            {
-                if (!_showOrders)
-                    HideOrders(false);
-                Destroy(target);
-            }).OnUpdate(() =>
-            {   //this is needed to update the vertical layout
-                _layout.CalculateLayoutInputHorizontal();
-                _layout.CalculateLayoutInputVertical();
-                _layout.SetLayoutHorizontal();
-                _layout.SetLayoutVertical();
-            });
+                {
+                    if (!_showOrders)
+                        HideOrders(false);
+                    Destroy(target);
+                }).OnUpdate(() =>
+                {   //this is needed to update the vertical layout
+                    _layout.CalculateLayoutInputHorizontal();
+                    _layout.CalculateLayoutInputVertical();
+                    _layout.SetLayoutHorizontal();
+                    _layout.SetLayoutVertical();
+                });
 
             //we remove the order from the dictionnary and the from the list
             _orders.Remove(order);
@@ -305,6 +306,9 @@ public class OrderUI : MonoBehaviour
 			_orderList.Insert (pos, tempOL);
 			order.transform.SetSiblingIndex (pos);
 		}*/
+
+        if (pos < 0)
+            pos = 0;
 
         if (_orderList.Count > order.GetSiblingIndex())
         {
@@ -335,12 +339,7 @@ public class OrderUI : MonoBehaviour
             {
                 Debug.Log("OrderUI - OUT OF RANGE ORDER INDEX - Removing 1st order did not work :(");
             }
-
         }
-
-
-
-
     }
 
 
@@ -425,9 +424,9 @@ public class OrderUI : MonoBehaviour
         int i = 0;
         _notificationImg.DOKill();
         _notificationImg.DOFade(1, 0.1f).SetDelay(0.4f).OnComplete(() =>
-        {
-            OrderCount.gameObject.SetActive(true);
-        });
+            {
+                OrderCount.gameObject.SetActive(true);
+            });
         foreach (var order in _orderList)
         {
             var go = _orders[order];
@@ -459,9 +458,9 @@ public class OrderUI : MonoBehaviour
         int i = 0;
         _notificationImg.DOKill();
         _notificationImg.DOFade(1, 0.1f).SetDelay(0.4f).OnComplete(() =>
-        {
-            OrderCount.gameObject.SetActive(true);
-        });
+            {
+                OrderCount.gameObject.SetActive(true);
+            });
         foreach (var order in _orderList)
         {
             var go = _orders[order];

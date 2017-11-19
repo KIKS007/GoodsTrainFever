@@ -29,7 +29,7 @@ MonoBehaviour:
   secretKey:
   - 26c05251921f4c11781902dfd6eba1dad88e818e
   Build:
-  - 0.1
+  - 3.2
   SelectedPlatformStudio:
   - 
   SelectedPlatformGame:
@@ -37,8 +37,14 @@ MonoBehaviour:
   SelectedPlatformGameID: ffffffff
   SelectedStudio: 00000000
   SelectedGame: 00000000
-  NewVersion: 
-  Changes: 
+  NewVersion: 3.10.2
+  Changes: '3.10.2
+
+    - Android manifest file fix for Android SDK Tools v26.0.2 (android)
+
+    - Send build number option fixed for Unity 5.6 and up (ios, android)
+
+    - Added stack traces for non-development builds'
   SignUpOpen: 1
   FirstName: 
   LastName: 
@@ -46,7 +52,7 @@ MonoBehaviour:
   GameName: GoodsTrainFever
   PasswordConfirm: 
   EmailOptIn: 1
-  EmailGA: 
+  EmailGA: nathan@ironequal.com
   IntroScreen: 0
   InfoLogEditor: 0
   InfoLogBuild: 0

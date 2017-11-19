@@ -99,11 +99,15 @@ public class MenuManager : Singleton<MenuManager>
     private bool MUSIC_Ingame = false;
     private bool MUSIC_MainMenu = false;
 
+    private PlaylistController _playlistCont;
+
     // Use this for initialization
     void Start()
     {
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         _menuPanelShowAlpha = menuPanel.alpha;
+
+        _playlistCont = FindObjectOfType<PlaylistController>();
 
         _titleShowPos = title.anchoredPosition.y;
 
@@ -711,7 +715,9 @@ public class MenuManager : Singleton<MenuManager>
         Time.timeScale = 1;
         if (MUSIC_MainMenu == false)
         {
-            MasterAudio.ChangePlaylistByName("MainMenu");
+            if (_playlistCont.CurrentPlaylist.playlistName != "MainMenu")
+                MasterAudio.ChangePlaylistByName("MainMenu");
+            
             MUSIC_Ingame = false;
             MUSIC_MainMenu = true;
         }

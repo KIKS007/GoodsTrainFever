@@ -232,8 +232,8 @@ public class Container : Touchable
 
     public void ErrorSelect()
     {
-
-        OnContainerErrorSelected(this);
+        if (OnContainerErrorSelected != null)
+            OnContainerErrorSelected(this);
     }
 
     public void Deselect()
