@@ -22658,6 +22658,46 @@ Prefab:
       propertyPath: cameraUI
       value: 
       objectReference: {fileID: 397792757}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: contents.Array.data[0].showPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: contents.Array.data[1].showPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: contents.Array.data[2].showPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: contents.Array.data[2].showPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: contents.Array.data[3].showPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: menuCanvasGroup
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: backMenu
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114943837959913652, guid: 7bbed928b03d757449db155657d5ee4f,
+        type: 2}
+      propertyPath: stageMenu
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7bbed928b03d757449db155657d5ee4f, type: 2}
   m_IsPrefabParent: 0
@@ -22807,7 +22847,7 @@ Prefab:
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224586380319329426, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
@@ -22817,7 +22857,7 @@ Prefab:
     - target: {fileID: 224726744184372714, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114337609765799588, guid: 37ca85740e1698f4ea6f0669dc929f69,
         type: 2}

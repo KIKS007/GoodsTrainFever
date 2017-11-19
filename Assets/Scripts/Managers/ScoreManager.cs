@@ -209,7 +209,7 @@ public class ScoreManager : Singleton<ScoreManager>
         if (ordersPrepared == level.ordersCount || ordersPreparedPercentage > 100)
             ordersPreparedPercentage = 100;
 
-        Debug.Log("ordersPrepared: " + ordersPrepared + " on " + level.ordersCount + " = " + ordersPreparedPercentage + " % orders done");
+        //Debug.Log("ordersPrepared: " + ordersPrepared + " on " + level.ordersCount + " = " + ordersPreparedPercentage + " % orders done");
 
         FirstStar(ordersPreparedPercentage, level, levelIndex);
         SecondStar(ordersPreparedPercentage, level, levelIndex);
@@ -217,7 +217,7 @@ public class ScoreManager : Singleton<ScoreManager>
 
         UpdateStars();
 
-        Debug.Log("LEVEL#" + (levelIndex + 1).ToString() + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
+        //Debug.Log("LEVEL#" + (levelIndex + 1).ToString() + " - Stars: " + level.starsEarned + " - " + ordersPreparedPercentage + "% orders done");
     }
 
     void FirstStar(int ordersPercentage, Level level, int levelIndex)
