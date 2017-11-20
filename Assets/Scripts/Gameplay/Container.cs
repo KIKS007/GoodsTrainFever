@@ -473,7 +473,7 @@ public class Container : Touchable
     public void ShowContainerInfosMenu()
     {
         ErrorSelect();
-        MenuManager.Instance.PauseAndShowMenu(GlobalVariables.Instance.containerInfos);
+        MenuManager.Instance.PauseAndShowMenu(MenuManager.Instance.containerInfos);
     }
 
     public void ErrorDisplay()

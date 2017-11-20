@@ -33,12 +33,12 @@ public class MenuContainerInfos : MenuComponent
 
     private Container _selectedContainer;
 
-    void Start()
+    public override void Setup()
     {
+        base.Setup();
+
         Container.OnContainerSelected += (c) => _selectedContainer = c;
         Container.OnContainerErrorSelected += (c) => _selectedContainer = c;
-
-        GlobalVariables.Instance.containerInfos = this;
 
         TrainsMovementManager.Instance.OnTrainDeparture += (arg) =>
         {

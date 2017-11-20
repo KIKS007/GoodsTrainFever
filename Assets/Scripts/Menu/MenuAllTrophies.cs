@@ -7,138 +7,136 @@ using DG.Tweening;
 
 public class MenuAllTrophies : MenuComponent
 {
-	[Header ("Stages Parent")]
-	public RectTransform levelsScrollView;
+    [Header("Stages Parent")]
+    public RectTransform levelsScrollView;
 
-	[Header ("Stages Layout")]
-	public Vector2 levelPosition = new Vector2 ();
-	public float levelsSpacing;
+    [Header("Stages Layout")]
+    public Vector2 levelPosition = new Vector2();
+    public float levelsSpacing;
 
-	[Header ("Stages")]
-	public GameObject levelStagePrefab;
+    [Header("Stages")]
+    public GameObject levelStagePrefab;
 
-	[Header ("Reset")]
-	public float resetDuration = 0.5f;
+    [Header("Reset")]
+    public float resetDuration = 0.5f;
 
-	private float _levelsPanelWidth;
+    private float _levelsPanelWidth;
 
-	private List<Stage_Menu> _stagesMenu = new List<Stage_Menu> ();
+    private List<Stage_Menu> _stagesMenu = new List<Stage_Menu>();
 
-	// Use this for initialization
-	void Start ()
-	{
-		//SetupLevels ();
-	}
+    void OnEnable()
+    {
+        UpdateLevels();
+    }
 
-	void OnEnable ()
-	{
-		UpdateLevels ();
-	}
+    public override void OnShow()
+    {
+        base.OnShow();
 
-	public override void OnShow ()
-	{
-		base.OnShow ();
+        MenuManager.Instance.menuTrophies.backMenu = this;
 
-		MenuManager.Instance.menuTrophies.backMenu = this;
+        if (PlayerPrefs.HasKey("TrophiesScrollRect"))
+        {
+            float x = PlayerPrefs.GetFloat("TrophiesScrollRect");
+            levelsScrollView.anchoredPosition = new Vector2(x, levelsScrollView.anchoredPosition.y);
+        }
+    }
 
-		if (PlayerPrefs.HasKey ("TrophiesScrollRect")) {
-			float x = PlayerPrefs.GetFloat ("TrophiesScrollRect");
-			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
-		}
-	}
+    public void UpdateLevels()
+    {
+        UpdateLevelStages();
+    }
 
-	public void UpdateLevels ()
-	{
-		UpdateLevelStages ();
-	}
+    [ButtonAttribute]
+    public void SetupLevels()
+    {
+        _levelsPanelWidth = levelStagePrefab.GetComponent<RectTransform>().sizeDelta.x;
 
-	[ButtonAttribute]
-	public void SetupLevels ()
-	{
-		_levelsPanelWidth = levelStagePrefab.GetComponent<RectTransform> ().sizeDelta.x;
+        foreach (Transform t in levelsScrollView.transform)
+            Destroy(t.gameObject);
 
-		foreach (Transform t in levelsScrollView.transform)
-			Destroy (t.gameObject);
+        int panelsCount = 0;
 
-		int panelsCount = 0;
+        foreach (var s in ScoreManager.Instance.levelStages)
+        {
+            _stagesMenu.Add(SetupLevelStage(s, panelsCount));
+            panelsCount++;
+        }
 
-		foreach (var s in ScoreManager.Instance.levelStages) {
-			_stagesMenu.Add (SetupLevelStage (s, panelsCount));
-			panelsCount++;
-		}
+        float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (panelsCount) + levelPosition.x - levelsSpacing;
+        levelsScrollView.sizeDelta = new Vector2(scrollViewWidth, levelsScrollView.sizeDelta.y);
 
-		float scrollViewWidth = (_levelsPanelWidth + levelsSpacing) * (panelsCount) + levelPosition.x - levelsSpacing;
-		levelsScrollView.sizeDelta = new Vector2 (scrollViewWidth, levelsScrollView.sizeDelta.y);
+        if (PlayerPrefs.HasKey("TrophiesScrollRect"))
+        {
+            float x = PlayerPrefs.GetFloat("TrophiesScrollRect");
+            levelsScrollView.anchoredPosition = new Vector2(x, levelsScrollView.anchoredPosition.y);
+        }
 
-		if (PlayerPrefs.HasKey ("TrophiesScrollRect")) {
-			float x = PlayerPrefs.GetFloat ("TrophiesScrollRect");
-			levelsScrollView.anchoredPosition = new Vector2 (x, levelsScrollView.anchoredPosition.y);
-		}
+        UpdateLevelStages();
+    }
 
-		UpdateLevelStages ();
-	}
-
-	Stage_Menu SetupLevelStage (Stage s, int panelsCount)
-	{
-		Vector2 stagePanelPosition = levelPosition;
-		stagePanelPosition.x += (_levelsPanelWidth + levelsSpacing) * panelsCount;
+    Stage_Menu SetupLevelStage(Stage s, int panelsCount)
+    {
+        Vector2 stagePanelPosition = levelPosition;
+        stagePanelPosition.x += (_levelsPanelWidth + levelsSpacing) * panelsCount;
 		
-		RectTransform stagePanel = (Instantiate (levelStagePrefab, Vector3.zero, Quaternion.identity, levelsScrollView).GetComponent<RectTransform> ());
-		stagePanel.localPosition = Vector3.zero;
-		stagePanel.localRotation = Quaternion.Euler (Vector3.zero);
+        RectTransform stagePanel = (Instantiate(levelStagePrefab, Vector3.zero, Quaternion.identity, levelsScrollView).GetComponent<RectTransform>());
+        stagePanel.localPosition = Vector3.zero;
+        stagePanel.localRotation = Quaternion.Euler(Vector3.zero);
 		
-		stagePanel.anchoredPosition = stagePanelPosition;
+        stagePanel.anchoredPosition = stagePanelPosition;
 		
-		Stage_Menu stage = stagePanel.GetComponent<Stage_Menu> ();
-		stage._allTrophiesMenu = true;
+        Stage_Menu stage = stagePanel.GetComponent<Stage_Menu>();
+        stage._allTrophiesMenu = true;
 		
-		stage.trophyStageIndex = panelsCount;
+        stage.trophyStageIndex = panelsCount;
 
-		stage.Setup (false, s.starsRequired);
+        stage.Setup(false, s.starsRequired);
 
-		return stage;
-	}
+        return stage;
+    }
 
-	void UpdateLevelStages ()
-	{
-		if (_stagesMenu.Count == 0)
-			return;
+    void UpdateLevelStages()
+    {
+        if (_stagesMenu.Count == 0)
+            return;
 
-		int starsRequired = 0;
+        int starsRequired = 0;
 
-		for (int i = 0; i < ScoreManager.Instance.levelStages.Count; i++) {
-			int stars = ScoreManager.Instance.levelStages [i].starsRequired;
+        for (int i = 0; i < ScoreManager.Instance.levelStages.Count; i++)
+        {
+            int stars = ScoreManager.Instance.levelStages[i].starsRequired;
 
-			if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
-				stars = ScoreManager.Instance.levelStages [i].starsRequired - (ScoreManager.Instance.starsEarned - starsRequired);
+            if ((ScoreManager.Instance.starsEarned - starsRequired) > 0)
+                stars = ScoreManager.Instance.levelStages[i].starsRequired - (ScoreManager.Instance.starsEarned - starsRequired);
 
-			_stagesMenu [i].Setup (ScoreManager.Instance.starsEarned >= ScoreManager.Instance.levelStages [i].starsRequired + starsRequired, stars);
+            _stagesMenu[i].Setup(ScoreManager.Instance.starsEarned >= ScoreManager.Instance.levelStages[i].starsRequired + starsRequired, stars);
 
-			starsRequired += ScoreManager.Instance.levelStages [i].starsRequired;
-		}
-	}
+            starsRequired += ScoreManager.Instance.levelStages[i].starsRequired;
+        }
+    }
 
-	void OnDestroy ()
-	{
-		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
-	}
+    void OnDestroy()
+    {
+        PlayerPrefs.SetFloat("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
+    }
 
-	public override void OnHide ()
-	{
-		base.OnHide ();
+    public override void OnHide()
+    {
+        base.OnHide();
 
-		SaveMenuPos ();
-	}
+        SaveMenuPos();
+    }
 
-	public void SaveMenuPos ()
-	{
-		//Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
-		PlayerPrefs.SetFloat ("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
-	}
+    public void SaveMenuPos()
+    {
+        //Debug.Log ("Saving: " + levelsScrollView.anchoredPosition.x);
+        PlayerPrefs.SetFloat("TrophiesScrollRect", levelsScrollView.anchoredPosition.x);
+    }
 
-	public void Reset ()
-	{
-		levelsScrollView.anchoredPosition = new Vector2 (0, levelsScrollView.anchoredPosition.y);
-	}
+    public void Reset()
+    {
+        levelsScrollView.anchoredPosition = new Vector2(0, levelsScrollView.anchoredPosition.y);
+    }
 
 }

@@ -44,8 +44,10 @@ public class MenuTrophies : MenuComponent
     private float _deltaMagnitudeDiff;
     private float _initialXScale;
 
-    void Start()
+    public override void Setup()
     {
+        base.Setup();
+
         _camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 

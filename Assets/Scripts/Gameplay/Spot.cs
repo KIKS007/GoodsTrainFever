@@ -469,10 +469,13 @@ public class Spot : Touchable
 
     public Spot SpawnDoubleSizeSpot(Container c, bool selectOnStart = true)
     {
-        if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.isOccupied)
+        if (c == null)
             return null;
 
-        if (_doubleSizeSpotSpawned && _doubleSizeSpotSpawned.gameObject != null)
+        if (_doubleSizeSpotSpawned != null && _doubleSizeSpotSpawned.isOccupied)
+            return null;
+
+        if (_doubleSizeSpotSpawned != null && _doubleSizeSpotSpawned.gameObject != null)
             Destroy(_doubleSizeSpotSpawned.gameObject);
 
         if (!c.isDoubleSize)
@@ -492,13 +495,14 @@ public class Spot : Touchable
 
         foreach (var s in overlappingSpots)
         {
-            if (s.isOccupied == false)
+            if (s != null && s.isOccupied == false)
                 return null;
             else
             {
-                foreach (var pileSpot in s.container._pileSpots)
-                    if (pileSpot != null && pileSpot.isOccupied)
-                        return null;
+                if (s.container != null)
+                    foreach (var pileSpot in s.container._pileSpots)
+                        if (pileSpot != null && pileSpot.isOccupied)
+                            return null;
             }
         }
 
@@ -513,8 +517,9 @@ public class Spot : Touchable
         _doubleSizeSpotSpawned.overlappingSpots.Clear();
 
         foreach (var o in overlappingSpots)
-            foreach (var p in o.container._pileSpots)
-                _doubleSizeSpotSpawned.overlappingSpots.Add(p);
+            if (o.container != null)
+                foreach (var p in o.container._pileSpots)
+                    _doubleSizeSpotSpawned.overlappingSpots.Add(p);
 
         _doubleSizeSpotSpawned.GetOverlappingSpots();
 

@@ -30,9 +30,10 @@ public class MenuLevels : MenuComponent
     [HideInInspector]
     public List<Level_Menu> _levelsMenu = new List<Level_Menu>();
 
-    // Use this for initialization
-    void Start()
+    public override void Setup()
     {
+        base.Setup();
+
         //SetupLevels ();
         GameManager.Instance.OnLevelEnd += SetLevelPosition;
         MenuManager.Instance.OnMainMenu += SetLevelPosition;

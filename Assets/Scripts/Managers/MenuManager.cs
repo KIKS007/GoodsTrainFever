@@ -20,6 +20,7 @@ public class MenuManager : Singleton<MenuManager>
 
     [Header("UI")]
     public CanvasGroup UICanvasGroup;
+    public Text buildVersion;
 
     [Header("Menu")]
     public CanvasGroup menuCanvasGroup;
@@ -45,6 +46,9 @@ public class MenuManager : Singleton<MenuManager>
     public Button pauseButton;
     public MenuComponent pauseMenu;
     public Button fastforwardButton;
+
+    [Header("Container Infos")]
+    public MenuComponent containerInfos;
 
     [Header("Menu Trophies")]
     public MenuTrophies menuTrophies;
@@ -104,6 +108,13 @@ public class MenuManager : Singleton<MenuManager>
     // Use this for initialization
     void Start()
     {
+        buildVersion.text = Application.version;
+        #if UNITY_ANDROID
+        buildVersion.text += "-A";
+        #else
+        buildVersion.text += "-I";
+        #endif
+
         _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         _menuPanelShowAlpha = menuPanel.alpha;
 
@@ -112,6 +123,13 @@ public class MenuManager : Singleton<MenuManager>
         _titleShowPos = title.anchoredPosition.y;
 
         _backButtonShowPos = backButton.anchoredPosition;
+
+        foreach (Transform t in menuParent)
+            if (t.gameObject.GetComponent<MenuComponent>() != null)
+                t.gameObject.GetComponent<MenuComponent>().Setup();
+
+        foreach (var a in FindObjectsOfType<MenuComponent>())
+            a.Setup();
 
         Stage_Menu.OnStageUnlock += (Stage_Menu obj) => unlockedStages.Add(obj);
 
