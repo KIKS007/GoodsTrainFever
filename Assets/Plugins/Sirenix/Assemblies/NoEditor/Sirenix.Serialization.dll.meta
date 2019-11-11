@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 52360074ea3a4df1b74ecdfd568bd9f3
+guid: 5651992cdad94894a3af7dc3f1da9170
 timeCreated: 1488812592
 licenseType: Store
 PluginImporter:
@@ -9,10 +9,13 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   platformData:
+    Android:
+      enabled: 1
+      settings: {}
     Any:
       enabled: 0
       settings:
-        Exclude Android: 1
+        Exclude Android: 0
         Exclude Editor: 1
         Exclude Linux: 0
         Exclude Linux64: 0

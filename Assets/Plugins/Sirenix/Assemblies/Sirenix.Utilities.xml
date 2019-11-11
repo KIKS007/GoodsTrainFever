@@ -69,29 +69,6 @@
             Memoizes the specified func - returns the memoized version
             </summary>
         </member>
-        <member name="T:Sirenix.Utilities.DirectoryInfoExtensions">
-            <summary>
-            DirectoryInfo method extensions.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.DirectoryInfoExtensions.IsSubDirectoryOf(System.IO.DirectoryInfo,System.IO.DirectoryInfo)">
-            <summary>
-            Determines whether [is sub directory of] [the specified dir2].
-            </summary>
-            <param name="dir1">The dir1.</param>
-            <param name="dir2">The dir2.</param>
-            <returns>
-              <c>true</c> if [is sub directory of] [the specified dir2]; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:Sirenix.Utilities.DirectoryInfoExtensions.FindParentDirectoryWithName(System.IO.DirectoryInfo,System.String)">
-            <summary>
-            Finds the name of the parent directory with.
-            </summary>
-            <param name="dir">The directory info.</param>
-            <param name="folderName">Name of the folder.</param>
-            <returns></returns>
-        </member>
         <member name="T:Sirenix.Utilities.FieldInfoExtensions">
             <summary>
             FieldInfo method extensions.
@@ -297,7 +274,11 @@
             <summary>
             Convert a colletion to a HashSet.
             </summary>
-            <param name="source">The collection.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.LinqExtensions.ToHashSet``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Convert a colletion to a HashSet.
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.LinqExtensions.ToImmutableList``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>
@@ -398,21 +379,21 @@
             <param name="condition">The condition.</param>
             <param name="prepend">The collection to prepend.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0})">
             <summary>
             Add an item to the end of a collection.
             </summary>
             <param name="source">The collection.</param>
             <param name="append">Func to create the item to append.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},``0)">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},``0)">
             <summary>
             Add an item to the end of a collection.
             </summary>
             <param name="source">The collection.</param>
             <param name="append">The item to append.</param>
         </member>
-        <member name="M:Sirenix.Utilities.LinqExtensions.Append``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:Sirenix.Utilities.LinqExtensions.AppendWith``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Add a collection to the end of another collection.
             </summary>
@@ -493,53 +474,68 @@
             <param name="list">The list.</param>
             <param name="item">The value.</param>
         </member>
+        <member name="M:Sirenix.Utilities.LinqExtensions.AddRange``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds the elements of the specified collection to the end of the IList&lt;T&gt;.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.LinqExtensions.Sort``1(System.Collections.Generic.IList{``0},System.Comparison{``0})">
+            <summary>
+            Sorts an IList
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.LinqExtensions.Sort``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Sorts an IList
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.MemberInfoExtensions">
             <summary>
             MemberInfo method extensions.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Returns true if the attribute whose type is specified by the generic argument is defined on this member
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.IsDefined``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Returns true if the attribute whose type is specified by the generic argument is defined on this member
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Returns the first found custom attribute of type T on this member
             Returns null if none was found
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttribute``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Returns the first found non-inherited custom attribute of type T on this member
             Returns null if none was found
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Gets all attributes of the specified generic type.
             </summary>
             <param name="member">The member.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Gets all attributes of the specified generic type.
             </summary>
             <param name="member">The member.</param>
             <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.MemberInfo)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.ICustomAttributeProvider)">
             <summary>
             Gets all attribute instances defined on a MemeberInfo.
             </summary>
             <param name="member">The member.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Sirenix.Utilities.MemberInfoExtensions.GetAttributes(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Gets all attribute instances on a MemberInfo.
             </summary>
@@ -625,7 +621,7 @@
         </member>
         <member name="T:Sirenix.Utilities.Operator">
             <summary>
-            Determents the type of operator.
+            Determines the type of operator.
             </summary>
             <seealso cref="T:Sirenix.Utilities.TypeExtensions" />
         </member>
@@ -649,6 +645,16 @@
             The - operator.
             </summary>
         </member>
+        <member name="F:Sirenix.Utilities.Operator.Multiply">
+            <summary>
+            The * operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.Division">
+            <summary>
+            The / operator.
+            </summary>
+        </member>
         <member name="F:Sirenix.Utilities.Operator.LessThan">
             <summary>
             The &lt; operator.
@@ -667,6 +673,108 @@
         <member name="F:Sirenix.Utilities.Operator.GreaterThanOrEqual">
             <summary>
             The &gt;= operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.Modulus">
+            <summary>
+            The % operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.RightShift">
+            <summary>
+            The &gt;&gt; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LeftShift">
+            <summary>
+            The &lt;&lt; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseAnd">
+            <summary>
+            The &amp; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseOr">
+            <summary>
+            The | operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.ExclusiveOr">
+            <summary>
+            The ^ operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.BitwiseComplement">
+            <summary>
+            The ~ operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalAnd">
+            <summary>
+            The &amp;&amp; operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalOr">
+            <summary>
+            The || operator.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Operator.LogicalNot">
+            <summary>
+            The ! operator.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.PathUtilities">
+            <summary>
+            DirectoryInfo method extensions.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.GetDirectoryName(System.String)">
+            <summary>
+            Gets the name of the directory. Always returns forward slash seperators as opposed to Path.GetDirectoryName().
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.HasSubDirectory(System.IO.DirectoryInfo,System.IO.DirectoryInfo)">
+            <summary>
+            Determines whether the directory has a given directory in its hierarchy of children.
+            </summary>
+            <param name="parentDir">The parent directory.</param>
+            <param name="subDir">The sub directory.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.FindParentDirectoryWithName(System.IO.DirectoryInfo,System.String)">
+            <summary>
+            Finds a parent directory with a given name, or null if no such parent directory exists.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.CanMakeRelative(System.String,System.String)">
+            <summary>
+            Returns a value indicating whether or not a path can be made relative to another.
+            </summary>
+            <param name="absoluteParentPath">The parent path.</param>
+            <param name="absolutePath">The path to make relative to the parent path.</param>
+            <returns>A value indicating if the path can be made relative to the parent path.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.MakeRelative(System.String,System.String)">
+            <summary>
+            Returns a path string to path that is relative to the parent path.
+            </summary>
+            <param name="absoluteParentPath">The parent path.</param>
+            <param name="absolutePath">The path to make relative to the parent path.</param>
+            <returns>A relative path from parent path to path.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.TryMakeRelative(System.String,System.String,System.String@)">
+            <summary>
+            Tries to make a path that is relative from parent path to path.
+            </summary>
+            <param name="absoluteParentPath">The parent path.</param>
+            <param name="absolutePath">The path to make relative to the parent path.</param>
+            <param name="relativePath">A relative path from parent path to path. <c>null</c> if no relative path could be made.</param>
+            <returns>A value indicating if the method succeeded in making a relative path.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.PathUtilities.Combine(System.String,System.String)">
+            <summary>
+            Combines two paths, and replaces all backslases with forward slash.
             </summary>
         </member>
         <member name="T:Sirenix.Utilities.PropertyInfoExtensions">
@@ -696,6 +804,497 @@
             /// <param name="throwOnNotAliased">if set to <c>true</c> an exception will be thrown if the property is not aliased.</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">The property was not aliased; this only occurs if throwOnNotAliased is true.</exception>
+        </member>
+        <member name="T:Sirenix.Utilities.RectExtensions">
+            <summary>
+            Defines a collection of handy Rect transformation methods, that can chained together for complex behaviour.
+            Note that no method defined here changes the original Rect, but instead returns a new transformed Rect.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetWidth(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect with the specified width.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetHeight(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect with the specified height.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetSize(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect with the specified size.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetSize(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Returns a Rect with the specified size.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="size">The desired size of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.HorizontalPadding(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount on the X-axis.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="padding">The desired padding.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.HorizontalPadding(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount on the X-axis.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="left">Desired padding on the left side.</param>
+            <param name="right">Desired padding on the right side.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.VerticalPadding(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount on the Y-axis.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="padding">The desired padding.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.VerticalPadding(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount on the Y-axis.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="top">The desired padding on the top.</param>
+            <param name="bottom">The desired padding on the bottom.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Padding(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="padding">The desired padding.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Padding(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="horizontal">The desired horizontal padding.</param>
+            <param name="vertical">The desired vertical padding.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Padding(UnityEngine.Rect,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been inserted by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="left">The desired padding on the left.</param>
+            <param name="right">The desired padding on the right.</param>
+            <param name="top">The desired padding on the top.</param>
+            <param name="bottom">The desired padding on the bottom.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignLeft(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned to the left of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenter(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned to horizontal center of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenter(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width and height in the center of the provided rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignRight(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned to the right of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignRight(UnityEngine.Rect,System.Single,System.Boolean)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned to the right of the original Rect.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignTop(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified height, that has been aligned to the top of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignMiddle(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified height, that has been aligned to the vertical middle of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignBottom(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified height, that has been aligned to the bottom of the original Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenterX(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width, that has been aligned horizontally to the center of the original rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenterY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified height, that has been aligned vertically to the center of the original rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenterXY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width and height, that has been aligned horizontally and vertically to the center of the original rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="size">The desired width and height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AlignCenterXY(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect, with the specified width and height, that has been aligned horizontally and vertically to the center of the original rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="width">The desired width of the new Rect.</param>
+            <param name="height">The desired height of the new Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Expand(UnityEngine.Rect,System.Single)">
+            <summary>
+            Returns a Rect that has been expanded by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="expand">The desired expansion.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Expand(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been expanded by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="horizontal">The desired expansion on the X-axis.</param>
+            <param name="vertical">The desired expansion on the Y-axis.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Expand(UnityEngine.Rect,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Returns a Rect that has been expanded by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="left">The desired expansion on the left.</param>
+            <param name="right">The desired expansion on the right.</param>
+            <param name="top">The desired expansion on the top.</param>
+            <param name="bottom">The desired expansion on the bottom.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.Split(UnityEngine.Rect,System.Int32,System.Int32)">
+            <summary>
+            Splits a Rect horizontally into the specified number of sub-rects, and returns a sub-rect for the specified index.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="index">The index for the subrect. Includes 0, and excludes count.</param>
+            <param name="count">The amount of subrects the Rect should be split into.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SplitVertical(UnityEngine.Rect,System.Int32,System.Int32)">
+            <summary>
+            Splits a Rect vertically into the specified number of sub-rects, and returns a sub-rect for the specified index.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="index">The index for the subrect. Includes 0, and excludes count.</param>
+            <param name="count">The amount of subrects the Rect should be split into.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SplitGrid(UnityEngine.Rect,System.Single,System.Single,System.Int32)">
+            <summary>
+            Splits a Rect into a grid from left to right and then down.
+            </summary>
+            <param name="rect">The original rect.</param>
+            <param name="width">The width of a grid cell.</param>
+            <param name="height">The height of a grid cell.</param>
+            <param name="index">The index of the grid cell.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SplitTableGrid(UnityEngine.Rect,System.Int32,System.Single,System.Int32)">
+            <summary>
+            Splits a Rect into a grid from left to right and then down.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetCenterX(UnityEngine.Rect,System.Single)">
+            <summary>
+            Moves a Rect to the specified center X position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The desired center x position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetCenterY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Moves a Rect to the specified center Y position.
+            </summary>
+            <param name="rect">The desired original Rect.</param>
+            <param name="y">The desired desired center y position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetCenter(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Moves a Rect to the specified center position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The desired center X position.</param>
+            <param name="y">The desired center Y position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetCenter(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Moves a Rect to the specified center position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="center">The desired center position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetPosition(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Moves a Rect to the specified position.
+            </summary>
+            <param name="rect">The orignal Rect.</param>
+            <param name="position">The desired position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.ResetPosition(UnityEngine.Rect)">
+            <summary>
+            Resets a Rect's position to zero.
+            </summary>
+            <param name="rect">The original Rect.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddPosition(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Moves a Rect's position by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="move">The change in position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddPosition(UnityEngine.Rect,System.Single,System.Single)">
+            <summary>
+            Moves a Rect's position by the specified amount.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetX(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's X position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The desired X position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddX(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's X position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubX(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts from a Rect's X position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="x">The value to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's Y position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="y">The desired Y position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's Y position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="y">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubY(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts a Rect's Y position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="y">The value to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetMin(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Sets the min position of a Rect.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="min">The desired min position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddMin(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Adds to a Rect's min position.
+            </summary>
+            <param name="rect">The original rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubMin(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Subtracts a Rect's min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The vlaue to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetMax(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Sets a Rect's max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="max">The desired max position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddMax(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Adds to a Rect's max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubMax(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Subtracts a Rect's max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetXMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's X min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="xMin">The desired min X position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddXMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's X min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubXMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts from a Rect's X min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetXMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's X max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="xMax">The desired X max position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddXMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's X max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubXMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts a Rect's X max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetYMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's Y min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="yMin">The desired Y min.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddYMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's Y min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubYMin(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts a Rect's Y min position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to subtract.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SetYMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's Y max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="yMax">The desired Y max position.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.AddYMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Adds to a Rect's Y max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to add.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.SubYMax(UnityEngine.Rect,System.Single)">
+            <summary>
+            Subtracts from a Rect's Y max position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="value">The value to subtract.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.MinWidth(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's width, if it is less than the specified value.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="minWidth">The desired min width.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.MaxWidth(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's width, if it is greater than the specified value.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="maxWidth">The desired max width.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.MinHeight(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's height, if it is less than the specified value.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="minHeight">The desired min height.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.MaxHeight(UnityEngine.Rect,System.Single)">
+            <summary>
+            Sets a Rect's height, if it is greater than the specified value.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="maxHeight">The desired max height.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.ExpandTo(UnityEngine.Rect,UnityEngine.Vector2)">
+            <summary>
+            Expands a rect to contain a given position.
+            </summary>
+            <param name="rect">The original Rect.</param>
+            <param name="pos">The position to expand the rect towards.</param>
         </member>
         <member name="T:Sirenix.Utilities.StringExtensions">
             <summary>
@@ -734,6 +1333,12 @@
             Type name alias lookup.
             TypeNameAlternatives["Single"] will give you "float", "UInt16" will give you "ushort", "Boolean[]" will give you "bool[]" etc..
             </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.IsValidIdentifier(System.String)">
+            <summary>
+            Checks whether a given string is a valid CSharp identifier name. This also checks full type names including namespaces.
+            </summary>
+            <param name="identifier">The identifier to check.</param>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.IsCastableTo(System.Type,System.Type,System.Boolean)">
             <summary>
@@ -774,58 +1379,9 @@
              3. .NET's own <see cref="P:System.Collections.Generic.EqualityComparer`1.Default"/>
              </summary>
              <remarks>
-             <para>Note that in the special case of the type <see cref="T:UnityEngine.Quaternion"/>, a special equality comparer is returned that checks Quaternion's "q1 == q2", and then also checks whether all the Quaternion components are equal.</para>
+             <para>Note that in the special case of the type <see cref="T:UnityEngine.Quaternion"/>, a special equality comparer is returned that only checks whether all the Quaternion components are equal.</para>
              <para>This is because, by default, Quaternion's equality operator is broken when operating on invalid quaternions; "default(Quaternion) == default(Quaternion)" evaluates to false, and this causes a multitude of problems.</para>
              </remarks>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,System.Boolean)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,``0@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="attribute">The attribute instance.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute``1(System.Reflection.MemberInfo,System.Boolean,``0@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified in the generic argument.
-            </summary>
-            <typeparam name="T">The attribute type.</typeparam>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="attribute">The attribute instance.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified.
-            </summary>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="customAttributeType">Type of the custom attribute.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.TypeExtensions.HasCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean,System.Attribute@)">
-            <summary>
-            Determines whether a MemberInfo has the attribute specified.
-            </summary>
-            <param name="memberInfo">The MemberInfo.</param>
-            <param name="customAttributeType">Type of the custom attribute.</param>
-            <param name="inherit">If true, specifies to also search the ancestors of element for custom attributes.</param>
-            <param name="attribute">The attribute instance.</param>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetAttribute``1(System.Type,System.Boolean)">
             <summary>
@@ -840,6 +1396,14 @@
             </summary>
             <param name="type">The type.</param>
             <param name="to">To.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.ImplementsOpenGenericType(System.Type,System.Type)">
+            <summary>
+            Determines whether a type implements an open generic interface or class such as IList&lt;&gt; or List&lt;&gt;.
+            </summary>
+            <param name="candidateType">Type of the candidate.</param>
+            <param name="openGenericType">Type of the open generic type.</param>
+            <returns></returns>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.ImplementsOpenGenericInterface(System.Type,System.Type)">
             <summary>
@@ -856,6 +1420,13 @@
             </summary>
             <param name="candidateType">Type of the candidate.</param>
             <param name="openGenericType">Type of the open generic interface.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.GetArgumentsOfInheritedOpenGenericType(System.Type,System.Type)">
+            <summary>
+            Gets the generic arguments of an inherited open generic class or interface.
+            </summary>
+            <param name="candidateType">Type of the candidate.</param>
+            <param name="openGenericType">The open generic type to get the arguments of.</param>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetArgumentsOfInheritedOpenGenericClass(System.Type,System.Type)">
             <summary>
@@ -876,9 +1447,14 @@
             Gets the MethodInfo of a specific operator type.
             </summary>
         </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.GetOperatorMethods(System.Type,Sirenix.Utilities.Operator)">
+            <summary>
+            Gets the MethodInfo of a specific operator type.
+            </summary>
+        </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetAllMembers(System.Type,System.Reflection.BindingFlags)">
             <summary>
-            Gets all members from a given type, including members from all base types.
+            Gets all members from a given type, including members from all base types if the <see cref="F:System.Reflection.BindingFlags.DeclaredOnly"/> flag isn't set.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetAllMembers(System.Type,System.String,System.Reflection.BindingFlags)">
@@ -888,7 +1464,7 @@
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetAllMembers``1(System.Type,System.Reflection.BindingFlags)">
             <summary>
-            Gets all members of a specific type from a type, including members from all base types.
+            Gets all members of a specific type from a type, including members from all base types, if the <see cref="F:System.Reflection.BindingFlags.DeclaredOnly"/> flag isn't set.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetGenericBaseType(System.Type,System.Type)">
@@ -1044,14 +1620,33 @@
             <para>Checks whether an array of types satisfy the constraints of a given generic type definition.</para>
             <para>If this method returns true, the given parameters can be safely used with <see cref="M:System.Type.MakeGenericType(System.Type[])"/> with the given generic type definition.</para>
             </summary>
-            <param name="genericTypeDefinition">The generic type definition to check.</param>
+            <param name="genericType">The generic type definition to check.</param>
             <param name="parameters">The parameters to check validity for.</param>
             <exception cref="T:System.ArgumentNullException">
-            genericTypeDefinition is null
+            genericType is null
             or
             types is null
             </exception>
-            <exception cref="T:System.ArgumentException">The genericTypeDefinition parameter must be a generic type definition.</exception>
+            <exception cref="T:System.ArgumentException">The genericType parameter must be a generic type definition.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.AreGenericConstraintsSatisfiedBy(System.Reflection.MethodBase,System.Type[])">
+            <summary>
+            <para>Checks whether an array of types satisfy the constraints of a given generic method definition.</para>
+            <para>If this method returns true, the given parameters can be safely used with <see cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])"/> with the given generic method definition.</para>
+            </summary>
+            <param name="genericMethod">The generic method definition to check.</param>
+            <param name="parameters">The parameters to check validity for.</param>
+            <exception cref="T:System.ArgumentNullException">
+            genericType is null
+            or
+            types is null
+            </exception>
+            <exception cref="T:System.ArgumentException">The genericMethod parameter must be a generic method definition.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.GenericParameterIsFulfilledBy(System.Type,System.Type,System.Collections.Generic.Dictionary{System.Type,System.Type},System.Collections.Generic.HashSet{System.Type})">
+            <summary>
+            Before calling this method we must ALWAYS hold a lock on the GenericConstraintsSatisfaction_LOCK object, as that is an implicit assumption it works with.
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.TypeExtensions.GetGenericConstraintsString(System.Type,System.Boolean)">
             <summary>
@@ -1085,6 +1680,13 @@
             Gets the enum bitmask in a ulong.
             </summary>
             <exception cref="T:System.ArgumentException">enumType</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.IsCSharpKeyword(System.String)">
+            <summary>
+            Gets a value indicating if the string is a reserved C# keyword.
+            </summary>
+            <param name="identifier">The identifier to check.</param>
+            <returns><c>true</c> if the string is a C# keyword. Otherwise <c>false</c>.</returns>
         </member>
         <member name="T:Sirenix.Utilities.UnityExtensions">
             <summary>
@@ -1140,154 +1742,6 @@
             <exception cref="T:System.ArgumentNullException">The given array was null.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">The given index to remove an element at was out of range.</exception>
         </member>
-        <member name="T:Sirenix.Utilities.AssemblyTypeFlags">
-            <summary>
-            AssemblyTypeFlags is a bitmask used to filter types and assemblies related to Unity.
-            </summary>
-            <seealso cref="T:Sirenix.Utilities.AssemblyUtilities"/>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.None">
-            <summary>
-            Excludes all types.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.UserTypes">
-            <summary>
-            UserTypes includes all custom user scripts that are not located in an editor or plugin folder.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.PluginTypes">
-            <summary>
-            PluginTypes includes all types located in the plugins folder and are not located in an editor folder.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.UnityTypes">
-            <summary>
-            UnityTypes includes all types depended on UnityEngine and from UnityEngine, except editor, plugin and user types.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.UserEditorTypes">
-            <summary>
-            UserEditorTypes includes all custom user scripts that are located in an editor folder but not in a plugins folder.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.PluginEditorTypes">
-            <summary>
-            PluginEditorTypes includes all editor types located in the plugins folder.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.UnityEditorTypes">
-            <summary>
-            UnityEditorTypes includes all editor types that are not user editor types nor plugin editor types.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.OtherTypes">
-            <summary>
-            OtherTypes includes all other types that are not depended on UnityEngine or UnityEditor.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.CustomTypes">
-            <summary>
-            CustomTypes includes UserTypes, UserEditorTypes, PluginTypes and PluginEditorTypes.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.GameTypes">
-            <summary>
-            GameTypes includes UserTypes, PluginTypes, UnityTypes and OtherTypes.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.EditorTypes">
-            <summary>
-            EditorTypes includes UserEditorTypes, PluginEditorTypes and UnityEditorTypes.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.AssemblyTypeFlags.All">
-            <summary>
-            All includes UserTypes, PluginTypes, UnityTypes, UserEditorTypes, PluginEditorTypes, UnityEditorTypes and OtherTypes.
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.AssemblyUtilities">
-            <summary>
-            TODO: Document.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.Reload">
-            <summary>
-            Re-scans the entire assembly.
-            </summary>
-            <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.#cctor">
-            <summary>
-            Initializes the <see cref="T:Sirenix.Utilities.AssemblyUtilities"/> class.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAllAssemblies">
-            <summary>
-            Gets an <see cref="T:Sirenix.Utilities.ImmutableList"/> of all assemblies in the current <see cref="T:System.AppDomain"/>.
-            </summary>
-            <returns>An <see cref="T:Sirenix.Utilities.ImmutableList"/> of all assemblies in the current <see cref="T:System.AppDomain"/>.</returns>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAssemblyTypeFlag(System.Reflection.Assembly)">
-            <summary>
-            Gets the <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> for a given assembly.
-            </summary>
-            <param name="assembly">The assembly.</param>
-            <returns>The <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> for a given assembly.</returns>
-            <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is null.</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetType(System.String)">
-            <summary>
-            Gets the type.
-            </summary>
-            <param name="fullName">The full name of the type without any assembly information.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.IsDependentOn(System.Reflection.Assembly,System.Reflection.Assembly)">
-            <summary>
-            Determines whether an assembly is depended on another assembly.
-            </summary>
-            <param name="assembly">The assembly.</param>
-            <param name="otherAssembly">The other assembly.</param>
-            <returns>
-              <c>true</c> if <paramref name="assembly"/> has a reference in <paramref name="otherAssembly"/> or <paramref name="assembly"/> is the same as <paramref name="otherAssembly"/>.
-            </returns>
-            <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is null.</exception>
-            <exception cref="T:System.NullReferenceException"><paramref name="otherAssembly"/> is null.</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.IsDynamic(System.Reflection.Assembly)">
-            <summary>
-            Determines whether the assembly module is a of type <see cref="T:System.Reflection.Emit.ModuleBuilder"/>.
-            </summary>
-            <param name="assembly">The assembly.</param>
-            <returns>
-              <c>true</c> if the specified assembly of type <see cref="T:System.Reflection.Emit.ModuleBuilder"/>; otherwise, <c>false</c>.
-            </returns>
-            <exception cref="T:System.ArgumentNullException">assembly</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAssemblyDirectory(System.Reflection.Assembly)">
-            <summary>
-            Gets the full file path to a given assembly.
-            </summary>
-            <param name="assembly">The assembly.</param>
-            <returns>The full file path to a given assembly, or <c>Null</c> if no file path was found.</returns>
-            <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is Null.</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAssemblyFilePath(System.Reflection.Assembly)">
-            <summary>
-            Gets the full directory path to a given assembly.
-            </summary>
-            <param name="assembly">The assembly.</param>
-            <returns>The full directory path in which a given assembly is located, or <c>Null</c> if no file path was found.</returns>
-            <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is Null.</exception>
-        </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypes(Sirenix.Utilities.AssemblyTypeFlags)">
-            <summary>
-            Get types from the current AppDomain with a specified <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> filter.
-            </summary>
-            <param name="assemblyTypeFlags">The <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> filters.</param>
-            <returns>Types from the current AppDomain with the specified <see cref="T:Sirenix.Utilities.AssemblyTypeFlags"/> filters.</returns>
-        </member>
         <member name="T:Sirenix.Utilities.Editor.AssetScriptGuidUtility">
             <summary>
             Utility class for asset Guid script
@@ -1298,32 +1752,15 @@
             Tries to update the Guid of a specified asset with the Guid from a specified script type.
             </summary>
         </member>
-        <member name="T:Sirenix.Utilities.ICache`1">
-            <summary>
-            The ICache interface used by <see cref="T:Sirenix.Utilities.Cache`1"/>.
-            </summary>
-            <seealso cref="T:Sirenix.Utilities.Cache`1" />
-        </member>
-        <member name="P:Sirenix.Utilities.ICache`1.Value">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.ICache`1.IsFree">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.ICache`1.Release">
-            <summary>
-            Not yet documented.
-            </summary>
-        </member>
         <member name="T:Sirenix.Utilities.Cache`1">
             <summary>
             Provides an easy way of claiming and freeing cached values of any non-abstract reference type with a public parameterless constructor.
             <para />
             Cached types which implement the <see cref="T:Sirenix.Utilities.ICacheNotificationReceiver"/> interface will receive notifications when they are claimed and freed.
+            <para />
+            Only one thread should be holding a given cache instance at a time if <see cref="T:Sirenix.Utilities.ICacheNotificationReceiver"/> is implemented, since the invocation of 
+            <see cref="M:Sirenix.Utilities.ICacheNotificationReceiver.OnFreed"/> is not thread safe, IE, weird stuff might happen if multiple different threads are trying to free
+            the same cache instance at the same time. This will practically never happen unless you're doing really strange stuff, but the case is documented here.
             </summary>
             <typeparam name="T">The type which is cached.</typeparam>
             <seealso cref="T:System.IDisposable" />
@@ -1336,16 +1773,12 @@
             The maximum size of the cache.
             </value>
         </member>
-        <member name="P:Sirenix.Utilities.Cache`1.Value">
+        <member name="F:Sirenix.Utilities.Cache`1.Value">
             <summary>
-            Gets the cached value.
-            </summary>
-            <value>
             The cached value.
-            </value>
-            <exception cref="T:System.InvalidOperationException">Cannot access a cache while it is freed.</exception>
+            </summary>
         </member>
-        <member name="P:Sirenix.Utilities.Cache`1.Sirenix#Utilities#ICache{T}#IsFree">
+        <member name="P:Sirenix.Utilities.Cache`1.IsFree">
             <summary>
             Gets a value indicating whether this cached value is free.
             </summary>
@@ -1375,7 +1808,7 @@
             The result of the conversion.
             </returns>
         </member>
-        <member name="M:Sirenix.Utilities.Cache`1.Sirenix#Utilities#ICache{T}#Release">
+        <member name="M:Sirenix.Utilities.Cache`1.Release">
             <summary>
             Releases this cached value.
             </summary>
@@ -1435,7 +1868,7 @@
             Not yet documented.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.DoubleLookupDictionary`3.TotalInnerCount(`0)">
+        <member name="M:Sirenix.Utilities.DoubleLookupDictionary`3.TotalInnerCount">
             <summary>
             Not yet documented.
             </summary>
@@ -1464,49 +1897,6 @@
             <summary>
             Not yet documented.
             </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.DrawUnityEditorInGlobalConfigWindowAttribute">
-            <summary>
-            <para>This attribute is used by classes deriving from GlobalConfig and tells the advanced preferences to
-            draw it by creating a UnityEditor.Editor instead of a PropertyTree.</para>
-            </summary>
-        </member>
-        <member name="T:Sirenix.Utilities.EditorGlobalConfigAttribute">
-            <summary>
-            <para>This attribute is used by classes deriving from GlobalConfig and specifies the menu item path for the preference window and the asset path for the generated config file.</para>
-            </summary>
-            <seealso cref="T:Sirenix.Utilities.GlobalConfig`1"/>
-        </member>
-        <member name="F:Sirenix.Utilities.EditorGlobalConfigAttribute.MenuItemPath">
-            <summary>
-            The menu item path
-            </summary>
-        </member>
-        <member name="P:Sirenix.Utilities.EditorGlobalConfigAttribute.EditorWindowTitle">
-            <summary>
-            Gets the editor window title.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.EditorGlobalConfigAttribute.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sirenix.Utilities.EditorGlobalConfigAttribute"/> class.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="menuItem">The menu item.</param>
-        </member>
-        <member name="M:Sirenix.Utilities.EditorGlobalConfigAttribute.OpenWindow(UnityEngine.Object)">
-            <summary>
-            Opens the Odin preferences window for any given GlobalConfig.
-            </summary>
-            <param name="config">The configuration.</param>
-            <exception cref="T:System.ArgumentException">Config parameter must inherit from <see cref="T:Sirenix.Utilities.GlobalConfig`1"/></exception>
-        </member>
-        <member name="M:Sirenix.Utilities.EditorGlobalConfigAttribute.OpenWindow``1(System.String,UnityEngine.Object)">
-            <summary>
-            Opens the Odin preferences window.
-            </summary>
-            <param name="title">The title.</param>
-            <param name="config">The configuration.</param>
         </member>
         <member name="T:Sirenix.Utilities.WeakValueGetter">
             <summary>
@@ -1764,6 +2154,11 @@
             Not yet documented.
             </summary>
         </member>
+        <member name="M:Sirenix.Utilities.EmitUtilities.CreateWeakInstanceMethodCallerFunc``2(System.Reflection.MethodInfo)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
         <member name="M:Sirenix.Utilities.EmitUtilities.CreateInstanceMethodCaller``1(System.Reflection.MethodInfo)">
             <summary>
             Creates a fast delegate method which calls a given parameterless instance method.
@@ -1877,7 +2272,7 @@
              </summary>
              <example>
              <code>
-             [GlobalConfig("Resources/MyConfigFiles/")]
+             [GlobalConfig("Assets/Resources/MyConfigFiles/")]
              public class MyGlobalConfig : GlobalConfig&lt;MyGlobalConfig&gt;
              {
                  public int MyGlobalVariable;
@@ -1914,7 +2309,7 @@
             <summary>
             <para>This attribute is used by classes deriving from GlobalConfig and specifies the asset path for the generated config file.</para>
             </summary>
-            <seealso cref="T:Sirenix.Utilities.EditorGlobalConfigAttribute"/>
+            <seealso cref="!:EditorGlobalConfigAttribute"/>
             <seealso cref="T:Sirenix.Utilities.GlobalConfig`1"/>
         </member>
         <member name="P:Sirenix.Utilities.GlobalConfigAttribute.FullPath">
@@ -1930,6 +2325,11 @@
         <member name="P:Sirenix.Utilities.GlobalConfigAttribute.ResourcesPath">
             <summary>
             Gets the resources path. Only relevant if IsInResourcesFolder is true.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.GlobalConfigAttribute.UseAsset">
+            <summary>
+            Whether the config should be associated with an asset in the project. If false, no config asset will be generated or loaded, and a new "temporary" config instance will be created for every reload. This is true by default.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.GlobalConfigAttribute.IsInResourcesFolder">
@@ -2358,6 +2758,131 @@
             <param name="length">The new length.</param>
             <param name="newElement">Value of new elements.</param>
         </member>
+        <member name="T:Sirenix.Utilities.IndexedDictionary`2">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.IndexedDictionary`2.Keys">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.IndexedDictionary`2.Values">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.IndexedDictionary`2.Count">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.IndexedDictionary`2.IsReadOnly">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.IndexedDictionary`2.Item(`0)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.#ctor">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.#ctor(System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+            <param name="capacity">Not yet documented.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Get(System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.GetKey(System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.GetValue(System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.IndexOf(`0)">
+            <summary>
+            Not yet documented.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Add(`0,`1)">
+            <summary>
+            Not yet documented.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Clear">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Remove(`0)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.RemoveAt(System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.ContainsKey(`0)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.GetEnumerator">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.IndexedDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Not yet documented.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.MathUtilities">
             <summary>
             Collection of math function.
@@ -2568,7 +3093,7 @@
         </member>
         <member name="M:Sirenix.Utilities.MathUtilities.SmoothStep(System.Single,System.Single,System.Single)">
             <summary>
-            Returns a smoothed value for t's position between a and b.
+            Interpolates t between a and b to a value between 0 and 1 using a Hermite polynomial.
             </summary>
             <param name="a">The first value.</param>
             <param name="b">The second value.</param>
@@ -2577,7 +3102,7 @@
         </member>
         <member name="M:Sirenix.Utilities.MathUtilities.LinearStep(System.Single,System.Single,System.Single)">
             <summary>
-            Returns a linear value for t's position between a and b.
+            Interpolates t between a and b to a value between 0 and 1.
             </summary>
             <param name="a">The first value.</param>
             <param name="b">The second value.</param>
@@ -2623,224 +3148,97 @@
             <param name="v">The value of insignificant decimals.</param>
             <returns>Value with significant decimals.</returns>
         </member>
-        <member name="T:Sirenix.Utilities.MemberFinderExtensions">
+        <member name="M:Sirenix.Utilities.MathUtilities.ClampWrapAngle(System.Single,System.Single,System.Single)">
             <summary>
-            Not yet documented.
+            Clamps and wraps an angle between two values.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinderExtensions.FindMember(System.Type)">
+        <member name="T:Sirenix.Utilities.MultiDimArrayUtilities">
             <summary>
-            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
-            <para>See <see cref="T:Sirenix.Utilities.MemberFinder"/> for more information.</para>
+            Contains utilities for operating on arrays multi-dimentional arrays.
             </summary>
         </member>
-        <member name="T:Sirenix.Utilities.MemberFinder">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.InsertOneColumnLeft``1(``0[0:,0:],System.Int32)">
             <summary>
-            <para>
-            The MemberFinder is a utility class often used by Odin drawers to find fields, methods, and
-            properties while providing good user-friendly error messages based on the search criteria.
-            </para>
-            <para>
-            The MemberFinder is initialized by ether using the extensions method type.FindMember() or MemberFinder.Start(type),
-            and must be ended again using ether TryGetMember() or GetMember().
-            </para>
+            Inserts one column left of the specified column index.
             </summary>
-            <example>
-            <code>
-            // Finds any member (FieldInfo, PropertyInfo or MethodInfo) "memberName" with a return type of string.
-            string errorMessage;
-            MemberInfo myMember = typeof(MyType)
-                                    .FindMember()
-                                    .IsNamed("memberName")
-                                    .HasReturnType(typeof(string))
-                                    .HasNoParameters()
-                                    .GetMember(out errorMessage);
-            If no matching member was found, myMember will be null and errorMessage will contain a proper formatted error message based on the search filters provided.
-            </code>
-            </example>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="columnIndex">Index of the column.</param>
+            <param name="array">The array.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.#ctor">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.InsertOneColumnRight``1(``0[0:,0:],System.Int32)">
             <summary>
-            Initializes a new instance of the <see cref="T:Sirenix.Utilities.MemberFinder"/> class.
+            Inserts one column right of the specified column index.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="columnIndex">Index of the column.</param>
+            <param name="arr">The arr.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.#ctor(System.Type)">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.InsertOneRowAbove``1(``0[0:,0:],System.Int32)">
             <summary>
-            Initializes a new instance of the <see cref="T:Sirenix.Utilities.MemberFinder"/> class.
+            Inserts one row above the specified row index.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="rowIndex">The row index.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.Start``1">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.InsertOneRowBelow``1(``0[0:,0:],System.Int32)">
             <summary>
-            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
+            Inserts one row below the specified row index.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="rowIndex">Index of the row.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.Start(System.Type)">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.DuplicateColumn``1(``0[0:,0:],System.Int32)">
             <summary>
-            <para>Find members of the given type, while providing good error messages based on the following search filters provided.</para>
+            Duplicates the column.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="columnIndex">Index of the column.</param>
+            <param name="array">The array.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasNoParameters">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.DuplicateRow``1(``0[0:,0:],System.Int32)">
             <summary>
-            Can be true for both fields, properties and methods.
+            Duplicates the row.
             </summary>
-            <returns></returns>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="rowIndex">Index of the row.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsDeclaredOnly">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.MoveColumn``1(``0[0:,0:],System.Int32,System.Int32)">
             <summary>
-            Exclude members found in base-types.
+            Moves a column.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="fromColumn">From column.</param>
+            <param name="toColumn">To column.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type)">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.MoveRow``1(``0[0:,0:],System.Int32,System.Int32)">
             <summary>
-            <para>Only include methods with the following parameter.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
+            Moves a row.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="fromRow">From row.</param>
+            <param name="toRow">To row.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type)">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.DeleteColumn``1(``0[0:,0:],System.Int32)">
             <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
+            Deletes a column.
             </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="columnIndex">Index of the column.</param>
         </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type,System.Type)">
+        <member name="M:Sirenix.Utilities.MultiDimArrayUtilities.DeleteRow``1(``0[0:,0:],System.Int32)">
             <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
+            Deletes the row.
             </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters(System.Type,System.Type,System.Type,System.Type)">
-            <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``1">
-            <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``2">
-            <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``3">
-            <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasParameters``4">
-            <summary>
-            <para>Only include methods with the following parameters.</para>
-            <para>Calling this will also exclude fields and properties.</para>
-            <para>Parameter type inheritance is supported.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasReturnType(System.Type,System.Boolean)">
-            <summary>
-            Determines whether [has return type] [the specified return type].
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.HasReturnType``1(System.Boolean)">
-            <summary>
-            Can be true for both fields, properties and methods.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsFieldOrProperty">
-            <summary>
-            Calls IsField() and IsProperty().
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsStatic">
-            <summary>
-            Only include static members. By default, both static and non-static members are included.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsInstance">
-            <summary>
-            Only include non-static members. By default, both static and non-static members are included.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsNamed(System.String)">
-            <summary>
-            Specify the name of the member.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsProperty">
-            <summary>
-            <para>Excludes fields and methods if nether IsField() or IsMethod() is called. Otherwise includes properties.</para>
-            <para>By default, all member types are included.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsMethod">
-            <summary>
-            <para>Excludes fields and properties if nether IsField() or IsProperty() is called. Otherwise includes methods.</para>
-            <para>By default, all member types are included.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsField">
-            <summary>
-            <para>Excludes properties and methods if nether IsProperty() or IsMethod() is called. Otherwise includes fields.</para>
-            <para>By default, all member types are included.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsPublic">
-            <summary>
-            <para>Excludes non-public members if IsNonPublic() has not yet been called. Otherwise includes public members.</para>
-            <para>By default, both public and non-public members are included.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.IsNonPublic">
-            <summary>
-            <para>Excludes public members if IsPublic() has not yet been called. Otherwise includes non-public members.</para>
-            <para>By default, both public and non-public members are included.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.ReturnsVoid">
-            <summary>
-            Excludes fields and properties, and only includes methods with a return type of void.
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.GetMember``1">
-            <summary>
-            <para>Gets the member based on the search filters provided</para>
-            <para>Returns null if no member was found.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.GetMember``1(System.String@)">
-            <summary>
-            <para>Gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.GetMember(System.String@)">
-            <summary>
-            <para>Gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMember``1(``0@,System.String@)">
-            <summary>
-            <para>Try gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMember(System.Reflection.MemberInfo@,System.String@)">
-            <summary>
-            <para>Try gets the member based on the search filters provided, and provides a proper error message if no members was found.</para>
-            </summary>
-        </member>
-        <member name="M:Sirenix.Utilities.MemberFinder.TryGetMembers(System.Reflection.MemberInfo[]@,System.String@)">
-            <summary>
-            <para>Try gets all members based on the search filters provided, and provides a proper error message if no members was found.</para>
-            </summary>
+            <typeparam name="TElement">The type of the element.</typeparam>
+            <param name="array">The array.</param>
+            <param name="rowIndex">Index of the row.</param>
         </member>
         <member name="T:Sirenix.Utilities.PersistentAssemblyAttribute">
             <summary>
@@ -3314,16 +3712,6 @@
             Path to Odin Inspector resources folder.
             </summary>
         </member>
-        <member name="F:Sirenix.Utilities.SirenixAssetPaths.OdinGeneratedEditorsPath">
-            <summary>
-            Path to Odin Inspector generated editors DLL.
-            </summary>
-        </member>
-        <member name="F:Sirenix.Utilities.SirenixAssetPaths.OdinGeneratedEditorsAssemblyName">
-            <summary>
-            Odin Inspector generated editors assembly name.
-            </summary>
-        </member>
         <member name="F:Sirenix.Utilities.SirenixAssetPaths.OdinEditorConfigsPath">
             <summary>
             Path to Odin Inspector configuration folder.
@@ -3334,6 +3722,11 @@
             Path to Odin Inspector resources configuration folder.
             </summary>
         </member>
+        <member name="F:Sirenix.Utilities.SirenixAssetPaths.OdinTempPath">
+            <summary>
+            Path to Odin Inspector temporary folder.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.SirenixEditorConfigAttribute">
             <summary>
             <para>This attribute is used by classes deriving from GlobalConfig and specifies the menu item path for the preference window and the asset path for the generated config file.</para>
@@ -3342,18 +3735,10 @@
             </summary>
             <seealso cref="T:Sirenix.Utilities.SirenixGlobalConfigAttribute"/>
         </member>
-        <member name="M:Sirenix.Utilities.SirenixEditorConfigAttribute.#ctor(System.String)">
+        <member name="M:Sirenix.Utilities.SirenixEditorConfigAttribute.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Sirenix.Utilities.SirenixEditorConfigAttribute"/> class.
             </summary>
-            <param name="menuItem"></param>
-        </member>
-        <member name="M:Sirenix.Utilities.SirenixEditorConfigAttribute.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Sirenix.Utilities.SirenixEditorConfigAttribute"/> class.
-            </summary>
-            <param name="path"></param>
-            <param name="menuItem"></param>
         </member>
         <member name="T:Sirenix.Utilities.SirenixGlobalConfigAttribute">
             <summary>
@@ -3363,23 +3748,23 @@
             </summary>
             <seealso cref="T:Sirenix.Utilities.SirenixEditorConfigAttribute"/>
         </member>
-        <member name="M:Sirenix.Utilities.SirenixGlobalConfigAttribute.#ctor(System.String)">
+        <member name="M:Sirenix.Utilities.SirenixGlobalConfigAttribute.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Sirenix.Utilities.SirenixGlobalConfigAttribute"/> class.
             </summary>
-            <param name="menuItem">The menu item.</param>
         </member>
-        <member name="M:Sirenix.Utilities.SirenixGlobalConfigAttribute.#ctor(System.String,System.String)">
+        <member name="T:Sirenix.Utilities.StringUtilities">
             <summary>
-            Initializes a new instance of the <see cref="T:Sirenix.Utilities.SirenixGlobalConfigAttribute"/> class.
+            Not yet documented.
             </summary>
-            <param name="path">The path.</param>
-            <param name="menuItem">The menu item.</param>
         </member>
-        <member name="P:Sirenix.Utilities.SirenixGlobalConfigAttribute.EditorWindowTitle">
+        <member name="M:Sirenix.Utilities.StringUtilities.NicifyByteSize(System.Int32,System.Int32)">
             <summary>
-            Gets the editor window title.
+            Not yet documented.
             </summary>
+            <param name="bytes">Not yet documented.</param>
+            <param name="decimals">Not yet documented.</param>
+            <returns>Not yet documented.</returns>
         </member>
         <member name="T:Sirenix.Utilities.UnityVersion">
             <summary>
@@ -3442,6 +3827,26 @@
         <member name="M:Sirenix.Utilities.Unsafe.UnsafeUtilities.MemoryCopy(System.Object,System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
             Not yet documented.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.ReferenceEqualityComparer`1">
+            <summary>
+            Compares objects by reference only, ignoring equality operators completely. This is used by the property tree reference dictionaries to keep track of references.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.ReferenceEqualityComparer`1.Default">
+            <summary>
+            A default, cached instance of this generic variant of the reference equality comparer.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.ReferenceEqualityComparer`1.Equals(`0,`0)">
+            <summary>
+            Returns true if the object references are equal.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.ReferenceEqualityComparer`1.GetHashCode(`0)">
+            <summary>
+            Returns the result of the object's own GetHashCode method.
             </summary>
         </member>
     </members>
