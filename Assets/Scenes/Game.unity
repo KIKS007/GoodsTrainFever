@@ -25499,6 +25499,16 @@ PrefabInstance:
       propertyPath: MainMenu.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2137}
+    - target: {fileID: 114934852764568782, guid: e693ae8cdaa66d645a37bf0bb81d33da,
+        type: 3}
+      propertyPath: UseGameAnalytics
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114934852764568782, guid: e693ae8cdaa66d645a37bf0bb81d33da,
+        type: 3}
+      propertyPath: UseUnityAnalytics
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e693ae8cdaa66d645a37bf0bb81d33da, type: 3}
 --- !u!114 &1083084272 stripped
