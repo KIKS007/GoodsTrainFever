@@ -1,3 +1,5 @@
+// Upgrade NOTE: upgraded instancing buffer 'Water' to new syntax.
+
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "Water"
@@ -21,9 +23,10 @@ Shader "Water"
 			float3 worldPos;
 		};
 
-		UNITY_INSTANCING_CBUFFER_START(Water)
+		UNITY_INSTANCING_BUFFER_START(Water)
 			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
-		UNITY_INSTANCING_CBUFFER_END
+#define _Color_arr Water
+		UNITY_INSTANCING_BUFFER_END(Water)
 
 
 		half3 HSVToRGB( half3 c )
@@ -46,7 +49,7 @@ Shader "Water"
 
 		void surf( Input i , inout SurfaceOutput o )
 		{
-			half3 hsvTorgb5 = RGBToHSV( UNITY_ACCESS_INSTANCED_PROP(_Color).rgb );
+			half3 hsvTorgb5 = RGBToHSV( UNITY_ACCESS_INSTANCED_PROP(_Color_arr, _Color).rgb );
 			float3 ase_worldPos = i.worldPos;
 			half3 hsvTorgb8 = HSVToRGB( half3(hsvTorgb5.x,hsvTorgb5.y,( hsvTorgb5.z + clamp( (-0.1 + (ase_worldPos.y - -2.0) * (2.0 - -0.1) / (0.0 - -2.0)) , -0.1 , 2.0 ) )) );
 			o.Albedo = hsvTorgb8;

@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: 123d921bea02f374591316f410018680
-timeCreated: 1495306850
-licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Cube
     100002: Cube_001
@@ -22,6 +20,23 @@ ModelImporter:
     100028: Cube_014
     100030: Cube_015
     100032: //RootNode
+    100034: Camera
+    100036: Cube.001
+    100038: Cube.002
+    100040: Cube.003
+    100042: Cube.004
+    100044: Cube.005
+    100046: Cube.006
+    100048: Cube.007
+    100050: Cube.008
+    100052: Cube.009
+    100054: Cube.010
+    100056: Cube.011
+    100058: Cube.012
+    100060: Cube.013
+    100062: Cube.014
+    100064: Cube.015
+    100066: Lamp
     400000: Cube
     400002: Cube_001
     400004: Cube_002
@@ -39,6 +54,23 @@ ModelImporter:
     400028: Cube_014
     400030: Cube_015
     400032: //RootNode
+    400034: Camera
+    400036: Cube.001
+    400038: Cube.002
+    400040: Cube.003
+    400042: Cube.004
+    400044: Cube.005
+    400046: Cube.006
+    400048: Cube.007
+    400050: Cube.008
+    400052: Cube.009
+    400054: Cube.010
+    400056: Cube.011
+    400058: Cube.012
+    400060: Cube.013
+    400062: Cube.014
+    400064: Cube.015
+    400066: Lamp
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
@@ -55,6 +87,21 @@ ModelImporter:
     2300026: Cube_013
     2300028: Cube_014
     2300030: Cube_015
+    2300032: Cube.001
+    2300034: Cube.002
+    2300036: Cube.003
+    2300038: Cube.004
+    2300040: Cube.005
+    2300042: Cube.006
+    2300044: Cube.007
+    2300046: Cube.008
+    2300048: Cube.009
+    2300050: Cube.010
+    2300052: Cube.011
+    2300054: Cube.012
+    2300056: Cube.013
+    2300058: Cube.014
+    2300060: Cube.015
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -71,6 +118,21 @@ ModelImporter:
     3300026: Cube_013
     3300028: Cube_014
     3300030: Cube_015
+    3300032: Cube.001
+    3300034: Cube.002
+    3300036: Cube.003
+    3300038: Cube.004
+    3300040: Cube.005
+    3300042: Cube.006
+    3300044: Cube.007
+    3300046: Cube.008
+    3300048: Cube.009
+    3300050: Cube.010
+    3300052: Cube.011
+    3300054: Cube.012
+    3300056: Cube.013
+    3300058: Cube.014
+    3300060: Cube.015
     4300000: Cube_015
     4300002: Cube_014
     4300004: Cube_013
@@ -87,12 +149,34 @@ ModelImporter:
     4300026: Cube_002
     4300028: Cube_001
     4300030: Cube
+    4300032: Cube.015
+    4300034: Cube.014
+    4300036: Cube.013
+    4300038: Cube.012
+    4300040: Cube.011
+    4300042: Cube.010
+    4300044: Cube.009
+    4300046: Cube.008
+    4300048: Cube.007
+    4300050: Cube.006
+    4300052: Cube.005
+    4300054: Cube.004
+    4300056: Cube.003
+    4300058: Cube.002
+    4300060: Cube.001
     7400000: Default Take
     9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: e83b24dc3a3cc5241a2f454db7ecdbc6, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -105,12 +189,15 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -118,22 +205,34 @@ ModelImporter:
     globalScale: 2
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 1
     generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 2
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -148,7 +247,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
