@@ -189,7 +189,7 @@ namespace Movinarc
 
             GUILayout.EndVertical();
             GUILayout.EndScrollView();
-            if (Event.current.type == EventType.repaint)
+            if (Event.current.type == EventType.Repaint)
             {
                 rectScrollView = GUILayoutUtility.GetLastRect();
                 rectScrollView.x = scrollPos.x;
