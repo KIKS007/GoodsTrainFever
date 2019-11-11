@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
-using GameAnalyticsSDK;
 using UnityEngine.Events;
 
 public class StatsManager : Singleton<StatsManager>
@@ -162,29 +161,29 @@ public class StatsManager : Singleton<StatsManager>
 	private void SendDataToGameAnalytic (string id, string name, string rate, string diffRate, string score, string errors, string trials, string time, bool Rated, bool Finished)
 	{
 
-		if (Rated) {
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":ID:" + id);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Rate:" + rate);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":DifficultyRate:" + diffRate);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Score:" + score);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Errors:" + errors);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Trials:" + trials);
-			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Time:" + time);
-		} else {
-			if (Finished) {
-				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":ID:" + id);
-				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Score:" + score);
-				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Errors:" + errors);
-				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Trials:" + trials);
-				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Time:" + time);
-			} else {
-				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":ID:" + id);
-				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Errors:" + errors);
-				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Trials:" + trials);
-				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Time:" + time);
-			}
-
-		}
+//		if (Rated) {
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":ID:" + id);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Rate:" + rate);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":DifficultyRate:" + diffRate);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Score:" + score);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Errors:" + errors);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Trials:" + trials);
+//			GameAnalytics.NewDesignEvent ("Levels:Rated:" + id + ":Time:" + time);
+//		} else {
+//			if (Finished) {
+//				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":ID:" + id);
+//				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Score:" + score);
+//				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Errors:" + errors);
+//				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Trials:" + trials);
+//				GameAnalytics.NewDesignEvent ("Levels:NotRated:" + id + ":Time:" + time);
+//			} else {
+//				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":ID:" + id);
+//				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Errors:" + errors);
+//				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Trials:" + trials);
+//				GameAnalytics.NewDesignEvent ("Levels:UnfinishedNotRated:" + id + ":Time:" + time);
+//			}
+//
+//		}
 
 	}
 
@@ -281,7 +280,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:SetRatingStatus:True");
+//			GameAnalytics.NewDesignEvent ("Other:Device:SetRatingStatus:True");
 		}
 	}
 
@@ -292,7 +291,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:ResetAll:True");
+//			GameAnalytics.NewDesignEvent ("Other:Device:ResetAll:True");
 		}
 	}
 
@@ -303,7 +302,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:UnlockLevels:True");
+//			GameAnalytics.NewDesignEvent ("Other:Device:UnlockLevels:True");
 		}
 	}
 
@@ -314,7 +313,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:ResetStars:True");
+//			GameAnalytics.NewDesignEvent ("Other:Device:ResetStars:True");
 		}
 	}
 
@@ -325,7 +324,7 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:ResetAutoScaling:True");
+//			GameAnalytics.NewDesignEvent ("Other:Device:ResetAutoScaling:True");
 		}
 	}
 
@@ -340,9 +339,9 @@ public class StatsManager : Singleton<StatsManager>
 		}
 
 		if (UseGameAnalytics) {
-			GameAnalytics.NewDesignEvent ("Other:Device:DefaultDeviceHeight:" + DefaultDeviceHeight);
-			GameAnalytics.NewDesignEvent ("Other:Device:FramerateDeviceHeight:" + FramerateDeviceHeight);
-			GameAnalytics.NewDesignEvent ("Other:Device:RatioDeviceHeight:" + RatioDeviceHeight);
+//			GameAnalytics.NewDesignEvent ("Other:Device:DefaultDeviceHeight:" + DefaultDeviceHeight);
+//			GameAnalytics.NewDesignEvent ("Other:Device:FramerateDeviceHeight:" + FramerateDeviceHeight);
+//			GameAnalytics.NewDesignEvent ("Other:Device:RatioDeviceHeight:" + RatioDeviceHeight);
 		}
 		if (DebugLogDataSended) {
 			DebugLogSimple ("DefaultDeviceHeight", DefaultDeviceHeight.ToString ());
