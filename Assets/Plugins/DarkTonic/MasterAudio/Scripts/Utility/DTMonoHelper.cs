@@ -1,21 +1,26 @@
 /*! \cond PRIVATE */
 using UnityEngine;
+using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace DarkTonic.MasterAudio {
     // ReSharper disable once CheckNamespace
     public static class DTMonoHelper {
+        public static Transform GetChildTransform(this Transform transParent, string childName) {
+            #if UNITY_2017_1_OR_NEWER
+                return transParent.Find(childName);
+            #else
+                return transParent.FindChild(childName);
+            #endif
+        }
+
         /// <summary>
         /// This is a cross-Unity-version method to tell you if a GameObject is active in the Scene.
         /// </summary>
         /// <param name="go">The GameObject you're asking about.</param>
         /// <returns>True or false</returns>
         public static bool IsActive(GameObject go) {
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-        return go.active;
-#else
             return go.activeInHierarchy;
-#endif
         }
 
         /// <summary>
@@ -24,11 +29,25 @@ namespace DarkTonic.MasterAudio {
         /// <param name="go">The GameObject you're setting to active or inactive</param>
         /// <param name="isActive">True to set the object to active, false to set it to inactive.</param>
         public static void SetActive(GameObject go, bool isActive) {
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-        go.SetActiveRecursively(isActive);
-#else
             go.SetActive(isActive);
-#endif
+        }
+
+        public static void DestroyAllChildren(this Transform tran) {
+            var children = new List<GameObject>();
+
+            for (var i = 0; i < tran.childCount; i++) { 
+                children.Add(tran.GetChild(i).gameObject);
+            }
+
+            var failsafe = 0;
+            while (children.Count > 0 && failsafe < 200) {
+                var child = children[0];
+                GameObject.Destroy(child);
+                if (children[0] == child) {
+                    children.RemoveAt(0);
+                }
+                failsafe++;
+            }
         }
 
     }

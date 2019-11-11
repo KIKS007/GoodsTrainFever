@@ -1,10 +1,9 @@
-﻿#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-#else
+﻿using System.Collections.Generic;
 using DarkTonic.MasterAudio;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof (MasterCustomEventAttribute))]
+[CustomPropertyDrawer(typeof(MasterCustomEventAttribute))]
 // ReSharper disable once CheckNamespace
 public class MasterCustomEventPropertyDrawer : PropertyDrawer {
     // ReSharper disable once InconsistentNaming
@@ -20,19 +19,40 @@ public class MasterCustomEventPropertyDrawer : PropertyDrawer {
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-
         var ma = MasterAudio.SafeInstance;
         // ReSharper disable once RedundantAssignment
         var groupName = "[Type In]";
 
-        if (ma == null) {
+        var eventNames = new List<string>();
+
+        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+        if (ma != null) {
+            eventNames.AddRange(ma.CustomEventNames);
+        } else {
+            eventNames.AddRange(MasterAudio.CustomEventHardCodedNames);
+        }
+
+        var creators = Object.FindObjectsOfType(typeof(DynamicSoundGroupCreator)) as DynamicSoundGroupCreator[];
+        // ReSharper disable once PossibleNullReferenceException
+        foreach (var dsgc in creators) {
+            foreach (var custom in dsgc.customEventsToCreate) {
+                eventNames.Add(custom.EventName);
+            }
+        }
+
+        eventNames.Sort();
+        if (eventNames.Count > 1) { // "type in" back to index 0 (sort puts it at #1)
+            eventNames.Insert(0, eventNames[1]);
+        }
+
+        if (eventNames.Count == 0) {
             index = -1;
             typeIn = false;
             property.stringValue = EditorGUI.TextField(position, label.text, property.stringValue);
             return;
         }
 
-        index = ma.CustomEventNames.IndexOf(property.stringValue);
+        index = eventNames.IndexOf(property.stringValue);
 
         if (typeIn || index == -1) {
             index = 0;
@@ -40,8 +60,8 @@ public class MasterCustomEventPropertyDrawer : PropertyDrawer {
             position.height -= 16;
         }
 
-        index = EditorGUI.Popup(position, label.text, index, MasterAudio.Instance.CustomEventNames.ToArray());
-        groupName = MasterAudio.Instance.CustomEventNames[index];
+        index = EditorGUI.Popup(position, label.text, index, eventNames.ToArray());
+        groupName = eventNames[index];
 
         switch (groupName) {
             case "[Type In]":
@@ -59,4 +79,3 @@ public class MasterCustomEventPropertyDrawer : PropertyDrawer {
         }
     }
 }
-#endif

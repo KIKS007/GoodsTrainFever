@@ -1,6 +1,4 @@
-#if UNITY_5
-    // clip manager doesn't exist because they've closed off the API of the Audio Importer
-#else
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,20 +10,15 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 // ReSharper disable once CheckNamespace
-public class MasterAudioClipManager : EditorWindow {
+public class BulkAudioImporter : EditorWindow {
     private const string NoClipsSelected = "There are no clips selected.";
-    private const string CacheFilePath = "Assets/Plugins/DarkTonic/MasterAudio/audioImportSettings.xml";
     private const string AllFoldersKey = "[All]";
     private const int MaxPageSize = 200;
 
     private readonly AudioInfoData _clipList = new AudioInfoData();
 
-    private int _bulkBitrate = 156000;
-    private bool _bulk3D = true;
-    private bool _bulkForceMono;
-    private AudioImporterFormat _bulkFormat = AudioImporterFormat.Native;
-    private AudioImporterLoadType _bulkLoadType = AudioImporterLoadType.CompressedInMemory;
     private int _pageNumber;
+    private bool isBulkMode;
 
     private List<AudioInformation> _filterClips;
     private List<AudioInformation> _filteredOut;
@@ -34,19 +27,29 @@ public class MasterAudioClipManager : EditorWindow {
     private readonly List<string> _folderPaths = new List<string>();
     private string _selectedFolderPath = AllFoldersKey;
 
-    [MenuItem("Window/Master Audio/Master Audio Clip Manager")]
+    private readonly List<int> _sampleRates = new List<int> { 8000, 11025, 22050, 44100, 48000, 96000, 192000 };
+    private readonly string[] _sampleRateDisplays = new[] { "8000", "11025", "22050", "44100", "48000", "96000", "192000" };
+
+    [MenuItem("Window/Master Audio/Bulk Audio Importer")]
     // ReSharper disable once UnusedMember.Local
     static void Init() {
-        GetWindow(typeof(MasterAudioClipManager));
+        var window = GetWindow(typeof(BulkAudioImporter));
+
+#if UNITY_2019_3_OR_NEWER
+        window.maxSize = new Vector2(949, 610);
+#else
+        window.maxSize = new Vector2(954, 610);
+#endif
+        window.minSize = window.maxSize;
     }
 
     // ReSharper disable once UnusedMember.Local
     // ReSharper disable once InconsistentNaming
     void OnGUI() {
-        _outsideScrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width, position.height), _outsideScrollPos, new Rect(0, 0, 900, 666));
+        _outsideScrollPos = GUI.BeginScrollView(new Rect(0, 0, position.width, position.height), _outsideScrollPos, new Rect(0, 0, 936, 610));
 
-        if (MasterAudioInspectorResources.LogoTexture != null) {
-            DTGUIHelper.ShowHeaderTexture(MasterAudioInspectorResources.LogoTexture);
+        if (MasterAudioInspectorResources.BAILogoTexture != null) {
+            DTGUIHelper.ShowHeaderTexture(MasterAudioInspectorResources.BAILogoTexture);
         }
 
         EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
@@ -68,6 +71,9 @@ public class MasterAudioClipManager : EditorWindow {
             ApplySelected();
             return;
         }
+        GUILayout.Space(10);
+        GUILayout.Label("Bulk Mode");
+        isBulkMode = EditorGUILayout.Toggle("", isBulkMode, GUILayout.Width(30));
 
         GUILayout.Space(10);
         RevertColor();
@@ -91,7 +97,7 @@ public class MasterAudioClipManager : EditorWindow {
         EditorGUILayout.EndHorizontal();
 
         if (!File.Exists(CacheFilePath)) {
-            DTGUIHelper.ShowLargeBarAlert("Click 'Scan Project' to generate list of Audio Clips.");
+            DTGUIHelper.ShowColorWarning("Click 'Scan Project' to generate list of Audio Clips.");
             GUI.EndScrollView();
             return;
         }
@@ -149,8 +155,6 @@ public class MasterAudioClipManager : EditorWindow {
         // display
         DisplayClips();
 
-        ShowBulkOperations();
-
         GUI.EndScrollView();
     }
 
@@ -161,63 +165,6 @@ public class MasterAudioClipManager : EditorWindow {
 
         _filterClips = null;
         _filteredOut = null;
-    }
-
-    private void ShowBulkOperations() {
-        GUILayout.BeginArea(new Rect(0, 616, 895, 200));
-        GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-        GUI.contentColor = DTGUIHelper.BrightButtonColor;
-        GUILayout.Label("Bulk Settings: Click Copy buttons to copy setting to all selected."); //  the setting above it to all selected.
-        GUILayout.Space(26);
-
-        GUI.contentColor = DTGUIHelper.BrightButtonColor;
-        if (GUILayout.Button(new GUIContent("Copy", "Copy Compression bitrate above to all selected"), EditorStyles.toolbarButton, GUILayout.Width(45))) {
-            CopyBitrateToSelected();
-        }
-        GUILayout.Space(6);
-        if (GUILayout.Button(new GUIContent("Copy", "Copy 3D setting above to all selected"), EditorStyles.toolbarButton, GUILayout.Width(45))) {
-            Copy3DToSelected();
-        }
-
-        GUILayout.Space(8);
-        if (GUILayout.Button(new GUIContent("Copy", "Copy Force Mono setting above to all selected"), EditorStyles.toolbarButton, GUILayout.Width(45))) {
-            CopyForceMonoToSelected();
-        }
-
-        GUILayout.Space(26);
-        if (GUILayout.Button(new GUIContent("Copy", "Copy Audio Format setting above to all selected"), EditorStyles.toolbarButton, GUILayout.Width(45))) {
-            CopyFormatToSelected();
-        }
-
-        GUILayout.Space(101);
-        if (GUILayout.Button(new GUIContent("Copy", "Copy Load Type setting above to all selected"), EditorStyles.toolbarButton, GUILayout.Width(45))) {
-            CopyLoadTypeToSelected();
-        }
-
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-        GUI.contentColor = Color.white;
-
-        GUILayout.BeginHorizontal(DTGUIHelper.CornerGUIStyle);
-        GUILayout.Space(246);
-
-        _bulkBitrate = EditorGUILayout.IntSlider("", _bulkBitrate / 1000, 32, 256, GUILayout.Width(202)) * 1000;
-        GUILayout.Space(13);
-        _bulk3D = GUILayout.Toggle(_bulk3D, "");
-        GUILayout.Space(36);
-        _bulkForceMono = GUILayout.Toggle(_bulkForceMono, "");
-        GUILayout.Space(35);
-
-        _bulkFormat = (AudioImporterFormat)EditorGUILayout.EnumPopup(_bulkFormat, GUILayout.Width(136));
-
-        GUILayout.Space(6);
-
-        _bulkLoadType = (AudioImporterLoadType)EditorGUILayout.EnumPopup(_bulkLoadType, GUILayout.Width(140));
-
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-
-        GUILayout.EndArea();
     }
 
     private bool LoadAndTranslateFile() {
@@ -231,7 +178,7 @@ public class MasterAudioClipManager : EditorWindow {
             return false;
         }
 
-        if (_clipList.AudioInfor.Count == 0) {
+        if (_clipList.AudioInfor.Count == 0) { // TODO: what?
             _clipList.AudioInfor.Clear();
         }
 
@@ -301,7 +248,7 @@ public class MasterAudioClipManager : EditorWindow {
                     _filteredOut.AddRange(_clipList.AudioInfor);
                 }
 
-                _filteredOut.RemoveAll(delegate(AudioInformation obj) {
+                _filteredOut.RemoveAll(delegate (AudioInformation obj) {
                     return !obj.FullPath.ToLower().Contains(_clipList.SearchFilter.ToLower());
                 });
             }
@@ -312,7 +259,7 @@ public class MasterAudioClipManager : EditorWindow {
                     _filteredOut.AddRange(_clipList.AudioInfor);
                 }
 
-                _filteredOut.RemoveAll(delegate(AudioInformation obj) {
+                _filteredOut.RemoveAll(delegate (AudioInformation obj) {
                     // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
                     var index = obj.FullPath.ToLower().LastIndexOf(_selectedFolderPath.ToLower());
                     if (index <= -1) {
@@ -342,44 +289,53 @@ public class MasterAudioClipManager : EditorWindow {
             if (arrayToAddFrom.Count > 0) {
                 var isAsc = _clipList.SortDir == ClipSortDirection.Ascending;
 
-                arrayToAddFrom.Sort(delegate(AudioInformation x, AudioInformation y) {
-                    if (_clipList.SortColumn == ClipSortColumn.Name) {
-                        if (isAsc) {
-                            return x.Name.CompareTo(y.Name);
-                        }
-                        return y.Name.CompareTo(x.Name);
-                    }
-                    if (_clipList.SortColumn == ClipSortColumn.Bitrate) {
-                        if (isAsc) {
-                            return x.OrigCompressionBitrate.CompareTo(y.OrigCompressionBitrate);
-                        }
-                        return y.OrigCompressionBitrate.CompareTo(x.OrigCompressionBitrate);
-                    }
-                    if (_clipList.SortColumn == ClipSortColumn.Is3D) {
-                        if (isAsc) {
-                            return x.OrigIs3D.CompareTo(y.OrigIs3D);
-                        }
-                        return y.OrigIs3D.CompareTo(x.OrigIs3D);
-                    }
-                    if (_clipList.SortColumn == ClipSortColumn.ForceMono) {
-                        if (isAsc) {
-                            return x.OrigForceMono.CompareTo(y.OrigForceMono);
-                        }
-                        return y.OrigForceMono.CompareTo(x.OrigForceMono);
-                    }
-                    if (_clipList.SortColumn == ClipSortColumn.AudioFormat) {
-                        if (isAsc) {
-                            return x.OrigFormat.CompareTo(y.OrigFormat);
-                        }
-                        return y.OrigFormat.CompareTo(x.OrigFormat);
-                    }
-                    // ReSharper disable once InvertIf
-                    if (_clipList.SortColumn == ClipSortColumn.LoadType) {
-                        // ReSharper disable once ConvertIfStatementToReturnStatement
-                        if (isAsc) {
-                            return x.OrigLoadType.CompareTo(y.OrigLoadType);
-                        }
-                        return y.OrigLoadType.CompareTo(x.OrigLoadType);
+                arrayToAddFrom.Sort(delegate (AudioInformation x, AudioInformation y) {
+                    switch (_clipList.SortColumn) {
+                        case ClipSortColumn.Name:
+                            if (isAsc) {
+                                return x.Name.CompareTo(y.Name);
+                            }
+                            return y.Name.CompareTo(x.Name);
+                        case ClipSortColumn.ForceMono:
+                            if (isAsc) {
+                                return x.ForceMono.CompareTo(y.ForceMono);
+                            }
+                            return y.ForceMono.CompareTo(x.ForceMono);
+                        case ClipSortColumn.LoadInBackground:
+                            if (isAsc) {
+                                return x.LoadBG.CompareTo(y.LoadBG);
+                            }
+                            return y.LoadBG.CompareTo(x.LoadBG);
+                        case ClipSortColumn.PreloadAudio:
+                            if (isAsc) {
+                                return x.Preload.CompareTo(y.Preload);
+                            }
+                            return y.Preload.CompareTo(x.Preload);
+                        case ClipSortColumn.LoadType:
+                            if (isAsc) {
+                                return x.LoadType.CompareTo(y.LoadType);
+                            }
+                            return y.LoadType.CompareTo(x.LoadType);
+                        case ClipSortColumn.CompressionFormat:
+                            if (isAsc) {
+                                return x.CompressionFormat.CompareTo(y.CompressionFormat);
+                            }
+                            return y.CompressionFormat.CompareTo(x.CompressionFormat);
+                        case ClipSortColumn.Quality:
+                            if (isAsc) {
+                                return x.Quality.CompareTo(y.Quality);
+                            }
+                            return y.Quality.CompareTo(x.Quality);
+                        case ClipSortColumn.SampleRateSetting:
+                            if (isAsc) {
+                                return x.SampleRateSetting.CompareTo(y.SampleRateSetting);
+                            }
+                            return y.SampleRateSetting.CompareTo(x.SampleRateSetting);
+                        case ClipSortColumn.SampleRate:
+                            if (isAsc) {
+                                return x.SampleRateOverride.CompareTo(y.SampleRateOverride);
+                            }
+                            return y.SampleRateOverride.CompareTo(x.SampleRateOverride);
                     }
 
                     return x.Name.CompareTo(y.Name);
@@ -425,7 +381,7 @@ public class MasterAudioClipManager : EditorWindow {
         EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 
         GUI.contentColor = DTGUIHelper.BrightButtonColor;
-        if (GUILayout.Button("All", EditorStyles.toolbarButton, GUILayout.Width(36))) {
+        if (GUILayout.Button("All", EditorStyles.toolbarButton, GUILayout.Width(32))) {
             foreach (var t in FilteredClips) {
                 t.IsSelected = true;
             }
@@ -438,35 +394,49 @@ public class MasterAudioClipManager : EditorWindow {
         }
 
         GUI.contentColor = DTGUIHelper.BrightButtonColor;
-        GUILayout.Space(6);
         var columnPrefix = ColumnPrefix(ClipSortColumn.Name);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "Clip Name", "Click to sort by Clip Name"), EditorStyles.toolbarButton, GUILayout.Width(156))) {
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Clip Name", "Click to sort by Clip Name"), EditorStyles.toolbarButton, GUILayout.Width(160))) {
             ChangeSortColumn(ClipSortColumn.Name);
         }
 
-        columnPrefix = ColumnPrefix(ClipSortColumn.Bitrate);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "Compression (kbps)", "Click to sort by Compression Bitrate"), EditorStyles.toolbarButton, GUILayout.Width(214))) {
-            ChangeSortColumn(ClipSortColumn.Bitrate);
-        }
-
-        columnPrefix = ColumnPrefix(ClipSortColumn.Is3D);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "3D", "Click to sort by 3D"), EditorStyles.toolbarButton, GUILayout.Width(36))) {
-            ChangeSortColumn(ClipSortColumn.Is3D);
-        }
-
         columnPrefix = ColumnPrefix(ClipSortColumn.ForceMono);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "Force Mono", "Click to sort by Force Mono"), EditorStyles.toolbarButton, GUILayout.Width(80))) {
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Force Mono", "Click to sort by Force Mono"), EditorStyles.toolbarButton, GUILayout.Width(86))) {
             ChangeSortColumn(ClipSortColumn.ForceMono);
         }
 
-        columnPrefix = ColumnPrefix(ClipSortColumn.AudioFormat);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "Audio Format", "Click to sort by Audio Format"), EditorStyles.toolbarButton, GUILayout.Width(144))) {
-            ChangeSortColumn(ClipSortColumn.AudioFormat);
+        columnPrefix = ColumnPrefix(ClipSortColumn.LoadInBackground);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Load In BG", "Click to sort by Load In BG"), EditorStyles.toolbarButton, GUILayout.Width(80))) {
+            ChangeSortColumn(ClipSortColumn.LoadInBackground);
+        }
+
+        columnPrefix = ColumnPrefix(ClipSortColumn.PreloadAudio);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Preload Aud.", "Click to sort by Preload Audio Data"), EditorStyles.toolbarButton, GUILayout.Width(90))) {
+            ChangeSortColumn(ClipSortColumn.PreloadAudio);
         }
 
         columnPrefix = ColumnPrefix(ClipSortColumn.LoadType);
-        if (GUILayout.Button(new GUIContent(columnPrefix + "Load Type", "Click to sort by Load Type"), EditorStyles.toolbarButton, GUILayout.Width(182))) {
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Load Type", "Click to sort by Load Type"), EditorStyles.toolbarButton, GUILayout.Width(90))) {
             ChangeSortColumn(ClipSortColumn.LoadType);
+        }
+
+        columnPrefix = ColumnPrefix(ClipSortColumn.CompressionFormat);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Comp. Format", "Click to sort by Compression Format"), EditorStyles.toolbarButton, GUILayout.Width(96))) {
+            ChangeSortColumn(ClipSortColumn.CompressionFormat);
+        }
+
+        columnPrefix = ColumnPrefix(ClipSortColumn.Quality);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Quality", "Click to sort by Quality"), EditorStyles.toolbarButton, GUILayout.Width(65))) {
+            ChangeSortColumn(ClipSortColumn.Quality);
+        }
+
+        columnPrefix = ColumnPrefix(ClipSortColumn.SampleRateSetting);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Sample Rt. Setting", "Click to sort by Sample Rate Setting"), EditorStyles.toolbarButton, GUILayout.Width(122))) {
+            ChangeSortColumn(ClipSortColumn.SampleRateSetting);
+        }
+
+        columnPrefix = ColumnPrefix(ClipSortColumn.SampleRate);
+        if (GUILayout.Button(new GUIContent(columnPrefix + "Sample Rate", "Click to sort by Sample Rate"), EditorStyles.toolbarButton, GUILayout.Width(90))) {
+            ChangeSortColumn(ClipSortColumn.SampleRate);
         }
 
         GUILayout.FlexibleSpace();
@@ -477,7 +447,11 @@ public class MasterAudioClipManager : EditorWindow {
             return;
         }
 
-        _scrollPos = GUI.BeginScrollView(new Rect(0, 123, 896, 485), _scrollPos, new Rect(0, 124, 880, 24 * FilteredClips.Count + 4));
+#if UNITY_2019_3_OR_NEWER
+        _scrollPos = GUI.BeginScrollView(new Rect(0, 137, 947, 475), _scrollPos, new Rect(0, 138, 880, 24 * FilteredClips.Count - 2));
+#else
+        _scrollPos = GUI.BeginScrollView(new Rect(0, 123, 953, 485), _scrollPos, new Rect(0, 124, 880, 24 * FilteredClips.Count + 4));
+#endif
 
         foreach (var aClip in FilteredClips) {
             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
@@ -486,7 +460,11 @@ public class MasterAudioClipManager : EditorWindow {
             } else {
                 GUI.backgroundColor = Color.white;
             }
-            EditorGUILayout.BeginHorizontal(EditorStyles.miniButtonMid); // miniButtonMid, numberField, textField
+
+            GUIStyle style = new GUIStyle(EditorStyles.miniButtonMid) {
+                fixedHeight = 22
+            };
+            EditorGUILayout.BeginHorizontal(style); // miniButtonMid, numberField, textField
             EditorGUILayout.BeginHorizontal();
 
             var wasSelected = aClip.IsSelected;
@@ -498,13 +476,19 @@ public class MasterAudioClipManager : EditorWindow {
                 }
             }
 
-            var bitrateChanged = !aClip.OrigCompressionBitrate.Equals(aClip.CompressionBitrate);
-            var is3DChanged = !aClip.OrigIs3D.Equals(aClip.Is3D);
-            var isMonoChanged = !aClip.OrigForceMono.Equals(aClip.ForceMono);
-            var isFormatChanged = !aClip.OrigFormat.Equals(aClip.Format);
-            var isLoadTypeChanged = !aClip.OrigLoadType.Equals(aClip.LoadType);
+            var usesSampleRateOverride = aClip.SampleRateSetting == AudioSampleRateSetting.OverrideSampleRate;
+            var usesQuality = aClip.CompressionFormat == AudioCompressionFormat.Vorbis;
 
-            var hasChanged = bitrateChanged || is3DChanged || isMonoChanged || isFormatChanged || isLoadTypeChanged;
+            var isMonoChanged = !aClip.OrigForceMono.Equals(aClip.ForceMono);
+            var isLoadInBGChanged = !aClip.OrigLoadBG.Equals(aClip.LoadBG);
+            var isLoadTypeChanged = !aClip.OrigLoadType.Equals(aClip.LoadType);
+            var isPreloadAudioChanged = !aClip.OrigPreload.Equals(aClip.Preload);
+            var isCompFormatChanged = !aClip.OrigCompressionFormat.Equals(aClip.CompressionFormat);
+            var isSampleRateSettingChanged = !aClip.OrigSampleRateSetting.Equals(aClip.SampleRateSetting);
+            var isQualityChanged = usesQuality && !aClip.OrigQuality.Equals(aClip.Quality);
+            var isSampleRateChanged = usesSampleRateOverride && !aClip.OrigSampleRateOverride.Equals(aClip.SampleRateOverride);
+
+            var hasChanged = isMonoChanged || isLoadInBGChanged || isPreloadAudioChanged || isLoadTypeChanged || isCompFormatChanged || isSampleRateSettingChanged || isQualityChanged || isSampleRateChanged;
 
             if (!hasChanged) {
                 ShowDisabledColors();
@@ -524,60 +508,133 @@ public class MasterAudioClipManager : EditorWindow {
             GUILayout.Space(10);
             GUILayout.Label(new GUIContent(aClip.Name, aClip.FullPath), GUILayout.Width(150));
 
-            GUILayout.Space(10);
-            MaybeShowChangedColors(bitrateChanged);
-            var oldBitrate = aClip.CompressionBitrate;
-            var bitRate = (int)(aClip.CompressionBitrate * .001f);
-            aClip.CompressionBitrate = EditorGUILayout.IntSlider("", bitRate, 32, 256, GUILayout.Width(202)) * 1000;
-            if (oldBitrate != aClip.CompressionBitrate) {
+            GUILayout.Space(28);
+            MaybeShowChangedColors(isMonoChanged);
+            var newMono = GUILayout.Toggle(aClip.ForceMono, "", GUILayout.Width(40));
+            if (newMono != aClip.ForceMono) {
+                SelectClip(aClip);
+                aClip.IsSelected = true;
+                if (isBulkMode) {
+                    CopyForceMonoToSelected(newMono);
+                } else {
+                    aClip.ForceMono = newMono;
+                }
+            }
+            RevertColor();
+
+            GUILayout.Space(42);
+            MaybeShowChangedColors(isLoadInBGChanged);
+            var newLoadBG = GUILayout.Toggle(aClip.LoadBG, "", GUILayout.Width(40));
+            if (newLoadBG != aClip.LoadBG) {
                 aClip.IsSelected = true;
                 SelectClip(aClip);
+                if (isBulkMode) {
+                    CopyLoadInBGToSelected(newLoadBG);
+                } else {
+                    aClip.LoadBG = newLoadBG;
+                }
+            }
+            RevertColor();
+
+            GUILayout.Space(40);
+            MaybeShowChangedColors(isPreloadAudioChanged);
+            var newPreload = GUILayout.Toggle(aClip.Preload, "", GUILayout.Width(40));
+            if (newPreload != aClip.Preload) {
+                aClip.IsSelected = true;
+                SelectClip(aClip);
+                if (isBulkMode) {
+                    CopyPreloadAudioToSelected(newPreload);
+                } else {
+                    aClip.Preload = newPreload;
+                }
             }
             RevertColor();
 
             GUILayout.Space(12);
-            MaybeShowChangedColors(is3DChanged);
-            var old3D = aClip.Is3D;
-            aClip.Is3D = GUILayout.Toggle(aClip.Is3D, "");
-            if (old3D != aClip.Is3D) {
-                aClip.IsSelected = true;
-                SelectClip(aClip);
-            }
-            RevertColor();
-
-            GUILayout.Space(36);
-            MaybeShowChangedColors(isMonoChanged);
-            var oldMono = aClip.ForceMono;
-            aClip.ForceMono = GUILayout.Toggle(aClip.ForceMono, "", GUILayout.Width(40));
-            if (oldMono != aClip.ForceMono) {
-                aClip.IsSelected = true;
-                SelectClip(aClip);
-            }
-            RevertColor();
-
-            GUILayout.Space(10);
-            MaybeShowChangedColors(isFormatChanged);
-            var oldFmt = aClip.Format;
-
-            aClip.Format = (AudioImporterFormat)EditorGUILayout.EnumPopup(aClip.Format, GUILayout.Width(136));
-
-            if (oldFmt != aClip.Format) {
-                aClip.IsSelected = true;
-                SelectClip(aClip);
-            }
-            RevertColor();
-
-            GUILayout.Space(6);
             MaybeShowChangedColors(isLoadTypeChanged);
-            var oldLoad = aClip.LoadType;
-
-            aClip.LoadType = (AudioImporterLoadType)EditorGUILayout.EnumPopup(aClip.LoadType, GUILayout.Width(140));
-
-            if (oldLoad != aClip.LoadType) {
+            var newLoad = (AudioClipLoadType)EditorGUILayout.EnumPopup(aClip.LoadType, GUILayout.Width(84));
+            if (newLoad != aClip.LoadType) {
                 aClip.IsSelected = true;
                 SelectClip(aClip);
+                if (isBulkMode) {
+                    CopyLoadTypeToSelected(newLoad);
+                } else {
+                    aClip.LoadType = newLoad;
+                }
             }
             RevertColor();
+
+            GUILayout.Space(8);
+            MaybeShowChangedColors(isCompFormatChanged);
+            var newComp = (AudioCompressionFormat)EditorGUILayout.EnumPopup(aClip.CompressionFormat, GUILayout.Width(82));
+            if (newComp != aClip.CompressionFormat) {
+                aClip.IsSelected = true;
+                SelectClip(aClip);
+                if (isBulkMode) {
+                    CopyCompFormatToSelected(newComp);
+                } else {
+                    aClip.CompressionFormat = newComp;
+                }
+            }
+            RevertColor();
+
+            GUILayout.Space(8);
+            if (usesQuality) {
+                MaybeShowChangedColors(isQualityChanged);
+                var newQuality = EditorGUILayout.FloatField(aClip.Quality, GUILayout.Width(57));
+                newQuality = Math.Max(0f, newQuality);
+                newQuality = Math.Min(1f, newQuality);
+
+                if (newQuality != aClip.Quality) {
+                    aClip.IsSelected = true;
+                    SelectClip(aClip);
+                    if (isBulkMode) {
+                        CopyQualityToSelected(newQuality);
+                    } else {
+                        aClip.Quality = newQuality;
+                    }
+                }
+                RevertColor();
+            } else {
+                GUILayout.Space(61);
+            }
+
+            GUILayout.Space(4);
+            MaybeShowChangedColors(isSampleRateSettingChanged);
+            var newSample = (AudioSampleRateSetting)EditorGUILayout.EnumPopup(aClip.SampleRateSetting, GUILayout.Width(112));
+            if (newSample != aClip.SampleRateSetting) {
+                aClip.IsSelected = true;
+                SelectClip(aClip);
+                if (isBulkMode) {
+                    CopySampleRateSettingToSelected(newSample);
+                } else {
+                    aClip.SampleRateSetting = newSample;
+                }
+            }
+            RevertColor();
+
+            GUILayout.Space(4);
+            if (usesSampleRateOverride) {
+                MaybeShowChangedColors(isSampleRateChanged);
+                var selectedIndex = _sampleRates.IndexOf(aClip.SampleRateOverride);
+                if (selectedIndex < 0) {
+                    selectedIndex = 0;
+                }
+                var selectedValue = _sampleRates[selectedIndex];
+                var newSampleRate = EditorGUILayout.IntPopup(selectedValue, _sampleRateDisplays, _sampleRates.ToArray(), GUILayout.Width(82));
+                if (newSampleRate != aClip.SampleRateOverride) {
+                    aClip.IsSelected = true;
+                    SelectClip(aClip);
+                    if (isBulkMode) {
+                        CopySampleRateToSelected(newSampleRate);
+                    } else {
+                        aClip.SampleRateOverride = newSampleRate;
+                    }
+                }
+                RevertColor();
+            } else {
+                GUILayout.Space(78);
+            }
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
@@ -610,11 +667,15 @@ public class MasterAudioClipManager : EditorWindow {
     }
 
     private static void RevertChanges(AudioInformation info) {
-        info.CompressionBitrate = info.OrigCompressionBitrate;
         info.ForceMono = info.OrigForceMono;
-        info.Format = info.OrigFormat;
+        info.LoadBG = info.OrigLoadBG;
+        info.Preload = info.OrigPreload;
+
         info.LoadType = info.OrigLoadType;
-        info.Is3D = info.OrigIs3D;
+        info.Quality = info.OrigQuality;
+        info.CompressionFormat = info.OrigCompressionFormat;
+        info.SampleRateSetting = info.OrigSampleRateSetting;
+        info.SampleRateOverride = info.OrigSampleRateOverride;
     }
 
     private void ApplyClipChanges(AudioInformation info, bool writeChanges) {
@@ -622,13 +683,22 @@ public class MasterAudioClipManager : EditorWindow {
 
         // ReSharper disable once AccessToStaticMemberViaDerivedType
         var importer = (AudioImporter)AudioImporter.GetAtPath(info.FullPath);
-
-        importer.compressionBitrate = info.CompressionBitrate;
+        AudioImporterSampleSettings settings = importer.defaultSampleSettings;
 
         importer.forceToMono = info.ForceMono;
-        importer.format = info.Format;
-        importer.loadType = info.LoadType;
-        importer.threeD = info.Is3D;
+        importer.loadInBackground = info.LoadBG;
+        importer.preloadAudioData = info.Preload;
+        settings.loadType = info.LoadType;
+        settings.compressionFormat = info.CompressionFormat;
+        if (settings.compressionFormat == AudioCompressionFormat.Vorbis) {
+            settings.quality = info.Quality;
+        }
+        settings.sampleRateSetting = info.SampleRateSetting;
+        if (settings.sampleRateSetting == AudioSampleRateSetting.OverrideSampleRate) {
+            settings.sampleRateOverride = (uint)info.SampleRateOverride;
+        }
+
+        importer.defaultSampleSettings = settings;
 
         AssetDatabase.ImportAsset(info.FullPath, ImportAssetOptions.ForceUpdate);
         info.HasChanged = true;
@@ -663,12 +733,15 @@ public class MasterAudioClipManager : EditorWindow {
                 // ReSharper disable once PossibleNullReferenceException
                 var path = aNode.Attributes["path"].Value.Trim();
                 var clipName = aNode.Attributes["name"].Value.Trim();
-                var is3D = bool.Parse(aNode.Attributes["is3d"].Value);
-                var compressionBitrate = int.Parse(aNode.Attributes["bitRate"].Value);
                 var forceMono = bool.Parse(aNode.Attributes["forceMono"].Value);
+                var loadBG = bool.Parse(aNode.Attributes["loadBG"].Value);
+                var preload = bool.Parse(aNode.Attributes["preload"].Value);
 
-                var format = (AudioImporterFormat)Enum.Parse(typeof(AudioImporterFormat), aNode.Attributes["format"].Value);
-                var loadType = (AudioImporterLoadType)Enum.Parse(typeof(AudioImporterLoadType), aNode.Attributes["loadType"].Value);
+                var loadType = (AudioClipLoadType)Enum.Parse(typeof(AudioClipLoadType), aNode.Attributes["loadType"].Value);
+                var compressionFormat = (AudioCompressionFormat)Enum.Parse(typeof(AudioCompressionFormat), aNode.Attributes["compFormat"].Value);
+                var sampleRateSetting = (AudioSampleRateSetting)Enum.Parse(typeof(AudioSampleRateSetting), aNode.Attributes["sampleSetting"].Value);
+                var quality = float.Parse(aNode.Attributes["quality"].Value);
+                var sampleRate = int.Parse(aNode.Attributes["sampleRate"].Value);
 
                 currentPaths.Add(path);
 
@@ -677,26 +750,44 @@ public class MasterAudioClipManager : EditorWindow {
                     _folderPaths.Add(folderPath);
                 }
 
-                var matchingClip = _clipList.AudioInfor.Find(delegate(AudioInformation obj) {
+                var matchingClip = _clipList.AudioInfor.Find(delegate (AudioInformation obj) {
                     return obj.FullPath == path;
                 });
 
                 if (matchingClip == null) {
-                    var aud = new AudioInformation(path, clipName, is3D, compressionBitrate, forceMono, format, loadType);
+                    var aud = new AudioInformation(path, clipName, forceMono, loadBG, preload, loadType, compressionFormat, quality, sampleRateSetting, sampleRate);
                     _clipList.AudioInfor.Add(aud);
                 } else {
-                    matchingClip.OrigIs3D = is3D;
-                    matchingClip.OrigFormat = format;
-                    matchingClip.OrigLoadType = loadType;
                     matchingClip.OrigForceMono = forceMono;
-                    matchingClip.OrigCompressionBitrate = compressionBitrate;
+                    matchingClip.ForceMono = forceMono;
+
+                    matchingClip.OrigLoadBG = loadBG;
+                    matchingClip.LoadBG = loadBG;
+
+                    matchingClip.OrigPreload = preload;
+                    matchingClip.Preload = preload;
+
+                    matchingClip.OrigLoadType = loadType;
+                    matchingClip.LoadType = loadType;
+
+                    matchingClip.OrigCompressionFormat = compressionFormat;
+                    matchingClip.CompressionFormat = compressionFormat;
+
+                    matchingClip.OrigQuality = quality;
+                    matchingClip.Quality = quality;
+
+                    matchingClip.OrigSampleRateSetting = sampleRateSetting;
+                    matchingClip.SampleRateSetting = sampleRateSetting;
+
+                    matchingClip.OrigSampleRateOverride = sampleRate;
+                    matchingClip.SampleRateOverride = sampleRate;
                 }
 
                 _clipList.NeedsRefresh = false;
             }
 
             // delete clips no longer in the XML
-            _clipList.AudioInfor.RemoveAll(delegate(AudioInformation obj) {
+            _clipList.AudioInfor.RemoveAll(delegate (AudioInformation obj) {
                 return !currentPaths.Contains(obj.FullPath);
             });
         }
@@ -729,21 +820,17 @@ public class MasterAudioClipManager : EditorWindow {
             // ReSharper disable once AccessToStaticMemberViaDerivedType
             var importer = (AudioImporter)AudioImporter.GetAtPath(aPath);
 
-            var bitrate = importer.compressionBitrate;
-
-            if (bitrate < 0) {
-                bitrate = 156000;
-            }
-
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var newClip = new AudioInformation(aPath, Path.GetFileNameWithoutExtension(aPath), importer.threeD, bitrate, importer.forceToMono, importer.format, importer.loadType);
+            AudioImporterSampleSettings settings = importer.defaultSampleSettings;
+            var newClip = new AudioInformation(aPath, Path.GetFileNameWithoutExtension(aPath), importer.forceToMono, importer.loadInBackground, importer.preloadAudioData,
+                settings.loadType, settings.compressionFormat, settings.quality, settings.sampleRateSetting, int.Parse(settings.sampleRateOverride.ToString()));
 
             newClip.LastUpdated = updatedTime;
 
             audioInfo.AudioInfor.Add(newClip);
         }
 
-        audioInfo.AudioInfor.RemoveAll(delegate(AudioInformation obj) {
+        audioInfo.AudioInfor.RemoveAll(delegate (AudioInformation obj) {
             return obj.LastUpdated < updatedTime;
         });
 
@@ -764,29 +851,40 @@ public class MasterAudioClipManager : EditorWindow {
             var safeFilter = audInfo.SearchFilter.Replace("'", "").Replace("\"", "");
             sb.Append(string.Format("<Files searchFilter='{0}' sortColumn='{1}' sortDir='{2}'>", safeFilter, audInfo.SortColumn, audInfo.SortDir));
             foreach (var aud in audInfo.AudioInfor) {
-                var is3D = aud.HasChanged ? aud.Is3D : aud.OrigIs3D;
-                var bitrate = aud.HasChanged ? aud.CompressionBitrate : aud.OrigCompressionBitrate;
                 var mono = aud.HasChanged ? aud.ForceMono : aud.OrigForceMono;
-                var fmt = aud.HasChanged ? aud.Format : aud.OrigFormat;
+                var loadBG = aud.HasChanged ? aud.LoadBG : aud.OrigLoadBG;
+                var preload = aud.HasChanged ? aud.Preload : aud.OrigPreload;
+
                 var loadType = aud.HasChanged ? aud.LoadType : aud.OrigLoadType;
 
-                sb.Append(string.Format("<File path='{0}' name='{1}' is3d='{2}' bitRate='{3}' forceMono='{4}' format='{5}' loadType='{6}' />",
+                var compressionFormat = aud.HasChanged ? aud.CompressionFormat : aud.OrigCompressionFormat;
+                var quality = aud.HasChanged ? aud.Quality : aud.OrigQuality;
+
+                var sampleSetting = aud.HasChanged ? aud.SampleRateSetting : aud.OrigSampleRateSetting;
+                var sampleRate = aud.HasChanged ? aud.SampleRateOverride : aud.OrigSampleRateOverride;
+
+                sb.Append(string.Format("<File path='{0}' name='{1}' forceMono='{2}' loadBG='{3}' preload='{4}' loadType='{5}' compFormat='{6}' quality='{7}' sampleSetting='{8}' sampleRate='{9}' />",
                     UtilStrings.ReplaceUnsafeChars(aud.FullPath),
                     UtilStrings.ReplaceUnsafeChars(aud.Name),
-                    is3D,
-                    bitrate,
                     mono,
-                    fmt,
-                    loadType));
+                    loadBG,
+                    preload,
+                    loadType,
+                    compressionFormat,
+                    quality,
+                    sampleSetting,
+                    sampleRate));
             }
             sb.Append("</Files>");
 
             writer = new StreamWriter(CacheFilePath);
             writer.WriteLine(sb.ToString());
 
-            _clipList.AudioInfor.RemoveAll(delegate(AudioInformation obj) {
+            _clipList.AudioInfor.RemoveAll(delegate (AudioInformation obj) {
                 return obj.HasChanged;
             });
+
+            _filterClips = null; // re-generate the filtered list.
         }
         catch (Exception ex) {
             Debug.LogError("Error occurred constructing or writing audioImportSettings.xml file: " + ex);
@@ -807,11 +905,14 @@ public class MasterAudioClipManager : EditorWindow {
 
     public enum ClipSortColumn {
         Name,
-        Is3D,
-        Bitrate,
         ForceMono,
-        AudioFormat,
-        LoadType
+        LoadType,
+        CompressionFormat,
+        SampleRateSetting,
+        Quality,
+        SampleRate,
+        LoadInBackground,
+        PreloadAudio
     }
 
     public enum ClipSortDirection {
@@ -829,40 +930,57 @@ public class MasterAudioClipManager : EditorWindow {
     }
 
     public class AudioInformation {
-        public bool OrigIs3D;
-
-        public int OrigCompressionBitrate;
-        public int CompressionBitrate;
-        public AudioImporterFormat OrigFormat;
-        public AudioImporterLoadType OrigLoadType;
-        public AudioImporterFormat Format;
-        public AudioImporterLoadType LoadType;
-
-        public bool OrigForceMono;
+        public AudioClipLoadType OrigLoadType;
+        public AudioClipLoadType LoadType;
+        public AudioCompressionFormat OrigCompressionFormat;
+        public AudioCompressionFormat CompressionFormat;
+        public AudioSampleRateSetting OrigSampleRateSetting;
+        public AudioSampleRateSetting SampleRateSetting;
+        public int OrigSampleRateOverride;
+        public int SampleRateOverride;
+        public float OrigQuality;
+        public float Quality;
 
         public string FullPath;
         public string Name;
-        public bool Is3D;
+        public bool OrigForceMono;
         public bool ForceMono;
+        public bool OrigLoadBG;
+        public bool LoadBG;
+        public bool OrigPreload;
+        public bool Preload;
 
         public bool IsSelected;
         public bool HasChanged;
         public long LastUpdated;
 
-        public AudioInformation(string fullPath, string name, bool is3D, int compressionBitrate, bool forceMono, AudioImporterFormat format, AudioImporterLoadType loadType) {
-            OrigIs3D = is3D;
-            OrigCompressionBitrate = compressionBitrate;
+        public AudioInformation(string fullPath, string name, bool forceMono, bool loadInBG, bool preload, AudioClipLoadType loadType, AudioCompressionFormat compressionFormat, float quality, AudioSampleRateSetting sampleRateSetting, int sampleRateOverride) {
             OrigForceMono = forceMono;
-            OrigFormat = format;
+            ForceMono = forceMono;
+
+            OrigLoadBG = loadInBG;
+            LoadBG = loadInBG;
+
+            OrigPreload = preload;
+            Preload = preload;
+
             OrigLoadType = loadType;
+            LoadType = loadType;
+
+            OrigCompressionFormat = compressionFormat;
+            CompressionFormat = compressionFormat;
+
+            OrigSampleRateSetting = sampleRateSetting;
+            SampleRateSetting = sampleRateSetting;
+
+            OrigQuality = quality;
+            Quality = quality;
+
+            OrigSampleRateOverride = sampleRateOverride;
+            SampleRateOverride = sampleRateOverride;
 
             FullPath = fullPath;
             Name = name;
-            Is3D = is3D;
-            CompressionBitrate = compressionBitrate;
-            ForceMono = forceMono;
-            Format = format;
-            LoadType = loadType;
             IsSelected = false;
             HasChanged = false;
             LastUpdated = DateTime.MinValue.Ticks;
@@ -882,34 +1000,58 @@ public class MasterAudioClipManager : EditorWindow {
         return guiStyle;
     }
 
-    private void CopyBitrateToSelected() {
-        foreach (var aClip in SelectedClips) {
-            aClip.CompressionBitrate = _bulkBitrate;
-        }
-    }
-
-    private void Copy3DToSelected() {
-        foreach (var aClip in SelectedClips) {
-            aClip.Is3D = _bulk3D;
-        }
-    }
-
-    private void CopyForceMonoToSelected() {
+    private void CopyForceMonoToSelected(bool _bulkForceMono) {
         foreach (var aClip in SelectedClips) {
             aClip.ForceMono = _bulkForceMono;
         }
     }
 
-    private void CopyFormatToSelected() {
+    private void CopyLoadInBGToSelected(bool _bulkLoadInBG) {
         foreach (var aClip in SelectedClips) {
-            aClip.Format = _bulkFormat;
+            aClip.LoadBG = _bulkLoadInBG;
         }
     }
 
-    private void CopyLoadTypeToSelected() {
+    private void CopyPreloadAudioToSelected(bool _bulkPreload) {
+        foreach (var aClip in SelectedClips) {
+            aClip.Preload = _bulkPreload;
+        }
+    }
+
+    private void CopyLoadTypeToSelected(AudioClipLoadType _bulkLoadType) {
         foreach (var aClip in SelectedClips) {
             aClip.LoadType = _bulkLoadType;
         }
     }
+
+    private void CopyCompFormatToSelected(AudioCompressionFormat _bulkCompressionFormat) {
+        foreach (var aClip in SelectedClips) {
+            aClip.CompressionFormat = _bulkCompressionFormat;
+        }
+    }
+
+    private void CopyQualityToSelected(float _bulkQuality) {
+        foreach (var aClip in SelectedClips) {
+            aClip.Quality = _bulkQuality;
+        }
+    }
+
+    private void CopySampleRateSettingToSelected(AudioSampleRateSetting _bulkSampleRateSetting) {
+        foreach (var aClip in SelectedClips) {
+            aClip.SampleRateSetting = _bulkSampleRateSetting;
+        }
+    }
+
+    private void CopySampleRateToSelected(int _bulkSampleRateOverride) {
+        foreach (var aClip in SelectedClips) {
+            aClip.SampleRateOverride = _bulkSampleRateOverride;
+        }
+    }
+
+    private string CacheFilePath {
+        get {
+            var path = MasterAudio.MasterAudioFolderPath + "/audioImportSettings.xml";
+            return path;
+        }
+    }
 }
-#endif

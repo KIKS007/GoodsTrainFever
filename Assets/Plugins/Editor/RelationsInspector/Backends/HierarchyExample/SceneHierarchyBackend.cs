@@ -6,7 +6,10 @@ using UnityEditor;
 namespace RelationsInspector.Backend.Scene
 {
 	// don't save layouts. graphs will have identical seeds (scene obj), but different content
-	[SaveLayout( false )]
+	[Title("Scene hierarchy")]
+	[Version("1.0.0")]
+	[Description("Shows the scene's root GameObjects and their children.")]
+    [SaveLayout( false )]
 	public class SceneHierarchyBackend : IGraphBackend<Object, string>
 	{
 		RelationsInspectorAPI api;
@@ -16,7 +19,14 @@ namespace RelationsInspector.Backend.Scene
 		public void Awake( GetAPI getAPI )
 		{
 			api = getAPI(1) as RelationsInspectorAPI;
-			sceneObj = EditorGUIUtility.whiteTexture;   // any object will do
+			sceneObj = new GameObject();
+			sceneObj.name = "Scene";
+			sceneObj.hideFlags = HideFlags.HideAndDontSave;
+		}
+
+		bool IsSceneObject( Object obj )
+		{
+			return obj != null && obj.name == "Scene" && obj.hideFlags == HideFlags.HideAndDontSave;
 		}
 
 		public IEnumerable<Object> Init( object target )
@@ -90,7 +100,7 @@ namespace RelationsInspector.Backend.Scene
 		public void OnEntitySelectionChange( Object[] selection )
 		{
 			// forward our selection to unity's selection
-			Selection.objects = selection.Except( new[] { sceneObj } ).ToArray();
+			Selection.objects = selection.Where(o => !IsSceneObject( o ) ).ToArray();
 		}
 
 		public virtual void OnUnitySelectionChange() { }
@@ -98,7 +108,7 @@ namespace RelationsInspector.Backend.Scene
 		public IEnumerable<Relation<Object, string>> GetRelations( Object entity )
 		{
 			// the fake scene object gets special care
-			if ( entity == sceneObj )
+			if ( IsSceneObject( entity ) )
 			{
 				var allGOs = Object.FindObjectsOfType<GameObject>();
 				var rootGOs = allGOs.Where( go => go.transform.parent == null );
@@ -126,7 +136,7 @@ namespace RelationsInspector.Backend.Scene
 
 		public GUIContent GetContent( Object entity )
 		{
-			if ( entity == sceneObj )
+			if( IsSceneObject( entity ) )
 				return new GUIContent( "Scene", null, "The active scene" );
 
 			var content = EditorGUIUtility.ObjectContent( entity, entity.GetType() );

@@ -7,9 +7,9 @@ namespace DarkTonic.MasterAudio {
     // ReSharper disable once CheckNamespace
     public static class CoroutineHelper {
         public static IEnumerator WaitForActualSeconds(float time) {
-            var start = Time.realtimeSinceStartup;
+            var start = AudioUtil.Time;
 
-            while (Time.realtimeSinceStartup < start + time) {
+            while (AudioUtil.Time < start + time) {
                 yield return MasterAudio.EndOfFrameDelay;
             }
         }

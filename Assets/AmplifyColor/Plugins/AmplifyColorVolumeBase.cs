@@ -40,7 +40,7 @@ public class AmplifyColorVolumeBase : MonoBehaviour
 				else
 				{
 				#if !UNITY_5
-					center = box2d.center;
+					center = box2d.offset;
 				#else
 					center = box2d.offset;
 				#endif
@@ -74,7 +74,7 @@ public class AmplifyColorVolumeBase : MonoBehaviour
 			else
 			{
 			#if !UNITY_5
-				center = box2d.center;
+				center = box2d.offset;
 			#else
 				center = box2d.offset;
 			#endif

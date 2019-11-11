@@ -1,6 +1,288 @@
-MASTER AUDIO PLUGIN - By DarkTonic, Inc. (c) 2012-2016
+MASTER AUDIO PLUGIN - By DarkTonic, Inc. (c) 2012-2019
 
 - Code by Brian Hunsaker
+
+
+-V 4.2.7    - Fixed bug: Song Alias field was not used for IsSongPlaying or QueuePlaylistClip methods.
+			- Fixed many Inspector problems in Unity 2019.3 (beta).
+			- Now disabling all Sound Group Variation Game Objects not playing audio for increased performance!
+			- Removed the ability to Clone a variation from the Inspector, because Unity doesn't allow you to reparent it so it would be in the wrong location. You will need to clone Variations from the Hierarchy now.
+
+-V 4.2.6    - Added a toggle for "Remove Probability-Unplayed Variations" on the Master Audio Manager screen. Defaults to "on". If you turn it off, Variations that aren't played due to failing the Probability To Play check will not be removed from the pool, so they may be played again later through another probability check. 
+			- Fixed bug where a despawned or destroyed Game Object with Ambient Sound script would stop all playing instances of the Sound Group instead of just the single voice.
+
+-V 4.2.5    - Made compilation possible without having Physics3D and/or Physics2D installed. You will lose Occlusion / AmbientSound functionality and corresponding events on EventSounds depending on which you remove, but everything else will work. Check the Physics page on the documentation on how to get it compiling since you have to add a define for each missing package. Link here: http://www.dtdevtools.com/docs/masteraudio/Physics.htm
+
+-V 4.2.4	- Fixed warning: Script execution order thing with DGSC and Ambient Sound would log "missing sound group". Added a check so the warning doesn't happen. Fixed a similar bug last update but it was only half the problem.
+			- Fixed bug where re-enter mode of Ambient Sound wouldn't play anything after the first trigger enter if set to "fade in same sound".
+			- Fixed bug where adding a new song after song metadata is created in a Playlist won't add the required metadata properties, with no way to add them.
+			- Added MasterAudioPlaylistChange Playmaker Custom Action.
+			- Fixed invisible control headers on Unity 2019.
+
+-V 4.2.3    - Removed Upgrade to 3.5.5 button on Master Audio Manager since it's been over 4 years since that update. No longer needed.
+			- Fixed bug: TriggerExit doesn't fire when an object is disabled right after Instantiating and TriggerEnter instantly fires. This led to problems with sounds playing that should not be with AmbientSounds on pooled Game Objects (with Pool Boss or Core GameKit).
+			- Fixed bug: Ambient Sounds had a problem with "Use Closest Collider Position" where it didn't place the collider in the correct position initially.
+			- Fixed bug: Disabling the Audio Listener and enabling a different one would make Ambient Sound scripts stop working. Now I've added a method: MasterAudio.AudioListenerChanged, that you can call when the Listener changes to a differnet game object to fix it.
+			- Fixed compile error when using in conjuction with SteamVR due to their lack of namespacing their classes.
+			- Fixed warning: Script execution order thing with DGSC and Ambient Sound would log "missing sound group". Added a check so the warning doesn't happen. It was working properly aside from the warning.	
+			- Added a warning to the Console telling you that Ambient Sound script won't work if you have disabled collisions between Ignore Raycast layer and itself.
+			- Added FadeOutOldBusVoices, StopOldBusVoices, FadeOutOldSoundGroupVoices, StopOldSoundGroupVoices commands, where you define how many seconds "old" is.
+			- Added the above 4 new commands to Event Sounds.
+			- Added Comments field to Sound Groups (for your use only).
+			- Added "Sort Alpha" checkbox (defaults to true) in the Mixer section. If you uncheck it, things will appear in the same order as Hierarchy, otherwise sorted (works within bus filter as well).
+			- Added "Show Bus Colors" checkbox in mixer section (defaults to off). If you turn it on, you can select a color for each bus. Each Sound Group will have a small square of that color at the left of the mixer row.
+			- Added PlaylistAttribute, which you can decorate your public string variables in your scripts with. It will show a dropdown of all the Playlists in the Scene that you can select from.
+			- Added PlaylistEnded event to PlaylistController, so you can get subscribe and know when the last song is done playing (if the Playlist doesn't loop).
+
+-V 4.2.2	- Fixed bug: With gapless song transitions on, if you queued a song after a song already looped, it would start immediately. Now it wait until the end of the current loop.
+			- Fixed bug: With gapless song transitions on, if you play a song after one is already scheduled, it plays the same song twice in a row.
+			- Disabled prefab checking in Unity 2018.3+.
+
+-V 4.2.1	- Fixed bug: Ambient Sound Collider was wrong size sometimes.
+			- Fixed bug: Ambient Sound "follow nearest collider" setting didn't process as many per frame as you selected.
+			- Fixed bug: Unity 2018.3 beta will strip away most of the Audio Source Templates and Group Templates so you can't create Sound Groups. Added buttons to recognize missing templates and a button to add all.
+			- No PlaySound methods return a null PlaySoundResult object now, so no need to check for that.
+			- Added "Trigger Re-Enter Fade In Time" to Ambient Sounds, and a volume field as well.
+			- You can now use loop with custom start position, as long as the custom end position is 100%. Looping will go back to the beginning of the clip.
+			- We no longer try and detect if you're in Project View mode for sub-game objects, because it leads to extra workflow in Unity 2018.3.
+			- Resonance Audio buttons to add Resonance Audio Sources to all Variations is now a checkbox, and it now adds them to Groups created later and by DGSC's.
+			- Added integration for "Oculus Integration" plugin on Unity Asset Store. ONSP Audio Sources can now be added automatically to every Variation by clicking a checkbox in Advanced Settings / VR. You must install optional package "MA_Oculus" to get this. Move Oculus folder from Assets to Assets/Plugins, then move all files in any Editor folders inside that to Assets/Plugins/Editor/Oculus (create the folder).
+			- Fixed warning in Unity 2018.3 about deprecated WWW object.
+			- Fixed 2018.3 Inspectors - could not be used at runtime.
+
+-V 4.2.0    - Fixed bug: music was ducking if SFX silent (muted, 0 volume etc).
+			- Fixed bug: DGSC Sound Group with same name but different casing would cause error.
+			- Fixed bug: Sometimes on Scene load, a persistent MA game object would log an error with Ambient Sounds script.
+			- Fixed Inspector bug in Unity 2018.3.
+			- Fixed bug: Ambient Sound - created scripts were not updating at Fixed Update when that was selected in Advanced Settings.
+			- Breaking change: SongChanged event for PlaylistController now passes an additional parameter, which is the MusicSetting object. You will need to add it to your method signature if you are subscribing to that event. This new parameter lets you grab song metadata and other values from it.
+			- Changed minimum Sound retrigger time interval to 0.05 seconds.
+			- Added song metadata section for Playlists. Each Playlist can now have its own metadata properties you define. Each property has a name, data type, "is required", and "can have multiple per song" fields. Each song then lets you put values on each metadata property you use.
+			- Sample code to select songs based on metadata (simplest to use LINQ): 
+		        var playlist = PlaylistController.Instances[0].CurrentPlaylist;
+		        var favoriteSongs = playlist.MusicSettings.Select(f => f.metadataBoolValues.Any(x => x.PropertyName == "IsFavorite" && x.Value == true));
+				var songsByBrianOrChris = playlist.MusicSettings.Select(f => f.metadataStringValues.Any(x => x.PropertyName == "Author" && (x.Value == "Brian" || x.Value ==  "Chris")));
+				// MusicSettings also contains metadataIntValues and metadataFloatValues
+			- Added "specific variation" textbox to Ambient Sounds so you don't have to play a random one, although you still can.
+			- Added mesh sphere gizmo for Ambient Sounds so you can see the audible distance of the Sound Group, and know how close you need to be in Scene view.
+			- Added ability to configure Ambient Sound to fade the sound when it's out of range instead of stop abruptly. Useful for 2D sounds only really since you probably wouldn't hear it at the end of its max distance.
+			- Added ability to adjust the Max Distance of the Ambient Sound script while seeing the sphere gizmo to represent its size.
+			- Fixed bug in vp_Effect (UFPS integration package).
+			- Bulk changes for Variations now work differently. No bunch of copy buttons. You just select the Variations you want, change a field and it affects all checked Variations the same.
+			- Bulk changes for Songs in a single Playlist now added. You just select the Songs you want, change a field and it affects all checked Songs the same.
+			- Removed "Show Variation Gizmos" in Advanced Options. No more 'M' Gizmos. Removed "Show Gizmo" in Event Sounds as well.
+			- Added more Visual Settings options in Advanced Options. Show All Range Gizmos, Show Select Range Gizmos, and a color field for each. These control whether you see mesh sphere gizmos for Event Sounds and Ambient Sound showing the max distance of the selected audio.
+			- Added "Show Range Gizmo" checkbox in Event Sounds for Play Sound action, and Max Distance slider.
+
+-V 4.1.9	- Fixed compile error in Resonance Audio package.
+			- Fixed warning on Unity 2018.2
+			- Now compatible with Bolt Visual Scripting.
+
+-V 4.1.8    - Changed the default to not log to the Console when a same-named Master Audio or Playlist Controller is destroyed when you load a new Scene because you already had a persistent one. Also added a new setting to turn this back on for troubleshooting under Persist Between Scenes in Advanced Settings.
+	        - Fixed compile errors on UFPS integration.
+			- Fixed AmbientSounds, the Audio Source was not moving to closest collider point if you had that selected.
+			- Fixed bug with Ambient Sounds. Using "child colliders" did not follow the Audio Source.
+			- Fixed bug where Master Audio Inspector would show no indication of what error was (duplicate Sound Group name) after the initial popup.
+			- Added method MasterAudio.GetNextVariationForSoundGroup that only works for top-to-bottom Variation Sequence. It returns the AudioSource for the next Variation to be played.
+			- Moved "Use Spatialize" Advanced Setting under a new heading "VR Settings", that now indicates the chosen Spatializer Plugin in the header.
+			- Added support for Resonance Audio in Unity 2018+. Besides "Use Spatializer", there's now a new checkbox in VR Settings for "Spatialize Post FX" which will turn that checkbox on for all Sound Group Audio Sources at runtime. And there are buttons there to add Resonance Audio Source components to every Variation's or remove them, if you install the package mentioned next. Additionally, there's an optional package to install "MA_ResonanceAudio" that will make sure ResonanceAudioSource components get copied back and forth when using DGSC and Sound Group Organizers. Note that you will need to move the ResonanceAudio folder into Assets/Plugins to get this to compile though.
+
+-V 4.1.7    - Fixed compile error on Unity 2017.1.
+			- Fixed unpause mixer bug with Null Exception.
+			- Fixed bug: MasterAudio.TriggerNextPlaylistClip did not do SynchronizeClips correctly for non-layered music with 0 crossfade. It should work like the Next button in Jukebox. It should keep the position, not start at beginning.
+			- Fixed bug: Variation pitch would not always reset to original pitch on subsequent plays after GlideByPitch was used.
+			- Added "FadeOutAllSoundsOfTransform" to Master Audio API and to EventSounds script.
+			- Added "SoundLooped" delegate callback to Variations so you can get notified each time the audio loops back to the beginning.
+			- Added "Use Finite Looping" section to Variations so you can loop X times, then it will stop. Also has a Min / Max Loops field to choose a random number within the range.
+			- Added Master Audio Clip Manager for Unity 5+! Now you can bulk change import settings for all your audio clips, with file name / path filters and paging.
+
+-V 4.1.6    - Fixed bug: Occlusion hit triggers for raycasts code was incomplete.
+			- Fixed bug: RelationsInspector code would throw errors in Unity Cloud.
+			- Fixed bug: EventSounds logs errors to Console if listening to Custom Events.
+			- Fixed bug: MasterAudio.IsTransformPlayingSoundGroup returned wrong results most of the time.
+			- Fixed bug: Reloading the current Scene would log errors to Console.
+			- Fixed bug: Deleting a Sound Trigger event in Event Sounds was not undo-able.
+			- Fixed bug: Duck Groups were not removed from MasterAudio game object when DGSC disabled. Instead they were still there but for "[None]" Sound Group.
+			- Fixed bug: Doing a Playlist Controller fade while the music is ducked would first reset the volume back to the pre-ducked volume (louder).
+			- Fixed bug: Linked Groups did not show Sound Groups from Dynamic Sound Group Creator game objects in the Scene.
+			- Fixed bug: Could not preview any Sound Group in a Dynamic Sound Group Creator if no MasterAudio game object is in the current Scene.
+			- Added "Trigger Stay" & "Trigger Stay 2D" event to Event Sounds, with an amount of seconds to wait before performing the audio events.
+			- Added "Add Song To Queue" to Event Sounds for Playlist Controllers.
+			- Added "GlideByPitch" API to Variation. You specify target pitch and how long the glide takes, with optional callback.
+			- Added "GlideByPitch" option to to Sound Group, with optional callback.
+			- Added "GlideByPitch" option to to Bus, with optional callback.
+			- Added "Glide By Pitch" option to EventSounds script in the Inspector for Play Sound, and to Group Command, and to Bus Command with Raise Pitch and Lower Pitch options.
+			- Added "ToggleSoundGroup" and "ToggleSoundGroupOfTransform" API's. They will play the sound if it's not playing and fade/stop it out if it is playing. Also added these options to Event Sounds - Sound Group Command.
+			- Fixed compile errors for Unity 2018 and possibly 2017 certain versions?				
+			- "Use Random Start Position" on each Variation has been renamed to "Use Custom Start/End Position" and now contains another field for "End %" so you can end the clip on a certain percentage.
+			- Disabled "loop clip" when using Random Start/End Position, because it wouldn't loop with the clip portion anyway, although we'll try to add this feature later.
+			- Looped Chain transitions from one Variation to another are now seamless!
+			- End Linked Group transitions are now seamless!
+			- Removed "FX Tail Time" and "Add Filter FX" dropdown from Sound Groups. FX Tails and effects should be done on the Unity mixer.
+			- Added API to cancel the auto-unsubscribe SoundFinished delegate (if any) on a Variation. To use it, call the following: MasterAudio.GrabGroup("SoundGroupName").WillCleanUpDelegatesAfterStop = false;
+
+-V 4.1.5    - Fixed issue: When "save runtime changes" is on, Custom Events, Playlists, Duck Groups and Buses in DGSC's no longer stay in the Master Audio game object after hitting stop.
+			- Fixed bug: Relations Inspector didn't show linked groups of linked groups.
+			- Fixed warning on Unity_2017 having to do with "Save Runtime Changes".
+			- Fixed bug where Mechanim Timed Custom Event wouldn't play timed event unless other unrelated checkbox was checked.
+		    - Fixed bug where only 1 of an Audio Clip with "Preload Audio Data" could be played inside a single Sound Group at once.
+			- Added MasterAudio.DeleteGroupVariation to API.
+			- Added "Max Pos. Recalcs / Frame" for Ambient Sounds under Advanced Settings, for use with the new Use Closest Collider Position option.
+			- Added a setting in Advanced Settings to turn off the non-gravity RigidBody on ListenerFollower if you don't use Ambient Sounds script.
+			- Added logic to not rescan Groups in Master Audio Inspector unless the list of groups has changed.
+			- Updated Playmaker Custom Action "Master Audio Play Sound With Event" to have all the options that the Play Sound action has.
+			- Added "Use Closest Collider Position" checkbox to Ambient Sound script (Unity 5.6 and up only). This will reposition the Audio Source for the caller every frame to the closest point on the collider of the caller, if one exists. This overrides the "Follow Caller" option.
+			- Added the ability to choose top collider, child colliders or both with the Use Closest Collider Position option.
+			- Added the alternate "File Player Prefs" for XBox and made it the default for XBox platform. So now you can do Persistent Settings and other Player Pref dependent code on XBox as well.
+		    - Add a new setting under Audio Listener Settings on Advanced Settings, called Variation Update Method. Defaults to Late Update, but you can change it to Fixed Update if your Audio Listener is on a Physics (gravity rigidbody) object, so audio glitches will be eliminated.
+
+-V 4.1.4	- Fixed bug: Firing a Custom Event from a DynamicSoundGroupCreator didn't work when changing to a new Scene where that DGSC lives.
+			- Potential breaking change: Updated Playmaker Custom Action "Fire Custom Event" to allow use of a variable for the Game Object. If you were using this action, your previous "origin" will be lost since the variable type is now different. You will need to set it again.
+			- Added ability to MechanimStateSounds to be able to retrigger the "timed to animation sounds" every time the animation loops but the Mechanim State is not exited.
+			- Added all the timed to animation functionality of MechanimStateSounds to MechanimStateCustomEvents script.
+
+-V 4.1.3    - Fixed bug: with Loop Playlist off, last Resource file doesn't get unloaded at end. No code to detect this.
+			- You now can drag a folder containing 1 or more Audio Clips into the "Drag Audio Clips here" boxes. It can contain other things too - only the Audio Clips will be processed in bulk.
+		    - Added code to restore a slider's value during Awake if it has been used in Event Sounds to set Persistent volumes (music / mixer / group / bus). Now you don't have to write that code.
+			- Added new Log field of "Log Out Of Voices" in Advanced Settings. This is on by default. Will tell you when you run out of voices for the Bus / Sound Group / polyphony limits and other limits if turned on.
+			- Made "Disable Logging" shut off the non-important (info) logging as well.
+			- Removed "Variation Fading" option in Advanced Settings. Always does a stop if you "Fade Early" a Variation.
+			- Added a configurable fade time when stopping Variations from Stop Oldest option on the Bus. Default is 0.3 seconds. Settable from 0 - 1 second under Advanced Settings / Fading.
+			- Random volume and pitch settings are now heard through preview in edit mode.
+			- Added UFPS integration package.
+			- Added SongLooped event to PlaylistController.
+			- Added ability to play a Custom Event from Crossfade Start, Playlist Started, Playlist Ended & Song Looped on Playlist Controller.
+			- Updated all Inspector links to new domain (Dropbox is gone).
+
+-V 4.1.2	- Fixed compile errors for Unity 2017 beta.
+			- Fixed compile error in Unity 4.7.
+			- Fixed bug: Silent Variations would stop a Chained Loop when "played". No longer.
+			- Fixed bug: Occlusion didn't work outside of editor.
+			- Fixed bug: Ambient Sound script was not able to play a "file on internet" if it was not finished loading by the time Ambient Sound told it to play.
+			- Fixed bug: Playing an asyncronously loaded Resource file and then immediately telling it to FadeToVolume caused a Null Reference Exception.
+			- Fixed bug: Pausing a Playlist Controller without auto-advanced on would stop the song.
+			- Fixed bug: Occlusion didn't work if you started your Scene without an Audio Listener.
+			- Added missing "Sound Spawn Mode" dropdown to Footstep Sounds script.
+			- Added "timed to animation % complete" Sound Group + Custom Event firing for the 2 MechanimEvent scripts.
+			- Added multi-timed Sound Groups and "stop sound on state exit" checkboxes to MechanimStateSounds script.
+			- Added commands PauseBusOfTransform / UnpauseBusOfTransform / StopBusOfTransform. Added these to the Bus Commands on Event Sounds script as well.
+			- Song Transition Type "New Clip From Last Known Position" now does not hide the Song Start Position fields, but they are only used the first time each song is played.
+			- Added extension methods for all Master Audio methods that take a Transform object so now you can do the MA methods from the Transform itself. i.e. TransformVariable.StopSoundGroupOfTransform("SoundGroupName");
+			- Added new method: MasterAudio.IsTransformPlayingSoundGroup(string soundGroupName) - returns boolean
+			- Added new method: MasterAudio.GetAllPlayingVariationsOfTransform() - returns a list.
+			- Added "Probability to Play %" field to Variations. Defaults to 100%. If you select something less than 100%, it will calculate a random number (0-99) whenever it is selected to play and if the random number is less than the field, it will not play.
+			- Added 2-way tracking (added a component to caller game object shows all SFX playing from transform, with pause/stop/unpause buttons, and also has those buttons for each Sound Group and for all Sound Groups. This code only happens in the editor since it causes slight garbage collection.
+			- Added new options of willStopAfterFade and willResetVolumeAfterFade to MasterAudio.FadeSoundGroupToVolume and MasterAudio.FadeBusToVolume. Added checkboxes to EventSounds with these options.
+			- Added checkboxes for the new fade options to all the optional integration packages with other plugins.
+			- Added new method: MasterAudio.IsSoundGroupPlaying(string soundGroupName); returns true if any voices are playing or paused.
+			- Added play / stop / pause / unpause buttons in Group inspector.
+			- Added Custom Event Categories for visual organization.
+			- Upped Max Delay Between Looped Chain sounds from 20 seconds to 300.
+			- Added IsSongPlaying(songName) API method to PlaylistController.
+
+-V 4.1.1	- Fixed warnings for Unity 2017 beta.
+
+-V 4.1.0    - Fixed bug: Scene reloading would cause Custom Event Listeners to be shown increasingly more times as Listeners in the Inspectors.
+			- Fixed bug: If LowPassFilter already exists on Variation, Occlusion will log error when trying to add the Component.
+			- Fixed bug: Dynamic Sound Groups with "Use Localized Folder" would not correctly unload Resource files when the DGSC was disabled.
+			- Added "Add to Ducking" button to Bulk Group Changes section on Group Mixer. Will add all selected Groups to Music Ducking.
+			- Added "Use Spatializer" checkbox on Advanced Settings for Unity 5.4 and up. If checked, and you have selected "OculusSpatializer" from the Spatializer Plugin dropdown on AudioManager screen, then "Spatialize" checkbox on all Audio Sources for Sound Groups will be checked when you click enter Play mode.
+			- Added Audio Source Template of "Max Distance 10" and tweaked all Audio Source Templates so 0 is reached at max distance.
+			- Added option for Occlusion to choose whether "Ray Casts Hit Triggers". Defaults to true as that's the normal Unity option.
+			- Fixed Unity 5.6 compilation error.
+
+-V 4.0.9    - Changes to Linked Groups (on Sound Group Inspectors). There is no longer the option of "Play when Requested", only "play when played". Now there are separate sections for "Start Linked Groups" and "Stop Linked Groups". The "Start" ones are as before. The "Stop" ones enable chaining of Sound Groups, and play when the Sound Group's Variations stop playing. This lets you set up chains of FX.
+			- Added "Linked Groups To Play" dropdown for both Linked Group types (start and stop). Choices are "All" (default) and One At Random.
+			- SoundGroupAttribute now has a gear icon to edit the chosen Sound Group, and preview / stop icons.
+			- Added preview and stop buttons to Sound Group settings on Event Sounds.
+			- Master Audio game object is now in the Ignore Raycasts layer.	
+			- All children of Master Audio game object (followers / variations / etc) now take the layer of the MA game object once the Scene starts. This will help make the triggers used by Audio Listener Follower not interfere with raycasts.
+			- Now having more than one of the same Sound Group set up in Music Ducking will log a warning to the Console and show you a red error box in the Inspector.
+			- Added a button to Copy Settings in Sound Group's Inspector so that you can bulk copy the Voices / Weight field from one Variation to any/all others. This field was strangely missing from that section.
+
+-V 4.0.8	- Bug fix: Occlusion code no longer causes any Garbage Collection when occlusion is turned off (or on), except possibly during the frame that you turn it on during runtime (which wouldn't happen in normal game play I think).
+
+-V 4.0.7    - Important change: Changed "Occlusion Check Time Gap" setting to "Max Ray Casts Per Frame". Defaults to 4. The other setting wasn't distributing the load correctly on slow devices (mobile mostly). You may need to adjust this new setting to your liking.
+			- Fixed bug about stuttering gap on "Gapless" setting when using Song Transition Type of "New Song From Beginning".
+			- Fixed warnings in Unity 5 that happen when using "Save Runtime Changes" option.
+			- Fixed bug with volume jump during gapless transitions while setting PlaylistVolume from code.
+			- Fixed bug: during edit mode, could not change a Sound Group assigned to a bus back to [No Bus].
+			- Fixed bug: after unpausing a Sound Group, any playing Variations would not re-enabled the "Updater" script so fades wouldn't work.
+			- Fixed issue where a disabled AudioListener would still be used for Occlusion ray casts sometimes. Now it will find the first enabled one.
+			- Fixed bug: Audio Clips with Preload Audio Data = true would stop when told to pause.
+			- Fixed bug: Relations Inspector showed "MechanimState" settings set to "None". Now hidden.
+			- Fixed bug: Relations Inspector did not show Linked groups for some actions.
+			- Fixed bug: Doing a bus fade after using AdjustVolume on a Variation would lose the adjusted volume.
+			- Added AmbientSound script. There's a control for Sound Group and one for "follow caller" or not. This is the new best way to play ambient sounds, NOT using Event Sounds with Start event.
+			- Relations Inspector now shows Ambient scripts as well!
+			- Added 2 more smaller range Audio Source Templates. For any Master Audio and Dynamic Sound Group Creator prefabs you are already using, you will need to drag in the 2 new Audio Source Templates to make the red alert boxes telling you about them to disappear.
+			- Added Ray Cast Origin Offset slider to Occlusion settings. Also added a way to override that global setting on each Sound Group.
+			- Added Ray Cast Frequencies to each Sound Group so you can override the main settings per group.
+			- Added "Frequency Change Time (sec)" field on Occlusion Settings. Defaults to 0. This controls how long the new target frequency from the occlusion ray cast will take to transition. During this amount of time, there will be no further ray casts or occlusion calculations.
+
+-V 4.0.6	- Breaking change: MasterAudio.FireCustomEvent now requires a Transform to be passed in instead of a Vector3. The Transform's position will be used as the Vector3 was. Please change any of your own code calling this or you will not be able to compile. This is necessary for the new "Send To Receiver" modes coming of "same game object", "children" and "parents".
+			- Possible breaking change: Added "Song Start Time Mode" dropdown in each song. Choices are "Beginning", "Specific Time", and "Random Time". The default is Beginning so if you previously had set a Start Time of non-zero, you will need to select either Specific Time or Random Time. Random Time gives you 2 fields for min and max seconds.
+			- Fixed bug: Deleting a bus with a sound playing would not adjust the volume of the sound in Unity 4.
+			- Fixed bug: Adjusting more than one bus volume during play would incorrectly re-max sound effects on the first lowered volume bus.
+			- Fixed bug: Sometimes the "save changes" feature would log an error about duplicate key.
+			- Fixed bug: Master Audio would fail to play a sound when the only variation left in the random leftover pool was already playing before the pool refilled.
+			- Fixed bug: Immediately trying to call AdjustVolume on a sound that you just started playing would not work.
+			- Fixed bug: Calling AdjustVolume on a sound that you just started playing at zero volumePercentage would not adjust and not be audible.
+			- Fixed bug: Changing to another Scene with a non-persistent Master Audio game object and occlusion enabled would sometimes log errors to the Console.
+			- Fixed bug: Auto-advance Playlists with short clips would not be truly gapless on some songs when Gapless was enabled.
+			- Fixed bug: Pausing and unpausing a gapless Playlist would not always restart the scheduled song at the right time.
+			- Fixed bug: Fading code so that it still fades for the proper amount of time even if you don't have a stable frame rate.
+			- Fixed bug: All Group Templates so Retrigger Percentage is set to 100% (uninterruptible).
+			- Fixed bug: Gapless song transition occasional bug with single playlist.
+			- Fixed bug: Start on Awake with gapless combo for Playlists that would schedule multiple songs instead of one, creating weird overlapping audio.
+			- Fixed bug: Muted Sound Groups will now play silently instead of not at all.
+			- Fixed bug: When there is a Soloed Sound Group or Bus, non-soloed Sound Groups will now play silently instead of not at all.
+			- Fixed bug: Mute / Solo switches now work at runtime on already playing Sound Groups.
+			- Fixed bug: Numerous display bugs with mute/solo reset & mixer mute coordination.
+			- Fixed bug: Deleting then undeleting a Sound Group (pressing undo) at runtime would break that Sound Group (can't play). Now it works.
+			- Made MasterAudio.GetCustomEventByName public.
+			- Updated Playmaker, NodeCanvas & Behavior Designer optional packages to compile with the breaking change above. You will need to reinstall the latest version of these if you are using them.
+			- Added new Send To Receivers modes to Custom Events: OnSameGameObject, OnChildGameObjects, OnParentGameObjects, OnSameOrChildGameObject, and OnSameOrParentGameObject. These work as expected. A good way to limit recipients when you can't depend on position.
+			- Added new Random and Distance criteria to Custom Events. Field: "Valid Receivers". Options: All (default), Random and Closest. For the latter 2 options you specify a number. That means you can have only the 3 closest receivers receive the event, or 2 random receivers.
+			- Changed default "Retrigger Percentage" on Sound Groups to 100, so they are uninterruptible and can't be stolen while playing.
+			- Changed last remaining "Resume" API's to "Unpause" instead. If you are using these from your own code, please update their usage.
+			- Jukebox control now appears on each Playlist Controller's Inspector at runtime.
+			- Variation and Group Inspectors now show "paused" indicator instead of "playing X%" when it's paused.
+			- Added "StopPlaylistAfterCurrentSong" to EventSounds, MasterAudio and PlaylistController. It cancels all queued / scheduled songs, stops looping the current song and disables auto-advance for the Playlist Controller.
+			- Added a way to specify code to execute for "LastVariationInSoundGroupFinishedPlaying" for a Sound Group. Call MasterAudio.SubscribeToLastVariationPlayed and add your code there.
+
+-V 4.0.5	- Fixed bug: Audio Clips with Preload Audio Data = false would unload when pausing. Now it uses the same checkbox in Advanced Settings "Keep Paused Resources" to decide whether to unload or not.
+			- Now "File on Internet" Audio Clips show up with a name instead of blank on the Audio Source.
+			- Fixed illegal seek position for PlaylistControllers under uncommon scenario.
+			- Added  "Collapse All Events" button in EventSounds Inspector.
+			- Added "Fire!" button in Event Sounds Inspector at runtime for Custom Events, Mechanim State Changed and all other events so you can test the audio configured in the event without making it actually happen.
+			- Removed MasterAudio.PlaySound3DAndForget method. It was the same as PlaySoundAndForget and the documentation was wrong.
+			- Fixed bug: "Follow Audio Listener" would move already playing Variations that didn't follow their caller when the MA game object moved. Removed option for "Follow Audio Listener" and now play audio for previewing directly on the AudioListener game object.
+
+-V 4.0.4    - Added MasterAudio.RouteGroupToBus method to reassign Sound Group to a different bus at runtime.
+			- Fixed compile error for Playmaker actions that were broken in 4.0.3 update.
+			- Added gear icon next to Linked Groups so you can edit them if desired.
+			- Jukebox time remaining for song now accounts for pitch other than 1 and shows actual real time remaining.
+			- Now the Delete icon for Sound Groups is available at runtime.
+			- API renaming for more consistency. MasterAudio.CreateNewSoundGroup is now CreateSoundGroup, RemoveSoundGroup is now DeleteSoundGroup, DeleteBus is now DeleteBusByIndex.
+			- More API renaming for more consistency. MasterAudio.ResumeAllPlaylists is now UnpauseAllPlaylists.
+			- Bug fixed: Deleting a bus will reassign all Groups on that bus to "no bus" and recalculate all Groups that were assigned to it (spatial blend / volumes). 
+			- Bug fixed: "type in" now allows type in for all Event Sounds dropdowns (sorting previously added made it not work in some places).
+			- Bug fixed: "Start" Playlist functions would not work when you enter a new Scene with a persistent and same clone of the Playlist Controller (which gets destroyed automatically).
+			- Bug fixed: Unpausing a stopped Playlist Controller was clicking "play", so it started songs over.
+			- Bug fixed: When using gapless transitions was not auto-advancing songs when you had multiple Synced Playlist Controllers.
+			- Bug fixed: When adding 2nd Playlist layer (Cynced) not even playing, layer 1 repeats 2nd song.
+			- Bug fixed: Updated Behavior Designer compile errors from changes.
+			- Updated Node Canvas compile errors from changes.
+			- Added "Route To Bus" to Event Sounds, under Group Control type.
+			- Added optional System.Action completedAction to all PlaySoundXAndWaitUntilFinished methods, to execute code when completed.
+			- Added a boolean return value for the MasterAudio.PlaySoundXAndForget methods, so you at least know if the sound was played or scheduled (both return true, false otherwise).
+			- Now not logging the warning about next gapless song rescheduled if you are paused.
+			- Added new code to make layered gapless music always accurate on next song transition.
+			- Added "Initialized Custom Event" to each Playlist Controller, which fires if you select one in the Inspector after the Controller is done initializing and is ready.
+			- Added buttons in the top section of Master Audio game object to pause/unpause/stop the mixer and all Playlists at once. Only visible at runtime.
+			- Custom Events in Dynamic SGC's now show up in the dropdown in the Inspector created by MasterCustomEvent Attribute decorated fields.
+			- Sound Groups in Dynamic SGC's now show up in the dropdown in the Inspector created by SoundGroup Attribute decorated fields.
 
 -V 4.0.3    - Fixed bug where Retrigger Limit using frames caused errors.
 			- Fixed bug where Occlusion check after loading a Dynamic SGC on a new Scene would log errors.

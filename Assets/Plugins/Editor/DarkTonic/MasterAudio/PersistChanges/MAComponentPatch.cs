@@ -6,9 +6,12 @@ using System.Text;
 using System.Xml.Serialization;
 using UnityEditor;
 using UnityEngine;
+using DarkTonic.MasterAudio;
 
 // ReSharper disable once CheckNamespace
 public class MAComponentPatch {
+    private const string IgnoredPropertyNames = ";useConeFriction;sleepVelocity;sleepAngularVelocity;WillCleanUpDelegatesAfterStop;roomRolloffFactor;";
+
     private Dictionary<string, object> _values;
 
     public MAComponentPatch(Component component) {
@@ -38,16 +41,25 @@ public class MAComponentPatch {
             return;
         }
 
-        _values = new Dictionary<string, object>();
+        _values = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
         var properties = GetProperties();
         var fields = GetFields();
 
         foreach (var property in properties) {
+            if (IgnoredPropertyNames.Contains(";" + property.Name + ";")) {
+                continue;
+            }
+            if (_values.ContainsKey(property.Name)) {
+                continue;
+            }
             _values.Add(property.Name, property.GetValue(ComponentObject, null));
         }
         foreach (var field in fields) {
-            _values.Add(field.Name, field.GetValue(ComponentObject));
+            if (_values.ContainsKey(field.Name)) {
+				continue;
+			}
+			_values.Add(field.Name, field.GetValue(ComponentObject));
         }
     }
 
@@ -104,21 +116,39 @@ public class MAComponentPatch {
                 if (null != property) {
                     var currentValue = property.GetValue(ComponentObject, null);
 
-                    if (!HasValueChanged(newValue, currentValue))
-                    {
+                    if (!HasValueChanged(newValue, currentValue))                     {
                         continue;
                     }
+
                     property.SetValue(ComponentObject, newValue, null);
                     resultChangedComponent = ComponentObject;
                 } else {
                     var field = ComponentObject.GetType().GetField(name);
                     var currentValue = field.GetValue(ComponentObject);
 
-                    if (!HasValueChanged(newValue, currentValue))
-                    {
+                    if (!HasValueChanged(newValue, currentValue))                     {
                         continue;
                     }
 
+					if (ComponentObject.ToString().Contains("DarkTonic.MasterAudio.MasterAudio")) {
+						switch (field.Name) {
+							case "customEvents":
+								FilterOutDGSCCustomEvents(ref newValue);
+								break;
+							case "customEventCategories":
+								FilterOutDGSCCustomEventCategories(ref newValue);
+								break;
+							case "musicPlaylists":
+								FilterOutDGSCPlaylists(ref newValue);
+								break;
+							case "groupBuses":
+								FilterOutDGSCBuses(ref newValue);
+								break;
+							case "musicDuckingSounds":
+								FilterOutDGSCDuckGroups(ref newValue);
+								break;
+						} 
+					}
                     field.SetValue(ComponentObject, newValue);
                     resultChangedComponent = ComponentObject;
                 }
@@ -126,9 +156,118 @@ public class MAComponentPatch {
         }
 
         _values = null;
-
         return resultChangedComponent;
     }
+
+	private static void FilterOutDGSCDuckGroups(ref object duckGroups) {
+		var ducks = duckGroups as List<DuckGroupInfo>;
+		if (ducks == null) {
+			return;
+		}
+
+		var itemsToDelete = new List<DuckGroupInfo>(ducks.Count);
+
+		for (var i = 0; i < ducks.Count; i++) {
+			var aDuck = ducks[i];
+			if (aDuck.isTemporary) {
+				itemsToDelete.Add(aDuck);
+			}
+		}
+		
+		for (var i = 0; i < itemsToDelete.Count; i++) {
+			ducks.Remove(itemsToDelete[i]);
+		}
+		
+		duckGroups = ducks;
+	}
+
+	private static void FilterOutDGSCBuses(ref object busList) {
+		var buses = busList as List<GroupBus>;
+		if (buses == null) {
+			return;
+		}
+
+		var itemsToDelete = new List<GroupBus>(buses.Count);
+
+		for (var i = 0; i < buses.Count; i++) {
+			var aBus = buses[i];
+			if (aBus.isTemporary) {
+				itemsToDelete.Add(aBus);
+			}
+		}
+		
+		for (var i = 0; i < itemsToDelete.Count; i++) {
+			buses.Remove(itemsToDelete[i]);
+		}
+		
+		busList = buses;
+	}
+
+	private static void FilterOutDGSCPlaylists(ref object pList) {
+		var playlists = pList as List<MasterAudio.Playlist>;
+		if (playlists == null) {
+			return;
+		}
+
+		var itemsToDelete = new List<MasterAudio.Playlist>(playlists.Count);
+
+		for (var i = 0; i < playlists.Count; i++) {
+			var aPlaylist = playlists[i];
+			if (aPlaylist.isTemporary) {
+				itemsToDelete.Add(aPlaylist);
+			}
+		}
+
+		for (var i = 0; i < itemsToDelete.Count; i++) {
+			playlists.Remove(itemsToDelete[i]);
+		}
+
+		pList = playlists;
+	}
+
+	private static void FilterOutDGSCCustomEventCategories(ref object cats) {
+		var custEventCats = cats as List<CustomEventCategory>;
+		if (custEventCats == null) {
+			return;
+		}
+		
+		var itemsToDelete = new List<CustomEventCategory>(custEventCats.Count);
+
+		for (var i = 0; i < custEventCats.Count; i++) {
+			var aCat = custEventCats[i];
+			if (aCat.IsTemporary) {
+				itemsToDelete.Add(aCat);
+			}
+		}
+
+		for (var i = 0; i < itemsToDelete.Count; i++) {
+			custEventCats.Remove(itemsToDelete[i]);
+		}
+
+		cats = custEventCats;
+	}
+
+	private static void FilterOutDGSCCustomEvents(ref object events) {
+		var custEvents = events as List<CustomEvent>;
+		if (custEvents == null) {
+			return;
+		}
+
+		var itemsToDelete = new List<CustomEvent>(custEvents.Count);
+
+		for (var i = 0; i < custEvents.Count; i++) {
+			var anEvent = custEvents[i];
+			if (anEvent.isTemporary) {
+				itemsToDelete.Add(anEvent);
+			}
+		}
+
+		for (var i = 0; i < itemsToDelete.Count; i++) {
+			custEvents.Remove(itemsToDelete[i]);
+		}
+
+		events = custEvents;
+	}
 
     private static bool HasValueChanged(object newValue, object oldValue) {
         var valuesChanged = true;

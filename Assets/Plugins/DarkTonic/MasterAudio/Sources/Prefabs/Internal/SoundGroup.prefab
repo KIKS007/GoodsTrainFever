@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400008}
   - 114: {fileID: 11400000}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SoundGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   isSelected: 0
   isExpanded: 1
   groupMasterVolume: 1
-  retriggerPercentage: 50
+  retriggerPercentage: 100
   curVariationMode: 0
   alwaysHighestPriority: 0
   chainLoopDelayMin: 0
@@ -62,8 +62,11 @@ MonoBehaviour:
   logSound: 0
   copySettingsExpanded: 0
   selectedVariationIndex: 0
-  childGroupMode: 0
+  expandLinkedGroups: 0
   childSoundGroups: []
+  endLinkedGroups: []
+  linkedStartGroupSelectionType: 0
+  linkedStopGroupSelectionType: 0
   limitMode: 0
   limitPerXFrames: 1
   minimumTimeBetween: .100000001
@@ -73,11 +76,16 @@ MonoBehaviour:
   targetDespawnedBehavior: 0
   despawnFadeTime: 1
   isUsingOcclusion: 0
+  willOcclusionOverrideRaycastOffset: 0
+  occlusionRayCastOffset: 0
+  willOcclusionOverrideFrequencies: 0
+  occlusionMaxCutoffFreq: 0
+  occlusionMinCutoffFreq: 22000
   isSoloed: 0
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 0
+  frames: 316
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

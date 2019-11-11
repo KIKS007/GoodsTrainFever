@@ -1,5 +1,4 @@
-﻿#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-#else
+﻿using System.Collections.Generic;
 using DarkTonic.MasterAudio;
 using UnityEditor;
 using UnityEngine;
@@ -23,17 +22,42 @@ public class SoundGroupPropertyDrawer : PropertyDrawer {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         var ma = MasterAudio.SafeInstance;
         // ReSharper disable once RedundantAssignment
-        var groupName = "[Type In]";
+		var groupName = MasterAudio.NoGroupName;
 
-        if (ma == null) {
-            //Debug.LogError("No Master Audio prefab in Scene. Cannot use Sound Group Property Drawer.");
+        var groupNames = new List<string>();
+
+        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+        if (ma != null) {
+            groupNames.AddRange(ma.GroupNames);
+        } else {
+            groupNames.AddRange(MasterAudio.SoundGroupHardCodedNames);
+        }
+
+        var creators = Object.FindObjectsOfType(typeof(DynamicSoundGroupCreator)) as DynamicSoundGroupCreator[];
+        // ReSharper disable once PossibleNullReferenceException
+        foreach (var dsgc in creators) {
+            var trans = dsgc.transform;
+            for (var i = 0; i < trans.childCount; ++i) {
+                var group = trans.GetChild(i).GetComponent<DynamicSoundGroup>();
+                if (group != null) {
+                    groupNames.Add(group.name);
+                }
+            }
+        }
+
+        groupNames.Sort();
+        if (groupNames.Count > 1) { // "type in" back to index 0 (sort puts it at #1)
+            groupNames.Insert(0, groupNames[1]);
+        }
+
+        if (groupNames.Count == 0) {
             index = -1;
             typeIn = false;
             property.stringValue = EditorGUI.TextField(position, label.text, property.stringValue);
             return;
         }
 
-        index = ma.GroupNames.IndexOf(property.stringValue);
+        index = groupNames.IndexOf(property.stringValue);
 
         if (typeIn || index == -1) {
             index = 0;
@@ -41,8 +65,9 @@ public class SoundGroupPropertyDrawer : PropertyDrawer {
             position.height -= 16;
         }
 
-        index = EditorGUI.Popup(position, label.text, index, MasterAudio.Instance.GroupNames.ToArray());
-        groupName = MasterAudio.Instance.GroupNames[index];
+		position.width -= 82;
+		index = EditorGUI.Popup(position, label.text, index, groupNames.ToArray());
+        groupName = groupNames[index];
 
         switch (groupName) {
             case "[Type In]":
@@ -58,7 +83,30 @@ public class SoundGroupPropertyDrawer : PropertyDrawer {
                 property.stringValue = groupName;
                 break;
         }
-    }
-}
 
-#endif
+		if (typeIn || property.stringValue == MasterAudio.NoGroupName) {
+			return;
+		}
+
+		var sType = property.stringValue;
+		var settingsIcon = MasterAudioInspectorResources.GearTexture;
+		var buttonRect = new Rect(position.xMax + 4, position.y, 24, 16);
+
+		if (GUI.Button(buttonRect, new GUIContent("", settingsIcon))) {
+			var trs = MasterAudio.FindGroupTransform(property.stringValue);
+			if (trs != null) {
+				Selection.activeObject = trs;
+			}
+		}
+
+		buttonRect = new Rect(position.xMax + 30, position.y, 24, 16);
+		if (GUI.Button(buttonRect, new GUIContent("", MasterAudioInspectorResources.PreviewTexture))) {
+			DTGUIHelper.PreviewSoundGroup(sType);
+		}
+
+		buttonRect = new Rect(position.xMax + 56, position.y, 24, 16);
+		if (GUI.Button(buttonRect, new GUIContent("", MasterAudioInspectorResources.StopTexture))) {
+			DTGUIHelper.StopPreview(sType);
+		}
+	}
+}

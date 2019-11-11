@@ -28,7 +28,7 @@ GameObject:
   - 4: {fileID: 400002}
   - 114: {fileID: 11400004}
   m_Layer: 0
-  m_Name: Uninterruptible
+  m_Name: Interruptible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   isSelected: 0
   isExpanded: 1
   groupMasterVolume: 1
-  retriggerPercentage: 100
+  retriggerPercentage: 50
   curVariationMode: 0
   alwaysHighestPriority: 0
   chainLoopDelayMin: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 0
+  frames: 318
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

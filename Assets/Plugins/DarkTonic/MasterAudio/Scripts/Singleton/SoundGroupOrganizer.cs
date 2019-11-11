@@ -26,7 +26,12 @@ namespace DarkTonic.MasterAudio {
         public List<CustomEventSelection> selectedSourceCustomEvents = new List<CustomEventSelection>();
         public List<CustomEventSelection> selectedDestCustomEvents = new List<CustomEventSelection>();
         public List<CustomEvent> customEvents = new List<CustomEvent>();
+        public List<CustomEventCategory> customEventCategories = new List<CustomEventCategory> {
+            new CustomEventCategory()
+        };
         public string newEventName = "my event";
+        public string newCustomEventCategoryName = "New Category";
+        public string addToCustomEventCategoryName = "New Category";
         // ReSharper restore InconsistentNaming
 
         public class CustomEventSelection {

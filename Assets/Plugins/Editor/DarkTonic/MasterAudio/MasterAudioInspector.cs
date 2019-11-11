@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System;
 using System.IO;
+using System.Text;
 using DarkTonic.MasterAudio;
 using UnityEditor;
 using UnityEngine;
-
-#if UNITY_5
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 using UnityEngine.Audio;
-#endif
 
 [CustomEditor(typeof(MasterAudio))]
 // ReSharper disable once CheckNamespace
@@ -27,13 +28,13 @@ public class MasterAudioInspector : Editor {
     private bool _isValid = true;
 
     // ReSharper disable once InconsistentNaming
-    public List<MasterAudioGroup> groups = new List<MasterAudioGroup>();
+    public List<MasterAudioGroup> groups;
 
     private List<string> _groupTemplateNames = new List<string>();
     private List<string> _audioSourceTemplateNames = new List<string>();
     private List<string> _playlistNames = new List<string>();
     private bool _isDirty;
-    private GameObject _previewer;
+    private string invalidReason = string.Empty;
 
     // ReSharper disable once InconsistentNaming
     // ReSharper disable once FieldCanBeMadeReadOnly.Local
@@ -55,10 +56,15 @@ public class MasterAudioInspector : Editor {
 
     #region Change Persisting Code
     public void OnEnable() {
+#if UNITY_2017_2_OR_NEWER
+        EditorApplication.playModeStateChanged -= PlayModeStateChanged;
+        EditorApplication.playModeStateChanged += PlayModeStateChanged;
+#else
         // subtract delegate so we don't get more than one.
         // ReSharper disable once DelegateSubtraction
         EditorApplication.playmodeStateChanged -= PlaymodeStateChanged;
         EditorApplication.playmodeStateChanged += PlaymodeStateChanged;
+#endif
     }
 
     private static void AddAllChangePersistingObjects() {
@@ -92,6 +98,16 @@ public class MasterAudioInspector : Editor {
         context.SetContext(trans);
     }
 
+#if UNITY_2017_2_OR_NEWER
+    /// <summary>
+    /// This is the new one for Unity 2017. Old one deprecated
+    /// </summary>
+    /// <param name="state"></param>
+    private static void PlayModeStateChanged(PlayModeStateChange state) {
+        PlaymodeStateChanged();
+    }
+#endif
+
     private static void PlaymodeStateChanged() {
         if (EditorApplication.isPlaying || EditorApplication.isPaused) {
             if (allChangePersisters.Count == 0) {
@@ -118,11 +134,6 @@ public class MasterAudioInspector : Editor {
                 continue;
             }
 
-            var prefabType = PrefabUtility.GetPrefabType(t.GameObj);
-            if (prefabType != PrefabType.DisconnectedPrefabInstance && prefabType != PrefabType.PrefabInstance) {
-                continue;
-            }
-
             foreach (var changedComp in listOfComponentsChanged) {
                 EditorUtility.SetDirty(changedComp);
             }
@@ -135,15 +146,17 @@ public class MasterAudioInspector : Editor {
     public override void OnInspectorGUI() {
         EditorGUI.indentLevel = 0;
 
+
         _sounds = (MasterAudio)target;
 
         if (MasterAudioInspectorResources.LogoTexture != null) {
             DTGUIHelper.ShowHeaderTexture(MasterAudioInspectorResources.LogoTexture);
         }
 
-        ScanGroups();
-
         if (!_isValid) {
+            if (!string.IsNullOrEmpty(invalidReason)) {
+                DTGUIHelper.ShowRedError(invalidReason);
+            }
             return;
         }
 
@@ -152,10 +165,17 @@ public class MasterAudioInspector : Editor {
             DTGUIHelper.ShowRedError("This is not a supported scenario and some things might break. Please unparent it.");
         }
 
-        DTGUIHelper.HelpHeader("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioGO.htm");
+		if (MasterAudio.Instance == null) {
+			DTGUIHelper.ShowRedError("You must enable the Master Audio Game Object to display the full Inspector");
+			return;
+		}
+
+        ScanGroups();
+
+        DTGUIHelper.HelpHeader("http://www.dtdevtools.com/docs/masteraudio/MasterAudioGO.htm");
 
         _isDirty = false;
-        _previewer = _sounds.gameObject;
+        AudioSource previewer;
 
         var sliderIndicatorChars = 6;
         var sliderWidth = 40;
@@ -167,6 +187,17 @@ public class MasterAudioInspector : Editor {
 
         var fakeDirty = false;
         var allowPreview = !DTGUIHelper.IsPrefabInProjectView(_sounds);
+
+        if (!allowPreview) {
+            DTGUIHelper.ShowLargeBarAlert("You are in Project View or have not made your own prefab and cannot use this Game Object.");
+            DTGUIHelper.ShowRedError("Create this prefab from Master Audio Manager window. Do not drag into Scene! Then make your own prefab.");
+            return;
+        }
+
+        if (!DTGUIHelper.IsPrefabInProjectView(_sounds) && !Application.isPlaying && _sounds.gameObject.layer != 2) { // "ignore raycast layer"
+            _sounds.gameObject.layer = 2;
+            _isDirty = true;
+        }
 
         _playlistNames = new List<string>();
 
@@ -218,11 +249,6 @@ public class MasterAudioInspector : Editor {
             labelWidth = 138;
         }
 
-        if (!Application.isPlaying) {
-            MasterAudio.ListenerTrans = null; // prevent caching
-            _sounds.UpdateLocation();
-        }
-
         // mixer master volume!
         EditorGUILayout.BeginHorizontal();
         var volumeBefore = _sounds._masterAudioVolume;
@@ -245,25 +271,48 @@ public class MasterAudioInspector : Editor {
             }
         }
 
-        var mixerMuteButtonPressed = DTGUIHelper.AddMixerMuteButton("Mixer", _sounds);
-        GUILayout.FlexibleSpace();
+        var mixerButtonPressed = DTGUIHelper.AddMasterMixerButtons("Mixer", _sounds);
+        
 
-        if (mixerMuteButtonPressed == DTGUIHelper.DTFunctionButtons.Mute) {
-            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Mixer Mute");
+        switch (mixerButtonPressed) {
+            case DTGUIHelper.DTFunctionButtons.Pause:
+                MasterAudio.PauseMixer();
+                break;
+            case DTGUIHelper.DTFunctionButtons.Play:
+                MasterAudio.UnpauseMixer();
+                break;
+            case DTGUIHelper.DTFunctionButtons.Stop:
+                MasterAudio.StopMixer();
+                break;
+            case DTGUIHelper.DTFunctionButtons.Mute:
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Mixer Mute");
 
-            _sounds.mixerMuted = !_sounds.mixerMuted;
-            if (Application.isPlaying) {
-                MasterAudio.MixerMuted = _sounds.mixerMuted;
-            } else {
-                foreach (var aGroup in groups) {
-                    aGroup.isMuted = _sounds.mixerMuted;
-                    if (aGroup.isMuted) {
+                _sounds.mixerMuted = !_sounds.mixerMuted;
+
+                // unsolo all buses
+                foreach (var aBus in _sounds.groupBuses) {
+                    if (aBus.isSoloed) {
+                        MasterAudio.UnsoloBus(aBus.busName, false);
+                    } else if (aBus.isMuted) {
+                        MasterAudio.UnmuteBus(aBus.busName, false);
+                    }
+                }
+
+                if (Application.isPlaying) {
+                    MasterAudio.MixerMuted = _sounds.mixerMuted;
+                    MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
+                } else {
+                    foreach (var aGroup in groups) {
+                        aGroup.isMuted = _sounds.mixerMuted;
+
                         aGroup.isSoloed = false;
                     }
                 }
-            }
+
+                break;
         }
 
+        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
 
         if (volumeBefore != _sounds._masterAudioVolume) {
@@ -286,23 +335,35 @@ public class MasterAudioInspector : Editor {
                 }
             }
 
-            var playlistMuteButtonPressed = DTGUIHelper.AddPlaylistMuteButton("All Playlists", _sounds);
-            if (playlistMuteButtonPressed == DTGUIHelper.DTFunctionButtons.Mute) {
-                if (Application.isPlaying) {
-                    MasterAudio.PlaylistsMuted = !MasterAudio.PlaylistsMuted;
-                } else {
-                    _sounds.playlistsMuted = !_sounds.playlistsMuted;
+            var playlistButtonPressed = DTGUIHelper.AddMasterPlaylistButtons("All Playlists", _sounds);
 
-                    foreach (var t in pcs) {
-                        if (_sounds.playlistsMuted) {
-                            t.MutePlaylist();
-                        } else {
-                            t.UnmutePlaylist();
+            switch (playlistButtonPressed) {
+                case DTGUIHelper.DTFunctionButtons.Pause:
+                    MasterAudio.PauseAllPlaylists();
+                    break;
+                case DTGUIHelper.DTFunctionButtons.Play:
+                    MasterAudio.UnpauseAllPlaylists();
+                    break;
+                case DTGUIHelper.DTFunctionButtons.Stop:
+                    MasterAudio.StopAllPlaylists();
+                    break;
+                case DTGUIHelper.DTFunctionButtons.Mute:
+                    if (Application.isPlaying) {
+                        MasterAudio.PlaylistsMuted = !MasterAudio.PlaylistsMuted;
+                    } else {
+                        _sounds.playlistsMuted = !_sounds.playlistsMuted;
+
+                        foreach (var t in pcs) {
+                            if (_sounds.playlistsMuted) {
+                                t.MutePlaylist();
+                            } else {
+                                t.UnmutePlaylist();
+                            }
+
+                            EditorUtility.SetDirty(t);
                         }
-
-                        EditorUtility.SetDirty(t);
                     }
-                }
+                    break;
             }
 
             GUILayout.FlexibleSpace();
@@ -336,7 +397,7 @@ public class MasterAudioInspector : Editor {
 
             // jukebox controls
             if (Application.isPlaying) {
-                DisplayJukebox();
+                DisplayJukebox(PlaylistController.Instances, _playlistNames);
             }
         } else {
             DTGUIHelper.VerticalSpace(2);
@@ -348,31 +409,7 @@ public class MasterAudioInspector : Editor {
         var state = _sounds.showLocalization;
         var text = "Languages";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
-
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
         GUILayout.Space(2f);
 
         if (state != _sounds.showLocalization) {
@@ -380,7 +417,7 @@ public class MasterAudioInspector : Editor {
             _sounds.showLocalization = state;
         }
 
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/Localization.htm");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/Localization.htm");
 
         EditorGUILayout.EndHorizontal();
         GUI.color = Color.white;
@@ -420,7 +457,6 @@ public class MasterAudioInspector : Editor {
 
                     EditorGUILayout.EndHorizontal();
                     DTGUIHelper.EndGroupHeader();
-                    DTGUIHelper.AddSpaceForNonU5(2);
                 }
 
                 if (langToAdd.HasValue) {
@@ -478,30 +514,7 @@ public class MasterAudioInspector : Editor {
         state = _sounds.showAdvancedSettings;
         text = "Advanced Settings";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
         GUILayout.Space(2f);
 
@@ -510,7 +523,8 @@ public class MasterAudioInspector : Editor {
             _sounds.showAdvancedSettings = state;
         }
 
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm");
+
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm");
 
         EditorGUILayout.EndHorizontal();
         GUI.color = Color.white;
@@ -523,26 +537,31 @@ public class MasterAudioInspector : Editor {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Persist Across Scenes");
                     _sounds.persistBetweenScenes = newPersist;
                 }
+
+                if (_sounds.persistBetweenScenes) {
+                    EditorGUI.indentLevel = 1;
+                    var newLogDestroys = EditorGUILayout.Toggle(new GUIContent("Log Destroys Of Dupes", "Turning this on will log to the Console whenever a new Scene is loaded and another Master Audio game object is destroyed because there's a persistent one already (and also the same for Playlist Controllers). This is purely for troubleshooting purposes."), _sounds.shouldLogDestroys);
+                    if (newLogDestroys != _sounds.shouldLogDestroys) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Log Destroys Of Dupes");
+                        _sounds.shouldLogDestroys = newLogDestroys;
+                    }
+
+                    if (plControllerInScene) {
+                        DTGUIHelper.ShowColorWarning("Playlist Controller(s) will also persist between scenes!");
+                    }
+                }
             }
 
-            if (_sounds.persistBetweenScenes && plControllerInScene) {
-                DTGUIHelper.ShowColorWarning("Playlist Controller(s) will also persist between scenes!");
-            }
+            EditorGUI.indentLevel = 0;
 
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-            // no support
-#else
             var newGap = EditorGUILayout.Toggle(new GUIContent("Gapless Music Switching", "Turn this option on if you need perfect gapless transitions between clips in your Playlists. For Resource Files, this will take more audio memory as 2 clips are generally loaded into memory at the same time, so only use it if you need to."), _sounds.useGaplessPlaylists);
             if (newGap != _sounds.useGaplessPlaylists) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Gapless Music Switching");
                 _sounds.useGaplessPlaylists = newGap;
             }
-#endif
 
-            var newFollow = EditorGUILayout.Toggle(new GUIContent("Follow Audio Listener", "This option will make previewing sounds in both Edit and Play mode always audible because the Audio Sources in this game object will be at the same location as the Audio Listener."), _sounds.followAudioListener);
-            if (newFollow != _sounds.followAudioListener) {
-                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Follow Audio Listener");
-                _sounds.followAudioListener = newFollow;
+            if (_sounds.useGaplessPlaylists && _sounds.crossFadeTime > 0) {
+                DTGUIHelper.ShowRedError("Gapless Music Switching will not work properly with crossfading. Please turn Master Crossfade Time to 0.");
             }
 
             var newSave = EditorGUILayout.Toggle(new GUIContent("Save Runtime Changes", "Turn this on if you want to do real time adjustments to the mix, Master Audio prefab, Groups and Playlist Controllers and have the changes stick after you stop playing."), _sounds.saveRuntimeChanges);
@@ -552,7 +571,7 @@ public class MasterAudioInspector : Editor {
                 _persistChanges = newSave;
             }
 
-            var newIgnore = EditorGUILayout.Toggle(new GUIContent("Ignore Time Scale", "Turn this option on only if you need to use EventSounds Start event at zero timescale or DelayBetweenSongs"), _sounds.ignoreTimeScale);
+            var newIgnore = EditorGUILayout.Toggle(new GUIContent("Ignore Time Scale", "Turn this option on only if you need to use DelayBetweenSongs"), _sounds.ignoreTimeScale);
             if (newIgnore != _sounds.ignoreTimeScale) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Ignore Time Scale");
                 _sounds.ignoreTimeScale = newIgnore;
@@ -566,7 +585,7 @@ public class MasterAudioInspector : Editor {
                 _sounds.prioritizeOnDistance = newAutoPrioritize;
             }
 
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm#DistancePriority");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#DistancePriority");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
 
@@ -577,6 +596,10 @@ public class MasterAudioInspector : Editor {
 
                 var evalTimes = new List<string>();
                 foreach (var t in _reevaluatePriorityTimes) {
+                    if (t == 1) {
+                        evalTimes.Add(t + ".0 seconds");
+                        continue;
+                    }
                     evalTimes.Add(t + " seconds");
                 }
 
@@ -596,9 +619,6 @@ public class MasterAudioInspector : Editor {
 
             EditorGUI.indentLevel = 1;
 
-            DTGUIHelper.AddSpaceForNonU5(2);
-
-#if UNITY_5
             DTGUIHelper.StartGroupHeader();
             EditorGUILayout.BeginHorizontal();
             var newOcclude = GUILayout.Toggle(_sounds.useOcclusion, new GUIContent(" Use Occlusion"));
@@ -607,7 +627,7 @@ public class MasterAudioInspector : Editor {
                 _sounds.useOcclusion = newOcclude;
             }
 
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/Occlusion.htm");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/Occlusion.htm");
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
@@ -619,20 +639,6 @@ public class MasterAudioInspector : Editor {
                 if (newGrpSelType != _sounds.occlusionSelectType) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Sound Group Usage");
                     _sounds.occlusionSelectType = newGrpSelType;
-                }
-
-                var reevalIndex = _sounds.reOccludeEverySecIndex;
-
-                var evalTimes = new List<string>();
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var t in _reevaluatePriorityTimes) {
-                    evalTimes.Add(t + " seconds");
-                }
-
-                var newRepri = EditorGUILayout.Popup("Occlusion Check Time Gap", reevalIndex, evalTimes.ToArray());
-                if (newRepri != reevalIndex) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Occlusion Check Time Gap");
-                    _sounds.reOccludeEverySecIndex = newRepri;
                 }
 
                 var newMaxCutoff = EditorGUILayout.Slider(new GUIContent("Max Occl. Cutoff Freq.", "This frequency will be used for cutoff for maximum occlusion (occluded nearest to sound emitter)"),
@@ -649,86 +655,237 @@ public class MasterAudioInspector : Editor {
                     _sounds.occlusionMinCutoffFreq = newMinCutoff;
                 }
 
-                var newRayMode = (MasterAudio.RaycastMode) EditorGUILayout.EnumPopup("Ray Cast Mode", _sounds.occlusionRaycastMode);
+                var newSpeedFrames = EditorGUILayout.Slider(new GUIContent("Freq. Change Time (sec)", "The number of seconds changing to the new occlusion cutoff frequency will take."), _sounds.occlusionFreqChangeSeconds, 0f, 5f);
+                if (newSpeedFrames != _sounds.occlusionFreqChangeSeconds) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Freq. Change Time (sec)");
+                    _sounds.occlusionFreqChangeSeconds = newSpeedFrames;
+                }
+
+                var newRayMode = (MasterAudio.RaycastMode)EditorGUILayout.EnumPopup("Ray Cast Mode", _sounds.occlusionRaycastMode);
                 if (newRayMode != _sounds.occlusionRaycastMode) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Ray Cast Mode");
                     _sounds.occlusionRaycastMode = newRayMode;
                 }
 
-			#if UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1
-			#else
-                if (_sounds.occlusionRaycastMode == MasterAudio.RaycastMode.Physics2D) {
-                    var newStart = EditorGUILayout.Toggle("Include Ray Cast Origin Collider", _sounds.occlusionIncludeStartRaycast2DCollider);
-                    if (newStart != _sounds.occlusionIncludeStartRaycast2DCollider) {
-                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Include Ray Cast Origin Collider");
-                        _sounds.occlusionIncludeStartRaycast2DCollider = newStart;
-                    }
+                var isValidSelection = true;
+
+#if PHY3D_MISSING
+                switch (newRayMode) {
+                    case MasterAudio.RaycastMode.Physics3D:
+                        DTGUIHelper.ShowRedError("You cannot use Physics3D events because you do not have the Physics3D package installed. Occlusion will not work.");
+                        isValidSelection = false;
+                        break;
                 }
-            #endif
-            
-                var newShowCat = EditorGUILayout.Toggle("Show Diagnostic Buckets", _sounds.occlusionShowCategories);
-                if (newShowCat != _sounds.occlusionShowCategories) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Show Diagnostic Buckets");
-                    _sounds.occlusionShowCategories = newShowCat;
+#endif
+#if PHY2D_MISSING
+                switch (newRayMode) {
+                    case MasterAudio.RaycastMode.Physics2D:
+                        DTGUIHelper.ShowRedError("You cannot use Physics2D events because you do not have the Physics2D package installed. Occlusion will not work.");
+                        isValidSelection = false;
+                        break;
                 }
+#endif
 
-                var newShowRays = EditorGUILayout.Toggle("Show Ray Casts", _sounds.occlusionShowRaycasts);
-                if (newShowRays != _sounds.occlusionShowRaycasts) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Show Ray Casts");
-                    _sounds.occlusionShowRaycasts = newShowRays;
-                }
-
-                var newUseLayer = EditorGUILayout.Toggle("Use Layer Mask", _sounds.occlusionUseLayerMask);
-                if (newUseLayer != _sounds.occlusionUseLayerMask) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Use Layer Mask");
-                    _sounds.occlusionUseLayerMask = newUseLayer;
-                }
-
-                if (_sounds.occlusionUseLayerMask) {
-                    var newMask = DTGUIHelper.LayerMaskField("Layer Mask", _sounds.occlusionLayerMask);
-                    if (newMask != _sounds.occlusionLayerMask) {
-                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Layer Mask");
-                        _sounds.occlusionLayerMask = newMask;
-                    }
-                }
-
-                if (Application.isPlaying && _sounds.occlusionShowCategories) {
-                    var oldContentColor = GUI.contentColor;
-                    var oldBGColor = GUI.backgroundColor;
-
-                    EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-                    GUILayout.Label("Actively Playing Sources");
-
-                    GUI.contentColor = Color.green;
-                    GUI.backgroundColor = Color.green;
-
-                    if (GUILayout.Button(new GUIContent("In Range:" + MasterAudio.InRangeOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
-                        Selection.objects = MasterAudio.InRangeOcclusionSources.ToArray();
+                if (isValidSelection) {
+                    var newMaxRayCasts = EditorGUILayout.IntSlider("Max Ray Casts Per Frame", _sounds.occlusionMaxRayCastsPerFrame, 1, 32);
+                    if (newMaxRayCasts != _sounds.occlusionMaxRayCastsPerFrame) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Max Ray Casts Per Frame");
+                        _sounds.occlusionMaxRayCastsPerFrame = newMaxRayCasts;
                     }
 
-                    GUI.contentColor = Color.yellow;
-                    GUI.backgroundColor = Color.yellow;
-                    if (GUILayout.Button(new GUIContent("Out of Range: " + MasterAudio.OutOfRangeOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
-                        Selection.objects = MasterAudio.OutOfRangeOcclusionSources.ToArray();
+                    var newOffset = EditorGUILayout.Slider(new GUIContent("Ray Cast Origin Offset", "Adjust how much closer to the Audio Listener the Ray Cast starts instead of exactly at the Audio Source position."), _sounds.occlusionRayCastOffset, 0f, 500f);
+                    if (newOffset != _sounds.occlusionRayCastOffset) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Ray Cast Origin Offset");
+                        _sounds.occlusionRayCastOffset = newOffset;
                     }
 
-                    GUI.contentColor = Color.red;
-                    GUI.backgroundColor = Color.red;
-                    if (GUILayout.Button(new GUIContent("Occluded: " + MasterAudio.BlockedOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
-                        Selection.objects = MasterAudio.BlockedOcclusionSources.ToArray();
+                    if (_sounds.occlusionRaycastMode == MasterAudio.RaycastMode.Physics2D) {
+                        var newStart = EditorGUILayout.Toggle("Include Ray Cast Origin Collider", _sounds.occlusionIncludeStartRaycast2DCollider);
+                        if (newStart != _sounds.occlusionIncludeStartRaycast2DCollider) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Include Ray Cast Origin Collider");
+                            _sounds.occlusionIncludeStartRaycast2DCollider = newStart;
+                        }
                     }
 
-                    EditorGUILayout.EndHorizontal();
-                    GUI.contentColor = oldContentColor;
-                    GUI.backgroundColor = oldBGColor;
+                    var newTrigger = EditorGUILayout.Toggle("Ray Casts Hit Triggers", _sounds.occlusionRaycastsHitTriggers);
+                    if (newTrigger != _sounds.occlusionRaycastsHitTriggers) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Ray Casts Hit Triggers");
+                        _sounds.occlusionRaycastsHitTriggers = newTrigger;
+                    }
+
+                    var newShowCat = EditorGUILayout.Toggle("Show Diagnostic Buckets", _sounds.occlusionShowCategories);
+                    if (newShowCat != _sounds.occlusionShowCategories) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Show Diagnostic Buckets");
+                        _sounds.occlusionShowCategories = newShowCat;
+                    }
+
+                    var newShowRays = EditorGUILayout.Toggle("Show Ray Casts", _sounds.occlusionShowRaycasts);
+                    if (newShowRays != _sounds.occlusionShowRaycasts) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Show Ray Casts");
+                        _sounds.occlusionShowRaycasts = newShowRays;
+                    }
+
+                    var newUseLayer = EditorGUILayout.Toggle("Use Layer Mask", _sounds.occlusionUseLayerMask);
+                    if (newUseLayer != _sounds.occlusionUseLayerMask) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change toggle Use Layer Mask");
+                        _sounds.occlusionUseLayerMask = newUseLayer;
+                    }
+
+                    if (_sounds.occlusionUseLayerMask) {
+                        var newMask = DTGUIHelper.LayerMaskField("Layer Mask", _sounds.occlusionLayerMask);
+                        if (newMask != _sounds.occlusionLayerMask) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Layer Mask");
+                            _sounds.occlusionLayerMask = newMask;
+                        }
+                    }
+
+                    if (Application.isPlaying && _sounds.occlusionShowCategories) {
+                        var oldContentColor = GUI.contentColor;
+                        var oldBGColor = GUI.backgroundColor;
+
+                        EditorGUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+                        GUILayout.Label("Actively Playing Sources");
+
+                        GUI.contentColor = Color.green;
+                        GUI.backgroundColor = Color.green;
+
+                        if (GUILayout.Button(new GUIContent("In Range:" + MasterAudio.InRangeOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
+                            Selection.objects = MasterAudio.InRangeOcclusionSources.ToArray();
+                        }
+
+                        GUI.contentColor = Color.yellow;
+                        GUI.backgroundColor = Color.yellow;
+                        if (GUILayout.Button(new GUIContent("Out of Range: " + MasterAudio.OutOfRangeOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
+                            Selection.objects = MasterAudio.OutOfRangeOcclusionSources.ToArray();
+                        }
+
+                        GUI.contentColor = Color.red;
+                        GUI.backgroundColor = Color.red;
+                        if (GUILayout.Button(new GUIContent("Occluded: " + MasterAudio.BlockedOcclusionSources.Count.ToString(), "Click to select objects in Hierarchy"), EditorStyles.miniButton, GUILayout.Height(16))) {
+                            Selection.objects = MasterAudio.BlockedOcclusionSources.ToArray();
+                        }
+
+                        EditorGUILayout.EndHorizontal();
+                        GUI.contentColor = oldContentColor;
+                        GUI.backgroundColor = oldBGColor;
+                    }
+
+                    DTGUIHelper.ShowColorWarning("Note: Only 3D Audio Clips will calculate for occlusion.");
                 }
-
-                DTGUIHelper.ShowColorWarning("Note: Only 3D Audio Clips will calculate for occlusion.");
             }
             EditorGUILayout.EndVertical();
 
-            DTGUIHelper.AddSpaceForNonU5(2);
-#endif
+            if (SpatializerHelper.SpatializerOptionExists) {
+                EditorGUI.indentLevel = 1;
+                DTGUIHelper.StartGroupHeader();
+                EditorGUILayout.BeginHorizontal();
+                var labelName = "VR Settings";
+
+                if (!string.IsNullOrEmpty(SpatializerHelper.SelectedSpatializer)) {
+                    labelName += " (" + SpatializerHelper.SelectedSpatializer + ")";
+                } else {
+                    labelName += " (No Spatializer selected)";
+                }
+
+                var newVR = DTGUIHelper.Foldout(_sounds.vrSettingsExpanded, labelName);
+                if (newVR != _sounds.vrSettingsExpanded) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle VR Settings");
+                    _sounds.vrSettingsExpanded = newVR;
+                }
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+
+                if (_sounds.vrSettingsExpanded) {
+                    EditorGUI.indentLevel = 0;
+                    if (!SpatializerHelper.IsSupportedSpatializer) {
+                        DTGUIHelper.ShowLargeBarAlert("You must select a supported Spatializer Plugin on the Audio Settings dialog before settings here will have any effect. Oculus and Resonance Audio are currently supported.");
+                    }
+
+                    var newSpatialize = EditorGUILayout.Toggle(new GUIContent("Use Spatializer", "Turn this on if you have selected OculusSpatializer for the Spatializer Plugin on the AudioManager settings screen. All Sound Group Audio Sources will automatically turn on 'Spatialize'."), _sounds.useSpatializer);
+                    if (newSpatialize != _sounds.useSpatializer) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Use Spatializer");
+                        _sounds.useSpatializer = newSpatialize;
+                    }
+
+                    if (SpatializerHelper.IsResonanceAudioSpatializer) {
+                        if (_sounds.useSpatializer) {
+                            var newwPost = EditorGUILayout.Toggle(new GUIContent("Spatialize Post FX", "Turn this on to Spatialize Post Effects (Resonance Audio option)."), _sounds.useSpatializerPostFX);
+                            if (newwPost != _sounds.useSpatializerPostFX) {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Spatialize Post FX");
+                                _sounds.useSpatializerPostFX = newwPost;
+                            }
+                        }
+
+                        GUI.contentColor = DTGUIHelper.BrightButtonColor;
+
+                        var newRes = EditorGUILayout.Toggle(new GUIContent("Add Res. Audio Sources", "This will immediately add a Resonance Audio Source component to every Variation in every Sound Group, and also add one to any Sound Groups created at runtime (from Dynamic Sound Group Creators)"), _sounds.addResonanceAudioSources);
+                        if (newRes != _sounds.addResonanceAudioSources) {
+                            if (!ResonanceAudioHelper.DarkTonicResonanceAudioPackageInstalled()) {
+                                DTGUIHelper.ShowAlert("Install the optional package 'MA_ResonanceAudio' to get this to work properly.");
+                            } else {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Add Res. Audio Sources");
+                                _sounds.addResonanceAudioSources = newRes;
+
+                                if (newRes) {
+                                    ResonanceAudioHelper.AddResonanceAudioSourceToAllVariations();
+                                } else {
+                                    ResonanceAudioHelper.RemoveResonanceAudioSourceFromAllVariations();
+                                }
+                            }
+                        }
+
+                        GUI.contentColor = Color.white;
+                    } else if (SpatializerHelper.IsOculusAudioSpatializer) {
+                        GUI.contentColor = DTGUIHelper.BrightButtonColor;
+
+                        var newOculus = EditorGUILayout.Toggle(new GUIContent("Add Oculus Audio Sources", "This will immediately add an ONSP Audio Source component to every Variation in every Sound Group, and also add one to any Sound Groups created at runtime (from Dynamic Sound Group Creators)"), _sounds.addOculusAudioSources);
+                        if (newOculus != _sounds.addOculusAudioSources) {
+                            if (!OculusAudioHelper.DarkTonicOculusAudioPackageInstalled()) {
+                                DTGUIHelper.ShowAlert("Install the optional package 'MA_Oculus' to get this to work properly.");
+                            } else {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Add Oculus Audio Sources");
+                                _sounds.addOculusAudioSources = newOculus;
+
+                                if (newOculus) {
+                                    OculusAudioHelper.AddOculusAudioSourceToAllVariations();
+                                } else {
+                                    OculusAudioHelper.RemoveOculusAudioSourceFromAllVariations();
+                                }
+                            }
+                        }
+
+                        GUI.contentColor = Color.white;
+                    }
+
+                }
+
+                EditorGUILayout.EndVertical();
+                EditorGUI.indentLevel = 1;
+            }
+
+            EditorGUI.indentLevel = 1;
+            DTGUIHelper.StartGroupHeader();
+
+            EditorGUILayout.BeginHorizontal();
+            var newAmb = DTGUIHelper.Foldout(_sounds.ambientAdvancedExpanded, "Ambient Sound Settings");
+            if (newAmb != _sounds.ambientAdvancedExpanded) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Ambient Sound Settings");
+                _sounds.ambientAdvancedExpanded = newAmb;
+            }
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#AmbientSoundSettings");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+
+            if (_sounds.ambientAdvancedExpanded) {
+                EditorGUI.indentLevel = 0;
+
+                var newRecalcs = EditorGUILayout.IntSlider("Max Pos. Recalcs / Frame", _sounds.ambientMaxRecalcsPerFrame, 1, 32);
+                if (newRecalcs != _sounds.ambientMaxRecalcsPerFrame) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Max Pos. Recalcs / Frame");
+                    _sounds.ambientMaxRecalcsPerFrame = newRecalcs;
+                }
+            }
+            EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel = 1;
             DTGUIHelper.StartGroupHeader();
@@ -739,17 +896,45 @@ public class MasterAudioInspector : Editor {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Visual Settings");
                 _sounds.visualAdvancedExpanded = newVisual;
             }
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm#VisualSettings");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#VisualSettings");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
 
             if (_sounds.visualAdvancedExpanded) {
                 EditorGUI.indentLevel = 0;
 
-                var newGiz = EditorGUILayout.Toggle(new GUIContent("Show Variation Gizmos", "Turning this option on will show you where your Variation and Event Sounds components are in the Scene with an 'M' icon."), _sounds.showGizmos);
-				if (newGiz != _sounds.showGizmos) { 
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Show Variation Gizmos");
-					_sounds.showGizmos = newGiz;
+                var newGiz2 = EditorGUILayout.Toggle(new GUIContent("Show All Range Gizmos", "Turning this option on will show you the max distance of your selected Sound Group in Ambient Sound and Event Sounds scripts so you can see how far the range is."), _sounds.showRangeSoundGizmos);
+                if (newGiz2 != _sounds.showRangeSoundGizmos) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Show All Range Gizmos");
+                    _sounds.showRangeSoundGizmos = newGiz2;
+                }
+
+                if (_sounds.showRangeSoundGizmos) {
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Range Gizmo Color", GUILayout.Width(150));
+                    var newColor = EditorGUILayout.ColorField(_sounds.rangeGizmoColor);
+                    if (newColor != _sounds.rangeGizmoColor) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Range Gizmo Color");
+                        _sounds.rangeGizmoColor = newColor;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                var newGiz3 = EditorGUILayout.Toggle(new GUIContent("Show Sel. Range Gizmos", "For the selected Game Object in Hierarchy. Turning this option on will show you the max distance of your selected Sound Group in Ambient Sound and Event Sounds scripts so you can see how far the range is."), _sounds.showSelectedRangeSoundGizmos);
+                if (newGiz3 != _sounds.showSelectedRangeSoundGizmos) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Show Sel. Range Gizmos");
+                    _sounds.showSelectedRangeSoundGizmos = newGiz3;
+                }
+
+                if (_sounds.showSelectedRangeSoundGizmos) {
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Sel. Range Gizmo Color", GUILayout.Width(150));
+                    var newColor2 = EditorGUILayout.ColorField(_sounds.selectedRangeGizmoColor);
+                    if (newColor2 != _sounds.selectedRangeGizmoColor) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Sel. Range Gizmo Color");
+                        _sounds.selectedRangeGizmoColor = newColor2;
+                    }
+                    EditorGUILayout.EndHorizontal();
                 }
 
                 var newWidth = (MasterAudio.MixerWidthMode)EditorGUILayout.EnumPopup("Inspector Width", _sounds.MixerWidth);
@@ -769,7 +954,37 @@ public class MasterAudioInspector : Editor {
             EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel = 1;
-            DTGUIHelper.AddSpaceForNonU5(2);
+            DTGUIHelper.StartGroupHeader();
+
+            EditorGUILayout.BeginHorizontal();
+            var newListener = DTGUIHelper.Foldout(_sounds.listenerAdvancedExpanded, "Audio Listener Settings");
+            if (newListener != _sounds.listenerAdvancedExpanded) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Audio Listener Settings");
+                _sounds.listenerAdvancedExpanded = newListener;
+            }
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#AudioListenerSettings");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+
+            EditorGUI.indentLevel = 0;
+            if (_sounds.listenerAdvancedExpanded) {
+                var newFollowType = (MasterAudio.VariationFollowerType)EditorGUILayout.EnumPopup(new GUIContent("Variation Update Method", "You may want to change this to Fixed Update if your Audio Listener is on a physics object, to eliminate audio glitches."), _sounds.variationFollowerType);
+                if (newFollowType != _sounds.variationFollowerType) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Variation Update Method");
+                    _sounds.variationFollowerType = newFollowType;
+                }
+
+                var newRB = EditorGUILayout.Toggle("Follower Has RigidBody", _sounds.listenerFollowerHasRigidBody);
+                if (newRB != _sounds.listenerFollowerHasRigidBody) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Listener Follower RigidBody");
+                    _sounds.listenerFollowerHasRigidBody = newRB;
+                }
+                DTGUIHelper.ShowColorWarning("This single non-gravity RigidBody is necessary for Ambient Sounds script to work.");
+            }
+
+            EditorGUILayout.EndVertical();
+
+            EditorGUI.indentLevel = 1;
             DTGUIHelper.StartGroupHeader();
             EditorGUILayout.BeginHorizontal();
             var exp = DTGUIHelper.Foldout(_sounds.showFadingSettings, "Fading Settings");
@@ -777,74 +992,71 @@ public class MasterAudioInspector : Editor {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Fading Settings");
                 _sounds.showFadingSettings = exp;
             }
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm#FadingSettings");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#FadingSettings");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             if (_sounds.showFadingSettings) {
                 EditorGUI.indentLevel = 0;
-                DTGUIHelper.ShowLargeBarAlert("Fading to zero volume on the following causes their audio to stop (if checked).");
 
-                var newStop = EditorGUILayout.Toggle("Buses", _sounds.stopZeroVolumeBuses);
-				if (newStop != _sounds.stopZeroVolumeBuses) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Buses Stop");
-					_sounds.stopZeroVolumeBuses = newStop;
+                var newFade = EditorGUILayout.Slider("Bus Stop Oldest Fade Time", _sounds.stopOldestBusFadeTime, 0f, 1f);
+                if (newFade != _sounds.stopOldestBusFadeTime) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Bus Stop Oldest Fade Time");
+                    _sounds.stopOldestBusFadeTime = newFade;
                 }
 
-                newStop = EditorGUILayout.Toggle("Variations", _sounds.stopZeroVolumeVariations);
-				if (newStop != _sounds.stopZeroVolumeVariations) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Variations Stop");
-					_sounds.stopZeroVolumeVariations = newStop;
+                DTGUIHelper.ShowColorWarning("If checked, fading to zero volume on the following causes their audio to stop.");
+
+                var newStop = EditorGUILayout.Toggle("Buses", _sounds.stopZeroVolumeBuses);
+                if (newStop != _sounds.stopZeroVolumeBuses) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Buses Stop");
+                    _sounds.stopZeroVolumeBuses = newStop;
                 }
 
                 newStop = EditorGUILayout.Toggle("Sound Groups", _sounds.stopZeroVolumeGroups);
-				if (newStop != _sounds.stopZeroVolumeGroups) {
+                if (newStop != _sounds.stopZeroVolumeGroups) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Sound Groups Stop");
-					_sounds.stopZeroVolumeGroups = newStop;
+                    _sounds.stopZeroVolumeGroups = newStop;
                 }
 
                 newStop = EditorGUILayout.Toggle(new GUIContent("Playlist Controllers", "Automatic crossfading will not trigger stop."), _sounds.stopZeroVolumePlaylists);
-				if (newStop != _sounds.stopZeroVolumePlaylists) {
+                if (newStop != _sounds.stopZeroVolumePlaylists) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Playlist Controllers Stop");
-					_sounds.stopZeroVolumePlaylists = newStop;
+                    _sounds.stopZeroVolumePlaylists = newStop;
                 }
             }
             EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel = 1;
-            DTGUIHelper.AddSpaceForNonU5(2);
             DTGUIHelper.StartGroupHeader();
 
             EditorGUILayout.BeginHorizontal();
-            var newResource = DTGUIHelper.Foldout(_sounds.resourceAdvancedExpanded, "Resource File Settings");
+            var newResource = DTGUIHelper.Foldout(_sounds.resourceAdvancedExpanded, "Resource File / Audio Clip Settings");
             if (newResource != _sounds.resourceAdvancedExpanded) {
-                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Resource File Settings");
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Resource File / Audio Clip Settings");
                 _sounds.resourceAdvancedExpanded = newResource;
             }
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm#ResourceSettings");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#ResourceSettings");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
 
             if (_sounds.resourceAdvancedExpanded) {
                 EditorGUI.indentLevel = 0;
-                if (MasterAudio.HasAsyncResourceLoaderFeature()) {
-                    var newAsync = EditorGUILayout.Toggle(new GUIContent("Always Load Res. Async", "Checking this means that you will not have this control per Sound Group or Playlist. All Resource files will be loaded asynchronously."), _sounds.resourceClipsAllLoadAsync);
-					if (newAsync != _sounds.resourceClipsAllLoadAsync) {
-                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Always Load Resources Async");
-						_sounds.resourceClipsAllLoadAsync = newAsync;
-                    }
+                var newAsync = EditorGUILayout.Toggle(new GUIContent("Always Load Res. Async", "Checking this means that you will not have this control per Sound Group or Playlist. All Resource files will be loaded asynchronously."), _sounds.resourceClipsAllLoadAsync);
+                if (newAsync != _sounds.resourceClipsAllLoadAsync) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Always Load Resources Async");
+                    _sounds.resourceClipsAllLoadAsync = newAsync;
                 }
 
-                var newResourcePause = EditorGUILayout.Toggle(new GUIContent("Keep Paused Resources", "If you check this box, Resource files will not be automatically unloaded from memory when you pause them. Use at your own risk!"), _sounds.resourceClipsPauseDoNotUnload);
-				if (newResourcePause != _sounds.resourceClipsPauseDoNotUnload) {
+                var newResourcePause = EditorGUILayout.Toggle(new GUIContent("Keep Paused Resources", "If you check this box, Resource files and Audio Clips with Preload Audio Data = false will not be automatically unloaded from memory when you pause them. Enable at your own risk!"), _sounds.resourceClipsPauseDoNotUnload);
+                if (newResourcePause != _sounds.resourceClipsPauseDoNotUnload) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Keep Paused Resources");
-					_sounds.resourceClipsPauseDoNotUnload = newResourcePause;
+                    _sounds.resourceClipsPauseDoNotUnload = newResourcePause;
                 }
             }
             EditorGUILayout.EndVertical();
 
             EditorGUI.indentLevel = 1;
-            DTGUIHelper.AddSpaceForNonU5(2);
             DTGUIHelper.StartGroupHeader();
             EditorGUILayout.BeginHorizontal();
             var newLog = DTGUIHelper.Foldout(_sounds.logAdvancedExpanded, "Logging Settings");
@@ -852,7 +1064,7 @@ public class MasterAudioInspector : Editor {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Logging Settings");
                 _sounds.logAdvancedExpanded = newLog;
             }
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/AdvancedSettings.htm#LoggingSettings");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/AdvancedSettings.htm#LoggingSettings");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
@@ -875,13 +1087,22 @@ public class MasterAudioInspector : Editor {
                         _sounds.LogSounds = newLog;
                     }
 
+                    newLog = EditorGUILayout.Toggle("Log No Voices Left", _sounds.logOutOfVoices);
+                    if (newLog != _sounds.logOutOfVoices) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Log No Voices Left");
+                        if (Application.isPlaying) {
+                            MasterAudio.LogOutOfVoices = _sounds.logOutOfVoices;
+                        }
+                        _sounds.logOutOfVoices = newLog;
+                    }
+
                     newLog = EditorGUILayout.Toggle("Log Custom Events", _sounds.logCustomEvents);
                     if (newLog != _sounds.logCustomEvents) {
                         AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Log Custom Events");
                         _sounds.logCustomEvents = newLog;
                     }
                 } else {
-                    DTGUIHelper.ShowLargeBarAlert("Logging is disabled.");
+                    DTGUIHelper.ShowColorWarning("Logging is disabled.");
                 }
             }
             EditorGUILayout.EndVertical();
@@ -899,30 +1120,7 @@ public class MasterAudioInspector : Editor {
         state = _sounds.showMusicDucking;
         text = "Music Ducking";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
         GUILayout.Space(2f);
 
@@ -931,7 +1129,7 @@ public class MasterAudioInspector : Editor {
             _sounds.showMusicDucking = state;
         }
 
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MusicDucking.htm");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MusicDucking.htm");
 
         EditorGUILayout.EndHorizontal();
         GUI.color = Color.white;
@@ -946,27 +1144,27 @@ public class MasterAudioInspector : Editor {
 
             EditorGUILayout.Separator();
 
-            var newMult = EditorGUILayout.Slider("Default Ducked Vol Cut", _sounds.defaultDuckedVolumeCut, DTGUIHelper.MinDb, DTGUIHelper.MaxDb);
+            var newMult = EditorGUILayout.Slider("Default Vol. Cut (dB)", _sounds.defaultDuckedVolumeCut, DTGUIHelper.MinDb, DTGUIHelper.MaxDb);
             if (newMult != _sounds.defaultDuckedVolumeCut) {
-                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Ducked Vol Cut");
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Vol. Cut (dB)");
                 _sounds.defaultDuckedVolumeCut = newMult;
             }
 
-            var newDefault = EditorGUILayout.Slider("Default Unduck Time", _sounds.defaultUnduckTime, 0f, 5f);
+            var newDefault = EditorGUILayout.Slider("Default Unduck Time (sec)", _sounds.defaultUnduckTime, 0f, 5f);
             if (newDefault != _sounds.defaultUnduckTime) {
-                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Unduck Time");
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Unduck Time (sec)");
                 _sounds.defaultUnduckTime = newDefault;
             }
 
-            newDefault = EditorGUILayout.Slider("Default Begin Unduck", _sounds.defaultRiseVolStart, 0f, 1f);
+            newDefault = EditorGUILayout.Slider("Default Begin Unduck (%)", _sounds.defaultRiseVolStart, 0f, 1f);
             if (newDefault != _sounds.defaultRiseVolStart) {
-                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Begin Unduck");
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Begin Unduck (%)");
                 _sounds.defaultRiseVolStart = newDefault;
             }
 
             GUI.contentColor = DTGUIHelper.BrightButtonColor;
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(10);
+            GUILayout.Space(6);
 
             if (GUILayout.Button(new GUIContent("Add Duck Group"), EditorStyles.toolbarButton, GUILayout.Width(100))) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Add Duck Group");
@@ -1004,6 +1202,8 @@ public class MasterAudioInspector : Editor {
 
                 var slidWidth = _sounds.MixerWidth == MasterAudio.MixerWidthMode.Wide ? 120 : 60;
 
+                var duckingList = new List<string>(_sounds.musicDuckingSounds.Count);
+
                 for (var i = 0; i < _sounds.musicDuckingSounds.Count; i++) {
                     var duckSound = _sounds.musicDuckingSounds[i];
                     var index = groupNameList.IndexOf(duckSound.soundType);
@@ -1011,7 +1211,14 @@ public class MasterAudioInspector : Editor {
                         index = 0;
                     }
 
-                    DTGUIHelper.StartGroupHeader();
+                    var groupName = groupNameList[index];
+                    if (groupName != MasterAudio.NoGroupName && duckingList.Contains(groupName)) {
+                        DTGUIHelper.ShowRedError("You have more than one Duck Group for Sound Group '" + groupName + "'. Please delete all duplicates as only one of the dupes will be seen when ducking code runs.");
+                    }
+
+                    duckingList.Add(groupName);
+
+                    DTGUIHelper.StartGroupHeader(2);
 
                     EditorGUILayout.BeginHorizontal();
                     var newIndex = EditorGUILayout.Popup(index, groupNameList.ToArray(), GUILayout.MaxWidth(200));
@@ -1059,7 +1266,6 @@ public class MasterAudioInspector : Editor {
 
                     EditorGUILayout.EndHorizontal();
                     DTGUIHelper.EndGroupHeader();
-                    DTGUIHelper.AddSpaceForNonU5(2);
                 }
 
                 if (duckSoundToRemove.HasValue) {
@@ -1082,30 +1288,7 @@ public class MasterAudioInspector : Editor {
         state = _sounds.areGroupsExpanded;
         text = "Group Mixer";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
         GUILayout.Space(2f);
 
@@ -1115,7 +1298,8 @@ public class MasterAudioInspector : Editor {
         }
 
         GUI.color = Color.white;
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/GroupMixer.htm");
+
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/GroupMixer.htm");
 
         EditorGUILayout.EndHorizontal();
 
@@ -1138,7 +1322,7 @@ public class MasterAudioInspector : Editor {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Group Creation");
                 _sounds.showGroupCreation = !_sounds.showGroupCreation;
             }
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/GroupMixer.htm#GroupCreation");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/GroupMixer.htm#GroupCreation");
             EditorGUILayout.EndHorizontal();
 
             GUI.contentColor = Color.white;
@@ -1150,11 +1334,12 @@ public class MasterAudioInspector : Editor {
 
                 if (_sounds.audioSourceTemplates.Count > 0 && !Application.isPlaying && _sounds.showGroupCreation && _sounds.transform.childCount > 0) {
                     EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(10);
+                    GUILayout.Space(2);
                     GUI.contentColor = DTGUIHelper.BrightButtonColor;
-                    if (GUILayout.Button("Apply Audio Source Template to All", EditorStyles.toolbarButton, GUILayout.Width(190))) {
+                    if (GUILayout.Button("Apply Audio Source Template to All", EditorStyles.toolbarButton, GUILayout.Width(210))) {
                         applyTemplateToAll = true;
                     }
+
                     GUI.contentColor = Color.white;
                     EditorGUILayout.EndHorizontal();
                 }
@@ -1165,6 +1350,8 @@ public class MasterAudioInspector : Editor {
                     _sounds.useGroupTemplates = newTemp;
                 }
 
+                var templatesMissing = false;
+
                 if (_sounds.useGroupTemplates) {
                     _groupTemplateNames = new List<string>();
 
@@ -1172,57 +1359,24 @@ public class MasterAudioInspector : Editor {
                         if (temp == null) {
                             continue;
                         }
+
                         _groupTemplateNames.Add(temp.name);
                     }
 
-                    var templatesMissing = false;
-
                     if (Directory.Exists(MasterAudio.GroupTemplateFolder)) {
                         var grpTemplates = Directory.GetFiles(MasterAudio.GroupTemplateFolder, "*.prefab").Length;
-                        if (grpTemplates > _sounds.groupTemplates.Count) {
+                        if (grpTemplates > _groupTemplateNames.Count) {
                             templatesMissing = true;
-                            DTGUIHelper.ShowLargeBarAlert("There are " + (grpTemplates - _sounds.groupTemplates.Count) + " Group Template(s) that aren't set up in this MA prefab. Locate them in Plugins/DarkTonic/MasterAudio/Sources/Prefabs/GroupTemplates and drag them in below.");
+                            DTGUIHelper.ShowRedError("There are " + (grpTemplates - _groupTemplateNames.Count) + " Group Template(s) that aren't set up in this MA prefab. Click the button below to import them. You cannot create new Sound Groups until you do.");
                         }
                     }
 
                     if (templatesMissing) {
-                        // create groups start
-                        EditorGUILayout.BeginVertical();
-                        var aEvent = Event.current;
-
-                        GUI.color = DTGUIHelper.DragAreaColor;
-
-                        var dragArea = GUILayoutUtility.GetRect(0f, 35f, GUILayout.ExpandWidth(true));
-                        GUI.Box(dragArea, "Drag prefabs here from Project View to create Group Templates!");
-
-                        GUI.color = Color.white;
-
-                        switch (aEvent.type) {
-                            case EventType.DragUpdated:
-                            case EventType.DragPerform:
-                                if (!dragArea.Contains(aEvent.mousePosition)) {
-                                    break;
-                                }
-
-                                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-
-                                if (aEvent.type == EventType.DragPerform) {
-                                    DragAndDrop.AcceptDrag();
-
-                                    foreach (var dragged in DragAndDrop.objectReferences) {
-                                        var temp = dragged as GameObject;
-                                        if (temp == null) {
-                                            continue;
-                                        }
-
-                                        AddGroupTemplate(temp);
-                                    }
-                                }
-                                Event.current.Use();
-                                break;
+                        GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                        if (GUILayout.Button("Import Missing Templates", GUILayout.Width(200))) {
+                            ImportAllGroupTemplates(Directory.GetFiles(MasterAudio.GroupTemplateFolder, "*.prefab"));
                         }
-                        EditorGUILayout.EndVertical();
-                        // create groups end
+                        GUI.contentColor = Color.white;
                     }
 
                     if (_groupTemplateNames.Count == 0) {
@@ -1255,50 +1409,18 @@ public class MasterAudioInspector : Editor {
 
                 if (Directory.Exists(MasterAudio.AudioSourceTemplateFolder)) {
                     var audioSrcTemplates = Directory.GetFiles(MasterAudio.AudioSourceTemplateFolder, "*.prefab").Length;
-                    if (audioSrcTemplates > _sounds.audioSourceTemplates.Count) {
+                    if (audioSrcTemplates > _audioSourceTemplateNames.Count) {
                         audTemplatesMissing = true;
-                        DTGUIHelper.ShowLargeBarAlert("There are " + (audioSrcTemplates - _sounds.audioSourceTemplates.Count) + " Audio Source Template(s) that aren't set up in this MA prefab. Locate them in Plugins/DarkTonic/MasterAudio/Sources/Prefabs/AudioSourceTemplates and drag them in below.");
+                        DTGUIHelper.ShowRedError("There are " + (audioSrcTemplates - _audioSourceTemplateNames.Count) + " Audio Source Template(s) that aren't set up in this MA prefab. Click the button below to import them. You cannot create new Sound Groups until you do.");
                     }
                 }
 
                 if (audTemplatesMissing) {
-                    // create groups start
-                    EditorGUILayout.BeginVertical();
-                    var aEvent = Event.current;
-
-                    GUI.color = DTGUIHelper.DragAreaColor;
-
-                    var dragArea = GUILayoutUtility.GetRect(0f, 35f, GUILayout.ExpandWidth(true));
-                    GUI.Box(dragArea, "Drag prefabs here from Project View to create Audio Source Templates!");
-
-                    GUI.color = Color.white;
-
-                    switch (aEvent.type) {
-                        case EventType.DragUpdated:
-                        case EventType.DragPerform:
-                            if (!dragArea.Contains(aEvent.mousePosition)) {
-                                break;
-                            }
-
-                            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-
-                            if (aEvent.type == EventType.DragPerform) {
-                                DragAndDrop.AcceptDrag();
-
-                                foreach (var dragged in DragAndDrop.objectReferences) {
-                                    var temp = dragged as GameObject;
-                                    if (temp == null) {
-                                        continue;
-                                    }
-
-                                    AddAudioSourceTemplate(temp);
-                                }
-                            }
-                            Event.current.Use();
-                            break;
+                    GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                    if (GUILayout.Button("Import Missing Templates", GUILayout.Width(200))) {
+                        ImportAllAudioSourceTemplates(Directory.GetFiles(MasterAudio.AudioSourceTemplateFolder, "*.prefab"));
                     }
-                    EditorGUILayout.EndVertical();
-                    // create groups end
+                    GUI.contentColor = Color.white;
                 }
 
                 if (_audioSourceTemplateNames.Count == 0) {
@@ -1337,7 +1459,7 @@ public class MasterAudioInspector : Editor {
                     DTGUIHelper.ShowColorWarning("Resource mode: make sure to drag from Resource folders only.");
                 }
 
-                var cannotCreateGroups = _sounds.useGroupTemplates && _sounds.groupTemplates.Count == 0;
+                var cannotCreateGroups = (_sounds.useGroupTemplates && _sounds.groupTemplates.Count == 0) || audTemplatesMissing || templatesMissing;
                 MasterAudioGroup createdGroup = null;
 
                 if (!cannotCreateGroups) {
@@ -1346,59 +1468,83 @@ public class MasterAudioInspector : Editor {
 
                     var useGroupTemplate = _sounds.useGroupTemplates && groupTemplateIndex > -1;
 
-                    if (!allowPreview) {
-                        DTGUIHelper.ShowLargeBarAlert("You are in Project View and cannot create or navigate Groups.");
-                        DTGUIHelper.ShowRedError("Create this prefab from Master Audio Manager window. Do not drag into Scene!");
-                    } else {
-                        GUI.color = DTGUIHelper.DragAreaColor;
-                        EditorGUILayout.BeginVertical();
-                        var dragArea = GUILayoutUtility.GetRect(0f, 35f, GUILayout.ExpandWidth(true));
-                        GUI.Box(dragArea, "Drag Audio clips here to create Groups!");
+                    GUI.color = DTGUIHelper.DragAreaColor;
+                    EditorGUILayout.BeginVertical();
+                    var dragArea = GUILayoutUtility.GetRect(0f, 35f, GUILayout.ExpandWidth(true));
+                    GUI.Box(dragArea, MasterAudio.DragAudioTip + " to create Groups!");
 
-                        GUI.color = Color.white;
+                    GUI.color = Color.white;
 
-                        switch (anEvent.type) {
-                            case EventType.DragUpdated:
-                            case EventType.DragPerform:
-                                if (!dragArea.Contains(anEvent.mousePosition)) {
-                                    break;
-                                }
+                    switch (anEvent.type) {
+                        case EventType.DragUpdated:
+                        case EventType.DragPerform:
+                            if (!dragArea.Contains(anEvent.mousePosition)) {
+                                break;
+                            }
 
-                                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-                                if (anEvent.type == EventType.DragPerform) {
-                                    DragAndDrop.AcceptDrag();
+                            if (anEvent.type == EventType.DragPerform) {
+                                DragAndDrop.AcceptDrag();
 
-                                    Transform groupTrans = null;
+                                Transform groupTrans = null;
 
-                                    foreach (var dragged in DragAndDrop.objectReferences) {
-                                        var aClip = dragged as AudioClip;
-                                        if (aClip == null) {
-                                            continue;
-                                        }
-
-                                        if (useGroupTemplate) {
-                                            createdGroup = CreateSoundGroupFromTemplate(aClip, groupTemplateIndex);
-                                            continue;
-                                        }
-
-                                        if (_sounds.curDragGroupMode == MasterAudio.DragGroupMode.OneGroupPerClip) {
-                                            CreateSoundGroup(aClip);
-                                        } else {
-                                            if (groupTrans == null) { // one group with variations
-                                                groupTrans = CreateSoundGroup(aClip);
-                                            } else {
-                                                CreateVariation(groupTrans, aClip);
-                                                // create the variations
+                                foreach (var dragged in DragAndDrop.objectReferences) {
+                                    if (dragged is DefaultAsset) {
+                                        var assetPaths = AssetDatabase.FindAssets("t:AudioClip", DragAndDrop.paths);
+                                        foreach (var assetPath in assetPaths) {
+                                            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(assetPath));
+                                            if (clip == null) {
+                                                continue;
                                             }
+
+                                            if (useGroupTemplate) {
+                                                createdGroup = CreateSoundGroupFromTemplate(clip, groupTemplateIndex);
+                                                continue;
+                                            }
+
+                                            if (_sounds.curDragGroupMode == MasterAudio.DragGroupMode.OneGroupPerClip) {
+                                                CreateSoundGroup(clip);
+                                            } else {
+                                                if (groupTrans == null) { // one group with variations
+                                                    groupTrans = CreateSoundGroup(clip);
+                                                } else {
+                                                    CreateVariation(groupTrans, clip);
+                                                    // create the variations
+                                                }
+                                            }
+                                        }
+
+                                        continue;
+                                    }
+
+                                    var aClip = dragged as AudioClip;
+                                    if (aClip == null) {
+                                        continue;
+                                    }
+
+                                    if (useGroupTemplate) {
+                                        createdGroup = CreateSoundGroupFromTemplate(aClip, groupTemplateIndex);
+                                        continue;
+                                    }
+
+                                    if (_sounds.curDragGroupMode == MasterAudio.DragGroupMode.OneGroupPerClip) {
+                                        CreateSoundGroup(aClip);
+                                    } else {
+                                        if (groupTrans == null) { // one group with variations
+                                            groupTrans = CreateSoundGroup(aClip);
+                                        } else {
+                                            CreateVariation(groupTrans, aClip);
+                                            // create the variations
                                         }
                                     }
                                 }
-                                Event.current.Use();
-                                break;
-                        }
-                        EditorGUILayout.EndVertical();
+                            }
+                            Event.current.Use();
+                            break;
                     }
+                    EditorGUILayout.EndVertical();
+
                     // create groups end
                 }
 
@@ -1410,19 +1556,18 @@ public class MasterAudioInspector : Editor {
 
             EditorGUI.indentLevel = 0;
 
-            DTGUIHelper.AddSpaceForNonU5(2);
             DTGUIHelper.StartGroupHeader();
             EditorGUILayout.BeginHorizontal();
 
             EditorGUILayout.LabelField("Group Control");
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/GroupMixer.htm#GroupControl");
+
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/GroupMixer.htm#GroupControl");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.EndVertical();
 
             DTGUIHelper.ResetColors();
 
-#if UNITY_5
             DTGUIHelper.StartGroupHeader(1, false);
 
             var newSpatialType = (MasterAudio.AllMixerSpatialBlendType)EditorGUILayout.EnumPopup("Group Spatial Blend Rule", _sounds.mixerSpatialBlendType);
@@ -1471,7 +1616,6 @@ public class MasterAudioInspector : Editor {
             }
             EditorGUILayout.EndVertical();
             DTGUIHelper.ResetColors();
-#endif
 
             EditorGUI.indentLevel = 0;
             var newBusFilterIndex = -1;
@@ -1573,6 +1717,7 @@ public class MasterAudioInspector : Editor {
             var selectAll = false;
             var deselectAll = false;
             var applyAudioSourceTemplate = false;
+            var applyDuckingBulk = false;
 
             var bulkSelectedGrps = new List<MasterAudioGroup>(filteredGroups.Count);
 
@@ -1591,10 +1736,24 @@ public class MasterAudioInspector : Editor {
                     if (newGroupByBus != _sounds.groupByBus) {
                         AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Group by Bus");
                         _sounds.groupByBus = newGroupByBus;
+                        MasterAudio.RescanGroupsNow();
                     }
                 }
 
+                var newSortAlpha = EditorGUILayout.Toggle(new GUIContent("Sort Alpha", "If this is turned off, Sound Groups will appear in the same order as the Hierarchy."), _sounds.sortAlpha);
+                if (newSortAlpha != _sounds.sortAlpha) {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Sort Alpha");
+                    _sounds.sortAlpha = newSortAlpha;
+                    MasterAudio.RescanGroupsNow();
+                }
+
                 if (filteredGroups.Count > 0) {
+                    var newShowBusColors = EditorGUILayout.Toggle("Show Bus Colors", _sounds.showBusColors);
+                    if (newShowBusColors != _sounds.showBusColors) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Show Bus Colors");
+                        _sounds.showBusColors = newShowBusColors;
+                    }
+
                     var newSelectGrp = EditorGUILayout.Toggle("Bulk Group Changes", _sounds.showGroupSelect);
                     if (newSelectGrp != _sounds.showGroupSelect) {
                         AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Bulk Group Changes");
@@ -1604,11 +1763,11 @@ public class MasterAudioInspector : Editor {
                     if (_sounds.showGroupSelect) {
                         GUI.contentColor = DTGUIHelper.BrightButtonColor;
                         EditorGUILayout.BeginHorizontal();
-                        GUILayout.Space(10);
-                        if (GUILayout.Button("Select All", EditorStyles.toolbarButton, GUILayout.Width(80))) {
+                        GUILayout.Space(0);
+                        if (GUILayout.Button("Select All", EditorStyles.toolbarButton, GUILayout.Width(70))) {
                             selectAll = true;
                         }
-                        GUILayout.Space(10);
+                        GUILayout.Space(6);
                         if (GUILayout.Button("Deselect All", EditorStyles.toolbarButton, GUILayout.Width(80))) {
                             deselectAll = true;
                         }
@@ -1620,11 +1779,17 @@ public class MasterAudioInspector : Editor {
                         }
 
                         if (!Application.isPlaying && _audioSourceTemplateNames.Count > 0 && bulkSelectedGrps.Count > 0) {
-                            GUILayout.Space(10);
+                            GUILayout.Space(6);
                             GUI.contentColor = DTGUIHelper.BrightButtonColor;
-                            if (GUILayout.Button("Apply Audio Source Template", EditorStyles.toolbarButton, GUILayout.Width(160))) {
+                            if (GUILayout.Button("Apply Audio Source Template", EditorStyles.toolbarButton, GUILayout.Width(175))) {
                                 applyAudioSourceTemplate = true;
                             }
+
+                            GUILayout.Space(6);
+                            if (GUILayout.Button("Add To Ducking", EditorStyles.toolbarButton, GUILayout.Width(100))) {
+                                applyDuckingBulk = true;
+                            }
+
                         }
                         EditorGUILayout.EndHorizontal();
                         GUI.contentColor = Color.white;
@@ -1641,8 +1806,8 @@ public class MasterAudioInspector : Editor {
                 var isBulkSolo = false;
                 float? bulkVolume = null;
                 int? bulkBusIndex = null;
-
-                int? busToCreate = null;
+                int? bulkBusToCreate = null;
+                int? singleBusToCreate = null;
 
                 DTGUIHelper.ResetColors();
 
@@ -1658,10 +1823,56 @@ public class MasterAudioInspector : Editor {
                         sType = aGroup.name;
                     }
 
+                    if (string.IsNullOrEmpty(sType)) { } // get rid of warning
+
                     EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
                     var groupName = aGroup.name;
 
+                    var showedBusColor = false;
+
+                    if (_sounds.showBusColors) {
+                        Texture2D backgroundTexture = Texture2D.whiteTexture;
+#if UNITY_2019_3_OR_NEWER
+                        GUIStyle textureStyle = new GUIStyle(EditorStyles.miniButtonMid) {
+                            padding = new RectOffset(0, 0, 0, 0),
+                            margin = new RectOffset(3, 3, 3, 3),
+                            normal = new GUIStyleState {
+                                background = backgroundTexture,
+                            },
+                            fixedHeight = 14,
+                            fixedWidth = 14
+                        };
+#else
+                        GUIStyle textureStyle = new GUIStyle(EditorStyles.miniButtonMid) {
+                            padding = new RectOffset(0, 0, 0, 0),
+                            margin = new RectOffset(0, 0, 3, 0),
+                            normal = new GUIStyleState {
+                                background = backgroundTexture,
+                            }
+                        };
+#endif
+
+                        var oldColor = GUI.color;
+
+                        var groupBusName = "";
+                        if (aGroup.busIndex >= 0) {
+                            groupBusName = busList[aGroup.busIndex];
+                        } 
+                        if (aGroup.busIndex >= MasterAudio.HardCodedBusOptions) {
+                            var bus = MasterAudio.GrabBusByName(groupBusName);
+                            GUI.color = bus.busColor;
+                            GUILayout.Label(" ", textureStyle, GUILayout.Width(12));
+                            GUI.color = oldColor;
+                            showedBusColor = true;
+                        } else {
+                            GUILayout.Label(" ", GUILayout.Width(12));
+                        }
+                    }
+
                     if (Application.isPlaying) {
+                        if (showedBusColor) {
+                            GUILayout.Space(4);
+                        } 
                         var groupVoices = aGroup.ActiveVoices;
                         var totalVoices = aGroup.TotalVoices;
 
@@ -1735,49 +1946,36 @@ public class MasterAudioInspector : Editor {
 
                         if (aGroup.busIndex != busIndex && busIndex != 1) {
                             if (isBulkEdit) {
+                                // don't change the index here for bulk edit, so undo will work.
                                 bulkBusIndex = busIndex;
-                            } else {
+                            } else if (!Application.isPlaying) {  // no undoing this unless in edit mode.
                                 AudioUndoHelper.RecordObjectPropertyForUndo(ref groupDirty, aGroup, "change Group Bus");
                             }
-                        }
-
-                        if (busIndex != 1 && !isBulkEdit) {
-                            // don't change the index, so undo will work.
-                            aGroup.busIndex = busIndex;
                         }
 
                         GUI.color = Color.white;
 
                         if (selectedBusIndex != busIndex) {
-                            if (busIndex == 0 && Application.isPlaying) {
-#if UNITY_5
-                                _sounds.RouteGroupToUnityMixerGroup(sType, null);
-#endif
-                            } else if (busIndex == 1) {
-                                busToCreate = l;
+                            if (busIndex == 0) {
                                 if (Application.isPlaying) {
-#if UNITY_5
-                                    _sounds.RouteGroupToUnityMixerGroup(sType, null);
-#endif
+                                    MasterAudio.RouteGroupToBus(sType, null);
+                                } else {
+                                    aGroup.busIndex = busIndex;
                                 }
-                            } else if (busIndex >= MasterAudio.HardCodedBusOptions) {
+                            } else if (busIndex == 1) {
+                                if (isBulkEdit) {
+                                    bulkBusToCreate = l;
+                                } else {
+                                    singleBusToCreate = l;
+                                }
+                            } else if (busIndex >= MasterAudio.HardCodedBusOptions && !isBulkEdit) {
                                 var newBus = _sounds.groupBuses[busIndex - MasterAudio.HardCodedBusOptions];
                                 if (Application.isPlaying) {
-                                    var statGroup = MasterAudio.GrabGroup(sType);
-                                    statGroup.busIndex = busIndex;
-
-                                    if (newBus.isMuted) {
-                                        MasterAudio.MuteGroup(aGroup.name);
-                                    } else if (newBus.isSoloed) {
-                                        MasterAudio.SoloGroup(aGroup.name);
-                                    }
-
-                                    // reassign Unity Mixer Group
-#if UNITY_5
-                                    _sounds.RouteGroupToUnityMixerGroup(sType, newBus.mixerChannel);
-#endif
+                                    MasterAudio.RouteGroupToBus(aGroup.name, newBus.busName);
                                 } else {
-                                    // check if bus soloed or muted.
+                                    aGroup.busIndex = busIndex;
+
+                                    // check if bus soloed or muted and copy that only.
                                     if (newBus.isMuted) {
                                         aGroup.isMuted = true;
                                         aGroup.isSoloed = false;
@@ -1818,42 +2016,57 @@ public class MasterAudioInspector : Editor {
                     switch (groupButtonPressed) {
                         case DTGUIHelper.DTFunctionButtons.Find:
                             DTGUIHelper.ShowFilteredRelationsGraph(aGroup.name);
-                            break; 
+                            break;
                         case DTGUIHelper.DTFunctionButtons.Play:
+                            previewer = GetPreviewer();
+
                             if (Application.isPlaying) {
-                                MasterAudio.PlaySoundAndForget(aGroup.name);
+                                if (previewer != null) {
+                                    MasterAudio.PlaySound3DAtVector3AndForget(aGroup.name, previewer.transform.position);
+                                }
                             } else {
+                                _isDirty = true;
+
                                 var rndIndex = Random.Range(0, aGroup.groupVariations.Count);
                                 var rndVar = aGroup.groupVariations[rndIndex];
- 
-                                var calcVolume = aGroup.groupMasterVolume * rndVar.VarAudio.volume;
 
-                                if (rndVar.audLocation == MasterAudio.AudioLocation.ResourceFile) {
-                                    StopPreviewer();
-                                    var fileName = AudioResourceOptimizer.GetLocalizedFileName(rndVar.useLocalization, rndVar.resourceFileName);
-                                    GetPreviewer().PlayOneShot(Resources.Load(fileName) as AudioClip, calcVolume);
-                                } else {
-                                    rndVar.VarAudio.PlayOneShot(rndVar.VarAudio.clip, calcVolume);
+                                var randPitch = SoundGroupVariationInspector.GetRandomPreviewPitch(rndVar);
+                                var varVol = SoundGroupVariationInspector.GetRandomPreviewVolume(rndVar);
+
+                                if (rndVar.audLocation != MasterAudio.AudioLocation.FileOnInternet) {
+                                    if (previewer != null) {
+                                        StopPreviewer();
+                                        previewer.pitch = randPitch;
+                                    }
                                 }
 
-                                _isDirty = true;
+                                var calcVolume = aGroup.groupMasterVolume * varVol;
+
+                                switch (rndVar.audLocation) {
+                                    case MasterAudio.AudioLocation.ResourceFile:
+                                        if (previewer != null) {
+                                            var fileName = AudioResourceOptimizer.GetLocalizedFileName(rndVar.useLocalization, rndVar.resourceFileName);
+                                            previewer.PlayOneShot(Resources.Load(fileName) as AudioClip, calcVolume);
+                                        }
+                                        break;
+                                    case MasterAudio.AudioLocation.Clip:
+                                        if (previewer != null) {
+                                            previewer.PlayOneShot(rndVar.VarAudio.clip, calcVolume);
+                                        }
+                                        break;
+                                    case MasterAudio.AudioLocation.FileOnInternet:
+                                        if (!string.IsNullOrEmpty(rndVar.internetFileUrl)) {
+                                            Application.OpenURL(rndVar.internetFileUrl);
+                                        }
+                                        break;
+                                }
                             }
                             break;
                         case DTGUIHelper.DTFunctionButtons.Stop:
                             if (Application.isPlaying) {
                                 MasterAudio.StopAllOfSound(aGroup.name);
                             } else {
-                                var hasResourceFile = false;
-                                foreach (var t in aGroup.groupVariations) {
-									t.VarAudio.Stop();
-                                    if (t.audLocation == MasterAudio.AudioLocation.ResourceFile) {
-                                        hasResourceFile = true;
-                                    }
-                                }
-
-                                if (hasResourceFile) {
-                                    StopPreviewer();
-                                }
+                                StopPreviewer();
                             }
                             break;
                         case DTGUIHelper.DTFunctionButtons.Mute:
@@ -1915,35 +2128,75 @@ public class MasterAudioInspector : Editor {
                 }
 
                 if (bulkBusIndex.HasValue) {
-                    AudioUndoHelper.RecordObjectsForUndo(bulkSelectedGrps.ToArray(), "Bulk Bus Assignment");
-
+                    if (!Application.isPlaying) { // no undoing this unless in edit mode.
+                        AudioUndoHelper.RecordObjectsForUndo(bulkSelectedGrps.ToArray(), "Bulk Bus Assignment");
+                    }
 
                     foreach (var grp in bulkSelectedGrps) {
-                        grp.busIndex = bulkBusIndex.Value;
-#if UNITY_5
-                        if (bulkBusIndex.Value == 0) {
-                            _sounds.RouteGroupToUnityMixerGroup(grp.name, null);
+                        string busName = null;
+                        GroupBus theBus = null;
+                        if (bulkBusIndex.Value >= MasterAudio.HardCodedBusOptions) {
+                            theBus = _sounds.groupBuses[bulkBusIndex.Value - MasterAudio.HardCodedBusOptions];
+                            busName = theBus.busName;
+                        }
+
+                        if (Application.isPlaying) {
+                            MasterAudio.RouteGroupToBus(grp.name, busName);
                         } else {
-                            var theBus = _sounds.groupBuses[bulkBusIndex.Value - MasterAudio.HardCodedBusOptions];
+                            grp.busIndex = bulkBusIndex.Value;
+
                             if (theBus != null) {
-                                _sounds.RouteGroupToUnityMixerGroup(grp.name, theBus.mixerChannel);
+                                if (theBus.isMuted) {
+                                    grp.isMuted = true;
+                                    grp.isSoloed = false;
+                                } else if (theBus.isSoloed) {
+                                    grp.isMuted = false;
+                                    grp.isSoloed = true;
+                                }
                             }
                         }
-#endif
 
                         EditorUtility.SetDirty(grp);
                     }
                 }
 
-                if (busToCreate.HasValue) {
-                    CreateBus(busToCreate.Value);
+                if (singleBusToCreate.HasValue) {
+                    CreateBus(singleBusToCreate.Value);
+                } else if (bulkBusToCreate.HasValue) {
+                    if (!Application.isPlaying) {
+                        AudioUndoHelper.RecordObjectsForUndo(bulkSelectedGrps.ToArray(), "Bulk Bus Assignment");
+                    }
+
+                    var i = 0;
+                    var newBusName = string.Empty;
+
+                    foreach (var grp in bulkSelectedGrps) {
+                        if (i == 0) {
+                            newBusName = CreateBus(bulkBusToCreate.Value);
+                        } else {
+                            MasterAudio.RouteGroupToBus(grp.name, newBusName);
+                        }
+
+                        EditorUtility.SetDirty(grp);
+                        i++;
+                    }
                 }
 
                 if (groupToDelete != null) {
+                    var grpName = groupToDelete.name;
+                    if (Application.isPlaying) {
+                        var grp = MasterAudio.GrabGroup(grpName, false);
+                        if (grp != null && grp.isSoloed) {
+                            MasterAudio.UnsoloGroup(grpName);
+                        }
+                    }
+
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Delete Duck Group");
                     _sounds.musicDuckingSounds.RemoveAll(delegate (DuckGroupInfo obj) {
-                        return obj.soundType == groupToDelete.name;
+                        return obj.soundType == grpName;
                     });
                     AudioUndoHelper.DestroyForUndo(groupToDelete);
+                    MasterAudio.RescanGroupsNow();
                 }
 
                 if (Application.isPlaying) {
@@ -1963,19 +2216,13 @@ public class MasterAudioInspector : Editor {
                 }
 
                 GUI.contentColor = DTGUIHelper.BrightButtonColor;
-                if (GUILayout.Button(new GUIContent("Mute/Solo Reset", "Turn off all group mute and solo switches"), EditorStyles.toolbarButton, GUILayout.Width(100))) {
-                    AudioUndoHelper.RecordObjectsForUndo(groups.ToArray(), "Mute/Solo Reset");
-
-                    foreach (var t in groups) {
-                        aGroup = t;
-                        aGroup.isSoloed = false;
-                        aGroup.isMuted = false;
-                    }
+                if (GUILayout.Button(new GUIContent("Mute/Solo Reset", "Turn off all Group mute and solo switches"), EditorStyles.toolbarButton, GUILayout.Width(110))) {
+                    MuteSoloReset();
                 }
 
                 GUILayout.Space(6);
 
-                if (GUILayout.Button(new GUIContent("Max Grp. Volumes", "Reset all group volumes to full"), EditorStyles.toolbarButton, GUILayout.Width(104))) {
+                if (GUILayout.Button(new GUIContent("Max Grp. Volumes", "Reset all group volumes to full"), EditorStyles.toolbarButton, GUILayout.Width(115))) {
                     AudioUndoHelper.RecordObjectsForUndo(groups.ToArray(), "Max Grp. Volumes");
 
                     foreach (var t in groups) {
@@ -2016,14 +2263,33 @@ public class MasterAudioInspector : Editor {
                     }
 
                     for (var v = 0; v < myGroup.transform.childCount; v++) {
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-                        Debug.LogError("This feature requires Unity 4 or higher.");
-#else
                         var aVar = myGroup.transform.GetChild(v);
                         var oldAudio = aVar.GetComponent<AudioSource>();
                         CopyFromAudioSourceTemplate(oldAudio, true);
-#endif
                     }
+                }
+            }
+
+            if (applyDuckingBulk) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Add to Ducking");
+
+                foreach (var myGroup in filteredGroups) {
+                    if (!myGroup.isSelected) {
+                        continue;
+                    }
+
+                    if (_sounds.musicDuckingSounds.Find(delegate (DuckGroupInfo dg) {
+                        return dg.soundType == myGroup.name;
+                    }) != null) {
+                        continue;
+                    }
+
+                    _sounds.musicDuckingSounds.Add(new DuckGroupInfo() {
+                        soundType = myGroup.name,
+                        riseVolStart = _sounds.defaultRiseVolStart,
+                        duckedVolumeCut = _sounds.defaultDuckedVolumeCut,
+                        unduckTime = _sounds.defaultUnduckTime
+                    });
                 }
             }
 
@@ -2032,13 +2298,9 @@ public class MasterAudioInspector : Editor {
 
                 foreach (var myGroup in filteredGroups) {
                     for (var v = 0; v < myGroup.transform.childCount; v++) {
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-                        Debug.LogError("This feature requires Unity 4 or higher.");
-#else
                         var aVar = myGroup.transform.GetChild(v);
                         var oldAudio = aVar.GetComponent<AudioSource>();
                         CopyFromAudioSourceTemplate(oldAudio, true);
-#endif
                     }
                 }
             }
@@ -2069,7 +2331,7 @@ public class MasterAudioInspector : Editor {
                     }
                     GUILayout.Space(endSpace);
                 }
-                DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/GroupMixer.htm#BusMixer", true);
+                DTGUIHelper.AddMiddleHelpIcon("http://www.dtdevtools.com/docs/masteraudio/GroupMixer.htm#BusMixer");
                 EditorGUILayout.EndHorizontal();
 
                 GroupBus aBus = null;
@@ -2128,7 +2390,7 @@ public class MasterAudioInspector : Editor {
                     }
 
                     GUI.color = Color.white;
-                    GUILayout.Label("Voices");
+                    DTGUIHelper.WhiteLabel("Voices");
 
                     GUI.color = DTGUIHelper.BrightButtonColor;
                     var oldLimitIndex = busVoiceLimitList.IndexOf(aBus.voiceLimit.ToString());
@@ -2186,19 +2448,19 @@ public class MasterAudioInspector : Editor {
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.EndHorizontal();
 
-#if UNITY_5
                     if (_sounds.ShouldShowUnityAudioMixerGroupAssignments) {
                         var newChan = (AudioMixerGroup)EditorGUILayout.ObjectField(aBus.mixerChannel, typeof(AudioMixerGroup), false);
                         if (newChan != aBus.mixerChannel) {
                             AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Bus Mixer Group");
                             aBus.mixerChannel = newChan;
-                            _sounds.RouteBusToUnityMixerGroup(aBus.busName, newChan);
+                            MasterAudio.RouteBusToUnityMixerGroup(aBus.busName, newChan);
                         }
                         EditorGUILayout.EndVertical();
                     }
 
                     EditorGUILayout.BeginHorizontal();
 
+                    GUI.backgroundColor = Color.white;
                     if (_sounds.mixerSpatialBlendType != MasterAudio.AllMixerSpatialBlendType.ForceAllTo2D) {
                         var new2D = GUILayout.Toggle(aBus.forceTo2D, "Force to 2D");
                         if (new2D != aBus.forceTo2D) {
@@ -2208,10 +2470,8 @@ public class MasterAudioInspector : Editor {
                     }
 
                     if (MasterAudio.Instance.useOcclusion && MasterAudio.Instance.occlusionSelectType != MasterAudio.OcclusionSelectionType.AllGroups) {
-                        
                         var is2D = false;
 
-#if UNITY_5
                         switch (MasterAudio.Instance.mixerSpatialBlendType) {
                             case MasterAudio.AllMixerSpatialBlendType.ForceAllTo2D:
                                 is2D = true;
@@ -2220,7 +2480,7 @@ public class MasterAudioInspector : Editor {
                                 is2D = MasterAudio.Instance.mixerSpatialBlend <= 0;
                                 break;
                         }
-#endif
+
                         if (!is2D && aBus.forceTo2D) {
                             is2D = true;
                         }
@@ -2234,12 +2494,19 @@ public class MasterAudioInspector : Editor {
                         }
                     }
 
+                    if (_sounds.showBusColors) {
+                        GUILayout.Label("Color");
+                        var newBusColor = EditorGUILayout.ColorField(aBus.busColor);
+                        if (newBusColor != aBus.busColor) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Bus Color");
+                            aBus.busColor = newBusColor;
+                        }
+                    }
+
                     GUILayout.FlexibleSpace();
                     EditorGUILayout.EndHorizontal();
 
-#endif
                     EditorGUILayout.EndVertical();
-                    DTGUIHelper.AddSpaceForNonU5(2);
                 }
 
                 if (busToDelete.HasValue) {
@@ -2266,17 +2533,17 @@ public class MasterAudioInspector : Editor {
 
                 EditorGUILayout.Separator();
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(10);
+                GUILayout.Space(8);
                 GUI.contentColor = DTGUIHelper.BrightButtonColor;
                 GUI.backgroundColor = Color.white;
 
                 if (GUILayout.Button(new GUIContent("Mute/Solo Reset", "Turn off all bus mute and solo switches"), EditorStyles.toolbarButton, GUILayout.Width(100))) {
-                    BusMuteSoloReset();
+                    MuteSoloReset();
                 }
 
                 GUILayout.Space(6);
 
-                if (GUILayout.Button(new GUIContent("Max Bus Volumes", "Reset all bus volumes to full"), EditorStyles.toolbarButton, GUILayout.Width(100))) {
+                if (GUILayout.Button(new GUIContent("Max Bus Volumes", "Reset all bus volumes to full"), EditorStyles.toolbarButton, GUILayout.Width(110))) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Max Bus Volumes");
 
                     foreach (var t in _sounds.groupBuses) {
@@ -2285,7 +2552,6 @@ public class MasterAudioInspector : Editor {
                     }
                 }
 
-#if UNITY_5
                 GUILayout.Space(6);
 
                 GUI.contentColor = DTGUIHelper.BrightButtonColor;
@@ -2293,11 +2559,10 @@ public class MasterAudioInspector : Editor {
                 if (_sounds.showUnityMixerGroupAssignment) {
                     buttonText = "Hide Unity Mixer Groups";
                 }
-                if (GUILayout.Button(new GUIContent(buttonText), EditorStyles.toolbarButton, GUILayout.Width(140))) {
+                if (GUILayout.Button(new GUIContent(buttonText), EditorStyles.toolbarButton, GUILayout.Width(150))) {
                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, buttonText);
                     _sounds.showUnityMixerGroupAssignment = !_sounds.showUnityMixerGroupAssignment;
                 }
-#endif
 
                 GUI.contentColor = Color.white;
                 EditorGUILayout.EndHorizontal();
@@ -2318,30 +2583,7 @@ public class MasterAudioInspector : Editor {
         state = _sounds.playListExpanded;
         text = "Playlist Settings";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
         GUILayout.Space(2f);
 
@@ -2353,7 +2595,7 @@ public class MasterAudioInspector : Editor {
             _sounds.playListExpanded = isExp;
         }
 
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/PlaylistSettings.htm");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/PlaylistSettings.htm");
 
         EditorGUILayout.EndHorizontal();
         GUI.color = Color.white;
@@ -2368,7 +2610,6 @@ public class MasterAudioInspector : Editor {
                 DTGUIHelper.ShowColorWarning("Some controls are hidden from Playlist Control in narrow mode.");
             }
 
-#if UNITY_5
             DTGUIHelper.StartGroupHeader(1, false);
             var newMusicSpatialType = (MasterAudio.AllMusicSpatialBlendType)EditorGUILayout.EnumPopup("Music Spatial Blend Rule", _sounds.musicSpatialBlendType);
             if (newMusicSpatialType != _sounds.musicSpatialBlendType) {
@@ -2403,17 +2644,16 @@ public class MasterAudioInspector : Editor {
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.Separator();
-#endif
 
             EditorGUI.indentLevel = 0;  // Space will handle this for the header
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Playlist Controller Setup", EditorStyles.miniBoldLabel, GUILayout.Width(130));
 
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/PlaylistSettings.htm#PlaylistControllerSetup", true);
+            DTGUIHelper.AddMiddleHelpIcon("http://www.dtdevtools.com/docs/masteraudio/PlaylistSettings.htm#PlaylistControllerSetup");
             EditorGUILayout.EndHorizontal();
 
             EditorGUI.indentLevel = 0;
-            DTGUIHelper.StartGroupHeader();
+            DTGUIHelper.StartGroupHeader(2);
             EditorGUILayout.BeginHorizontal();
             const string labelText = "Name";
             labelWidth = 146;
@@ -2456,14 +2696,13 @@ public class MasterAudioInspector : Editor {
                     var controller = pcs[i];
                     DTGUIHelper.StartGroupHeader(1, false);
 
-#if UNITY_5
                     EditorGUILayout.BeginVertical();
                     EditorGUILayout.BeginHorizontal();
-#else
-                    EditorGUILayout.BeginHorizontal();
-#endif
 
+                    var oldBG = GUI.backgroundColor;
+                    GUI.backgroundColor = Color.white;
                     GUILayout.Label(controller.name, _sounds.MixerWidth == MasterAudio.MixerWidthMode.Narrow ? GUILayout.MinWidth(NarrowWidth) : GUILayout.MinWidth(105));
+                    GUI.backgroundColor = oldBG;
 
                     GUILayout.FlexibleSpace();
 
@@ -2526,7 +2765,6 @@ public class MasterAudioInspector : Editor {
 
                     EditorGUILayout.EndHorizontal();
 
-#if UNITY_5
                     if (_sounds.showUnityMixerGroupAssignment) {
                         var newChan = (AudioMixerGroup)EditorGUILayout.ObjectField(controller.mixerChannel, typeof(AudioMixerGroup), false);
                         if (newChan != controller.mixerChannel) {
@@ -2540,7 +2778,6 @@ public class MasterAudioInspector : Editor {
                     }
 
                     EditorGUILayout.EndVertical();
-#endif
 
                     switch (buttonPressed) {
                         case DTGUIHelper.DTFunctionButtons.Go:
@@ -2556,7 +2793,6 @@ public class MasterAudioInspector : Editor {
                     }
 
                     EditorGUILayout.EndVertical();
-                    DTGUIHelper.AddSpaceForNonU5(1);
 
                     if (ctrlDirty) {
                         EditorUtility.SetDirty(controller);
@@ -2571,7 +2807,7 @@ public class MasterAudioInspector : Editor {
             EditorGUILayout.Separator();
             GUI.contentColor = DTGUIHelper.BrightButtonColor;
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(10);
+            GUILayout.Space(4);
             GUI.backgroundColor = Color.white;
             if (GUILayout.Button(new GUIContent("Create Playlist Controller"), EditorStyles.toolbarButton, GUILayout.Width(150))) {
                 // ReSharper disable once RedundantCast
@@ -2583,18 +2819,16 @@ public class MasterAudioInspector : Editor {
 
             var buttonText = string.Empty;
 
-#if UNITY_5
             GUILayout.Space(6);
             GUI.contentColor = DTGUIHelper.BrightButtonColor;
             buttonText = "Show Unity Mixer Groups";
             if (_sounds.showUnityMixerGroupAssignment) {
                 buttonText = "Hide Unity Mixer Groups";
             }
-            if (GUILayout.Button(new GUIContent(buttonText), EditorStyles.toolbarButton, GUILayout.Width(140))) {
+            if (GUILayout.Button(new GUIContent(buttonText), EditorStyles.toolbarButton, GUILayout.Width(150))) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, buttonText);
                 _sounds.showUnityMixerGroupAssignment = !_sounds.showUnityMixerGroupAssignment;
             }
-#endif
 
             EditorGUILayout.EndHorizontal();
             DTGUIHelper.EndGroupHeader();
@@ -2605,7 +2839,7 @@ public class MasterAudioInspector : Editor {
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Playlist Setup", EditorStyles.miniBoldLabel, GUILayout.Width(80));
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/PlaylistSettings.htm#PlaylistSetup", true);
+            DTGUIHelper.AddMiddleHelpIcon("http://www.dtdevtools.com/docs/masteraudio/PlaylistSettings.htm#PlaylistSetup");
             EditorGUILayout.EndHorizontal();
 
             EditorGUI.indentLevel = 0;  // Space will handle this for the header
@@ -2670,7 +2904,271 @@ public class MasterAudioInspector : Editor {
                     EditorGUILayout.EndVertical();
 
                     if (aList.isExpanded) {
+                        DTGUIHelper.StartGroupHeader(2);
                         EditorGUI.indentLevel = 0;
+                        var exp = EditorGUILayout.BeginToggleGroup(" Show Song Metadata", aList.showMetadata);
+                        if (exp != aList.showMetadata) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Show Song Metadata");
+                            aList.showMetadata = exp;
+                        }
+                        DTGUIHelper.EndGroupHeader();
+
+                        if (aList.showMetadata) {
+                            if (!Application.isPlaying) {
+                                var newPropName = EditorGUILayout.TextField("Property Name", aList.newMetadataPropName);
+                                if (newPropName != aList.newMetadataPropName) {
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property Name");
+                                    aList.newMetadataPropName = newPropName;
+                                }
+
+                                var newPropType = (SongMetadataProperty.MetadataPropertyType)EditorGUILayout.EnumPopup("Property Type", aList.newMetadataPropType);
+                                if (newPropType != aList.newMetadataPropType) {
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property Name");
+                                    aList.newMetadataPropType = newPropType;
+                                }
+
+                                var newPropRequired = EditorGUILayout.Toggle("Is Required", aList.newMetadataPropRequired);
+                                if (newPropRequired != aList.newMetadataPropRequired) {
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Is Required");
+                                    aList.newMetadataPropRequired = newPropRequired;
+                                }
+
+                                var newPropMult = EditorGUILayout.Toggle("Song Can Have Multiple", aList.newMetadataPropCanHaveMult);
+                                if (newPropMult != aList.newMetadataPropCanHaveMult) {
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Song Can Have Multiple");
+                                    aList.newMetadataPropCanHaveMult = newPropMult;
+                                }
+
+                                GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                                if (GUILayout.Button(new GUIContent("Create Metadata Property"), EditorStyles.toolbarButton, GUILayout.Width(155))) {
+                                    CreateMetadataProperty(aList, aList.newMetadataPropName, aList.newMetadataPropType, aList.newMetadataPropRequired, aList.newMetadataPropCanHaveMult);
+                                }
+                            }
+                            GUI.contentColor = Color.white;
+
+                            var metaLabelText = "Metadata Properties";
+                            if (aList.songMetadataProps.Count > 0) {
+                                metaLabelText += "(" + aList.songMetadataProps.Count + ")";
+                            }
+
+                            GUILayout.Label(metaLabelText, EditorStyles.boldLabel);
+
+                            if (aList.songMetadataProps.Count == 0) {
+                                DTGUIHelper.ShowColorWarning("You have no Metadata. Add some properties above.");
+                            }
+
+                            int? propIndexToDelete = null;
+
+                            for (var s = 0; s < aList.songMetadataProps.Count; s++) {
+                                var property = aList.songMetadataProps[s];
+
+                                GUI.backgroundColor = Color.white;
+                                DTGUIHelper.StartGroupHeader(0, false);
+
+                                EditorGUILayout.BeginHorizontal(EditorStyles.objectField);
+
+                                if (property.IsEditing) {
+                                    GUI.backgroundColor = DTGUIHelper.BrightTextColor;
+                                    var propName = EditorGUILayout.TextField("", property.ProspectiveName);
+                                    if (propName != property.ProspectiveName) {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property Name");
+                                        property.ProspectiveName = propName;
+                                    }
+
+                                    var buttonPressed = DTGUIHelper.AddCancelSaveButtons("Song Metadata Property");
+
+                                    switch (buttonPressed) {
+                                        case DTGUIHelper.DTFunctionButtons.Cancel:
+                                            property.IsEditing = false;
+                                            property.ProspectiveName = property.PropertyName;
+                                            _isDirty = true;
+                                            break;
+                                        case DTGUIHelper.DTFunctionButtons.Save:
+                                            if (propName != null) {
+                                                propName = propName.Replace(" ", "");
+                                            }
+                                            if (string.IsNullOrEmpty(propName)) {
+                                                DTGUIHelper.ShowAlert("You must give a name to your new Meta Property.");
+                                                break;
+                                            }
+
+                                            var match = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                return p.PropertyName == propName;
+                                            });
+
+                                            if (match != null) {
+                                                DTGUIHelper.ShowAlert("You already have a Metadata Property named '" + propName + "'. Names must be unique.");
+                                                break;
+                                            }
+
+                                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property Name");
+
+                                            var newName = property.ProspectiveName;
+                                            var oldName = property.PropertyName;
+
+                                            // update all songs to have the new Property Name
+                                            for (var t = 0; t < aList.MusicSettings.Count; t++) {
+                                                var aSong = aList.MusicSettings[t];
+
+
+                                                switch (property.PropertyType) {
+                                                    case SongMetadataProperty.MetadataPropertyType.String:
+                                                        var sMatches = aSong.metadataStringValues.FindAll(delegate (SongMetadataStringValue v) {
+                                                            return v.PropertyName == oldName;
+                                                        });
+
+                                                        for (var loop = 0; loop < sMatches.Count; loop++) {
+                                                            sMatches[loop].PropertyName = newName;
+                                                        }
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.Boolean:
+                                                        var bMatches = aSong.metadataBoolValues.FindAll(delegate (SongMetadataBoolValue v) {
+                                                            return v.PropertyName == oldName;
+                                                        });
+
+                                                        for (var loop = 0; loop < bMatches.Count; loop++) {
+                                                            bMatches[loop].PropertyName = newName;
+                                                        }
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.Integer:
+                                                        var iMatches = aSong.metadataIntValues.FindAll(delegate (SongMetadataIntValue v) {
+                                                            return v.PropertyName == oldName;
+                                                        });
+
+                                                        for (var loop = 0; loop < iMatches.Count; loop++) {
+                                                            iMatches[loop].PropertyName = newName;
+                                                        }
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.Float:
+                                                        var fMatches = aSong.metadataFloatValues.FindAll(delegate (SongMetadataFloatValue v) {
+                                                            return v.PropertyName == oldName;
+                                                        });
+
+                                                        for (var loop = 0; loop < fMatches.Count; loop++) {
+                                                            fMatches[loop].PropertyName = newName;
+                                                        }
+                                                        break;
+                                                }
+                                            }
+
+                                            property.PropertyName = newName;
+                                            property.IsEditing = false;
+                                            break;
+                                    }
+
+                                } else {
+                                    EditorGUI.indentLevel = 1;
+                                    var newEditing = DTGUIHelper.Foldout(property.PropertyExpanded, property.PropertyName + " (" + property.PropertyType.ToString() + ")");
+                                    if (newEditing != property.PropertyExpanded) {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Property");
+                                        property.PropertyExpanded = newEditing;
+                                    }
+
+                                    GUILayout.FlexibleSpace();
+                                    var settingsIcon = new GUIContent(MasterAudioInspectorResources.GearTexture, "Click to edit Property");
+
+                                    if (!Application.isPlaying) {
+                                        GUI.backgroundColor = Color.white;
+                                        if (GUILayout.Button(settingsIcon, EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16))) {
+                                            property.IsEditing = true;
+                                        }
+                                        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Property"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36))) { 
+                                            propIndexToDelete = s;
+                                        }
+                                    }
+                                }
+
+                                GUI.backgroundColor = Color.white;
+
+                                EditorGUILayout.EndHorizontal();
+
+                                if (property.PropertyExpanded) {
+                                    EditorGUI.indentLevel = 0;
+
+                                    if (Application.isPlaying) {
+                                        DTGUIHelper.ShowColorWarning("Can't edit at runtime.");
+                                    } else {
+                                        var newRequired = EditorGUILayout.Toggle("Is Required", property.AllSongsMustContain);
+                                        if (newRequired != property.AllSongsMustContain) {
+                                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Is Required");
+                                            property.AllSongsMustContain = newRequired;
+                                            if (newRequired) {
+                                                MakePropertyRequired(property, aList);
+                                            }
+                                        }
+                                        var newMult = EditorGUILayout.Toggle("Song Can Have Multiple", property.CanSongHaveMultiple);
+                                        if (newMult != property.CanSongHaveMultiple) {
+                                            var sbSongsWithMult = new StringBuilder();
+                                            if (!newMult) { // turned off the checkbox
+                                                for (var x = 0; x < aList.MusicSettings.Count; x++) {
+                                                    var aSong = aList.MusicSettings[x];
+
+                                                    switch (property.PropertyType) {
+                                                        case SongMetadataProperty.MetadataPropertyType.String:
+                                                            if (aSong.metadataStringValues.FindAll(delegate (SongMetadataStringValue v) {
+                                                                return v.PropertyName == property.PropertyName;
+                                                            }).Count > 1) {
+                                                                if (sbSongsWithMult.Length > 0) {
+                                                                    sbSongsWithMult.Append(",");
+                                                                }
+                                                                sbSongsWithMult.Append(aSong.songName);
+                                                            }
+                                                            break;
+                                                        case SongMetadataProperty.MetadataPropertyType.Boolean:
+                                                            if (aSong.metadataBoolValues.FindAll(delegate (SongMetadataBoolValue v) {
+                                                                return v.PropertyName == property.PropertyName;
+                                                            }).Count > 1) {
+                                                                if (sbSongsWithMult.Length > 0) {
+                                                                    sbSongsWithMult.Append(",");
+                                                                }
+                                                                sbSongsWithMult.Append(aSong.songName);
+                                                            }
+                                                            break;
+                                                        case SongMetadataProperty.MetadataPropertyType.Integer:
+                                                            if (aSong.metadataIntValues.FindAll(delegate (SongMetadataIntValue v) {
+                                                                return v.PropertyName == property.PropertyName;
+                                                            }).Count > 1) {
+                                                                if (sbSongsWithMult.Length > 0) {
+                                                                    sbSongsWithMult.Append(",");
+                                                                }
+                                                                sbSongsWithMult.Append(aSong.songName);
+                                                            }
+                                                            break;
+                                                        case SongMetadataProperty.MetadataPropertyType.Float:
+                                                            if (aSong.metadataFloatValues.FindAll(delegate (SongMetadataFloatValue v) {
+                                                                return v.PropertyName == property.PropertyName;
+                                                            }).Count > 1) {
+                                                                if (sbSongsWithMult.Length > 0) {
+                                                                    sbSongsWithMult.Append(",");
+                                                                }
+                                                                sbSongsWithMult.Append(aSong.songName);
+                                                            }
+                                                            break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (sbSongsWithMult.Length > 0) {
+                                                DTGUIHelper.ShowAlert("Cannot turn off 'Song Can Have Multiple' because you have song(s) with multiple values for this property: " + sbSongsWithMult.ToString() + ". We cannot choose which value to keep, so you must make sure there is no more than one before turning off this checkbox.");
+                                            } else {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Song Can Have Multiple");
+                                                property.CanSongHaveMultiple = newMult;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                EditorGUILayout.EndVertical();
+                            }
+
+                            if (propIndexToDelete.HasValue) {
+                                DeleteMetadataProperty(aList, propIndexToDelete.Value);
+                            }
+                        }
+                        EditorGUILayout.EndToggleGroup();
+                        GUI.backgroundColor = Color.white;
+                        EditorGUI.indentLevel = 0;
+
                         var newPlaylist = EditorGUILayout.TextField("Name", aList.playlistName);
                         if (newPlaylist != aList.playlistName) {
                             AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Name");
@@ -2702,6 +3200,31 @@ public class MasterAudioInspector : Editor {
                             aList.fadeOutLastSong = newFadeOut;
                         }
 
+                        var newBulk = EditorGUILayout.Toggle("Bulk Song Changes", aList.bulkEditMode);
+                        if (newBulk != aList.bulkEditMode) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Bulk Song Changes");
+                            aList.bulkEditMode = newBulk;
+                        }
+
+                        if (aList.bulkEditMode) {
+                            GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                            EditorGUILayout.BeginHorizontal();
+                            GUILayout.Space(0);
+                            if (GUILayout.Button("Select All", EditorStyles.toolbarButton, GUILayout.Width(70))) {
+                                CheckAllSongs(aList);
+                            }
+                            GUILayout.Space(6);
+                            if (GUILayout.Button("Deselect All", EditorStyles.toolbarButton, GUILayout.Width(80))) {
+                                UncheckAllSongs(aList);
+                            }
+                            EditorGUILayout.EndHorizontal();
+
+                            GUI.contentColor = Color.white;
+                            var totalSongs = aList.MusicSettings.Count;
+                            var numSelected = GetNumCheckedSongs(aList);
+                            DTGUIHelper.ShowLargeBarAlert(numSelected + " of " + totalSongs + " Songs selected - adjustments to a selected Song will affect all selected Songs.");
+                        }
+
                         var newTransType = (MasterAudio.SongFadeInPosition)EditorGUILayout.EnumPopup("Song Transition Type", aList.songTransitionType);
                         if (newTransType != aList.songTransitionType) {
                             AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Song Transition Type");
@@ -2728,7 +3251,7 @@ public class MasterAudioInspector : Editor {
                             break;
                         }
 
-                        if (MasterAudio.HasAsyncResourceLoaderFeature() && playlistHasResource) {
+                        if (playlistHasResource) {
                             if (!_sounds.resourceClipsAllLoadAsync) {
                                 var newAsync = EditorGUILayout.Toggle(new GUIContent("Load Resources Async", "Checking this means Resource files in this Playlist will be loaded asynchronously."), aList.resourceClipsAllLoadAsync);
                                 if (newAsync != aList.resourceClipsAllLoadAsync) {
@@ -2739,7 +3262,7 @@ public class MasterAudioInspector : Editor {
                         }
 
                         EditorGUILayout.BeginHorizontal();
-                        GUILayout.Space(10);
+                        GUILayout.Space(4);
                         GUI.contentColor = DTGUIHelper.BrightButtonColor;
                         if (GUILayout.Button(new GUIContent("Eq. Song Volumes"), EditorStyles.toolbarButton, GUILayout.Width(110))) {
                             EqualizePlaylistVolumes(aList.MusicSettings);
@@ -2769,6 +3292,7 @@ public class MasterAudioInspector : Editor {
 
                         GUILayout.FlexibleSpace();
                         EditorGUILayout.EndHorizontal();
+
                         GUI.contentColor = Color.white;
                         EditorGUILayout.Separator();
 
@@ -2778,7 +3302,7 @@ public class MasterAudioInspector : Editor {
                         GUI.color = DTGUIHelper.DragAreaColor;
 
                         var dragArea = GUILayoutUtility.GetRect(0f, 35f, GUILayout.ExpandWidth(true));
-                        GUI.Box(dragArea, "Drag Audio clips here to add to playlist!");
+                        GUI.Box(dragArea, MasterAudio.DragAudioTip + " to add to playlist!");
 
                         GUI.color = Color.white;
 
@@ -2795,6 +3319,20 @@ public class MasterAudioInspector : Editor {
                                     DragAndDrop.AcceptDrag();
 
                                     foreach (var dragged in DragAndDrop.objectReferences) {
+                                        if (dragged is DefaultAsset) {
+                                            var assetPaths = AssetDatabase.FindAssets("t:AudioClip", DragAndDrop.paths);
+                                            foreach (var assetPath in assetPaths) {
+                                                var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(assetPath));
+                                                if (clip == null) {
+                                                    continue;
+                                                }
+
+                                                AddSongToPlaylist(aList, clip);
+                                            }
+
+                                            continue;
+                                        }
+
                                         var aClip = dragged as AudioClip;
                                         if (aClip == null) {
                                             continue;
@@ -2854,21 +3392,308 @@ public class MasterAudioInspector : Editor {
                                 }
                             }
 
+                            GUI.backgroundColor = Color.white;
+
                             var newSongExpanded = DTGUIHelper.Foldout(aSong.isExpanded, aSong.songName);
                             if (newSongExpanded != aSong.isExpanded) {
                                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Song expand");
                                 aSong.isExpanded = newSongExpanded;
                             }
 
-                            var songButtonPressed = DTGUIHelper.AddFoldOutListItemButtonItems(j, aList.MusicSettings.Count, "clip", false, true, true, allowPreview);
+                            var songButtonPressed = DTGUIHelper.AddFoldOutListItemButtonItems(j, aList.MusicSettings.Count, "clip", false, true, true, allowPreview, aList.bulkEditMode, aSong.isChecked);
+                            switch (songButtonPressed) {
+                                case DTGUIHelper.DTFunctionButtons.Check:
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Song check");
+                                    aSong.isChecked = true;
+                                    break;
+                                case DTGUIHelper.DTFunctionButtons.Uncheck:
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Song check");
+                                    aSong.isChecked = false;
+                                    break;
+                            }
+
                             GUILayout.Space(4);
-                            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/PlaylistSettings.htm#Song");
+                            DTGUIHelper.AddMiddleHelpIcon("http://www.dtdevtools.com/docs/masteraudio/PlaylistSettings.htm#Song");
                             EditorGUILayout.EndHorizontal();
                             EditorGUILayout.EndVertical();
 
                             if (aSong.isExpanded) {
                                 EditorGUI.indentLevel = 0;
 
+                                if (aList.showMetadata) {
+                                    var oldBG = GUI.backgroundColor;
+
+                                    DTGUIHelper.StartGroupHeader(0, false);
+
+                                    EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+
+                                    EditorGUI.indentLevel = 1;
+                                    var metaLabelText = "Song Metadata";
+
+                                    if (aSong.HasMetadataProperties) {
+                                        metaLabelText += " (" + aSong.MetadataPropertyCount + ")";
+                                    }
+
+                                    var newExp = DTGUIHelper.Foldout(aSong.metadataExpanded, metaLabelText);
+                                    if (newExp != aSong.metadataExpanded) {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Song Metadata");
+                                        aSong.metadataExpanded = newExp;
+                                    }
+
+                                    EditorGUILayout.EndHorizontal();
+
+                                    if (aSong.metadataExpanded) {
+                                        EditorGUI.indentLevel = 0;
+
+                                        var propertiesToAdd = new List<string>();
+                                        propertiesToAdd.Add("[Select a Property]");
+                                        for (var p = 0; p < aList.songMetadataProps.Count; p++) {
+                                            var aProp = aList.songMetadataProps[p];
+                                            if (aProp.CanSongHaveMultiple) {
+                                                propertiesToAdd.Add(aProp.PropertyName);
+                                                continue;
+                                            }
+
+                                            if (aProp.AllSongsMustContain) {
+                                                continue;
+                                            }
+
+                                            // not required. If you don't have one, you can add.
+                                            switch (aProp.PropertyType) {
+                                                case SongMetadataProperty.MetadataPropertyType.Boolean:
+                                                    if (aSong.metadataBoolValues.FindAll(delegate (SongMetadataBoolValue v) {
+                                                        return v.PropertyName == aProp.PropertyName;
+                                                    }).Count == 0) {
+                                                        propertiesToAdd.Add(aProp.PropertyName);
+                                                    }
+                                                    break;
+                                                case SongMetadataProperty.MetadataPropertyType.Integer:
+                                                    if (aSong.metadataIntValues.FindAll(delegate (SongMetadataIntValue v) {
+                                                        return v.PropertyName == aProp.PropertyName;
+                                                    }).Count == 0) {
+                                                        propertiesToAdd.Add(aProp.PropertyName);
+                                                    }
+                                                    break;
+                                                case SongMetadataProperty.MetadataPropertyType.Float:
+                                                    if (aSong.metadataFloatValues.FindAll(delegate (SongMetadataFloatValue v) {
+                                                        return v.PropertyName == aProp.PropertyName;
+                                                    }).Count == 0) {
+                                                        propertiesToAdd.Add(aProp.PropertyName);
+                                                    }
+                                                    break;
+                                                case SongMetadataProperty.MetadataPropertyType.String:
+                                                    if (aSong.metadataStringValues.FindAll(delegate (SongMetadataStringValue v) {
+                                                        return v.PropertyName == aProp.PropertyName;
+                                                    }).Count == 0) {
+                                                        propertiesToAdd.Add(aProp.PropertyName);
+                                                    }
+                                                    break;
+                                            }
+                                        }
+
+                                        var oldBG2 = GUI.backgroundColor;
+
+                                        if (!Application.isPlaying) {
+                                            var propIndex = EditorGUILayout.Popup("Add Metadata Property", 0, propertiesToAdd.ToArray());
+                                            if (propIndex != 0) {
+                                                var propName = propertiesToAdd[propIndex];
+                                                var propToAdd = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                    return p.PropertyName == propName;
+                                                });
+
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "add Property");
+
+                                                switch (propToAdd.PropertyType) {
+                                                    case SongMetadataProperty.MetadataPropertyType.Boolean:
+                                                        aSong.metadataBoolValues.Add(new SongMetadataBoolValue(propToAdd));
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.String:
+                                                        aSong.metadataStringValues.Add(new SongMetadataStringValue(propToAdd));
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.Integer:
+                                                        aSong.metadataIntValues.Add(new SongMetadataIntValue(propToAdd));
+                                                        break;
+                                                    case SongMetadataProperty.MetadataPropertyType.Float:
+                                                        aSong.metadataFloatValues.Add(new SongMetadataFloatValue(propToAdd));
+                                                        break;
+                                                }
+                                            }
+                                        }
+
+                                        if (!aSong.HasMetadataProperties) {
+                                            DTGUIHelper.ShowColorWarning("This song has no metadata.");
+                                        }
+
+                                        int? sIndexToDelete = null;
+                                        for (var m = 0; m < aSong.metadataStringValues.Count; m++) {
+                                            GUI.backgroundColor = oldBG2;
+                                            var aVal = aSong.metadataStringValues[m];
+
+                                            EditorGUILayout.BeginHorizontal();
+
+                                            var newVal = EditorGUILayout.TextField(aVal.PropertyName, aVal.Value);
+                                            if (newVal != aVal.Value) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property value");
+                                                aVal.Value = newVal;
+                                            }
+
+                                            if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Property"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36)))
+                                            {
+                                                sIndexToDelete = m;
+                                            }
+
+                                            EditorGUILayout.EndHorizontal();
+                                        }
+
+                                        GUI.backgroundColor = oldBG2;
+                                        int? bIndexToDelete = null;
+                                        for (var m = 0; m < aSong.metadataBoolValues.Count; m++) {
+                                            var aVal = aSong.metadataBoolValues[m];
+                                            EditorGUILayout.BeginHorizontal();
+
+                                            var newVal = EditorGUILayout.Toggle(aVal.PropertyName, aVal.Value);
+                                            if (newVal != aVal.Value) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property value");
+                                                aVal.Value = newVal;
+                                            }
+
+                                            if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Property"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36)))
+                                            {
+                                                bIndexToDelete = m;
+                                            }
+
+                                            EditorGUILayout.EndHorizontal();
+                                        }
+
+                                        GUI.backgroundColor = oldBG2;
+                                        int? iIndexToDelete = null;
+                                        for (var m = 0; m < aSong.metadataIntValues.Count; m++) {
+                                            GUI.backgroundColor = oldBG2;
+                                            var aVal = aSong.metadataIntValues[m];
+                                            EditorGUILayout.BeginHorizontal();
+
+                                            var newVal = EditorGUILayout.IntField(aVal.PropertyName, aVal.Value);
+                                            if (newVal != aVal.Value) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property value");
+                                                aVal.Value = newVal;
+                                            }
+
+                                            if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Property"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36)))
+                                            {
+                                                iIndexToDelete = m;
+                                            }
+
+                                            EditorGUILayout.EndHorizontal();
+                                        }
+
+                                        GUI.backgroundColor = oldBG2;
+                                        int? fIndexToDelete = null;
+                                        for (var m = 0; m < aSong.metadataFloatValues.Count; m++) {
+                                            GUI.backgroundColor = oldBG2;
+                                            var aVal = aSong.metadataFloatValues[m];
+                                            EditorGUILayout.BeginHorizontal();
+
+                                            var newVal = EditorGUILayout.FloatField(aVal.PropertyName, aVal.Value);
+                                            if (newVal != aVal.Value) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Property value");
+                                                aVal.Value = newVal;
+                                            }
+
+                                            if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Property"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36)))
+                                            {
+                                                fIndexToDelete = m;
+                                            }
+
+                                            EditorGUILayout.EndHorizontal();
+                                        }
+
+                                        if (sIndexToDelete.HasValue) {
+                                            var deadProp = aSong.metadataStringValues[sIndexToDelete.Value];
+                                            var srcProp = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                return p.PropertyName == deadProp.PropertyName;
+                                            });
+                                            if (srcProp == null || !srcProp.AllSongsMustContain) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                aSong.metadataStringValues.RemoveAt(sIndexToDelete.Value);
+                                            } else {
+                                                var propMatches = aSong.metadataStringValues.FindAll(delegate (SongMetadataStringValue s) {
+                                                    return s.PropertyName == deadProp.PropertyName;
+                                                });
+                                                if (propMatches.Count <= 1) {
+                                                    DTGUIHelper.ShowAlert("This Property is required. You cannot delete all instances of it from a song.");
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                    aSong.metadataStringValues.RemoveAt(sIndexToDelete.Value);
+                                                }
+                                            }
+                                        }
+                                        if (bIndexToDelete.HasValue) {
+                                            var deadProp = aSong.metadataBoolValues[bIndexToDelete.Value];
+                                            var srcProp = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                return p.PropertyName == deadProp.PropertyName;
+                                            });
+                                            if (srcProp == null || !srcProp.AllSongsMustContain) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                aSong.metadataBoolValues.RemoveAt(bIndexToDelete.Value);
+                                            } else {
+                                                var propMatches = aSong.metadataBoolValues.FindAll(delegate (SongMetadataBoolValue s) {
+                                                    return s.PropertyName == deadProp.PropertyName;
+                                                });
+                                                if (propMatches.Count <= 1) {
+                                                    DTGUIHelper.ShowAlert("This Property is required. You cannot delete all instances of it from a song.");
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                    aSong.metadataBoolValues.RemoveAt(bIndexToDelete.Value);
+                                                }
+                                            }
+                                        }
+                                        if (iIndexToDelete.HasValue) {
+                                            var deadProp = aSong.metadataIntValues[iIndexToDelete.Value];
+                                            var srcProp = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                return p.PropertyName == deadProp.PropertyName;
+                                            });
+                                            if (srcProp == null || !srcProp.AllSongsMustContain) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                aSong.metadataIntValues.RemoveAt(iIndexToDelete.Value);
+                                            } else {
+                                                var propMatches = aSong.metadataIntValues.FindAll(delegate (SongMetadataIntValue s) {
+                                                    return s.PropertyName == deadProp.PropertyName;
+                                                });
+                                                if (propMatches.Count <= 1) {
+                                                    DTGUIHelper.ShowAlert("This Property is required. You cannot delete all instances of it from a song.");
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                    aSong.metadataIntValues.RemoveAt(iIndexToDelete.Value);
+                                                }
+                                            }
+                                        }
+                                        if (fIndexToDelete.HasValue) {
+                                            var deadProp = aSong.metadataFloatValues[fIndexToDelete.Value];
+                                            var srcProp = aList.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+                                                return p.PropertyName == deadProp.PropertyName;
+                                            });
+                                            if (srcProp == null || !srcProp.AllSongsMustContain) {
+                                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                aSong.metadataFloatValues.RemoveAt(fIndexToDelete.Value);
+                                            } else {
+                                                var propMatches = aSong.metadataFloatValues.FindAll(delegate (SongMetadataFloatValue s) {
+                                                    return s.PropertyName == deadProp.PropertyName;
+                                                });
+                                                if (propMatches.Count <= 1) {
+                                                    DTGUIHelper.ShowAlert("This Property is required. You cannot delete all instances of it from a song.");
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "delete Property");
+                                                    aSong.metadataFloatValues.RemoveAt(fIndexToDelete.Value);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    EditorGUILayout.EndVertical();
+                                    GUI.backgroundColor = oldBG;
+                                }
+
+                                EditorGUI.indentLevel = 0;
                                 var newName = EditorGUILayout.TextField(new GUIContent("Song Id (optional)", "When you 'Play song by name', Song Id's will be searched first before audio file name."), aSong.alias);
                                 if (newName != aSong.alias) {
                                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Song Id");
@@ -2955,14 +3780,22 @@ public class MasterAudioInspector : Editor {
 
                                 var newVol = DTGUIHelper.DisplayVolumeField(aSong.volume, DTGUIHelper.VolumeFieldType.None, _sounds.MixerWidth, 0f, true);
                                 if (newVol != aSong.volume) {
-                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Volume");
-                                    aSong.volume = newVol;
+                                    if (aList.bulkEditMode && aSong.isChecked) {
+                                        CopySongVolumes(aList, newVol);
+                                    } else {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Volume");
+                                        aSong.volume = newVol;
+                                    }
                                 }
 
                                 var newPitch = DTGUIHelper.DisplayPitchField(aSong.pitch);
                                 if (newPitch != aSong.pitch) {
-                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Pitch");
-                                    aSong.pitch = newPitch;
+                                    if (aList.bulkEditMode && aSong.isChecked) {
+                                        CopySongPitches(aList, newPitch);
+                                    } else {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Pitch");
+                                        aSong.pitch = newPitch;
+                                    }
                                 }
 
                                 var crossFadetime = MasterAudio.Instance.MasterCrossFadeTime;
@@ -2975,24 +3808,84 @@ public class MasterAudioInspector : Editor {
                                 } else {
                                     var newLoop = EditorGUILayout.Toggle("Loop Clip", aSong.isLoop);
                                     if (newLoop != aSong.isLoop) {
-                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Loop Clip");
-                                        aSong.isLoop = newLoop;
+                                        if (aList.bulkEditMode && aSong.isChecked) {
+                                            CopySongLoops(aList, newLoop);
+                                        } else {
+                                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Loop Clip");
+                                            aSong.isLoop = newLoop;
+                                        }
                                     }
                                 }
 
-                                if (aList.songTransitionType == MasterAudio.SongFadeInPosition.NewClipFromBeginning) {
-                                    var newStart = EditorGUILayout.FloatField("Start Time (seconds)", aSong.customStartTime, GUILayout.Width(300));
-                                    if (newStart < 0) {
-                                        newStart = 0f;
+                                var useLastKnownPosition = aList.songTransitionType == MasterAudio.SongFadeInPosition.NewClipFromLastKnownPosition;
+
+                                if (aList.songTransitionType == MasterAudio.SongFadeInPosition.NewClipFromBeginning || useLastKnownPosition) {
+                                    if (useLastKnownPosition && aSong.songStartTimeMode != MasterAudio.CustomSongStartTimeMode.Beginning) {
+                                        DTGUIHelper.ShowLargeBarAlert("In this Song Transition Type, the Song Start Time Mode will only be used the first time a song is played.");
                                     }
-                                    if (newStart != aSong.customStartTime) {
-                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time (seconds)");
-                                        aSong.customStartTime = newStart;
+
+                                    var startTimeMode = (MasterAudio.CustomSongStartTimeMode)EditorGUILayout.EnumPopup("Song Start Time Mode", aSong.songStartTimeMode);
+                                    if (startTimeMode != aSong.songStartTimeMode) {
+                                        if (aList.bulkEditMode && aSong.isChecked) {
+                                            CopySongStartTimeMode(aList, startTimeMode);
+                                        } else {
+                                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Song Start Time Mode");
+                                            aSong.songStartTimeMode = startTimeMode;
+                                        }
+                                    }
+
+                                    switch (aSong.songStartTimeMode) {
+                                        case MasterAudio.CustomSongStartTimeMode.SpecificTime:
+                                            var newStart = EditorGUILayout.FloatField("Start Time (seconds)", aSong.customStartTime, GUILayout.Width(300));
+                                            if (newStart < 0) {
+                                                newStart = 0f;
+                                            }
+                                            if (newStart != aSong.customStartTime) {
+                                                if (aList.bulkEditMode && aSong.isChecked) {
+                                                    CopySongCustomStartTime(aList, newStart);
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time (seconds)");
+                                                    aSong.customStartTime = newStart;
+                                                }
+                                            }
+                                            break;
+                                        case MasterAudio.CustomSongStartTimeMode.RandomTime:
+                                            var newStartMin = EditorGUILayout.FloatField("Start Time Min (seconds)", aSong.customStartTime, GUILayout.Width(300));
+                                            if (newStartMin < 0) {
+                                                newStartMin = 0f;
+                                            } else if (newStartMin > aSong.customStartTimeMax) {
+                                                newStartMin = aSong.customStartTimeMax;
+                                            }
+                                            if (newStartMin != aSong.customStartTime) {
+                                                if (aList.bulkEditMode && aSong.isChecked) {
+                                                    CopySongStartTimeMin(aList, newStartMin);
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time Min (seconds)");
+                                                    aSong.customStartTime = newStartMin;
+                                                }
+                                            }
+
+                                            var newMaxStart = EditorGUILayout.FloatField("Start Time Max (seconds)", aSong.customStartTimeMax, GUILayout.Width(300));
+                                            if (newMaxStart < 0) {
+                                                newMaxStart = 0f;
+                                            } else if (newMaxStart < aSong.customStartTime) {
+                                                newMaxStart = aSong.customStartTime;
+                                            }
+                                            if (newMaxStart != aSong.customStartTimeMax) {
+                                                if (aList.bulkEditMode && aSong.isChecked) {
+                                                    CopySongStartTimeMax(aList, newMaxStart);
+                                                } else {
+                                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time Max (seconds)");
+                                                    aSong.customStartTimeMax = newMaxStart;
+                                                }
+                                            }
+                                            break;
                                     }
                                 }
 
                                 GUI.color = Color.white;
-                                var exp = EditorGUILayout.BeginToggleGroup(" Fire 'Song Started' Event", aSong.songStartedEventExpanded);
+                                GUI.backgroundColor = Color.white;
+                                exp = EditorGUILayout.BeginToggleGroup(" Fire 'Song Started' Event", aSong.songStartedEventExpanded);
                                 if (exp != aSong.songStartedEventExpanded) {
                                     AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Fire 'Song Started' Event");
                                     aSong.songStartedEventExpanded = exp;
@@ -3134,23 +4027,28 @@ public class MasterAudioInspector : Editor {
                                     moveDownIndex = j;
                                     break;
                                 case DTGUIHelper.DTFunctionButtons.Play:
+                                    previewer = GetPreviewer();
                                     StopPreviewer();
+
                                     switch (aSong.audLocation) {
                                         case MasterAudio.AudioLocation.Clip:
-                                            GetPreviewer().PlayOneShot(aSong.clip, aSong.volume);
+                                            if (previewer != null) {
+                                                previewer.PlayOneShot(aSong.clip, aSong.volume);
+                                            }
+
                                             break;
                                         case MasterAudio.AudioLocation.ResourceFile:
-                                            GetPreviewer().PlayOneShot(Resources.Load(aSong.resourceFileName) as AudioClip, aSong.volume);
+                                            if (previewer != null) {
+                                                previewer.PlayOneShot(Resources.Load(aSong.resourceFileName) as AudioClip, aSong.volume);
+                                            }
                                             break;
                                     }
                                     break;
                                 case DTGUIHelper.DTFunctionButtons.Stop:
-                                    GetPreviewer().clip = null;
                                     StopPreviewer();
                                     break;
                             }
                             EditorGUILayout.EndVertical();
-                            DTGUIHelper.AddSpaceForNonU5(2);
                         }
 
                         if (addIndex.HasValue) {
@@ -3177,7 +4075,7 @@ public class MasterAudioInspector : Editor {
                             aList.MusicSettings.RemoveAt(index + 1);
                         } else if (indexToClone.HasValue) {
                             AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "clone song");
-                            aList.MusicSettings.Insert(indexToClone.Value, MusicSetting.Clone(aList.MusicSettings[indexToClone.Value]));
+                            aList.MusicSettings.Insert(indexToClone.Value, MusicSetting.Clone(aList.MusicSettings[indexToClone.Value], aList));
                         }
                     }
 
@@ -3197,7 +4095,6 @@ public class MasterAudioInspector : Editor {
                     }
 
                     EditorGUILayout.EndVertical();
-                    DTGUIHelper.AddSpaceForNonU5(4);
                 }
 
                 if (playlistToRemove.HasValue) {
@@ -3244,30 +4141,7 @@ public class MasterAudioInspector : Editor {
         state = _sounds.showCustomEvents;
         text = "Custom Events";
 
-        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-        if (!state) {
-            GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-        } else {
-            GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-        }
-
-        GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-        if (!state) {
-            text += " (Click to expand)";
-        }
-#else
-        text = "<b><size=11>" + text + "</size></b>";
-#endif
-        if (state) {
-            text = "\u25BC " + text;
-        } else {
-            text = "\u25BA " + text;
-        }
-        if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-            state = !state;
-        }
+        DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
         GUILayout.Space(2f);
 
@@ -3277,13 +4151,32 @@ public class MasterAudioInspector : Editor {
             AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Custom Events");
             _sounds.showCustomEvents = isExp;
         }
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/CustomEvents.htm");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/CustomEvents.htm");
 
         EditorGUILayout.EndHorizontal();
         GUI.color = Color.white;
 
         if (_sounds.showCustomEvents) {
+            var catNames = new List<string>(_sounds.customEventCategories.Count);
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < _sounds.customEventCategories.Count; i++) {
+                catNames.Add(_sounds.customEventCategories[i].CatName);
+            }
+
+            var selCatIndex = catNames.IndexOf(_sounds.addToCustomEventCategoryName);
+
+            if (selCatIndex == -1) {
+                selCatIndex = 0;
+                _isDirty = true;
+            }
+
+            var defaultCat = catNames[selCatIndex];
+
             DTGUIHelper.BeginGroupedControls();
+            DTGUIHelper.StartGroupHeader(0, false);
+            GUI.color = Color.white;
+            GUI.backgroundColor = Color.white;
+            GUI.contentColor = Color.white;
             var newEvent = EditorGUILayout.TextField("New Event Name", _sounds.newEventName);
             if (newEvent != _sounds.newEventName) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change New Event Name");
@@ -3291,16 +4184,57 @@ public class MasterAudioInspector : Editor {
             }
 
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(10);
+            GUILayout.Space(4);
             GUI.contentColor = DTGUIHelper.BrightButtonColor;
-            if (GUILayout.Button("Create New Event", EditorStyles.toolbarButton, GUILayout.Width(100))) {
-                CreateCustomEvent(_sounds.newEventName);
+            if (GUILayout.Button("Create New Event", EditorStyles.toolbarButton, GUILayout.Width(110))) {
+                CreateCustomEvent(_sounds.newEventName, defaultCat);
             }
             GUILayout.Space(10);
             GUI.contentColor = DTGUIHelper.BrightButtonColor;
 
+            GUI.contentColor = Color.white;
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+
+            DTGUIHelper.StartGroupHeader(0, false);
+            DTGUIHelper.ResetColors();
+            var newCat = EditorGUILayout.TextField("New Category Name", _sounds.newCustomEventCategoryName);
+            if (newCat != _sounds.newCustomEventCategoryName) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change New Category Name");
+                _sounds.newCustomEventCategoryName = newCat;
+            }
+            EditorGUILayout.BeginHorizontal();
+            GUI.contentColor = DTGUIHelper.BrightButtonColor;
+            GUILayout.Space(4);
+            if (GUILayout.Button("Create New Category", EditorStyles.toolbarButton, GUILayout.Width(130))) {
+                CreateCategory();
+            }
+            GUI.contentColor = Color.white;
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+            DTGUIHelper.ResetColors();
+
+            GUI.backgroundColor = DTGUIHelper.BrightButtonColor;
+
+            var newIndex = EditorGUILayout.Popup("Default Event Category", selCatIndex, catNames.ToArray());
+            if (newIndex != selCatIndex) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Default Event Category");
+                _sounds.addToCustomEventCategoryName = catNames[newIndex];
+            }
+
+            GUI.backgroundColor = Color.white;
+            GUI.contentColor = Color.white;
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+
             var hasExpanded = false;
             foreach (var t in _sounds.customEvents) {
+                if (string.IsNullOrEmpty(t.categoryName)) {
+                    t.categoryName = defaultCat;
+                }
+
                 if (!t.eventExpanded) {
                     continue;
                 }
@@ -3310,110 +4244,465 @@ public class MasterAudioInspector : Editor {
 
             var buttonText = hasExpanded ? "Collapse All" : "Expand All";
 
-            if (GUILayout.Button(buttonText, EditorStyles.toolbarButton, GUILayout.Width(100))) {
+            if (GUILayout.Button(buttonText, EditorStyles.toolbarButton, GUILayout.Width(80))) {
                 ExpandCollapseCustomEvents(!hasExpanded);
             }
-            GUILayout.Space(10);
-            if (GUILayout.Button("Sort Alpha", EditorStyles.toolbarButton, GUILayout.Width(100))) {
-                SortCustomEvents();
-            }
-
-            GUI.contentColor = Color.white;
             EditorGUILayout.EndHorizontal();
 
-            if (_sounds.customEvents.Count == 0) {
-                DTGUIHelper.ShowLargeBarAlert("You currently have no Custom Events.");
-            }
+            EditorGUILayout.Separator();
 
-            int? customEventToDelete = null;
-            int? eventToRename = null;
+            int? indexToShiftUp = null;
+            int? indexToShiftDown = null;
+            CustomEventCategory catEditing = null;
+            CustomEventCategory catRenaming = null;
+            CustomEventCategory catToDelete = null;
+            CustomEvent eventEditing = null;
+            CustomEvent eventToDelete = null;
+            CustomEvent eventRenaming = null;
 
-            for (var i = 0; i < _sounds.customEvents.Count; i++) {
-                EditorGUI.indentLevel = 1;
-                var anEvent = _sounds.customEvents[i];
+            DTGUIHelper.StartGroupHeader(1);
 
-                DTGUIHelper.AddSpaceForNonU5(2);
-                DTGUIHelper.StartGroupHeader();
+            for (var c = 0; c < _sounds.customEventCategories.Count; c++) {
+                var cat = _sounds.customEventCategories[c];
 
-                EditorGUILayout.BeginHorizontal();
-                var exp = DTGUIHelper.Foldout(anEvent.eventExpanded, anEvent.EventName);
-                if (exp != anEvent.eventExpanded) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Custom Event");
-                    anEvent.eventExpanded = exp;
-                }
+                EditorGUI.indentLevel = 0;
 
-                GUILayout.FlexibleSpace();
-                if (Application.isPlaying) {
-                    var receivers = MasterAudio.ReceiversForEvent(anEvent.EventName);
+                var matchingItems = new List<CustomEvent>();
+                matchingItems.AddRange(_sounds.customEvents);
+                matchingItems.RemoveAll(delegate (CustomEvent x) {
+                    return x.categoryName != cat.CatName;
+                });
+
+                var hasItems = matchingItems.Count > 0;
+
+                if (!cat.IsEditing || Application.isPlaying) {
+                    var catName = cat.CatName;
+
+                    catName += ": " + matchingItems.Count + " item" + ((matchingItems.Count != 1) ? "s" : "");
+
+                    var state2 = cat.IsExpanded;
+                    var text2 = catName;
+
+                    DTGUIHelper.ShowCollapsibleSectionInline(ref state2, text2);
+
+                    if (state2 != cat.IsExpanded) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Custom Event Category");
+                        cat.IsExpanded = state2;
+                    }
+
+                    var catItemsCollapsed = true;
+
+                    for (var i = 0; i < matchingItems.Count; i++) {
+                        var item = matchingItems[i];
+
+                        if (!item.eventExpanded) {
+                            continue;
+                        }
+                        catItemsCollapsed = false;
+                        break;
+                    }
+
+                    var headerStyle = new GUIStyle();
+                    headerStyle.margin = new RectOffset(0, 0, 0, 0);
+                    headerStyle.padding = new RectOffset(0, 0, 0, 0);
+                    headerStyle.fixedHeight = 20;
+
+                    EditorGUILayout.BeginHorizontal(headerStyle, GUILayout.MaxWidth(50));
+
+                    GUI.backgroundColor = Color.white;
+
+                    var tooltip = catItemsCollapsed ? "Click to expand all items in this category" : "Click to collapse all items in this category";
+                    var btnText = catItemsCollapsed ? "Expand" : "Collapse";
 
                     GUI.contentColor = DTGUIHelper.BrightButtonColor;
-                    if (receivers.Count > 0) {
-                        if (GUILayout.Button(new GUIContent("Select", "Click this button to select all Receivers in the Hierarchy"), EditorStyles.toolbarButton, GUILayout.Width(50))) {
-                            var matches = new List<GameObject>(receivers.Count);
+                    if (GUILayout.Button(new GUIContent(btnText, tooltip), EditorStyles.toolbarButton, GUILayout.Width(60), GUILayout.Height(16))) {
+                        ExpandCollapseCategory(cat.CatName, catItemsCollapsed);
+                    }
+                    GUI.contentColor = Color.white;
 
-                            foreach (var t in receivers) {
-                                matches.Add(t.gameObject);
+                    if (!Application.isPlaying) {
+                        if (c > 0) {
+                            // the up arrow.
+                            var upArrow = MasterAudioInspectorResources.UpArrowTexture;
+                            if (GUILayout.Button(new GUIContent(upArrow, "Click to shift Category up"),
+                                EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16))) {
+                                indexToShiftUp = c;
                             }
-                            Selection.objects = matches.ToArray();
+                        } else {
+                            GUILayout.Button("", EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16));
+                        }
+
+                        if (c < _sounds.customEventCategories.Count - 1) {
+                            // The down arrow will move things towards the end of the List
+                            var dnArrow = MasterAudioInspectorResources.DownArrowTexture;
+                            if (GUILayout.Button(new GUIContent(dnArrow, "Click to shift Category down"),
+                                EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16))) {
+                                indexToShiftDown = c;
+                            }
+                        } else {
+                            GUILayout.Button("", EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16));
+                        }
+
+                        var settingsIcon = new GUIContent(MasterAudioInspectorResources.GearTexture,
+                            "Click to edit Category");
+
+                        GUI.backgroundColor = Color.white;
+                        if (GUILayout.Button(settingsIcon, EditorStyles.toolbarButton, GUILayout.Width(24),
+                            GUILayout.Height(16))) {
+                            catEditing = cat;
+                        }
+                        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Category"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36))) { 
+                            catToDelete = cat;
+                        }
+                    } else {
+                        GUILayout.Space(4);
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+
+                } else {
+                    EditorGUILayout.BeginHorizontal();
+
+                    GUI.backgroundColor = DTGUIHelper.BrightTextColor;
+                    var tex = EditorGUILayout.TextField("", cat.ProspectiveName);
+                    if (tex != cat.ProspectiveName) {
+                        cat.ProspectiveName = tex;
+                        _isDirty = true;
+                    }
+
+                    var buttonPressed = DTGUIHelper.AddCancelSaveButtons("Custom Event Category");
+
+                    switch (buttonPressed) {
+                        case DTGUIHelper.DTFunctionButtons.Cancel:
+                            cat.IsEditing = false;
+                            cat.ProspectiveName = cat.CatName;
+                            _isDirty = true;
+                            break;
+                        case DTGUIHelper.DTFunctionButtons.Save:
+                            catRenaming = cat;
+                            break;
+                    }
+
+                    GUILayout.Space(4);
+                }
+
+                GUI.backgroundColor = Color.white;
+                EditorGUILayout.EndHorizontal();
+
+                if (cat.IsEditing) {
+                    DTGUIHelper.VerticalSpace(2);
+                }
+
+                matchingItems.Sort(delegate (CustomEvent x, CustomEvent y) {
+                    // ReSharper disable PossibleNullReferenceException
+                    return string.Compare(x.EventName, y.EventName, StringComparison.Ordinal);
+                    // ReSharper restore PossibleNullReferenceException
+                });
+
+                if (!hasItems) {
+                    DTGUIHelper.BeginGroupedControls();
+                    DTGUIHelper.ShowLargeBarAlert("This Category is empty. Add / move some items or you may delete it.");
+                    DTGUIHelper.EndGroupedControls();
+                }
+
+                GUI.contentColor = Color.white;
+
+                if (cat.IsExpanded) {
+                    if (hasItems) {
+                        DTGUIHelper.BeginGroupedControls();
+                    }
+
+                    for (var i = 0; i < matchingItems.Count; i++) {
+                        EditorGUI.indentLevel = 1;
+                        var anEvent = matchingItems[i];
+
+                        DTGUIHelper.StartGroupHeader();
+
+                        EditorGUILayout.BeginHorizontal();
+
+                        if (!anEvent.IsEditing || Application.isPlaying) {
+                            var exp = DTGUIHelper.Foldout(anEvent.eventExpanded, anEvent.EventName);
+                            if (exp != anEvent.eventExpanded) {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand Custom Event");
+                                anEvent.eventExpanded = exp;
+                            }
+
+                            GUILayout.FlexibleSpace();
+                            if (!Application.isPlaying) {
+                                GUI.backgroundColor = DTGUIHelper.BrightButtonColor;
+                                var newCatIndex = catNames.IndexOf(anEvent.categoryName);
+                                var newEventCat = EditorGUILayout.Popup(newCatIndex, catNames.ToArray(),
+                                    GUILayout.Width(130));
+                                if (newEventCat != newCatIndex) {
+                                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds,
+                                        "change Custom Event Category");
+                                    anEvent.categoryName = catNames[newEventCat];
+                                }
+                                GUI.backgroundColor = Color.white;
+                            }
+
+                            if (Application.isPlaying) {
+                                var receivers = MasterAudio.ReceiversForEvent(anEvent.EventName);
+
+                                GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                                if (receivers.Count > 0) {
+                                    if (
+                                        GUILayout.Button(
+                                            new GUIContent("Select",
+                                                "Click this button to select all Receivers in the Hierarchy"),
+                                            EditorStyles.toolbarButton, GUILayout.Width(50))) {
+                                        var matches = new List<GameObject>(receivers.Count);
+
+                                        foreach (var t in receivers) {
+                                            matches.Add(t.gameObject);
+                                        }
+                                        Selection.objects = matches.ToArray();
+                                    }
+                                }
+
+                                if (GUILayout.Button("Fire!", EditorStyles.toolbarButton, GUILayout.Width(50))) {
+                                    MasterAudio.FireCustomEvent(anEvent.EventName, _sounds.transform);
+                                }
+
+                                GUI.contentColor = DTGUIHelper.BrightButtonColor;
+                                GUILayout.Label(string.Format("Receivers: {0}", receivers.Count));
+                            } else {
+                                GUI.backgroundColor = Color.white;
+                                var settingsIcon = new GUIContent(MasterAudioInspectorResources.GearTexture,
+                                    "Click to edit Custom Event Name");
+                                if (GUILayout.Button(settingsIcon, EditorStyles.toolbarButton, GUILayout.Width(24),
+                                    GUILayout.Height(16))) {
+                                    eventEditing = anEvent;
+                                }
+
+                                if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.DeleteTexture, "Click to delete Event"), EditorStyles.toolbarButton, GUILayout.MaxWidth(36)))
+                                {
+                                    eventToDelete = anEvent;
+                                }
+                            }
+                            GUI.contentColor = Color.white;
+                        } else {
+                            EditorGUI.indentLevel = 0;
+                            GUI.backgroundColor = DTGUIHelper.BrightTextColor;
+                            var tex = EditorGUILayout.TextField("", anEvent.ProspectiveName);
+                            if (tex != anEvent.ProspectiveName) {
+                                anEvent.ProspectiveName = tex;
+                                _isDirty = true;
+                            }
+
+                            var buttonPressed = DTGUIHelper.AddCancelSaveButtons("Custom Event");
+
+                            switch (buttonPressed) {
+                                case DTGUIHelper.DTFunctionButtons.Cancel:
+                                    anEvent.IsEditing = false;
+                                    anEvent.ProspectiveName = cat.CatName;
+                                    _isDirty = true;
+                                    break;
+                                case DTGUIHelper.DTFunctionButtons.Save:
+                                    eventRenaming = anEvent;
+                                    break;
+                            }
+                        }
+
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndVertical();
+
+                        if (!anEvent.eventExpanded) {
+                            EditorGUILayout.EndVertical();
+                            continue;
+                        }
+
+                        DTGUIHelper.ResetColors();
+                        EditorGUI.indentLevel = 0;
+
+                        var rcvMode =
+                            (MasterAudio.CustomEventReceiveMode)
+                                EditorGUILayout.EnumPopup("Send To Receivers", anEvent.eventReceiveMode);
+                        if (rcvMode != anEvent.eventReceiveMode) {
+                            AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Send To Receivers");
+                            anEvent.eventReceiveMode = rcvMode;
+                        }
+
+                        if (rcvMode == MasterAudio.CustomEventReceiveMode.WhenDistanceLessThan ||
+                            rcvMode == MasterAudio.CustomEventReceiveMode.WhenDistanceMoreThan) {
+                            var newDist = EditorGUILayout.Slider("Distance Threshold", anEvent.distanceThreshold, 0f,
+                                float.MaxValue);
+                            if (newDist != anEvent.distanceThreshold) {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds,
+                                    "change Distance Threshold");
+                                anEvent.distanceThreshold = newDist;
+                            }
+                        }
+
+                        if (rcvMode != MasterAudio.CustomEventReceiveMode.Never) {
+                            var rcvFilter =
+                                (MasterAudio.EventReceiveFilter)
+                                    EditorGUILayout.EnumPopup("Valid Receivers", anEvent.eventRcvFilterMode);
+                            if (rcvFilter != anEvent.eventRcvFilterMode) {
+                                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Valid Receivers");
+                                anEvent.eventRcvFilterMode = rcvFilter;
+                            }
+
+                            switch (anEvent.eventRcvFilterMode) {
+                                case MasterAudio.EventReceiveFilter.Closest:
+                                case MasterAudio.EventReceiveFilter.Random:
+                                    var newQty = EditorGUILayout.IntField("Valid Qty", anEvent.filterModeQty);
+                                    if (newQty != anEvent.filterModeQty) {
+                                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds,
+                                            "change Valid Qty");
+                                        anEvent.filterModeQty = System.Math.Max(1, newQty);
+                                    }
+                                    break;
+                            }
+                        }
+
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    if (hasItems) {
+                        DTGUIHelper.EndGroupedControls();
+                    }
+                }
+
+                if (c < _sounds.customEventCategories.Count - 1) {
+                    DTGUIHelper.VerticalSpace(3);
+                }
+            }
+            DTGUIHelper.EndGroupHeader();
+
+            if (eventToDelete != null) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Delete Custom Event");
+                _sounds.customEvents.Remove(eventToDelete);
+            }
+
+            if (indexToShiftUp.HasValue) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "shift up Category");
+                var item = _sounds.customEventCategories[indexToShiftUp.Value];
+                _sounds.customEventCategories.Insert(indexToShiftUp.Value - 1, item);
+                _sounds.customEventCategories.RemoveAt(indexToShiftUp.Value + 1);
+                _isDirty = true;
+            }
+
+            if (indexToShiftDown.HasValue) {
+                AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "shift down Category");
+                var index = indexToShiftDown.Value + 1;
+                var item = _sounds.customEventCategories[index];
+                _sounds.customEventCategories.Insert(index - 1, item);
+                _sounds.customEventCategories.RemoveAt(index + 1);
+                _isDirty = true;
+            }
+
+            if (catToDelete != null) {
+                if (_sounds.customEvents.FindAll(delegate (CustomEvent x) {
+                    return x.categoryName == catToDelete.CatName;
+                }).Count > 0) {
+                    DTGUIHelper.ShowAlert("You cannot delete a Category with Custom Events in it. Move or delete the items first.");
+                } else if (_sounds.customEventCategories.Count <= 1) {
+                    DTGUIHelper.ShowAlert("You cannot delete the last Category.");
+                } else {
+                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Delete Category");
+                    _sounds.customEventCategories.Remove(catToDelete);
+                    _isDirty = true;
+                }
+            }
+
+            if (catRenaming != null) {
+                // ReSharper disable once ForCanBeConvertedToForeach
+                var isValidName = true;
+
+                if (string.IsNullOrEmpty(catRenaming.ProspectiveName)) {
+                    isValidName = false;
+                    DTGUIHelper.ShowAlert("You cannot have a blank Category name.");
+                }
+
+                if (isValidName) {
+                    // ReSharper disable once ForCanBeConvertedToForeach
+                    for (var c = 0; c < _sounds.customEventCategories.Count; c++) {
+                        var cat = _sounds.customEventCategories[c];
+                        // ReSharper disable once InvertIf
+                        if (cat != catRenaming && cat.CatName == catRenaming.ProspectiveName) {
+                            isValidName = false;
+                            DTGUIHelper.ShowAlert("You already have a Category named '" + catRenaming.ProspectiveName + "'. Category names must be unique.");
                         }
                     }
 
-                    if (GUILayout.Button("Fire!", EditorStyles.toolbarButton, GUILayout.Width(50))) {
-                        MasterAudio.FireCustomEvent(anEvent.EventName, _sounds.transform.position);
-                    }
+                    if (isValidName) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Undo change Category name.");
 
-                    GUI.contentColor = DTGUIHelper.BrightButtonColor;
-                    GUILayout.Label(string.Format("Receivers: {0}", receivers.Count));
-                    GUI.contentColor = Color.white;
-                } else {
-                    var newName = GUILayout.TextField(anEvent.ProspectiveName, GUILayout.Width(170));
-                    if (newName != anEvent.ProspectiveName) {
-                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Proposed Event Name");
-                        anEvent.ProspectiveName = newName;
-                    }
+                        // ReSharper disable once ForCanBeConvertedToForeach
+                        for (var i = 0; i < _sounds.customEvents.Count; i++) {
+                            var item = _sounds.customEvents[i];
+                            if (item.categoryName == catRenaming.CatName) {
+                                item.categoryName = catRenaming.ProspectiveName;
+                            }
+                        }
 
-                    var buttonPressed = DTGUIHelper.AddDeleteIcon(true, "Custom Event");
-
-                    switch (buttonPressed) {
-                        case DTGUIHelper.DTFunctionButtons.Remove:
-                            customEventToDelete = i;
-                            break;
-                        case DTGUIHelper.DTFunctionButtons.Rename:
-                            eventToRename = i;
-                            break;
+                        catRenaming.CatName = catRenaming.ProspectiveName;
+                        catRenaming.IsEditing = false;
+                        _isDirty = true;
                     }
                 }
-
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
-
-                if (!anEvent.eventExpanded) {
-                    EditorGUILayout.EndVertical();
-                    continue;
-                }
-
-                EditorGUI.indentLevel = 0;
-                var rcvMode = (MasterAudio.CustomEventReceiveMode)EditorGUILayout.EnumPopup("Send To Receivers", anEvent.eventReceiveMode);
-                if (rcvMode != anEvent.eventReceiveMode) {
-                    AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Send To Receivers");
-                    anEvent.eventReceiveMode = rcvMode;
-                }
-
-                if (rcvMode == MasterAudio.CustomEventReceiveMode.WhenDistanceLessThan || rcvMode == MasterAudio.CustomEventReceiveMode.WhenDistanceMoreThan) {
-                    var newDist = EditorGUILayout.Slider("Distance Threshold", anEvent.distanceThreshold, 0f, float.MaxValue);
-                    if (newDist != anEvent.distanceThreshold) {
-                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Distance Threshold");
-                        anEvent.distanceThreshold = newDist;
-                    }
-                }
-                EditorGUILayout.EndVertical();
             }
 
-            if (customEventToDelete.HasValue) {
-                _sounds.customEvents.RemoveAt(customEventToDelete.Value);
+            if (catEditing != null) {
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (var c = 0; c < _sounds.customEventCategories.Count; c++) {
+                    var cat = _sounds.customEventCategories[c];
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (catEditing == cat) {
+                        cat.IsEditing = true;
+                    } else {
+                        cat.IsEditing = false;
+                    }
+
+                    _isDirty = true;
+                }
             }
-            if (eventToRename.HasValue) {
-                RenameEvent(_sounds.customEvents[eventToRename.Value]);
+
+            if (eventEditing != null) {
+                // ReSharper disable once ForCanBeConvertedToForeach
+                for (var c = 0; c < _sounds.customEvents.Count; c++) {
+                    var evt = _sounds.customEvents[c];
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (eventEditing == evt) {
+                        evt.IsEditing = true;
+                    } else {
+                        evt.IsEditing = false;
+                    }
+
+                    _isDirty = true;
+                }
+            }
+
+            if (eventRenaming != null) {
+                // ReSharper disable once ForCanBeConvertedToForeach
+                var isValidName = true;
+
+                if (string.IsNullOrEmpty(eventRenaming.ProspectiveName)) {
+                    isValidName = false;
+                    DTGUIHelper.ShowAlert("You cannot have a blank Custom Event name.");
+                }
+
+                if (isValidName) {
+                    // ReSharper disable once ForCanBeConvertedToForeach
+                    for (var c = 0; c < _sounds.customEvents.Count; c++) {
+                        var evt = _sounds.customEvents[c];
+                        // ReSharper disable once InvertIf
+                        if (evt != eventRenaming && evt.EventName == eventRenaming.ProspectiveName) {
+                            isValidName = false;
+                            DTGUIHelper.ShowAlert("You already have a Custom Event named '" + eventRenaming.ProspectiveName + "'. Custom Event names must be unique.");
+                        }
+                    }
+
+                    if (isValidName) {
+                        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds,
+                            "Undo change Custom Event name.");
+
+                        eventRenaming.EventName = eventRenaming.ProspectiveName;
+                        eventRenaming.IsEditing = false;
+                        _isDirty = true;
+                    }
+                }
             }
 
             DTGUIHelper.EndGroupedControls();
@@ -3428,7 +4717,6 @@ public class MasterAudioInspector : Editor {
         //DrawDefaultInspector();
     }
 
-#if UNITY_5
     private static void SetSpatialBlendsForPlaylistControllers() {
         foreach (var t in PlaylistController.Instances) {
             t.SetSpatialBlend();
@@ -3440,7 +4728,7 @@ public class MasterAudioInspector : Editor {
             var grp = _sounds.transform.GetChild(i);
             for (var c = 0; c < grp.childCount; c++) {
                 var aVar = grp.GetChild(c).GetComponent<SoundGroupVariation>();
-				aVar.SetSpatialBlend();
+                aVar.SetSpatialBlend();
             }
         }
     }
@@ -3454,7 +4742,6 @@ public class MasterAudioInspector : Editor {
             cont.SetSpatialBlend();
         }
     }
-#endif
 
     private void AddSongToPlaylist(MasterAudio.Playlist pList, AudioClip aClip) {
         MusicSetting lastClip = null;
@@ -3507,6 +4794,31 @@ public class MasterAudioInspector : Editor {
                     break;
             }
 
+            foreach (var property in pList.songMetadataProps) {
+                if (!property.AllSongsMustContain) {
+                    continue;
+                }
+
+                switch (property.PropertyType) {
+                    case SongMetadataProperty.MetadataPropertyType.Boolean:
+                        var bVal = new SongMetadataBoolValue(property);
+                        mus.metadataBoolValues.Add(bVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.String:
+                        var sVal = new SongMetadataStringValue(property);
+                        mus.metadataStringValues.Add(sVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.Integer:
+                        var iVal = new SongMetadataIntValue(property);
+                        mus.metadataIntValues.Add(iVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.Float:
+                        var fVal = new SongMetadataFloatValue(property);
+                        mus.metadataFloatValues.Add(fVal);
+                        break;
+                }
+            }
+
             pList.MusicSettings.Add(mus);
         }
     }
@@ -3528,6 +4840,7 @@ public class MasterAudioInspector : Editor {
 
         newVariation.name = clipName;
         newVariation.transform.parent = groupTrans;
+        newVariation.gameObject.layer = _sounds.gameObject.layer;
 
         var variation = newVariation.GetComponent<SoundGroupVariation>();
 
@@ -3552,7 +4865,7 @@ public class MasterAudioInspector : Editor {
             return null;
         }
 
-        if (_sounds.transform.Find(groupName) != null) {
+        if (_sounds.transform.GetChildTransform(groupName) != null) {
             DTGUIHelper.ShowAlert("You already have a Sound Group named '" + groupName + "'. Please rename one of them when finished.");
         }
 
@@ -3570,12 +4883,10 @@ public class MasterAudioInspector : Editor {
 
         var grp = newGroup.GetComponent<MasterAudioGroup>();
 
-#if UNITY_5
         if (_sounds.mixerSpatialBlendType == MasterAudio.AllMixerSpatialBlendType.AllowDifferentPerGroup) {
             grp.spatialBlendType = _sounds.newGroupSpatialType;
             grp.spatialBlend = _sounds.newGroupSpatialBlend;
         }
-#endif
 
         var groupTrans = newGroup.transform;
         groupTrans.name = UtilStrings.TrimSpace(groupName);
@@ -3599,8 +4910,10 @@ public class MasterAudioInspector : Editor {
 
         newVariation.transform.name = sName;
         newVariation.transform.parent = groupTrans;
+        newVariation.gameObject.layer = _sounds.gameObject.layer;
 
         groupTrans.parent = _sounds.transform;
+        groupTrans.gameObject.layer = _sounds.gameObject.layer;
 
         MasterAudioGroupInspector.RescanChildren(grp);
 
@@ -3610,7 +4923,7 @@ public class MasterAudioInspector : Editor {
     private static MasterAudioGroup CreateSoundGroupFromTemplate(AudioClip aClip, int groupTemplateIndex) {
         var groupName = aClip.name;
 
-        if (_sounds.transform.Find(groupName) != null) {
+        if (_sounds.transform.GetChildTransform(groupName) != null) {
             DTGUIHelper.ShowAlert("You already have a Sound Group named '" + groupName + "'. Please rename one of them when finished.");
         }
 
@@ -3628,12 +4941,10 @@ public class MasterAudioInspector : Editor {
 
         var grp = newGroup.GetComponent<MasterAudioGroup>();
 
-#if UNITY_5
         if (_sounds.mixerSpatialBlendType == MasterAudio.AllMixerSpatialBlendType.AllowDifferentPerGroup) {
             grp.spatialBlendType = _sounds.newGroupSpatialType;
             grp.spatialBlend = _sounds.newGroupSpatialBlend;
         }
-#endif
 
         var groupTrans = newGroup.transform;
         groupTrans.name = UtilStrings.TrimSpace(groupName);
@@ -3645,6 +4956,7 @@ public class MasterAudioInspector : Editor {
         for (var i = 0; i < newGroup.transform.childCount; i++) {
             var aVar = newGroup.transform.GetChild(i);
 
+            aVar.gameObject.layer = _sounds.gameObject.layer;
             if (aVar.name == "Silence") {
                 continue; // no clip
             }
@@ -3657,7 +4969,7 @@ public class MasterAudioInspector : Editor {
                 variation.useLocalization = useLocalization;
                 grp.bulkVariationMode = MasterAudio.AudioLocation.ResourceFile;
             } else {
-				variation.VarAudio.clip = aClip;
+                variation.VarAudio.clip = aClip;
             }
 
             if (audSrcTemplate != null) {
@@ -3666,14 +4978,28 @@ public class MasterAudioInspector : Editor {
             }
 
             variation.transform.name = sName + (i + 1);
+
+            if (_sounds.addResonanceAudioSources && ResonanceAudioHelper.DarkTonicResonanceAudioPackageInstalled()) {
+                ResonanceAudioHelper.AddResonanceAudioSourceToVariation(variation);
+            } else if (_sounds.addOculusAudioSources && OculusAudioHelper.DarkTonicOculusAudioPackageInstalled()) {
+                OculusAudioHelper.AddOculusAudioSourceToVariation(variation);
+            }
         }
 
         groupTrans.parent = _sounds.transform;
+        groupTrans.gameObject.layer = _sounds.gameObject.layer;
+
+        MasterAudio.RescanGroupsNow();
 
         return grp;
     }
 
-    private void CreateBus(int groupIndex) {
+    /// <summary>
+    /// Returns bus name
+    /// </summary>
+    /// <param name="groupIndex"></param>
+    /// <returns></returns>
+    private string CreateBus(int groupIndex) {
         var sourceGroup = groups[groupIndex];
 
         var affectedObjects = new Object[] {
@@ -3681,14 +5007,24 @@ public class MasterAudioInspector : Editor {
             sourceGroup
         };
 
-        AudioUndoHelper.RecordObjectsForUndo(affectedObjects, "create Bus");
+        if (!Application.isPlaying) {
+            AudioUndoHelper.RecordObjectsForUndo(affectedObjects, "create Bus");
+        }
 
         var newBus = new GroupBus() {
             busName = RenameMeBusName
         };
         _sounds.groupBuses.Add(newBus);
 
-        sourceGroup.busIndex = MasterAudio.HardCodedBusOptions + _sounds.groupBuses.Count - 1;
+        var newBusIndex = MasterAudio.HardCodedBusOptions + _sounds.groupBuses.Count - 1;
+
+        if (Application.isPlaying) {
+            MasterAudio.RouteGroupToBus(sourceGroup.name, newBus.busName);
+        } else {
+            sourceGroup.busIndex = newBusIndex;
+        }
+
+        return newBus.busName;
     }
 
     private void SoloBus(int busIndex) {
@@ -3727,9 +5063,9 @@ public class MasterAudioInspector : Editor {
 
             if (Application.isPlaying) {
                 if (willSolo) {
-                    MasterAudio.UnsoloGroup(sType);
+                    MasterAudio.SoloGroup(sType, false);
                 } else {
-                    MasterAudio.SoloGroup(sType);
+                    MasterAudio.UnsoloGroup(sType, false);
                 }
             }
 
@@ -3739,6 +5075,9 @@ public class MasterAudioInspector : Editor {
             }
         }
 
+        if (Application.isPlaying) {
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
+        }
     }
 
     private void MuteBus(int busIndex) {
@@ -3773,9 +5112,9 @@ public class MasterAudioInspector : Editor {
         foreach (var g in affectedGroups) {
             if (Application.isPlaying) {
                 if (!willMute) {
-                    MasterAudio.UnmuteGroup(g.name);
+                    MasterAudio.UnmuteGroup(g.name, false);
                 } else {
-                    MasterAudio.MuteGroup(g.name);
+                    MasterAudio.MuteGroup(g.name, false);
                 }
             } else {
                 g.isMuted = willMute;
@@ -3783,6 +5122,10 @@ public class MasterAudioInspector : Editor {
                     g.isSoloed = false;
                 }
             }
+        }
+
+        if (Application.isPlaying) {
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
         }
     }
 
@@ -3810,7 +5153,25 @@ public class MasterAudioInspector : Editor {
             allObjects.Add(g);
         }
 
+        if (Application.isPlaying) {
+            var deadBus = _sounds.groupBuses[busIndex];
+            if (deadBus != null) {
+                if (deadBus.isSoloed) {
+                    MasterAudio.UnsoloBus(deadBus.busName, false);
+                } else if (deadBus.isMuted) {
+                    MasterAudio.UnmuteBus(deadBus.busName, false);
+                }
+            }
+        }
+
         AudioUndoHelper.RecordObjectsForUndo(allObjects.ToArray(), "delete Bus");
+
+        if (Application.isPlaying) {
+            MasterAudio.DeleteBusByIndex(busIndex + MasterAudio.HardCodedBusOptions);
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
+
+            return;
+        }
 
         // change all
         _sounds.groupBuses.RemoveAt(busIndex);
@@ -3833,15 +5194,21 @@ public class MasterAudioInspector : Editor {
     }
 
     private void ScanGroups() {
-        groups.Clear();
+        _isValid = true;
+        invalidReason = string.Empty;
+
+        if (groups != null && !MasterAudio.ShouldRescanGroups) {
+            return;
+        }
+
+        groups = new List<MasterAudioGroup>();
 
         var names = new List<string>();
 
         for (var i = 0; i < _sounds.transform.childCount; i++) {
             var aChild = _sounds.transform.GetChild(i);
             if (names.Contains(aChild.name)) {
-                DTGUIHelper.ShowRedError("You have more than one group named '" + aChild.name + "'.");
-                DTGUIHelper.ShowRedError("Please rename one of them before continuing.");
+                invalidReason = "You have more than one group named '" + aChild.name + "'. Please rename one of them before continuing.";
                 _isValid = false;
                 return;
             }
@@ -3850,7 +5217,9 @@ public class MasterAudioInspector : Editor {
             var aGroup = aChild.GetComponent<MasterAudioGroup>();
 
             if (aGroup == null) {
-                Debug.LogError("No MasterAudioGroup script found on Group '" + aChild.name + "'. This should never happen. Please delete and recreate this Group.");
+                if (!ArrayListUtil.IsExcludedChildName(aChild.name)) {
+                    Debug.LogError("No MasterAudioGroup script found on Group '" + aChild.name + "'. This should never happen. Please delete and recreate this Group.");
+                }
                 continue;
             }
 
@@ -3861,15 +5230,28 @@ public class MasterAudioInspector : Editor {
             groups.Sort(delegate (MasterAudioGroup g1, MasterAudioGroup g2) {
                 // ReSharper disable once ConvertIfStatementToReturnStatement
                 if (g1.busIndex == g2.busIndex) {
-                    return g1.name.CompareTo(g2.name);
+                    if (_sounds.sortAlpha) {
+                        return g1.name.CompareTo(g2.name);
+                    } else {
+                        return g1.transform.GetSiblingIndex().CompareTo(g2.transform.GetSiblingIndex());
+                    }
                 }
 
                 return g1.busIndex.CompareTo(g2.busIndex);
             });
         } else {
             groups.Sort(delegate (MasterAudioGroup g1, MasterAudioGroup g2) {
-                return g1.name.CompareTo(g2.name);
+                if (_sounds.sortAlpha) {
+                    return g1.name.CompareTo(g2.name);
+                } else {
+                    return g1.transform.GetSiblingIndex().CompareTo(g2.transform.GetSiblingIndex());
+                }
             });
+        }
+
+        if (MasterAudio.SafeInstance != null) {
+            // done rescanning, don't do it next frame hopefully.
+            MasterAudio.DoneRescanningGroups();
         }
     }
 
@@ -3885,14 +5267,12 @@ public class MasterAudioInspector : Editor {
         }
     }
 
-    private void DisplayJukebox() {
+    public static void DisplayJukebox(List<PlaylistController> controllers, List<string> playlistNames) {
         EditorGUILayout.Separator();
-
-        var pcs = PlaylistController.Instances;
 
         var songNames = new List<string>();
 
-        foreach (var t in pcs) {
+        foreach (var t in controllers) {
             var pl = t;
 
             GUI.backgroundColor = Color.white;
@@ -3905,7 +5285,7 @@ public class MasterAudioInspector : Editor {
             GUI.color = DTGUIHelper.BrightButtonColor;
             var playlistIndex = -1;
             if (!string.IsNullOrEmpty(pl.startPlaylistName) && pl.HasPlaylist && pl.CurrentPlaylist != null) {
-                playlistIndex = _playlistNames.IndexOf(pl.CurrentPlaylist.playlistName);
+                playlistIndex = playlistNames.IndexOf(pl.CurrentPlaylist.playlistName);
 
                 songNames.Clear();
                 foreach (var aSong in pl.CurrentPlaylist.MusicSettings) {
@@ -3948,7 +5328,7 @@ public class MasterAudioInspector : Editor {
             }
 
             GUILayout.Space(4);
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/PlaylistSettings.htm#Jukeboxes");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/PlaylistSettings.htm#Jukeboxes");
 
             EditorGUILayout.EndHorizontal();
 
@@ -3966,17 +5346,20 @@ public class MasterAudioInspector : Editor {
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 playingSource = pl == null ? null : pl.CurrentPlaylistSource;
                 if (playingSource != null) {
-                    clipPosition = "(-" + (clip.length - playingSource.time).ToString("N2") + " secs)";
+                    var secondsRemaining = DTGUIHelper.AdjustAudioClipDurationForPitch(clip.length - playingSource.time, playingSource); // adjust time remaining to account for pitch.
+
+                    clipPosition = "(-" + (secondsRemaining).ToString("N2") + " secs)";
                 }
             }
 
             EditorGUILayout.BeginHorizontal();
+            GUI.backgroundColor = Color.white;
             GUILayout.Label("Playlist:");
             GUILayout.Space(30);
-            var playlistIndexToStart = EditorGUILayout.Popup(playlistIndex, _playlistNames.ToArray(), GUILayout.Width(180));
+            var playlistIndexToStart = EditorGUILayout.Popup(playlistIndex, playlistNames.ToArray(), GUILayout.Width(180));
 
             if (playlistIndex != playlistIndexToStart) {
-                pl.ChangePlaylist(_playlistNames[playlistIndexToStart]);
+                pl.ChangePlaylist(playlistNames[playlistIndexToStart]);
             }
             GUILayout.Label(string.Format("[{0}]", pl.PlaylistState));
             GUILayout.FlexibleSpace();
@@ -4009,7 +5392,7 @@ public class MasterAudioInspector : Editor {
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 var fadingSource = pl == null ? null : pl.FadingSource;
                 if (fadingSource != null) {
-                    fadingClipPosition = "(-" + (fadingClip.length - fadingSource.time).ToString("N2") + " secs)";
+                    fadingClipPosition = "(-" + DTGUIHelper.AdjustAudioClipDurationForPitch(fadingClip.length - fadingSource.time, fadingSource).ToString("N2") + " secs)";
                 }
             }
 
@@ -4018,16 +5401,25 @@ public class MasterAudioInspector : Editor {
             GUILayout.Space(7);
             GUILayout.Label(fadingClipName + "  " + fadingClipPosition);
             GUILayout.FlexibleSpace();
-
+ 
             EditorGUILayout.EndHorizontal();
-            GUI.backgroundColor = Color.white;
+
+			GUI.backgroundColor = Color.white;
             GUI.color = DTGUIHelper.BrightButtonColor;
 
             // ReSharper disable once RedundantAssignment
             var buttonPressed = DTGUIHelper.JukeboxButtons.None;
 
             GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-            EditorGUILayout.BeginHorizontal(EditorStyles.miniButton);
+
+            GUIStyle style = new GUIStyle(EditorStyles.miniButton) {
+                margin = new RectOffset(0, 0, 0, 0),
+                padding = new RectOffset(0, 0, 3, 3),
+                fixedHeight = 26
+            };
+
+            EditorGUILayout.BeginHorizontal(style);
+            GUILayout.Space(3);
             buttonPressed = DTGUIHelper.AddJukeboxIcons();
             if (playingSource != null) {
                 var oldtime = playingSource.time;
@@ -4042,7 +5434,7 @@ public class MasterAudioInspector : Editor {
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndVertical();
 
-            GUI.color = Color.white;
+            GUI.color = Color.white; 
             GUI.backgroundColor = Color.white;
             EditorGUILayout.Separator();
 
@@ -4051,26 +5443,26 @@ public class MasterAudioInspector : Editor {
                     pl.StopPlaylist();
                     break;
                 case DTGUIHelper.JukeboxButtons.NextSong:
-                    pl.PlayTheNextSong(PlaylistController.AudioPlayType.PlayNow, true);
+                    pl.PlayTheNextSong(PlaylistController.AudioPlayType.PlayNow);
                     break;
                 case DTGUIHelper.JukeboxButtons.Pause:
                     pl.PausePlaylist();
                     break;
                 case DTGUIHelper.JukeboxButtons.Play:
-                    if (!pl.ResumePlaylist()) {
+                    if (!pl.UnpausePlaylist()) {
                         if (pl.CurrentPlaylist != null) {
                             pl.StartPlaylist(pl.CurrentPlaylist.playlistName);
                         }
                     }
                     break;
                 case DTGUIHelper.JukeboxButtons.RandomSong:
-                    pl.PlayARandomSong(PlaylistController.AudioPlayType.PlayNow, true);
+                    pl.PlayARandomSong(PlaylistController.AudioPlayType.PlayNow);
                     break;
             }
         }
     }
 
-    private void BusMuteSoloReset() {
+    private void MuteSoloReset() {
         var allObjects = new List<Object> { _sounds };
         foreach (var g in groups) {
             allObjects.Add(g);
@@ -4082,8 +5474,11 @@ public class MasterAudioInspector : Editor {
 
         foreach (var aBus in _sounds.groupBuses) {
             if (Application.isPlaying) {
-                MasterAudio.UnsoloBus(aBus.busName);
-                MasterAudio.UnmuteBus(aBus.busName);
+                if (aBus.isSoloed) {
+                    MasterAudio.UnsoloBus(aBus.busName, false);
+                } else if (aBus.isMuted) {
+                    MasterAudio.UnmuteBus(aBus.busName, false);
+                }
             } else {
                 aBus.isSoloed = false;
                 aBus.isMuted = false;
@@ -4092,12 +5487,18 @@ public class MasterAudioInspector : Editor {
 
         foreach (var gr in groups) {
             if (Application.isPlaying) {
-                MasterAudio.UnsoloGroup(gr.name);
-                MasterAudio.UnmuteGroup(gr.name);
+                MasterAudio.UnsoloGroup(gr.name, false);
+                MasterAudio.UnmuteGroup(gr.name, false);
             } else {
                 gr.isSoloed = false;
                 gr.isMuted = false;
             }
+        }
+
+        _sounds.mixerMuted = false;
+
+        if (Application.isPlaying) {
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
         }
     }
 
@@ -4177,7 +5578,7 @@ public class MasterAudioInspector : Editor {
         }
     }
 
-    private static void CreateCustomEvent(string newEventName) {
+    private static void CreateCustomEvent(string newEventName, string defaultCategory) {
         if (_sounds.customEvents.FindAll(delegate (CustomEvent obj) {
             return obj.EventName == newEventName;
         }).Count > 0) {
@@ -4185,10 +5586,13 @@ public class MasterAudioInspector : Editor {
             return;
         }
 
-        _sounds.customEvents.Add(new CustomEvent(newEventName));
+        var newEvent = new CustomEvent(newEventName);
+        newEvent.categoryName = defaultCategory;
+
+        _sounds.customEvents.Add(newEvent);
     }
 
-    private static void RenameEvent(CustomEvent cEvent) {
+    private void RenameEvent(CustomEvent cEvent) {
         var match = _sounds.customEvents.FindAll(delegate (CustomEvent obj) {
             return obj.EventName == cEvent.ProspectiveName;
         });
@@ -4198,12 +5602,12 @@ public class MasterAudioInspector : Editor {
             return;
         }
 
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Rename Custom Event");
         cEvent.EventName = cEvent.ProspectiveName;
     }
 
     private void AddGroupTemplate(GameObject temp) {
         if (_groupTemplateNames.Contains(temp.name)) {
-            Debug.LogError("There is already a Sound Group template named '" + temp.name + "'. The names of templates must be unique.");
             return;
         }
 
@@ -4264,6 +5668,9 @@ public class MasterAudioInspector : Editor {
 
         AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Add Group Template");
         _sounds.groupTemplates.Add(temp.gameObject);
+        _sounds.groupTemplates.RemoveAll(delegate (GameObject x) {
+            return x == null;
+        });
         _sounds.groupTemplates.Sort(delegate (GameObject x, GameObject y) {
             return x.name.CompareTo(y.name);
         });
@@ -4273,7 +5680,6 @@ public class MasterAudioInspector : Editor {
 
     private void AddAudioSourceTemplate(GameObject temp) {
         if (_audioSourceTemplateNames.Contains(temp.name)) {
-            Debug.LogError("There is already an Audio Source Template named '" + temp.name + "'. The names of Templates must be unique.");
             return;
         }
 
@@ -4322,19 +5728,14 @@ public class MasterAudioInspector : Editor {
 
         AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Add Audio Source Template");
         _sounds.audioSourceTemplates.Add(temp.gameObject);
+        _sounds.audioSourceTemplates.RemoveAll(delegate (GameObject x) {
+            return x == null;
+        });
         _sounds.audioSourceTemplates.Sort(delegate (GameObject x, GameObject y) {
             return x.name.CompareTo(y.name);
         });
 
         Debug.Log("Added Audio Source Template '" + temp.name + "'");
-    }
-
-    private void SortCustomEvents() {
-        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Sort Custom Events Alpha");
-
-        _sounds.customEvents.Sort(delegate (CustomEvent x, CustomEvent y) {
-            return x.EventName.CompareTo(y.EventName);
-        });
     }
 
     private void ExpandCollapseCustomEvents(bool shouldExpand) {
@@ -4361,24 +5762,40 @@ public class MasterAudioInspector : Editor {
         }
     }
 
-    private void StopPreviewer() {
-        GetPreviewer().Stop();
+    public static void StopPreviewer() {
+        var pv = GetPreviewer();
+        if (pv == null) {
+            return;
+        }
+
+        pv.clip = null;
+        pv.Stop();
     }
 
-    private AudioSource GetPreviewer() {
-        var aud = _previewer.GetComponent<AudioSource>();
+    public static AudioSource GetPreviewer() {
+        var listener = MasterAudio.ListenerTrans;
+
+        if (listener == null) {
+            Debug.LogError("You have no AudioListener in the Scene. You cannot preview any audio.");
+            return null;
+        }
+
+        var listenerGO = listener.gameObject;
+
+        var aud = listener.GetComponent<AudioSource>();
         if (aud != null) {
             return aud;
         }
 
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_4_0
-        _previewer.AddComponent<AudioSource>();
-#else
-        UnityEditorInternal.ComponentUtility.CopyComponent(_sounds.soundGroupVariationTemplate.GetComponent<AudioSource>());
-        UnityEditorInternal.ComponentUtility.PasteComponentAsNew(_previewer);
-#endif
+        if (MasterAudio.SafeInstance == null) {
+            listenerGO.AddComponent<AudioSource>();
+        } else {
+            UnityEditorInternal.ComponentUtility.CopyComponent(
+                MasterAudio.Instance.soundGroupVariationTemplate.GetComponent<AudioSource>());
+            UnityEditorInternal.ComponentUtility.PasteComponentAsNew(listenerGO);
+        }
 
-        aud = _previewer.GetComponent<AudioSource>();
+        aud = listenerGO.GetComponent<AudioSource>();
 
         return aud;
     }
@@ -4494,7 +5911,7 @@ public class MasterAudioInspector : Editor {
 
         for (var i = 0; i < aGroup.transform.childCount; i++) {
             var aVar = aGroup.transform.GetChild(i).GetComponent<SoundGroupVariation>();
-			if (!aVar.IsPlaying) {
+            if (!aVar.IsPlaying) {
                 continue;
             }
 
@@ -4528,9 +5945,6 @@ public class MasterAudioInspector : Editor {
     }
 
     public static void CopyFromAudioSourceTemplate(AudioSource oldAudSrc, bool showError) {
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_4_0
-        Debug.LogError("This feature is only supported in Unity 4.1+");
-#else
         var selSource = SelectedAudioSourceTemplate;
         if (selSource == null) {
             if (showError) {
@@ -4553,6 +5967,341 @@ public class MasterAudioInspector : Editor {
         oldAudSrc.loop = oldLoop;
         oldAudSrc.clip = oldClip;
         oldAudSrc.volume = oldVol;
-#endif
+    }
+
+    private void CreateCategory() {
+        if (string.IsNullOrEmpty(_sounds.newCustomEventCategoryName)) {
+            DTGUIHelper.ShowAlert("You cannot have a blank Category name.");
+            return;
+        }
+
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (var c = 0; c < _sounds.customEventCategories.Count; c++) {
+            var cat = _sounds.customEventCategories[c];
+            // ReSharper disable once InvertIf
+            if (cat.CatName == _sounds.newCustomEventCategoryName) {
+                DTGUIHelper.ShowAlert("You already have a Category named '" + _sounds.newCustomEventCategoryName + "'. Category names must be unique.");
+                return;
+            }
+        }
+
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Create New Category");
+
+        var newCat = new CustomEventCategory {
+            CatName = _sounds.newCustomEventCategoryName,
+            ProspectiveName = _sounds.newCustomEventCategoryName
+        };
+
+        _sounds.customEventCategories.Add(newCat);
+    }
+
+    private void CreateMetadataProperty(MasterAudio.Playlist list, string propName, SongMetadataProperty.MetadataPropertyType propType, bool required, bool canHaveMult) {
+        if (propName != null) {
+            propName = propName.Replace(" ", "");
+        }
+        if (string.IsNullOrEmpty(propName)) {
+            DTGUIHelper.ShowAlert("You must give a name to your new Meta Property.");
+            return;
+        }
+
+        var match = list.songMetadataProps.Find(delegate (SongMetadataProperty p) {
+            return p.PropertyName == propName;
+        });
+
+        if (match != null) {
+            DTGUIHelper.ShowAlert("You already have a Metadata Property named '" + propName + "'. Names must be unique.");
+            return;
+        }
+
+        if (propType == SongMetadataProperty.MetadataPropertyType.Boolean) {
+            canHaveMult = false;
+        }
+
+        var newProp = new SongMetadataProperty(propName, propType, required, canHaveMult);
+
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Create Metadata Property");
+
+        if (required) {
+            for (var s = 0; s < list.MusicSettings.Count; s++) {
+                var aSong = list.MusicSettings[s];
+
+                switch (propType) {
+                    case SongMetadataProperty.MetadataPropertyType.Boolean:
+                        var bVal = new SongMetadataBoolValue(newProp);
+                        aSong.metadataBoolValues.Add(bVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.String:
+                        var sVal = new SongMetadataStringValue(newProp);
+                        aSong.metadataStringValues.Add(sVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.Integer:
+                        var iVal = new SongMetadataIntValue(newProp);
+                        aSong.metadataIntValues.Add(iVal);
+                        break;
+                    case SongMetadataProperty.MetadataPropertyType.Float:
+                        var fVal = new SongMetadataFloatValue(newProp);
+                        aSong.metadataFloatValues.Add(fVal);
+                        break;
+                }
+            }
+        }
+
+        list.songMetadataProps.Add(newProp);
+    }
+
+    private void DeleteMetadataProperty(MasterAudio.Playlist aList, int index) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Delete Metadata Property");
+
+        var deadProperty = aList.songMetadataProps[index];
+        var deadName = deadProperty.PropertyName;
+
+        switch (deadProperty.PropertyType) {
+            case SongMetadataProperty.MetadataPropertyType.String:
+                for (var i = 0; i < aList.MusicSettings.Count; i++) {
+                    var aSong = aList.MusicSettings[i];
+
+                    aSong.metadataStringValues.RemoveAll(delegate (SongMetadataStringValue val) {
+                        return val.PropertyName == deadName;
+                    });
+                }
+                break;
+            case SongMetadataProperty.MetadataPropertyType.Boolean:
+                for (var i = 0; i < aList.MusicSettings.Count; i++) {
+                    var aSong = aList.MusicSettings[i];
+                    aSong.metadataBoolValues.RemoveAll(delegate (SongMetadataBoolValue val) {
+                        return val.PropertyName == deadName;
+                    });
+                }
+                break;
+            case SongMetadataProperty.MetadataPropertyType.Integer:
+                for (var i = 0; i < aList.MusicSettings.Count; i++) {
+                    var aSong = aList.MusicSettings[i];
+                    aSong.metadataIntValues.RemoveAll(delegate (SongMetadataIntValue val) {
+                        return val.PropertyName == deadName;
+                    });
+                }
+                break;
+            case SongMetadataProperty.MetadataPropertyType.Float:
+                for (var i = 0; i < aList.MusicSettings.Count; i++) {
+                    var aSong = aList.MusicSettings[i];
+                    aSong.metadataFloatValues.RemoveAll(delegate (SongMetadataFloatValue val) {
+                        return val.PropertyName == deadName;
+                    });
+                }
+                break;
+        }
+
+        aList.songMetadataProps.Remove(deadProperty);
+    }
+
+    private void MakePropertyRequired(SongMetadataProperty property, MasterAudio.Playlist aList) {
+        // add one if there isn't one.
+        for (var i = 0; i < aList.MusicSettings.Count; i++) {
+            var aSong = aList.MusicSettings[i];
+
+            switch (property.PropertyType) {
+                case SongMetadataProperty.MetadataPropertyType.String:
+                    if (aSong.metadataStringValues.FindIndex(delegate (SongMetadataStringValue v) {
+                        return v.PropertyName == property.PropertyName;
+                    }) < 0) {
+                        aSong.metadataStringValues.Add(new SongMetadataStringValue(property));
+                    }
+                    break;
+                case SongMetadataProperty.MetadataPropertyType.Boolean:
+                    if (aSong.metadataBoolValues.FindIndex(delegate (SongMetadataBoolValue b) {
+                        return b.PropertyName == property.PropertyName;
+                    }) < 0) {
+                        aSong.metadataBoolValues.Add(new SongMetadataBoolValue(property));
+                    }
+                    break;
+                case SongMetadataProperty.MetadataPropertyType.Integer:
+                    if (aSong.metadataIntValues.FindIndex(delegate (SongMetadataIntValue n) {
+                        return n.PropertyName == property.PropertyName;
+                    }) < 0) {
+                        aSong.metadataIntValues.Add(new SongMetadataIntValue(property));
+                    }
+                    break;
+                case SongMetadataProperty.MetadataPropertyType.Float:
+                    if (aSong.metadataFloatValues.FindIndex(delegate (SongMetadataFloatValue f) {
+                        return f.PropertyName == property.PropertyName;
+                    }) < 0) {
+                        aSong.metadataFloatValues.Add(new SongMetadataFloatValue(property));
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void ExpandCollapseCategory(string category, bool isExpand) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle expand / collapse all items in Category");
+
+        foreach (var item in _sounds.customEvents) {
+            if (item.categoryName != category) {
+                continue;
+            }
+
+            item.eventExpanded = isExpand;
+        }
+    }
+
+    private void CopySongVolumes(MasterAudio.Playlist aList, float newVol) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Volume(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.volume = newVol;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Volume(s) changed.");
+    }
+
+    private void CopySongPitches(MasterAudio.Playlist aList, float newPitch) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Pitch(es)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.pitch = newPitch;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Volume(s) changed.");
+    }
+
+    private void CopySongLoops(MasterAudio.Playlist aList, bool newLoop) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Loop(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.isLoop = newLoop;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Loop(s) changed.");
+    }
+
+    private void CopySongStartTimeMode(MasterAudio.Playlist aList, MasterAudio.CustomSongStartTimeMode mode) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time Mode(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.songStartTimeMode = mode;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Start Time Mode(s) changed.");
+    }
+
+    private void CopySongCustomStartTime(MasterAudio.Playlist aList, float customStartTime) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Custom Start Time(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.customStartTime = customStartTime;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Custom Start Time(s) changed.");
+    }
+
+    private void CopySongStartTimeMin(MasterAudio.Playlist aList, float startTimeMin) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time Min(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.customStartTime = startTimeMin;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Start Time Min(s) changed.");
+    }
+
+    private void CopySongStartTimeMax(MasterAudio.Playlist aList, float startTimeMax) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Start Time Max(s)");
+
+        var changed = 0;
+
+        foreach (var aSong in aList.MusicSettings) {
+            if (!aSong.isChecked) {
+                continue;
+            }
+
+            aSong.customStartTimeMax = startTimeMax;
+            changed++;
+        }
+
+        Debug.LogWarning(changed + " Start Time Max(s) changed.");
+    }
+
+    private void CheckAllSongs(MasterAudio.Playlist aList) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Select all Songs");
+        for (var i = 0; i < aList.MusicSettings.Count; i++) {
+            var aSong = aList.MusicSettings[i];
+            aSong.isChecked = true;
+        }
+    }
+
+    private void UncheckAllSongs(MasterAudio.Playlist aList) {
+        AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "Select all Songs");
+        for (var i = 0; i < aList.MusicSettings.Count; i++) {
+            var aSong = aList.MusicSettings[i];
+            aSong.isChecked = false;
+        }
+    }
+
+    private int GetNumCheckedSongs(MasterAudio.Playlist aList) {
+        var numChecked = 0;
+        for (var i = 0; i < aList.MusicSettings.Count; i++) {
+            var aSong = aList.MusicSettings[i];
+            if (aSong.isChecked) {
+                numChecked++;
+            }
+        }
+
+        return numChecked;
+    }
+
+    private void ImportAllGroupTemplates(string[] filePaths) {
+        foreach (var path in filePaths) {
+			var template = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            AddGroupTemplate(template);
+        }
+    }
+
+    private void ImportAllAudioSourceTemplates(string[] filePaths) {
+        foreach (var path in filePaths) {
+			var template = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+			AddAudioSourceTemplate(template);
+        }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - 82: {fileID: 8200000}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GroupVariation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,22 +49,47 @@ AudioSource:
   MinDistance: 10
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - time: .0199999996
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -50.0199242
+      outSlope: -50.0199242
+      tangentMode: 0
+    - time: .0399999991
+      value: .5
+      inSlope: -12.504981
+      outSlope: -12.504981
+      tangentMode: 0
+    - time: .0799999982
+      value: .25
+      inSlope: -3.12624526
+      outSlope: -3.12624526
+      tangentMode: 0
+    - time: .159999996
+      value: .125
+      inSlope: -.781561315
+      outSlope: -.781561315
+      tangentMode: 0
+    - time: .319999993
+      value: .0625
+      inSlope: -.195390329
+      outSlope: -.195390329
+      tangentMode: 0
+    - time: .639999986
+      value: .03125
+      inSlope: -.0488475822
+      outSlope: -.0488475822
       tangentMode: 0
     - time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -.0200079847
+      outSlope: -.0200079847
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

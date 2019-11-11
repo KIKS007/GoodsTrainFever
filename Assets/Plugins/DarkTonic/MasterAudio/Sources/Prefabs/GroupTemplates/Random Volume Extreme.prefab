@@ -132,7 +132,7 @@ MonoBehaviour:
   isSelected: 0
   isExpanded: 1
   groupMasterVolume: 1
-  retriggerPercentage: 50
+  retriggerPercentage: 100
   curVariationMode: 0
   alwaysHighestPriority: 0
   chainLoopDelayMin: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   isMuted: 0
   soundPlayedEventActive: 0
   soundPlayedCustomEvent: 
-  frames: 0
+  frames: 108
 --- !u!114 &11400022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -187,8 +187,8 @@ MonoBehaviour:
   randomPitchMax: 0
   useRandomVolume: 1
   randomVolumeMode: 1
-  randomVolumeMin: .200000003
-  randomVolumeMax: .800000012
+  randomVolumeMin: .199526235
+  randomVolumeMax: .803526103
   audLocation: 0
   resourceFileName: 
   internetFileUrl: 

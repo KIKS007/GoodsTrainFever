@@ -4,7 +4,6 @@ using UnityEngine;
 using DarkTonic.MasterAudio;
 
 [CustomEditor(typeof(FootstepSounds))]
-[CanEditMultipleObjects]
 // ReSharper disable once CheckNamespace
 public class FootstepsSoundsInspector : Editor {
     private bool _isDirty;
@@ -44,11 +43,17 @@ public class FootstepsSoundsInspector : Editor {
         }
         PopulateGroupNames(_groupNames);
 
-        DTGUIHelper.HelpHeader("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/FootstepSounds.htm");
+        DTGUIHelper.HelpHeader("http://www.dtdevtools.com/docs/masteraudio/FootstepSounds.htm");
 
         _isDirty = false;
 
         _sounds = (FootstepSounds)target;
+
+		var newSpawnMode = (MasterAudio.SoundSpawnLocationMode)EditorGUILayout.EnumPopup("Sound Spawn Mode", _sounds.soundSpawnMode);
+		if (newSpawnMode != _sounds.soundSpawnMode) {
+			AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "change Sound Spawn Mode");
+			_sounds.soundSpawnMode = newSpawnMode;
+		}
 
         var newEvent = (FootstepSounds.FootstepTriggerMode)EditorGUILayout.EnumPopup("Event Used", _sounds.footstepEvent);
         if (newEvent != _sounds.footstepEvent) {
@@ -62,6 +67,23 @@ public class FootstepsSoundsInspector : Editor {
         }
 
         DTGUIHelper.VerticalSpace(3);
+
+#if PHY3D_MISSING
+        switch (_sounds.footstepEvent) {
+            case FootstepSounds.FootstepTriggerMode.OnCollision:
+            case FootstepSounds.FootstepTriggerMode.OnTriggerEnter:
+                DTGUIHelper.ShowRedError("You cannot use Physics3D events because you do not have the Physics3D package installed. This script will not work.");
+                return;
+        }
+#endif
+#if PHY2D_MISSING
+        switch (_sounds.footstepEvent) {
+            case FootstepSounds.FootstepTriggerMode.OnCollision2D:
+            case FootstepSounds.FootstepTriggerMode.OnTriggerEnter2D:
+                DTGUIHelper.ShowRedError("You cannot use Physics2D events because you do not have the Physics2D package installed. This script will not work.");
+                return;
+        }
+#endif
 
         EditorGUILayout.BeginHorizontal();
         GUI.contentColor = DTGUIHelper.BrightButtonColor;
@@ -141,42 +163,17 @@ public class FootstepsSoundsInspector : Editor {
             var state = step.isExpanded;
             var text = "Footstep Sound #" + (f + 1);
 
-            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-            if (!state) {
-                GUI.backgroundColor = DTGUIHelper.InactiveHeaderColor;
-            } else {
-                GUI.backgroundColor = DTGUIHelper.ActiveHeaderColor;
-            }
-
-            GUILayout.BeginHorizontal();
-
-#if UNITY_3_5_7
-				if (!state) {
-					text += " (Click to expand)";
-				}
-#else
-            text = "<b><size=11>" + text + "</size></b>";
-#endif
-            if (state) {
-                text = "\u25BC " + text;
-            } else {
-                text = "\u25BA " + text;
-            }
-            if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) {
-                state = !state;
-            }
+            DTGUIHelper.ShowCollapsibleSection(ref state, text);
 
             GUI.backgroundColor = Color.white;
-            if (!state) {
-                GUILayout.Space(3f);
-            }
+            GUILayout.Space(3f);
 
             if (state != step.isExpanded) {
                 AudioUndoHelper.RecordObjectPropertyForUndo(ref _isDirty, _sounds, "toggle Expand Variation");
                 step.isExpanded = state;
             }
 
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/FootstepSounds.htm#FootstepSound");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/FootstepSounds.htm#FootstepSound");
 
             EditorGUILayout.EndHorizontal();
 
@@ -227,7 +224,6 @@ public class FootstepsSoundsInspector : Editor {
             }
             EditorGUILayout.EndToggleGroup();
 
-            DTGUIHelper.AddSpaceForNonU5(2);
             DTGUIHelper.StartGroupHeader();
             var newTagFilter = EditorGUILayout.BeginToggleGroup("Tag filter", step.useTagFilter);
             if (newTagFilter != step.useTagFilter) {

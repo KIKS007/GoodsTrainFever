@@ -26,6 +26,7 @@ public static class DTGUIHelper {
     private static readonly Color DarkSkin_InactiveHeaderColor = new Color(.6f, .6f, .6f);
     private static readonly Color DarkSkin_ActiveHeaderColor = new Color(.3f, .8f, 1f);
     private static readonly Color DarkSkin_HelpIconColor = new Color(.2f, 1f, .2f);
+    private static readonly Color DarkSkin_DeleteButtonColor = new Color(1f, .2f, .2f);
 
     // COLORS FOR LIGHT SCHEME
     private static readonly Color LightSkin_OuterGroupBoxColor = Color.white;
@@ -38,6 +39,7 @@ public static class DTGUIHelper {
     private static readonly Color LightSkin_InactiveHeaderColor = new Color(.6f, .6f, .6f);
     private static readonly Color LightSkin_ActiveHeaderColor = new Color(.3f, .8f, 1f);
     private static readonly Color LightSkin_HelpIconColor = Color.green;
+    private static readonly Color LightSkin_DeleteButtonColor = new Color(1f, .2f, .2f);
     // ReSharper restore InconsistentNaming
 
     private static List<string> _layers;
@@ -75,7 +77,13 @@ public static class DTGUIHelper {
         Stop,
         Rename,
         Clone,
-        Find
+        Find,
+        Pause,
+        Unpause,
+        Save,
+        Cancel,
+        Check,
+        Uncheck
     }
 
     public static LayerMask LayerMaskField(string label, LayerMask selected) {
@@ -123,6 +131,12 @@ public static class DTGUIHelper {
     private static bool IsDarkSkin {
         get {
             return EditorPrefs.GetInt("UserSkin") == 1;
+        }
+    }
+
+    public static Color DeleteButtonColor {
+        get {
+            return IsDarkSkin ? DarkSkin_DeleteButtonColor : LightSkin_DeleteButtonColor;
         }
     }
 
@@ -194,26 +208,118 @@ public static class DTGUIHelper {
 
     public static GUIStyle CornerGUIStyle {
         get {
-#if UNITY_5
             return EditorStyles.helpBox;
-#else
-#if UNITY_3_5_7 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4
-            return EditorStyles.numberField;
-#else
-            return EditorStyles.textArea;
-#endif
-#endif
         }
 
     }
 
-    public static void AddSpaceForNonU5(int height) {
-#if UNITY_5
-        //
+    public static void ShowCollapsibleSection(ref bool state, string text, bool showArrow = true) {
+        var oldBG = GUI.backgroundColor;
+#if UNITY_2019_3_OR_NEWER
 #else
-        GUILayout.Space(height);
+        if (!state) {
+            GUI.backgroundColor = InactiveHeaderColor;
+        } else {
+            GUI.backgroundColor = ActiveHeaderColor;
+        }
 #endif
+
+        var style = new GUIStyle();
+        style.fontSize = 11;
+        style.fontStyle = FontStyle.Bold;
+        style.margin = new RectOffset(0, 0, 0, 0);
+
+#if UNITY_2019_3_OR_NEWER
+        style.padding = new RectOffset(0, 0, 3, 0);
+#else
+        style.padding = new RectOffset(0, 0, 0, 0);
+#endif
+        style.fixedHeight = 18;
+
+        GUILayout.BeginHorizontal(style);
+
+#if UNITY_2019_3_OR_NEWER
+        if (!state) {
+            GUI.backgroundColor = InactiveHeaderColor;
+        } else {
+            GUI.backgroundColor = ActiveHeaderColor;
+        }
+#endif
+
+        if (showArrow)
+        {
+            if (state)
+            {
+                text = DownArrow + " " + text;
+            }
+            else
+            {
+                text = "\u25BA " + text;
+            }
+        }
+
+        var headerStyle = new GUIStyle(EditorStyles.popup);
+        headerStyle.fontSize = 11;
+        headerStyle.fontStyle = FontStyle.Bold;
+
+#if UNITY_2019_3_OR_NEWER
+        headerStyle.margin = new RectOffset(0, 0, 0, 0);
+#else
+        headerStyle.margin = new RectOffset(0, 0, 2, 0);
+#endif
+        headerStyle.padding = new RectOffset(6, 0, 1, 2);
+        headerStyle.fixedHeight = 18;
+
+        if (!GUILayout.Toggle(true, text, headerStyle, GUILayout.MinWidth(20f))) {
+            state = !state;
+        }
+
+        GUI.backgroundColor = oldBG;
     }
+
+    public static void ShowCollapsibleSectionInline(ref bool state, string text)
+    {
+        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+        if (!state)
+        {
+            GUI.backgroundColor = InactiveHeaderColor;
+        }
+        else
+        {
+            GUI.backgroundColor = ActiveHeaderColor;
+        }
+
+        var style = new GUIStyle();
+        style.fontSize = 11;
+        style.fontStyle = FontStyle.Bold;
+        style.margin = new RectOffset(3, 2, 0, 0);
+        style.padding = new RectOffset(0, 0, 0, 0);
+        style.fixedHeight = 18;
+
+        GUILayout.BeginHorizontal(style);
+
+        if (state)
+        {
+            text = DownArrow + " " + text;
+        }
+        else
+        {
+            text = "\u25BA " + text;
+        }
+
+        var headerStyle = new GUIStyle(EditorStyles.popup);
+        headerStyle.fontSize = 11;
+        headerStyle.fontStyle = FontStyle.Bold;
+        headerStyle.margin = new RectOffset(0, 0, 0, 0);
+        headerStyle.padding = new RectOffset(6, 0, 0, 0);
+        headerStyle.fixedHeight = 20;
+
+        if (!GUILayout.Toggle(true, text, headerStyle, GUILayout.MinWidth(20f)))
+        {
+            state = !state;
+        }
+    }
+
     public static void ShowHeaderTexture(Texture tex) {
         if (MasterAudio.HideLogoNav) {
             return;
@@ -224,6 +330,8 @@ public static class DTGUIHelper {
         rect.height = tex.height;
         GUILayout.Space(rect.height);
         GUI.DrawTexture(rect, tex);
+
+        EditorGUIUtility.AddCursorRect(rect, MouseCursor.Link);
 
         var e = Event.current;
         if (e.type != EventType.MouseUp) {
@@ -238,9 +346,9 @@ public static class DTGUIHelper {
         }
     }
 
-    public static void HelpHeader(string helpUrl, string apiUrl = "https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MasterAudio_API/annotated.html") {
+    public static void HelpHeader(string helpUrl, string apiUrl = "http://www.dtdevtools.com/API/masteraudio/annotated.html") {
         EditorGUILayout.BeginHorizontal(CornerGUIStyle);
-        AddHelpIcon(helpUrl, true);
+        AddHelpIconNoStyle(helpUrl);
         GUILayout.Label("Click button for online help!");
         AddAPIIcon(apiUrl);
         EditorGUILayout.EndHorizontal();
@@ -249,6 +357,7 @@ public static class DTGUIHelper {
     public static void StartGroupHeader(int level = 0, bool showBoth = true) {
         switch (level) {
             case 0:
+            case 2:
                 GUI.backgroundColor = GroupBoxColor;
                 break;
             case 1:
@@ -264,11 +373,39 @@ public static class DTGUIHelper {
 
         switch (level) {
             case 0:
+            case 2:
                 GUI.backgroundColor = SecondaryHeaderColor;
                 break;
         }
 
-        EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
+#if UNITY_2019_3_OR_NEWER
+        GUIStyle style = EditorStyles.objectFieldThumb;
+
+        switch (level) {
+            case 0:
+            case 1:
+                break;
+            case 2:
+                style = EditorStyles.objectField;
+                break;
+        }
+
+        GUIStyle textureStyle = new GUIStyle(style) {
+            padding = new RectOffset(0, 3, 3, 4),
+            margin = new RectOffset(0, 0, 0, 0)
+        };
+        EditorGUILayout.BeginVertical(textureStyle);
+
+#else
+        EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb); 
+#endif
+    }
+
+    public static void WhiteLabel(string labelText) {
+        var oldBG = GUI.backgroundColor;
+        GUI.backgroundColor = Color.white;
+        GUILayout.Label(labelText);
+        GUI.backgroundColor = oldBG;
     }
 
     public static void EndGroupHeader() {
@@ -282,22 +419,54 @@ public static class DTGUIHelper {
         EditorGUILayout.EndVertical();
     }
 
-    public static void AddHelpIcon(string helpUrl, bool useMiddleButton = false) {
-        var oldColor = GUI.color;
-        var oldBG = GUI.backgroundColor;
-        GUI.color = HelpIconColor;
-        GUI.backgroundColor = Color.white;
-        var buttonStyle = EditorStyles.miniButtonRight;
-        if (useMiddleButton) {
-            buttonStyle = EditorStyles.miniButton;
-        }
+    public static void AddMiddleHelpIcon(string helpUrl)
+    {
+		Texture2D backgroundTexture = Texture2D.blackTexture;
+		GUIStyle textureStyle = new GUIStyle(EditorStyles.miniButtonMid) {
+			padding = new RectOffset(0, 0, 0, 0),
+			margin = new RectOffset(0, 0, 3, 0),
+			normal = new GUIStyleState {
+				background = backgroundTexture,
+			}
+			
+		};
 
-        if (GUILayout.Button(new GUIContent("?", "Online Help"), buttonStyle, GUILayout.MaxWidth(16), GUILayout.Height(15))) {
+		if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.HelpTexture, "Online Help"), textureStyle, GUILayout.Width(16), GUILayout.Height(15)))
+        {
             Application.OpenURL(helpUrl);
         }
         GUILayout.Space(3);
-        GUI.color = oldColor;
-        GUI.backgroundColor = oldBG;
+    }
+
+    public static GUIStyle NoBorderButtonStyle() {
+        Texture2D backgroundTexture = Texture2D.blackTexture;
+        GUIStyle textureStyle = new GUIStyle(EditorStyles.miniButtonMid) {
+            padding = new RectOffset(0, 0, 0, 0),
+            margin = new RectOffset(0, 0, 0, 0),
+            normal = new GUIStyleState {
+                background = backgroundTexture,
+            }
+
+        };
+        return textureStyle;
+    }
+
+    public static void AddHelpIconNoStyle(string helpUrl, int topMargin = 3) {
+		Texture2D backgroundTexture = Texture2D.blackTexture;
+		GUIStyle textureStyle = new GUIStyle(EditorStyles.miniButtonMid) {
+			padding = new RectOffset(0, 0, 0, 0),
+			margin = new RectOffset(0, 0, topMargin, 0),
+			normal = new GUIStyleState {
+				background = backgroundTexture,
+			}
+			
+		};
+
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.HelpTexture, "Online Help"), textureStyle, GUILayout.Width(16), GUILayout.Height(15)))
+        {
+            Application.OpenURL(helpUrl);
+        }
+        GUILayout.Space(3);
     }
 
     public static void AddAPIIcon(string apiUrl) {
@@ -315,7 +484,32 @@ public static class DTGUIHelper {
         GUI.backgroundColor = oldBG;
     }
 
+    public static DTFunctionButtons AddCancelSaveButtons(string itemName) {
+        var cancelIcon = new GUIContent(MasterAudioInspectorResources.CancelTexture,
+                "Click to cancel renaming " + itemName);
+
+        GUI.backgroundColor = Color.white;
+        if (GUILayout.Button(cancelIcon, EditorStyles.toolbarButton, GUILayout.Width(24),
+            GUILayout.Height(16))) {
+            return DTFunctionButtons.Cancel;
+        }
+
+        var saveIcon = new GUIContent(MasterAudioInspectorResources.SaveTexture,
+                "Click to save " + itemName);
+
+        GUI.backgroundColor = Color.white;
+        if (GUILayout.Button(saveIcon, EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(16))) {
+            return DTFunctionButtons.Save;
+        }
+
+        return DTFunctionButtons.None;
+    }
+
     public static DTFunctionButtons AddDeleteIcon(bool showRenameButton, string eventName) {
+        var oldColor = GUI.color;
+        var oldBG = GUI.backgroundColor;
+        var oldContent = GUI.contentColor;
+
         GUI.backgroundColor = Color.white;
         GUI.color = Color.white;
         GUI.contentColor = BrightButtonColor;
@@ -328,7 +522,10 @@ public static class DTGUIHelper {
         var deleteIcon = MasterAudioInspectorResources.DeleteTexture;
         GUI.contentColor = Color.red;
         var shouldDelete = GUILayout.Button(new GUIContent(deleteIcon, "Click to delete " + eventName), EditorStyles.toolbarButton, GUILayout.MaxWidth(32), GUILayout.Height(15));
-        GUI.contentColor = Color.white;
+
+        GUI.color = oldColor;
+        GUI.backgroundColor = oldBG;
+        GUI.contentColor = oldContent;
 
         if (shouldDelete) {
             return DTFunctionButtons.Remove;
@@ -394,6 +591,30 @@ public static class DTGUIHelper {
         }
 
         return buttonPressed;
+    }
+
+    public static DTFunctionButtons Add2WayTrackerButtons() {
+        GUIContent stopIcon;
+        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+        if (MasterAudioInspectorResources.StopTexture != null) {
+            stopIcon = new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop Sound");
+        } else {
+            stopIcon = new GUIContent("End Preview", "Click to stop previewing Group");
+        }
+
+        if (GUILayout.Button(stopIcon, EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Stop;
+        }
+        var pauseContent = new GUIContent(MasterAudioInspectorResources.PauseTexture, "Click to pause Group");
+        if (GUILayout.Button(pauseContent, EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Pause;
+        }
+        var playContent = new GUIContent(MasterAudioInspectorResources.PlaySongTexture, "Click to unpause Group");
+        if (GUILayout.Button(playContent, EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Play;
+        }
+
+        return DTFunctionButtons.None;
     }
 
     public static DTFunctionButtons AddDynamicGroupButtons(Object obj) {
@@ -483,14 +704,13 @@ public static class DTGUIHelper {
             return DTFunctionButtons.Find;
         }
 
-        var removePressed = false;
         var stopPressed = false;
 
-        if (!Application.isPlaying) {
-            removePressed = GUILayout.Button(new GUIContent(deleteIcon, "Click to delete bus"), EditorStyles.toolbarButton);
-        } else {
+        if (Application.isPlaying) {
             stopPressed = GUILayout.Button(new GUIContent(stopIcon, "Click to stop bus"), EditorStyles.toolbarButton);
         }
+
+        var removePressed = GUILayout.Button(new GUIContent(deleteIcon, "Click to delete bus"), EditorStyles.toolbarButton);
 
         // Return the pressed button if any
         if (removePressed) {
@@ -514,11 +734,11 @@ public static class DTGUIHelper {
             return DTFunctionButtons.None;
         }
 
-        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview Variation"), EditorStyles.toolbarButton, GUILayout.Width(40))) {
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview"), EditorStyles.toolbarButton, GUILayout.Width(24))) {
             return DTFunctionButtons.Play;
         }
 
-        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"), EditorStyles.toolbarButton, GUILayout.Width(40))) {
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"), EditorStyles.toolbarButton, GUILayout.Width(24))) {
             return DTFunctionButtons.Stop;
         }
 
@@ -531,29 +751,27 @@ public static class DTGUIHelper {
         }
 
         // ReSharper disable once InvertIf
-        if (!IsPrefabInProjectView(grp)) {
-            if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview Variation"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(40))) {
-                return DTFunctionButtons.Play;
-            }
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview Variation"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(32))) {
+            return DTFunctionButtons.Play;
+        }
 
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (
-                GUILayout.Button(
-                    new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"),
-                    EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(40))) {
-                return DTFunctionButtons.Stop;
-            }
+        // ReSharper disable once ConvertIfStatementToReturnStatement
+        if (
+            GUILayout.Button(
+                new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"),
+                EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(32))) {
+            return DTFunctionButtons.Stop;
         }
 
         return DTFunctionButtons.None;
     }
 
     public static DTFunctionButtons AddVariationButtons() {
-        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview Variation"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(40))) {
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview Variation"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(32))) {
             return DTFunctionButtons.Play;
         }
 
-        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(40))) {
+        if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop audio preview"), EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(32))) {
             return DTFunctionButtons.Stop;
         }
 
@@ -596,7 +814,9 @@ public static class DTGUIHelper {
             pitchSemiTones = AudioUtil.GetSemitonesFromPitch(pitch);
         }
 
-        var newSemi = EditorGUILayout.Slider("Pitch Chg. Semitones", pitchSemiTones, -24f, 19f);
+        fieldName += " Semitones";
+
+        var newSemi = EditorGUILayout.Slider(fieldName, pitchSemiTones, -24f, 19f);
         var newPitch = AudioUtil.GetPitchFromSemitones(newSemi);
 
         return newPitch;
@@ -744,7 +964,13 @@ public static class DTGUIHelper {
     public static void BeginGroupedControls() {
         GUI.backgroundColor = OuterGroupBoxColor;
         GUILayout.BeginHorizontal();
-        EditorGUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(10f));
+
+#if UNITY_2017_1_OR_NEWER
+        EditorGUILayout.BeginHorizontal("TextArea", GUILayout.MinHeight(10f));
+#else
+            EditorGUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(10f));
+#endif
+
         GUILayout.BeginVertical();
         GUILayout.Space(2f);
     }
@@ -760,38 +986,62 @@ public static class DTGUIHelper {
         GUILayout.Space(3f);
     }
 
-    public static DTFunctionButtons AddMixerMuteButton(string itemName, MasterAudio sounds) {
+    public static DTFunctionButtons AddMasterMixerButtons(string itemName, MasterAudio sounds) {
         var muteContent = new GUIContent(MasterAudioInspectorResources.MuteOffTexture, "Click to mute " + itemName);
 
         if (sounds.mixerMuted) {
             muteContent.image = MasterAudioInspectorResources.MuteOnTexture;
         }
 
-        var mutePressed = GUILayout.Button(muteContent, EditorStyles.toolbarButton);
-
-        // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (mutePressed != true) {
-            return DTFunctionButtons.None;
+        if (GUILayout.Button(muteContent, EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Mute;
         }
 
-        return DTFunctionButtons.Mute;
+        if (Application.isPlaying) {
+            var stopContent = new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop " + itemName);
+            if (GUILayout.Button(stopContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Stop;
+            }
+            var pauseContent = new GUIContent(MasterAudioInspectorResources.PauseTexture, "Click to pause " + itemName);
+            if (GUILayout.Button(pauseContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Pause;
+            }
+            var playContent = new GUIContent(MasterAudioInspectorResources.PlaySongTexture, "Click to unpause " + itemName);
+            if (GUILayout.Button(playContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Play;
+            }
+        }
+
+        return DTFunctionButtons.None;
     }
 
-    public static DTFunctionButtons AddPlaylistMuteButton(string itemName, MasterAudio sounds) {
+    public static DTFunctionButtons AddMasterPlaylistButtons(string itemName, MasterAudio sounds) {
         var muteContent = new GUIContent(MasterAudioInspectorResources.MuteOffTexture, "Click to mute " + itemName);
 
         if (sounds.playlistsMuted) {
             muteContent.image = MasterAudioInspectorResources.MuteOnTexture;
         }
 
-        var mutePressed = GUILayout.Button(muteContent, EditorStyles.toolbarButton);
-
-        // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (mutePressed != true) {
-            return DTFunctionButtons.None;
+        if (GUILayout.Button(muteContent, EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Mute;
         }
 
-        return DTFunctionButtons.Mute;
+        if (Application.isPlaying) {
+            var stopContent = new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop " + itemName);
+            if (GUILayout.Button(stopContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Stop;
+            }
+            var pauseContent = new GUIContent(MasterAudioInspectorResources.PauseTexture, "Click to pause " + itemName);
+            if (GUILayout.Button(pauseContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Pause;
+            }
+            var playContent = new GUIContent(MasterAudioInspectorResources.PlaySongTexture, "Click to unpause " + itemName);
+            if (GUILayout.Button(playContent, EditorStyles.toolbarButton)) {
+                return DTFunctionButtons.Play;
+            }
+        }
+
+        return DTFunctionButtons.None;
     }
 
     public static void AddLedSignalLight(MasterAudio sounds, string groupName) {
@@ -799,8 +1049,8 @@ public static class DTGUIHelper {
 
         if (Application.isPlaying) {
             var groupInfo = MasterAudio.GetGroupInfo(groupName);
-            if (groupInfo != null && !groupInfo.PlayedForWarming && groupInfo.LastTimePlayed > 0f && groupInfo.LastTimePlayed <= Time.realtimeSinceStartup) {
-                var timeDiff = Time.realtimeSinceStartup - groupInfo.LastTimePlayed;
+            if (groupInfo != null && !groupInfo.PlayedForWarming && groupInfo.LastTimePlayed > 0f && groupInfo.LastTimePlayed <= AudioUtil.Time) {
+                var timeDiff = AudioUtil.Time - groupInfo.LastTimePlayed;
 
                 var timeSlot = (int)(timeDiff / LedFrameTime);
 
@@ -844,10 +1094,26 @@ public static class DTGUIHelper {
         return DTFunctionButtons.None;
     }
 
-    public static DTFunctionButtons AddSettingsButton(string itemName) {
+    public static DTFunctionButtons AddSettingsButton(string itemName, bool keepColor = false) {
+        var oldColor = GUI.color;
+        var oldBG = GUI.backgroundColor;
+
+        if (!keepColor) {
+            GUI.backgroundColor = Color.white;
+            GUI.color = Color.white;
+        }
+
         var settingsIcon = MasterAudioInspectorResources.GearTexture;
 
-        if (GUILayout.Button(new GUIContent(settingsIcon, "Click to edit " + itemName), EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(20))) {
+        var buttonClicked = GUILayout.Button(new GUIContent(settingsIcon, "Click to edit " + itemName),
+            EditorStyles.toolbarButton, GUILayout.Width(24), GUILayout.Height(20));
+
+        if (!keepColor) {
+            GUI.color = oldColor;
+            GUI.backgroundColor = oldBG;
+        }
+
+        if (buttonClicked) {
             return DTFunctionButtons.Go;
         }
 
@@ -862,6 +1128,106 @@ public static class DTGUIHelper {
         }
 
         return false;
+    }
+
+    public static void PreviewSoundGroup(string sType) {
+        var previewer = MasterAudioInspector.GetPreviewer();
+
+        if (Application.isPlaying) {
+            if (previewer != null) {
+                MasterAudio.PlaySound3DAtVector3AndForget(sType, previewer.transform.position);
+            }
+        } else {
+            var grp = MasterAudio.FindGroupTransform(sType);
+            if (grp == null) {
+                return;
+            }
+
+            var aGroup = grp.GetComponent<MasterAudioGroup>();
+
+            if (aGroup != null) {
+                var rndIndex = UnityEngine.Random.Range(0, aGroup.groupVariations.Count);
+                var rndVar = aGroup.groupVariations[rndIndex];
+
+                var randPitch = SoundGroupVariationInspector.GetRandomPreviewPitch(rndVar);
+                var varVol = SoundGroupVariationInspector.GetRandomPreviewVolume(rndVar);
+
+                if (rndVar.audLocation != MasterAudio.AudioLocation.FileOnInternet) {
+                    if (previewer != null) {
+                        MasterAudioInspector.StopPreviewer();
+                        previewer.pitch = randPitch;
+                    }
+                }
+
+                var calcVolume = aGroup.groupMasterVolume * varVol;
+
+                switch (rndVar.audLocation) {
+                    case MasterAudio.AudioLocation.ResourceFile:
+                        if (previewer != null) {
+                            var fileName = AudioResourceOptimizer.GetLocalizedFileName(rndVar.useLocalization, rndVar.resourceFileName);
+                            previewer.PlayOneShot(Resources.Load(fileName) as AudioClip, calcVolume);
+                        }
+                        break;
+                    case MasterAudio.AudioLocation.Clip:
+                        if (previewer != null) {
+                            previewer.PlayOneShot(rndVar.VarAudio.clip, calcVolume);
+                        }
+                        break;
+                    case MasterAudio.AudioLocation.FileOnInternet:
+                        if (!string.IsNullOrEmpty(rndVar.internetFileUrl)) {
+                            Application.OpenURL(rndVar.internetFileUrl);
+                        }
+                        break;
+                }
+
+                return;
+            }
+
+            var dynGroup = grp.GetComponent<DynamicSoundGroup>();
+            if (dynGroup != null) {
+                var rndIndex = UnityEngine.Random.Range(0, dynGroup.groupVariations.Count);
+                var rndVar = dynGroup.groupVariations[rndIndex];
+
+                var randPitch = SoundGroupVariationInspector.GetRandomPreviewPitch(rndVar);
+                var varVol = SoundGroupVariationInspector.GetRandomPreviewVolume(rndVar);
+
+                if (rndVar.audLocation != MasterAudio.AudioLocation.FileOnInternet) {
+                    if (previewer != null) {
+                        MasterAudioInspector.StopPreviewer();
+                        previewer.pitch = randPitch;
+                    }
+                }
+
+                var calcVolume = dynGroup.groupMasterVolume * varVol;
+
+                switch (rndVar.audLocation) {
+                    case MasterAudio.AudioLocation.ResourceFile:
+                        if (previewer != null) {
+                            var fileName = AudioResourceOptimizer.GetLocalizedFileName(rndVar.useLocalization, rndVar.resourceFileName);
+                            previewer.PlayOneShot(Resources.Load(fileName) as AudioClip, calcVolume);
+                        }
+                        break;
+                    case MasterAudio.AudioLocation.Clip:
+                        if (previewer != null) {
+                            previewer.PlayOneShot(rndVar.VarAudio.clip, calcVolume);
+                        }
+                        break;
+                    case MasterAudio.AudioLocation.FileOnInternet:
+                        if (!string.IsNullOrEmpty(rndVar.internetFileUrl)) {
+                            Application.OpenURL(rndVar.internetFileUrl);
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    public static void StopPreview(string sType) {
+        if (Application.isPlaying) {
+            MasterAudio.StopAllOfSound(sType);
+        } else {
+            MasterAudioInspector.StopPreviewer();
+        }
     }
 
     public static void ShowFilteredRelationsGraph(string groupFilter = null, string busFilter = null) {
@@ -906,25 +1272,20 @@ public static class DTGUIHelper {
             }
         }
 
-        if (!IsPrefabInProjectView(aGroup)) {
-            if (GUILayout.Button(
-                    new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview " + itemName),
-                    EditorStyles.toolbarButton)) {
-                return DTFunctionButtons.Play;
-            }
-            if (GUILayout.Button(
-                new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop all of Sound"),
+        if (GUILayout.Button(
+                new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview " + itemName),
                 EditorStyles.toolbarButton)) {
-                return DTFunctionButtons.Stop;
-            }
-            if (ShowFindUsages("Sound Group '" + aGroup.name + "'")) {
-                return DTFunctionButtons.Find;
-            }
+            return DTFunctionButtons.Play;
+        }
+        if (GUILayout.Button(
+            new GUIContent(MasterAudioInspectorResources.StopTexture, "Click to stop all of Sound"),
+            EditorStyles.toolbarButton)) {
+            return DTFunctionButtons.Stop;
+        }
+        if (ShowFindUsages("Sound Group '" + aGroup.name + "'")) {
+            return DTFunctionButtons.Find;
         }
 
-        if (Application.isPlaying || IsPrefabInProjectView(aGroup)) {
-            return DTFunctionButtons.None;
-        }
         if (GUILayout.Button(new GUIContent(deleteIcon, "Click to delete " + itemName), EditorStyles.toolbarButton)) {
             return DTFunctionButtons.Remove;
         }
@@ -990,7 +1351,7 @@ public static class DTGUIHelper {
         return DTFunctionButtons.None;
     }
 
-    public static DTFunctionButtons AddFoldOutListItemButtonItems(int position, int totalPositions, string itemName, bool showAfterText, bool showCopyButton = false, bool showMoveButtons = false, bool showAudioPreview = false) {
+    public static DTFunctionButtons AddFoldOutListItemButtonItems(int position, int totalPositions, string itemName, bool showAfterText, bool showCopyButton = false, bool showMoveButtons = false, bool showAudioPreview = false, bool showSelect = false, bool isSelected = false) {
         EditorGUILayout.BeginHorizontal(GUILayout.MaxWidth(100));
 
         // A little space between button groups
@@ -1001,6 +1362,13 @@ public static class DTGUIHelper {
         var previewPressed = false;
         var stopPressed = false;
         var copyPressed = false;
+
+        if (showSelect) {
+            var newChecked = GUILayout.Toggle(isSelected, "", GUILayout.Width(16), GUILayout.Height(16));
+            if (newChecked != isSelected) {
+                return newChecked == true ? DTFunctionButtons.Check : DTFunctionButtons.Uncheck;
+            }
+        }
 
         if (showAudioPreview) {
             if (GUILayout.Button(new GUIContent(MasterAudioInspectorResources.PreviewTexture, "Click to preview clip"),
@@ -1015,7 +1383,7 @@ public static class DTGUIHelper {
 
         if (showCopyButton) {
             copyPressed = GUILayout.Button(new GUIContent(MasterAudioInspectorResources.CopyTexture, "Click to clone Song"),
-                    EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(40));
+                    EditorStyles.toolbarButton, GUILayout.Height(16), GUILayout.Width(32));
         }
 
         if (showMoveButtons) {
@@ -1081,8 +1449,8 @@ public static class DTGUIHelper {
 
     public static bool Foldout(bool expanded, string label) {
         var content = new GUIContent(label, FoldOutTooltip);
-        expanded = EditorGUILayout.Foldout(expanded, content);
 
+        expanded = EditorGUILayout.Foldout(expanded, content);
         return expanded;
     }
 
@@ -1141,37 +1509,32 @@ public static class DTGUIHelper {
         return shortPath;
     }
 
-    private static PrefabType GetPrefabType(Object gObject) {
-        return PrefabUtility.GetPrefabType(gObject);
+#if UNITY_2018_3_OR_NEWER
+    public static bool IsPrefabInProjectView(Object gObject) {
+        return false;
+        //return GetPrefabType(gObject) != PrefabAssetType.Regular && !Application.isPlaying; // this requires you to create a prefab of your Master Audio game object before being able to see the Inspector. Kind of a hassle.
     }
-
+#else
     public static bool IsPrefabInProjectView(Object gObject) {
         return GetPrefabType(gObject) == PrefabType.Prefab;
     }
+#endif
 
-    public static GameObject DuplicateGameObject(GameObject gameObj, string baseName, int? optionalCountSuffix) {
-        var prefabRoot = PrefabUtility.GetPrefabParent(gameObj);
+#if UNITY_2018_3_OR_NEWER
+    private static PrefabAssetType GetPrefabType(Object gObject) {
+        return PrefabUtility.GetPrefabAssetType(gObject);
+    }
+#else
+    private static PrefabType GetPrefabType(Object gObject) {
+        return PrefabUtility.GetPrefabType(gObject);
+    }
+#endif
 
-        GameObject dupe;
+    private static float GetPositiveUsablePitch(AudioSource source) {
+        return source.pitch > 0 ? source.pitch : 1;
+    }
 
-        if (prefabRoot != null) {
-            dupe = (GameObject)PrefabUtility.InstantiatePrefab(prefabRoot);
-        } else {
-            // ReSharper disable RedundantCast
-            // ReSharper disable once AccessToStaticMemberViaDerivedType
-            dupe = (GameObject)GameObject.Instantiate(gameObj);
-            // ReSharper restore RedundantCast
-        }
-
-        if (dupe == null) {
-            return null;
-        }
-        var newName = baseName;
-        if (optionalCountSuffix.HasValue) {
-            newName += optionalCountSuffix.Value;
-        }
-        dupe.name = newName;
-
-        return dupe;
+    public static float AdjustAudioClipDurationForPitch(float duration, AudioSource sourceWithPitch) {
+        return duration / GetPositiveUsablePitch(sourceWithPitch);
     }
 }

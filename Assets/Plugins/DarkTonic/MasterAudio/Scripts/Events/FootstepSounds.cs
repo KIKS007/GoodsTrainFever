@@ -23,13 +23,6 @@ namespace DarkTonic.MasterAudio {
 
         private Transform _trans;
 
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
-		public enum FootstepTriggerMode {
-			None,
-			OnCollision, 
-			OnTriggerEnter
-		}
-#else
         public enum FootstepTriggerMode {
             None,
             OnCollision,
@@ -37,8 +30,8 @@ namespace DarkTonic.MasterAudio {
             OnCollision2D,
             OnTriggerEnter2D
         }
-#endif
 
+#if !PHY3D_MISSING
         // ReSharper disable once UnusedMember.Local
         private void OnTriggerEnter(Collider other) {
             if (footstepEvent != FootstepTriggerMode.OnTriggerEnter) {
@@ -56,10 +49,9 @@ namespace DarkTonic.MasterAudio {
 
             PlaySoundsIfMatch(collision.gameObject);
         }
+#endif
 
-#if UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
-    // events don't exist
-#else
+#if !PHY2D_MISSING
         // ReSharper disable once UnusedMember.Local
         private void OnCollisionEnter2D(Collision2D collision) {
             if (footstepEvent != FootstepTriggerMode.OnCollision2D) {
@@ -83,12 +75,12 @@ namespace DarkTonic.MasterAudio {
             // check for limiting restraints
             switch (retriggerLimitMode) {
                 case EventSounds.RetriggerLimMode.FrameBased:
-                    if (triggeredLastFrame > 0 && Time.frameCount - triggeredLastFrame < limitPerXFrm) {
+                    if (triggeredLastFrame > 0 && AudioUtil.FrameCount - triggeredLastFrame < limitPerXFrm) {
                         return false;
                     }
                     break;
                 case EventSounds.RetriggerLimMode.TimeBased:
-                    if (triggeredLastTime > 0 && Time.time - triggeredLastTime < limitPerXSec) {
+                    if (triggeredLastTime > 0 && AudioUtil.Time - triggeredLastTime < limitPerXSec) {
                         return false;
                     }
                     break;
@@ -105,10 +97,10 @@ namespace DarkTonic.MasterAudio {
             // set the last triggered time or frame
             switch (retriggerLimitMode) {
                 case EventSounds.RetriggerLimMode.FrameBased:
-                    triggeredLastFrame = Time.frameCount;
+                    triggeredLastFrame = AudioUtil.FrameCount;
                     break;
                 case EventSounds.RetriggerLimMode.TimeBased:
-                    triggeredLastTime = Time.time;
+                    triggeredLastTime = AudioUtil.Time;
                     break;
             }
 

@@ -3,19 +3,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+#if UNITY_2018_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace DarkTonic.MasterAudio {
     // ReSharper disable once CheckNamespace
     public static class AudioResourceOptimizer {
         private static readonly Dictionary<string, List<AudioSource>> AudioResourceTargetsByName =
-            new Dictionary<string, List<AudioSource>>();
+            new Dictionary<string, List<AudioSource>>(StringComparer.OrdinalIgnoreCase);
 
-        private static readonly Dictionary<string, AudioClip> AudioClipsByName = new Dictionary<string, AudioClip>();
+        private static readonly Dictionary<string, AudioClip> AudioClipsByName = new Dictionary<string, AudioClip>(StringComparer.OrdinalIgnoreCase);
 
         private static readonly Dictionary<string, List<AudioClip>> PlaylistClipsByPlaylistName =
-            new Dictionary<string, List<AudioClip>>(5);
+            new Dictionary<string, List<AudioClip>>(5, StringComparer.OrdinalIgnoreCase);
 
         private static readonly List<string> InternetFilesStartedLoading = new List<string>();
 
@@ -148,8 +152,7 @@ namespace DarkTonic.MasterAudio {
             clips.Add(resAudioClip); // even needs to add duplicates
         }
 
-#if UNITY_4_5_3 || UNITY_4_5_4 || UNITY_4_5_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5
-        public static IEnumerator PopulateResourceSongToPlaylistControllerAsync(string songResourceName,
+        public static IEnumerator PopulateResourceSongToPlaylistControllerAsync(MusicSetting songSetting, string songResourceName,
             string playlistName, PlaylistController controller, PlaylistController.AudioPlayType playType) {
             var asyncRes = Resources.LoadAsync(songResourceName, typeof(AudioClip));
 
@@ -172,7 +175,7 @@ namespace DarkTonic.MasterAudio {
 
             FinishRecordingPlaylistClip(controller.ControllerName, resAudioClip);
 
-            controller.FinishLoadingNewSong(resAudioClip, playType);
+            controller.FinishLoadingNewSong(songSetting, resAudioClip, playType);
         }
 
         /// <summary>
@@ -190,10 +193,12 @@ namespace DarkTonic.MasterAudio {
                     successAction();
                 }
 
+                DTMonoHelper.SetActive(variation.GameObj, false); // should begin disabled after downloading file.
                 yield break;
             }
 
             if (InternetFilesStartedLoading.Contains(fileUrl)) { // don't download the same file multiple times.
+                DTMonoHelper.SetActive(variation.GameObj, false); // should begin disabled after downloading file.
                 yield break;
             }
 
@@ -201,6 +206,30 @@ namespace DarkTonic.MasterAudio {
 
             AudioClip internetClip;
 
+#if UNITY_2018_3_OR_NEWER
+            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(fileUrl, AudioType.UNKNOWN)) {
+                yield return www.SendWebRequest();
+
+                if (www.isNetworkError) {
+                    if (string.IsNullOrEmpty(fileUrl)) {
+                        MasterAudio.LogWarning("Internet file is EMPTY for a Variation of Sound Group '" + variation.ParentGroup.name + "' could not be loaded.");
+                    } else {
+                        MasterAudio.LogWarning("Internet file '" + fileUrl + "' in a Variation of Sound Group '" + variation.ParentGroup.name + "' could not be loaded. This can happen if the URL is incorrect or you are not online.");
+                    }
+                    if (failureAction != null) {
+                        failureAction();
+                    }
+
+                    yield break;
+                } else {
+                    internetClip = DownloadHandlerAudioClip.GetContent(www);
+
+                    // assign clip name
+                    string[] urlParts = new Uri(fileUrl).Segments;
+                    internetClip.name = Path.GetFileNameWithoutExtension(urlParts[urlParts.Length - 1]);
+                }
+            }
+#else
             using (var fileRequest = new WWW(fileUrl)) {
                 yield return fileRequest;
 
@@ -216,8 +245,17 @@ namespace DarkTonic.MasterAudio {
                     yield break;
                 }
 
+        #if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
+                internetClip = fileRequest.audioClip;
+        #else
                 internetClip = fileRequest.GetAudioClip();
+        #endif
+
+                // assign clip name
+                string[] urlParts = new Uri(fileUrl).Segments;
+				internetClip.name = Path.GetFileNameWithoutExtension(urlParts[urlParts.Length - 1]);
             }
+#endif
 
             if (!AudioResourceTargetsByName.ContainsKey(fileUrl)) {
                 MasterAudio.LogError("No Audio Sources found to add Internet File '" + fileUrl + "' to.");
@@ -249,6 +287,8 @@ namespace DarkTonic.MasterAudio {
             if (successAction != null) {
                 successAction();
             }
+
+            DTMonoHelper.SetActive(variation.GameObj, false); // should begin disabled after downloading file.
         }
 
         public static void RemoveLoadedInternetClip(string fileUrl) {
@@ -342,17 +382,6 @@ namespace DarkTonic.MasterAudio {
                 successAction();
             }
         }
-#else
-	public static IEnumerator PopulateResourceSongToPlaylistControllerAsync(string songResourceName, string playlistName, PlaylistController controller, PlaylistController.AudioPlayType playType) {
-		MasterAudio.LogError("If this method got called, please report it to Dark Tonic immediately. It should not happen.");
-		yield break;
-	}
-
-	public static IEnumerator PopulateSourcesWithResourceClipAsync(string clipName, SoundGroupVariation variation, Action successAction, Action failureAction) {
-		MasterAudio.LogError("If this method got called, please report it to Dark Tonic immediately. It should not happen.");
-		yield break;
-	}
-#endif
 
         public static void UnloadPlaylistSongIfUnused(string controllerName, AudioClip clipToRemove) {
             if (clipToRemove == null) {

@@ -5,6 +5,10 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+#if UNITY_XBOXONE
+    using PlayerPrefs = DarkTonic.MasterAudio.FilePlayerPrefs;
+#endif
+
 // ReSharper disable once CheckNamespace
 public class MasterAudioManager : EditorWindow {
     private Vector2 _scrollPos = Vector2.zero;
@@ -39,7 +43,7 @@ public class MasterAudioManager : EditorWindow {
             return;
         }
 
-        DTGUIHelper.HelpHeader("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm");
+        DTGUIHelper.HelpHeader("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm");
 
         var settings = MasterAudioInspectorResources.GearTexture;
 
@@ -72,7 +76,7 @@ public class MasterAudioManager : EditorWindow {
         }
 
         GUILayout.FlexibleSpace();
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#MAGO");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#MAGO");
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Separator();
@@ -90,7 +94,7 @@ public class MasterAudioManager : EditorWindow {
         GUI.contentColor = Color.white;
 
         GUILayout.FlexibleSpace();
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#PCGO");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#PCGO");
         EditorGUILayout.EndHorizontal();
         if (!plControllerInScene) {
             DTGUIHelper.ShowLargeBarAlert("There is no Playlist Controller in the scene. Music will not play.");
@@ -111,7 +115,7 @@ public class MasterAudioManager : EditorWindow {
         GUI.contentColor = Color.white;
 
         GUILayout.FlexibleSpace();
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#DSGC");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#DSGC");
         EditorGUILayout.EndHorizontal();
 
 
@@ -139,7 +143,7 @@ public class MasterAudioManager : EditorWindow {
         GUI.contentColor = Color.white;
 
         GUILayout.FlexibleSpace();
-        DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#SGO");
+        DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#SGO");
         EditorGUILayout.EndHorizontal();
 
 
@@ -148,7 +152,7 @@ public class MasterAudioManager : EditorWindow {
         if (!Application.isPlaying) {
             EditorGUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             GUILayout.Label("Global Settings");
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#GlobalSettings");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#GlobalSettings");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -171,11 +175,25 @@ public class MasterAudioManager : EditorWindow {
 
             EditorGUILayout.EndHorizontal();
 
+            EditorGUILayout.BeginHorizontal();
+
             var useLogo = GUILayout.Toggle(MasterAudio.HideLogoNav, " Hide Logo Nav. in Inspectors");
             // ReSharper disable once RedundantCheckBeforeAssignment
             if (useLogo != MasterAudio.HideLogoNav) {
                 MasterAudio.HideLogoNav = useLogo;
             }
+
+            GUILayout.Space(2);
+
+            var removeVar = GUILayout.Toggle(MasterAudio.RemoveUnplayedVariationDueToProbability, new GUIContent(" Remove Probability-Unplayed Variations", "Remove Variations that were not played due to failing the Probability to Play Field"));
+            // ReSharper disable once RedundantCheckBeforeAssignment
+            if (removeVar != MasterAudio.RemoveUnplayedVariationDueToProbability) {
+                MasterAudio.RemoveUnplayedVariationDueToProbability = removeVar;
+            }
+
+            GUILayout.FlexibleSpace();
+
+            EditorGUILayout.EndHorizontal();
 
             if (!Application.isPlaying) {
                 EditorGUILayout.BeginHorizontal();
@@ -212,9 +230,9 @@ public class MasterAudioManager : EditorWindow {
                     }
                     GUI.contentColor = Color.white;
                     GUILayout.Space(10);
-                    DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/InstallationFolder.htm");
+                    DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/InstallationFolder.htm");
                 } else {
-                    DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/InstallationFolder.htm");
+                    DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/InstallationFolder.htm");
                     GUILayout.FlexibleSpace();
                 }
 
@@ -225,7 +243,7 @@ public class MasterAudioManager : EditorWindow {
 
             EditorGUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             GUILayout.Label("Utility Functions");
-            DTGUIHelper.AddHelpIcon("https://dl.dropboxusercontent.com/u/40293802/DarkTonic/MA_OnlineDocs/MasterAudioManager.htm#UtilityFunctions");
+            DTGUIHelper.AddHelpIconNoStyle("http://www.dtdevtools.com/docs/masteraudio/MasterAudioManager.htm#UtilityFunctions");
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -239,14 +257,6 @@ public class MasterAudioManager : EditorWindow {
 
             if (GUILayout.Button(new GUIContent("Reset Prefs / Settings", "This will delete all Master Audio's Persistent Settings and global preferences (back to installation default). None of your prefabs will be deleted."), EditorStyles.toolbarButton, GUILayout.Width(160))) {
                 ResetPrefs();
-            }
-
-            if (maInScene) {
-                GUILayout.Space(10);
-
-                if (GUILayout.Button(new GUIContent("Upgrade MA Prefab to V3.5.5", "This will upgrade all Sound Groups in the entire MasterAudio prefab and all Sound Groups within to the latest changes, including a new script in V3.5.5."), EditorStyles.toolbarButton, GUILayout.Width(160))) {
-                    UpgradeMasterAudioPrefab();
-                }
             }
 
             GUI.contentColor = Color.white;
@@ -295,28 +305,6 @@ public class MasterAudioManager : EditorWindow {
         }
 
         PlayerPrefs.DeleteKey(PersistentAudioSettings.BusKeysKey);
-    }
-
-    private static void UpgradeMasterAudioPrefab() {
-        var ma = MasterAudio.Instance;
-
-        var added = 0;
-
-        for (var i = 0; i < ma.transform.childCount; i++) {
-            var grp = ma.transform.GetChild(i);
-            for (var v = 0; v < grp.transform.childCount; v++) {
-                var variation = grp.transform.GetChild(v);
-                var updater = variation.GetComponent<SoundGroupVariationUpdater>();
-                if (updater != null) {
-                    continue;
-                }
-
-                variation.gameObject.AddComponent<SoundGroupVariationUpdater>();
-                added++;
-            }
-        }
-
-        DTGUIHelper.ShowAlert(string.Format("{0} Variations fixed.", added));
     }
 
     private static void DeleteAllUnusedFilterFx() {

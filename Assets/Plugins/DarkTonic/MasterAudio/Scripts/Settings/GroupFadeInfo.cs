@@ -8,10 +8,14 @@ namespace DarkTonic.MasterAudio {
     public class GroupFadeInfo {
         public MasterAudioGroup ActingGroup;
         public string NameOfGroup;
+        public float StartVolume;
         public float TargetVolume;
-        public float VolumeStep;
+        public float StartTime;
+        public float CompletionTime;
         public bool IsActive = true;
-        // ReSharper disable once InconsistentNaming
+		public bool WillStopGroupAfterFade = false;
+		public bool WillResetVolumeAfterFade = false;
+		// ReSharper disable once InconsistentNaming
         // ReSharper disable once RedundantNameQualifier
         public System.Action completionAction;
     }

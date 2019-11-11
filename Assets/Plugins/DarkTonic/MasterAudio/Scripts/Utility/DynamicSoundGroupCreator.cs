@@ -6,6 +6,7 @@ namespace DarkTonic.MasterAudio {
     /// <summary>
     /// This class is used to configure and create temporary per-Scene Sound Groups and Buses
     /// </summary>
+    [AudioScriptOrder(-35)]
     // ReSharper disable once CheckNamespace
     public class DynamicSoundGroupCreator : MonoBehaviour {
         /*! \cond PRIVATE */
@@ -24,8 +25,13 @@ namespace DarkTonic.MasterAudio {
         public bool showCustomEvents = true;
         public MasterAudio.AudioLocation bulkVariationMode = MasterAudio.AudioLocation.Clip;
         public List<CustomEvent> customEventsToCreate = new List<CustomEvent>();
-        public string newEventName = "my event";
-        public bool showMusicDucking = true;
+		public List<CustomEventCategory> customEventCategories = new List<CustomEventCategory> {
+			new CustomEventCategory()
+		};
+		public string newEventName = "my event";
+		public string newCustomEventCategoryName = "New Category";
+		public string addToCustomEventCategoryName = "New Category";
+		public bool showMusicDucking = true;
         public List<DuckGroupInfo> musicDuckingSounds = new List<DuckGroupInfo>();
         public List<GroupBus> groupBuses = new List<GroupBus>();
         public bool playListExpanded = false;
@@ -118,7 +124,9 @@ namespace DarkTonic.MasterAudio {
 
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < _groupsToRemove.Count; i++) {
-                MasterAudio.RemoveSoundGroup(_groupsToRemove[i].name);
+                var groupName = _groupsToRemove[i].name;
+                MasterAudio.RemoveSoundGroupFromDuckList(groupName);
+                MasterAudio.DeleteSoundGroup(groupName);
             }
             _groupsToRemove.Clear();
 
@@ -127,6 +135,14 @@ namespace DarkTonic.MasterAudio {
                 var anEvent = customEventsToCreate[i];
                 MasterAudio.DeleteCustomEvent(anEvent.EventName);
             }
+
+			for (var i = 0; i < customEventCategories.Count; i++) {
+				var aCat = customEventCategories[i];
+
+				MasterAudio.Instance.customEventCategories.RemoveAll(delegate (CustomEventCategory cat) {
+					return cat.CatName == aCat.CatName && cat.IsTemporary;
+				});
+			}
 
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < musicPlaylists.Count; i++) {
@@ -137,6 +153,8 @@ namespace DarkTonic.MasterAudio {
             if (reUseMode == CreateItemsWhen.EveryEnable) {
                 _hasCreated = false;
             }
+
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange();
         }
 
         /// <summary>
@@ -169,7 +187,7 @@ namespace DarkTonic.MasterAudio {
                     continue; // already exists.
                 }
 
-                if (!MasterAudio.CreateBus(aBus.busName, errorOnDuplicates)) {
+                if (!MasterAudio.CreateBus(aBus.busName, errorOnDuplicates, true)) {
                     continue;
                 }
 
@@ -185,10 +203,9 @@ namespace DarkTonic.MasterAudio {
                 }
                 createdBus.voiceLimit = aBus.voiceLimit;
                 createdBus.stopOldest = aBus.stopOldest;
-#if UNITY_5
                 createdBus.forceTo2D = aBus.forceTo2D;
                 createdBus.mixerChannel = aBus.mixerChannel;
-#endif
+                createdBus.busColor = aBus.busColor;
                 createdBus.isUsingOcclusion = aBus.isUsingOcclusion;
             }
 
@@ -204,7 +221,7 @@ namespace DarkTonic.MasterAudio {
                 }
                 aGroup.busName = busName;
 
-                var groupTrans = MasterAudio.CreateNewSoundGroup(aGroup, _trans.name, errorOnDuplicates);
+                var groupTrans = MasterAudio.CreateSoundGroup(aGroup, _trans.name, errorOnDuplicates);
 
                 // remove fx components
                 // ReSharper disable ForCanBeConvertedToForeach
@@ -245,28 +262,39 @@ namespace DarkTonic.MasterAudio {
                     continue;
                 }
 
-                MasterAudio.AddSoundGroupToDuckList(aDuck.soundType, aDuck.riseVolStart, aDuck.duckedVolumeCut, aDuck.unduckTime);
+                MasterAudio.AddSoundGroupToDuckList(aDuck.soundType, aDuck.riseVolStart, aDuck.duckedVolumeCut, aDuck.unduckTime, true);
             }
+
+			for (var i = 0; i < customEventCategories.Count; i++) {
+				var aCat = customEventCategories[i];
+				MasterAudio.CreateCustomEventCategoryIfNotThere(aCat.CatName, true);
+			}
 
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < customEventsToCreate.Count; i++) {
                 var anEvent = customEventsToCreate[i];
-                MasterAudio.CreateCustomEvent(anEvent.EventName, anEvent.eventReceiveMode, anEvent.distanceThreshold,
-                    errorOnDuplicates);
+				MasterAudio.CreateCustomEvent(anEvent.EventName, anEvent.eventReceiveMode, anEvent.distanceThreshold, anEvent.eventRcvFilterMode, anEvent.filterModeQty, anEvent.categoryName, true, errorOnDuplicates);
             }
 
             // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < musicPlaylists.Count; i++) {
                 var aPlaylist = musicPlaylists[i];
-                MasterAudio.CreatePlaylist(aPlaylist, errorOnDuplicates);
+				aPlaylist.isTemporary = true;
+				MasterAudio.CreatePlaylist(aPlaylist, errorOnDuplicates);
             }
+
+            MasterAudio.SilenceOrUnsilenceGroupsFromSoloChange(); // to make sure non-soloed things get muted
 
             _hasCreated = true;
 
             if (itemsCreatedEventExpanded) {
-                MasterAudio.FireCustomEvent(itemsCreatedCustomEvent, _trans.position);
+				FireEvents();
             }
         }
+
+		private void FireEvents() {
+            MasterAudio.FireCustomEventNextFrame(itemsCreatedCustomEvent, _trans);
+		}
 
         /*! \cond PRIVATE */
         public void PopulateGroupData() {
@@ -311,11 +339,7 @@ namespace DarkTonic.MasterAudio {
         /*! \cond PRIVATE */
         public bool ShouldShowUnityAudioMixerGroupAssignments {
             get {
-#if UNITY_5
                 return showUnityMixerGroupAssignment;
-#else
-                return false;
-#endif
             }
         }
         /*! \endcond */

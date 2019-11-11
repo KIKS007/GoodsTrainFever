@@ -4,7 +4,6 @@ using UnityEngine;
 using DarkTonic.MasterAudio;
 
 [CustomEditor(typeof(ButtonClicker))]
-[CanEditMultipleObjects]
 // ReSharper disable once CheckNamespace
 public class ButtonClickerInspector : Editor {
     private List<string> _groupNames;
@@ -95,7 +94,6 @@ public class ButtonClickerInspector : Editor {
     }
 
     protected void EditSoundGroup(ButtonClicker sounds, ref string soundGroup, string label) {
-        DTGUIHelper.AddSpaceForNonU5(2);
         DTGUIHelper.StartGroupHeader();
         if (_maInScene) {
             var existingIndex = _groupNames.IndexOf(soundGroup);

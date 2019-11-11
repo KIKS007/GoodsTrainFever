@@ -21,6 +21,10 @@ namespace DarkTonic.MasterAudio {
                 list[randomIndex] = temp; 
             }
         }
+
+        public static bool IsExcludedChildName(string name) {
+            return MasterAudio.ExemptChildNames.Contains(name);
+        }
     }
 }
 /*! \endcond */

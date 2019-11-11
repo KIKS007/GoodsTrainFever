@@ -19,7 +19,6 @@ namespace RelationsInspector.Backend.TypeHierarchy
 
 			if ( inspectedType.IsInterface )
 			{
-				// todo: generic interfaces
 				var implementers = assemblyTypes.Where( t => inspectedType.IsAssignableFrom( t ) );
 				foreach ( var implementer in implementers )
 				{

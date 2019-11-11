@@ -13,23 +13,36 @@ namespace DarkTonic.MasterAudio {
 
         private const float SemitonePitchChangeAmt = 1.0594635f;
 
-        private static float CutoffRange {
-            get { return MasterAudio.Instance.occlusionMinCutoffFreq - MasterAudio.Instance.occlusionMaxCutoffFreq; }
+        private static float CutoffRange(SoundGroupVariationUpdater updater) {
+            return updater.MinOcclusionFreq - updater.MaxOcclusionFreq;
         }
 
-        private static float MaxCutoffFreq {
-            get { return MasterAudio.Instance.occlusionMaxCutoffFreq; }
+        private static float MaxCutoffFreq(SoundGroupVariationUpdater updater) {
+            return updater.MaxOcclusionFreq;
         }
-        public static float MinCutoffFreq {
-            get { return MasterAudio.Instance.occlusionMinCutoffFreq; }
+
+        public static float MinCutoffFreq(SoundGroupVariationUpdater updater) {
+            return updater.MinOcclusionFreq;
+        }
+
+        public static float FixedDeltaTime {
+            get { return UnityEngine.Time.fixedDeltaTime; }
         }
 
         public static float FrameTime {
-            get { return Time.unscaledDeltaTime; }
+            get { return UnityEngine.Time.unscaledDeltaTime; }
         }
 
-        public static float GetOcclusionCutoffFrequencyByDistanceRatio(float distRatio) {
-            return MaxCutoffFreq + (distRatio * CutoffRange);
+        public static float Time {
+            get { return UnityEngine.Time.unscaledTime; }
+        }
+
+        public static int FrameCount {
+            get { return UnityEngine.Time.frameCount; }
+        }
+
+        public static float GetOcclusionCutoffFrequencyByDistanceRatio(float distRatio, SoundGroupVariationUpdater updater) {
+            return MaxCutoffFreq(updater) + (distRatio * CutoffRange(updater));
         }
 
         public static float GetSemitonesFromPitch(float pitch) {
@@ -78,44 +91,74 @@ namespace DarkTonic.MasterAudio {
         }
 
         /// <summary>
-        /// This method returns whether an AudioSource is paused or not.
+        /// This method returns whether an AudioSource is paused or not. Only used by PlaylistControllers.
         /// </summary>
         /// <param name="source">The Audio Source in question.</param>
         /// <returns>True or false</returns>
-        public static bool IsAudioPaused(AudioSource source) {
+        public static bool IsClipPaused(AudioSource source) {
             return !source.isPlaying && GetAudioPlayedPercentage(source) > 0f;
         }
 
-        /*! \cond PRIVATE */
-#if UNITY_5
-        public static void UnloadNonPreloadedAudioData(AudioClip clip) {
-            if (clip != null && !clip.preloadAudioData) {
-                clip.UnloadAudioData(); // restore memory
-            }
-        }
-#else
-        public static void UnloadNonPreloadedAudioData(AudioClip clip) {
-            // do nothing
-        }
-#endif
 
-#if UNITY_5
+        /*! \cond PRIVATE */
+        public static void ClipPlayed(AudioClip clip, GameObject actor) {
+            if (AudioClipWillPreload(clip)) {
+                return;
+            }
+
+            AudioLoaderOptimizer.AddNonPreloadedPlayingClip(clip, actor);
+        }
+
+        public static void UnloadNonPreloadedAudioData(AudioClip clip, GameObject actor) {
+            if (clip == null) {
+				return;
+			}
+
+			if (AudioClipWillPreload(clip)) {
+				return;
+			}
+
+            AudioLoaderOptimizer.RemoveNonPreloadedPlayingClip(clip, actor);
+
+            if (AudioLoaderOptimizer.IsAnyOfNonPreloadedClipPlaying(clip)) {
+				return;
+			}
+
+			clip.UnloadAudioData(); // restore memory
+        }
+
         public static bool AudioClipWillPreload(AudioClip clip) {
+            if (clip == null) {
+                return false;
+            }
+
             return clip.preloadAudioData;
         }
-#else
-        public static bool AudioClipWillPreload(AudioClip clip) {
-            return true;
-        }
-#endif
 
-        public static bool IsClipReadyToPlay(AudioClip clip) {
-#if UNITY_5
-            return clip.loadType != AudioClipLoadType.Streaming;
-#else
-            return clip.isReadyToPlay;
-#endif
+        public static bool IsClipReadyToPlay(this AudioClip clip) {
+            return clip != null && clip.loadType != AudioClipLoadType.Streaming;
         }
+
+        private static float GetPositiveUsablePitch(AudioSource source) {
+            return GetPositiveUsablePitch(source.pitch);
+        }
+
+        private static float GetPositiveUsablePitch(float pitch) {
+            return pitch > 0 ? pitch : 1;
+        }
+
+        public static float AdjustAudioClipDurationForPitch(float duration, AudioSource sourceWithPitch) {
+            return AdjustAudioClipDurationForPitch(duration, sourceWithPitch.pitch);
+        }
+
+        public static float AdjustAudioClipDurationForPitch(float duration, float pitch) {
+            return duration / GetPositiveUsablePitch(pitch);
+        }
+
+        public static float AdjustEndLeadTimeForPitch(float duration, AudioSource sourceWithPitch) {
+            return duration * GetPositiveUsablePitch(sourceWithPitch);
+        }
+
         /*! \endcond */
     }
 }
