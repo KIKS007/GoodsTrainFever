@@ -5,7 +5,7 @@ Shader "S_Basic"
 	Properties
 	{
 		[HideInInspector] __dirty( "", Int ) = 1
-		_Color0("Color 0", Color) = (0,0,0,0)
+		_Color0("_BaseColor", Color) = (0,0,0,0)
 	}
 
 	SubShader

@@ -23,7 +23,6 @@ public enum ContainerColor
     Blue,
     Yellow,
     Violet
-
 }
 
 public class Container : Touchable
@@ -33,43 +32,31 @@ public class Container : Touchable
     public static Action<Container> OnContainerDeselected;
     public static Action OnContainerMoved;
 
-    [Header("Container Type")]
-    public ContainerType containerType = ContainerType.Basique;
+    [Header("Container Type")] public ContainerType containerType = ContainerType.Basique;
     public ContainerColor containerColor;
 
-    [Header("States")]
-    public bool selected = false;
+    [Header("States")] public bool selected = false;
     public bool isPileUp = false;
     public bool isMoving = false;
 
-    [Header("Constraints")]
-    public bool allConstraintsRespected = true;
+    [Header("Constraints")] public bool allConstraintsRespected = true;
     public List<ContainerConstraint> constraints = new List<ContainerConstraint>();
 
-    [Header("Size")]
-    [ReadOnlyAttribute]
-    public bool isDoubleSize;
+    [Header("Size")] [ReadOnlyAttribute] public bool isDoubleSize;
 
-    [Header("Train")]
-    public Train train = null;
+    [Header("Train")] public Train train = null;
     public Wagon wagon = null;
 
-    [Header("Spot")]
-    public Spot spotOccupied = null;
+    [Header("Spot")] public Spot spotOccupied = null;
 
-    [Header("Color")]
-    public string shaderColorProperty = "_Albedo1";
+    [Header("Color")] private string shaderColorProperty = "_BaseColor";
 
-    [Header("UI")]
-    public CanvasGroup errorsCanvasGroup;
+    [Header("UI")] public CanvasGroup errorsCanvasGroup;
 
-    [HideInInspector]
-    public Mesh _mesh;
-    [HideInInspector]
-    public Collider _collider;
+    [HideInInspector] public Mesh _mesh;
+    [HideInInspector] public Collider _collider;
 
-    [HideInInspector]
-    public Spot[] _pileSpots = new Spot[0];
+    [HideInInspector] public Spot[] _pileSpots = new Spot[0];
     private Material _material;
     private float _errorsInitialScale;
     private bool _errorDisplayed = false;
@@ -220,9 +207,9 @@ public class Container : Touchable
 
         errorsCanvasGroup.transform.DOKill(true);
         errorsCanvasGroup.transform.DOScale(0, 0.4f).SetEase(Ease.InBounce).OnComplete(() =>
-            {
-                errorsCanvasGroup.gameObject.SetActive(false);
-            });
+        {
+            errorsCanvasGroup.gameObject.SetActive(false);
+        });
 
         if (OnContainerSelected != null)
             OnContainerSelected(this);
@@ -411,7 +398,8 @@ public class Container : Touchable
         meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
         _material = meshRenderer.sharedMaterial;
 
-        containerColor = (ContainerColor)UnityEngine.Random.Range(1, (int)Enum.GetNames(typeof(ContainerColor)).Length);
+        containerColor =
+            (ContainerColor) UnityEngine.Random.Range(1, (int) Enum.GetNames(typeof(ContainerColor)).Length);
 
         Color color = new Color();
 
@@ -430,6 +418,8 @@ public class Container : Touchable
                 color = globalVariables.violetColor;
                 break;
         }
+
+        _material.SetColor(shaderColorProperty, color);
 
         if (_material.HasProperty(shaderColorProperty))
             _material.SetColor(shaderColorProperty, color);
@@ -481,7 +471,8 @@ public class Container : Touchable
         if (allConstraintsRespected)
         {
             errorsCanvasGroup.transform.DOKill(true);
-            errorsCanvasGroup.transform.DOScale(0, MenuManager.Instance.menuAnimationDuration).SetEase(MenuManager.Instance.menuEase).OnComplete(() =>
+            errorsCanvasGroup.transform.DOScale(0, MenuManager.Instance.menuAnimationDuration)
+                .SetEase(MenuManager.Instance.menuEase).OnComplete(() =>
                 {
                     errorsCanvasGroup.gameObject.SetActive(false);
                 });
@@ -498,19 +489,19 @@ public class Container : Touchable
                 MasterAudio.PlaySoundAndForget("SFX_Error");
 
                 DOVirtual.DelayedCall(0.3f, () =>
-                    {
-                        if (errorsCanvasGroup == null)
-                            return;
+                {
+                    if (errorsCanvasGroup == null)
+                        return;
 
-                        errorsCanvasGroup.transform.DOScale(_errorsInitialScale, MenuManager.Instance.menuAnimationDuration).SetEase(Ease.Linear).OnComplete(() =>
+                    errorsCanvasGroup.transform.DOScale(_errorsInitialScale, MenuManager.Instance.menuAnimationDuration)
+                        .SetEase(Ease.Linear).OnComplete(() =>
+                        {
+                            errorsCanvasGroup.transform.DOPunchScale(Vector3.one / 6, 0.2f, 3).OnComplete(() =>
                             {
-                                errorsCanvasGroup.transform.DOPunchScale(Vector3.one / 6, 0.2f, 3).OnComplete(() =>
-                                    {
-                                        ErrorBreathing();
-                                    });
+                                ErrorBreathing();
                             });
-                    });
-
+                        });
+                });
             }
         }
     }
@@ -520,33 +511,31 @@ public class Container : Touchable
         if (_errorDisplayed)
         {
             errorsCanvasGroup.transform.DOScale(_errorsInitialScale + 0.05f, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                if (_errorDisplayed)
                 {
-                    if (_errorDisplayed)
+                    errorsCanvasGroup.transform.DOScale(_errorsInitialScale, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        errorsCanvasGroup.transform.DOScale(_errorsInitialScale, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
-                            {
-                                if (_errorDisplayed)
-                                {
-                                    ErrorBreathing();
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            });
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-                });
+                        if (_errorDisplayed)
+                        {
+                            ErrorBreathing();
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    });
+                }
+                else
+                {
+                    return;
+                }
+            });
         }
         else
         {
             return;
         }
-
     }
 
     [PropertyOrder(-1)]
@@ -576,7 +565,6 @@ public class Container : Touchable
     public class ContainerConstraint
     {
         public bool isRespected = true;
-        [SerializeField]
-        public Constraint constraint;
+        [SerializeField] public Constraint constraint;
     }
 }
